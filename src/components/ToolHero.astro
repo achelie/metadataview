@@ -1,0 +1,11 @@
+---
+import type { IconName } from './IconGlyph';
+import { IconGlyph } from './IconGlyph';
+interface Props { eyebrow: string; title: string; description: string; icon: IconName; formats: string }
+const { eyebrow, title, description, icon, formats } = Astro.props;
+---
+<section class="tool-hero" aria-labelledby="tool-title">
+  <span class="tool-hero-icon" aria-hidden="true"><IconGlyph name={icon} size={28} /></span>
+  <div class="tool-hero-copy"><span class="eyebrow">{eyebrow}</span><h1 id="tool-title">{title}</h1><p>{description}</p></div>
+  <div class="format-strip"><span>Supported</span><strong>{formats}</strong></div>
+</section>

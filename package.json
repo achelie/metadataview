@@ -1,0 +1,50 @@
+{
+  "name": "metadata-privacy-toolkit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build && pnpm check:assets",
+    "check:assets": "node scripts/check-cloudflare-assets.mjs",
+    "preview": "astro preview",
+    "deploy:pages": "wrangler pages deploy ./dist --project-name achelie-metadataview --branch main",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.2",
+    "@astrojs/sitemap": "^3.6.0",
+    "@colorhythm/exiftool-wasm": "1.0.4",
+    "@contentauth/c2pa-web": "^0.13.1",
+    "@iconify-icons/lucide": "^1.2.135",
+    "@iconify/react": "^6.0.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.6",
+    "exifreader": "^4.41.3",
+    "hash-wasm": "^4.12.0",
+    "mp4box": "^2.4.1",
+    "music-metadata": "^11.10.3",
+    "pako": "^3.0.1",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^24.10.0",
+    "@types/pako": "^2.0.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
+    "wrangler": "4.118.0"
+  },
+  "packageManager": "pnpm@11.1.2"
+}

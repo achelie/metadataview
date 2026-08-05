@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ToolHero from '../components/ToolHero.astro';
+import ToolWorkbench, { type ToolMode } from '../components/ToolWorkbench';
+import ImageMetadataWorkbench from '../components/ImageMetadataWorkbench';
+import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
+import ImageMetadataSeo from '../components/ImageMetadataSeo.astro';
+import PrivacyChecker from '../components/privacy/PrivacyChecker';
+import MetadataRemover from '../components/privacy/MetadataRemover';
+import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
+import { IconGlyph, type IconName } from '../components/IconGlyph';
+
+interface Faq { question: string; answer: string }
+interface Related { href: string; title: string; note: string }
+interface Props {
+  title: string; metaTitle: string; description: string; shortDescription: string; path: string; eyebrow: string; icon: IconName;
+  mode: ToolMode; formats: string; accept: string; allowedTypes?: string[]; highlights: string[];
+  productionImageViewer?: boolean;
+  productionMetadataReport?: boolean;
+  metadataReportScope?: 'all' | 'image';
+  productionPrivacyChecker?: boolean;
+  productionMetadataRemover?: boolean;
+  limitations: string[]; faqs: Faq[]; related: Related[];
+}
+const props = Astro.props;
+const canonical = new URL(props.path, Astro.site ?? 'https://achelie-metadataview.pages.dev').toString();
+const visibleFaqs = props.faqs.slice(0, 4);
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: canonical, description: props.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: visibleFaqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', canonical).toString() }, { '@type': 'ListItem', position: 2, name: props.title, item: canonical }] },
+];
+---
+<BaseLayout title={props.metaTitle} description={props.description} path={props.path} schemas={schemas}>
+  <div class="page-shell">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{props.title}</span></nav>
+    <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} />
+    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionImageViewer ? <ImageMetadataWorkbench client:load /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemover client:load /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    {props.productionImageViewer ? <ImageMetadataSeo /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
+      <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
+      <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
+      <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
+    </section>}
+    <section class="faq-section"><span class="section-index">FAQ</span><h2>Quick answers</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
+    <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>
+  </div>
+</BaseLayout>
