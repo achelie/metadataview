@@ -6,7 +6,7 @@ export const recommendations = Object.freeze({
   rights: 'Keep this information if attribution matters; otherwise remove it before anonymous sharing.',
   software: 'Remove software labels if you do not want to disclose your editing setup.',
   history: 'Remove editing history and persistent document identifiers before public distribution.',
-  workflow: 'Remove generation data if prompts, local paths, models, or workflow structure are private.',
+  path: 'Remove local paths before sharing the image, especially when a username or project folder is visible.',
   thumbnail: 'Re-encode the image so an embedded preview is not carried into the shared copy.',
   network: 'Remove internal addresses, local URLs, and token-bearing links. Rotate exposed credentials when appropriate.',
 });

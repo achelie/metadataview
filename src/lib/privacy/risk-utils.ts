@@ -23,10 +23,6 @@ export function maskSensitiveText(value: string): string {
 }
 
 function preview(field: IndexedPrivacyField, category: PrivacyCategory): string {
-  if (category === 'ai-generation' && field.value && typeof field.value === 'object') {
-    const size = Array.isArray(field.value) ? field.value.length : Object.keys(field.value as Record<string, unknown>).length;
-    return `[Workflow data: ${size} top-level ${size === 1 ? 'entry' : 'entries'}]`;
-  }
   const normalizedKey = normalizePrivacyKey(field.originalKey);
   const original = stringifyDisplayValue(field.value);
   let masked = maskSensitiveText(original);

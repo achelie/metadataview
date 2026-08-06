@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { PRESERVE_ENCODING_CLEANUP_ARGS, buildPrivacyCleanupDiff, createPrivacyCleanupResult, validateCleanupOutput } from '../../src/lib/image/privacy-cleanup';
 import { assertCanvasCleanupSafe } from '../../src/lib/image/remove-metadata';
 import type { ImageMetadataField, ImageMetadataGroup, ImageMetadataSection, NormalizedImageMetadata } from '../../src/lib/metadata/types';
 import { adaptExifToolOutput } from '../../src/lib/metadata-report/exiftool-adapter';
+import type { MetadataInspectionMode } from '../../src/lib/metadata-report/types';
 import { createPrivacyDeepInspection, createPrivacyReport, recordPrivacyScanFailure } from '../../src/lib/privacy/create-privacy-report';
+import { createAndVerifyPrivacyCleanup } from '../../src/lib/privacy/cleanup-workflow';
 import { createSafeCleanupReceipt, createSafePrivacyExport } from '../../src/lib/privacy/safe-report-export';
+import type { PrivacyReport } from '../../src/lib/privacy/types';
 
 function metadata(inputs: Array<{ key: string; value: unknown; group?: ImageMetadataGroup }> = []): NormalizedImageMetadata {
   const groups = new Map<ImageMetadataGroup, ImageMetadataField[]>();
@@ -34,7 +37,7 @@ describe('deep privacy inspection', () => {
       'Copy1:Main:GPS:GPSLongitude': { id: 4, val: -74.006, num: -74.006 },
     }], 'standard');
     const deep = createPrivacyDeepInspection(parsed, inspection, quick);
-    expect(deep.report.version).toBe('1.2');
+    expect(deep.report.version).toBe('1.3');
     expect(deep.report.completeness).toBe('standard');
     expect(deep.report.scoreTimeline.map((item) => item.stage)).toEqual(['quick', 'standard']);
     expect(deep.report.risks.find((risk) => risk.id === 'device-model')).toBeDefined();
@@ -43,7 +46,7 @@ describe('deep privacy inspection', () => {
     expect(JSON.stringify(deep)).not.toContain('rawValue');
   });
 
-  it('recognizes native camera groups and non-ambiguous AI settings without confusing camera Model', () => {
+  it('recognizes native camera groups without scoring application-specific settings', () => {
     const parsed = metadata();
     const inspection = adaptExifToolOutput([{
       'Copy1:Main:IFD0:Model': { val: 'Nikon Z8' },
@@ -52,8 +55,8 @@ describe('deep privacy inspection', () => {
     }], 'standard');
     const report = createPrivacyDeepInspection(parsed, inspection, createPrivacyReport(parsed)).report;
     expect(report.risks.find((risk) => risk.id === 'device-model')).toBeDefined();
-    expect(report.risks.find((risk) => risk.id === 'ai-settings')?.fields.map((field) => field.key)).toEqual(expect.arrayContaining(['Seed', 'Sampler']));
-    expect(report.risks.find((risk) => risk.id === 'ai-settings')?.fields.map((field) => field.displayValue)).not.toContain('Nikon Z8');
+    expect(report.risks.map((risk) => risk.id)).toEqual(['device-model']);
+    expect(report.score).toBe(5);
   });
 
   it('finds IPTC contact details, XMP people, original filenames, previews, and unknown text tags', () => {
@@ -180,5 +183,35 @@ describe('privacy cleanup contract', () => {
     expect(result.verificationStatus).toBe('incomplete');
     expect(result.fileName).toBe('private-clean.jpg');
     expect(JSON.stringify(createSafeCleanupReceipt(result))).not.toMatch(/blob|rawValue|ArrayBuffer/i);
+  });
+
+  it('verifies a fully scanned image with one direct embedded pass and no standard pass', async () => {
+    const sourceMetadata = metadata([{ key: 'Artist', value: 'Ada', group: 'author' }]);
+    const initial = createPrivacyReport(sourceMetadata);
+    const beforeReport = createPrivacyDeepInspection(sourceMetadata, adaptExifToolOutput([{ 'Copy1:Main:IFD0:Artist': { val: 'Ada' } }], 'embedded'), initial).report;
+    const cleanMetadata = metadata();
+    cleanMetadata.file.name = 'private-clean.jpg';
+    const quickReport = createPrivacyReport(cleanMetadata);
+    const inspectPrivacy = vi.fn(async (_file: File, parsed: NormalizedImageMetadata, previous: PrivacyReport, mode: MetadataInspectionMode) => createPrivacyDeepInspection(parsed, adaptExifToolOutput([{}], mode), previous));
+    const exifClient = {
+      cleanPreservingEncoding: vi.fn(async () => ({ schemaVersion: '1.0', data: new Uint8Array([0xff, 0xd8, 0xff, 0xd9]).buffer, mime: 'image/jpeg', warnings: [], cleanupEngine: 'exiftool' })),
+      inspectPrivacy,
+    };
+    const quickClient = { checkPrivacy: vi.fn(async () => ({ metadata: cleanMetadata, report: quickReport })) };
+
+    const result = await createAndVerifyPrivacyCleanup({
+      source: new File([new Uint8Array([0xff, 0xd8, 0xff, 0xd9])], 'private.jpg', { type: 'image/jpeg' }),
+      metadata: sourceMetadata,
+      beforeReport,
+      mode: 'preserve-encoding',
+      quickClient: quickClient as never,
+      exifClient: exifClient as never,
+      onStage: () => undefined,
+    });
+
+    expect(inspectPrivacy).toHaveBeenCalledTimes(1);
+    expect(inspectPrivacy.mock.calls[0]?.[3]).toBe('embedded');
+    expect(result.verificationDepth).toBe('embedded');
+    expect(result.verificationStatus).toBe('verified');
   });
 });

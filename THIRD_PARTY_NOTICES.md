@@ -2,6 +2,14 @@
 
 MetadataView includes open-source software that runs locally in the visitor's browser.
 
+## C2PA WebAssembly verifier
+
+- Package: `@contentauth/c2pa-web` 0.13.1
+- Source: https://github.com/contentauth/c2pa-js
+- License: MIT
+
+The package provides the official browser SDK and WebAssembly bindings used to read and validate C2PA Content Credentials. MetadataView loads it only after the visitor selects a file, terminates the SDK Worker after each run, and exports only a bounded safe report rather than file or resource bytes.
+
 ## ExifTool WebAssembly
 
 - Package: `@colorhythm/exiftool-wasm` 1.0.4

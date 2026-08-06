@@ -72,7 +72,7 @@ export function privacyReportSummaryText(report: PrivacyReport): string {
   return [
     'Image privacy report',
     `File: ${report.file.name}`,
-    `Completeness: ${report.completeness}`,
+    `Scan: ${report.completeness === 'embedded' ? 'Full scan complete' : 'Full scan incomplete'}`,
     `Score: ${report.score} / 100 (${report.level})${delta ? `, ${delta > 0 ? '+' : ''}${delta} after deeper scanning` : ''}`,
     `Risks: ${report.risks.length}`,
     `High-priority risks: ${high}`,

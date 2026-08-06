@@ -1,5 +1,4 @@
 /// <reference lib="webworker" />
-import { detectAndParseGenerator } from '../lib/generators/detect-generator';
 import { toMetadataError } from '../lib/metadata/errors';
 import { parseFile } from '../lib/metadata/parse-file';
 import { parseImage } from '../lib/metadata/parse-image';
@@ -29,9 +28,8 @@ self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
       self.postMessage(response);
       return;
     }
-    const metadata = await parseFile(request.file, request.type === 'parse-metadata' ? request.allowedTypes : ['jpeg', 'png', 'webp']);
-    if (request.type === 'read-ai-prompt') response = { id: request.id, status: 'success', result: { metadata, generation: detectAndParseGenerator({ ...metadata.raw, ...metadata.normalized }) } };
-    else response = { id: request.id, status: 'success', result: metadata };
+    const metadata = await parseFile(request.file, request.allowedTypes);
+    response = { id: request.id, status: 'success', result: metadata };
   } catch (error) {
     const known = toMetadataError(error);
     response = { id: request.id, status: 'error', error: { code: known.code, message: known.message } };

@@ -15,8 +15,8 @@ import type {
   RiskSeverity,
 } from './types';
 
-export const PRIVACY_REPORT_VERSION = '1.2' as const;
-export const PRIVACY_EVIDENCE_POLICY_VERSION = '1.0' as const;
+export const PRIVACY_REPORT_VERSION = '1.3' as const;
+export const PRIVACY_EVIDENCE_POLICY_VERSION = '1.1' as const;
 export const PRIVACY_DISCLAIMER = 'This report identifies metadata that may affect privacy. It does not guarantee that an image is safe to share. No detected metadata is not proof of anonymity or safety.';
 const severityOrder: Record<RiskSeverity, number> = { critical: 4, high: 3, medium: 2, low: 1 };
 
@@ -153,7 +153,6 @@ export function createPrivacyReportFromRules(
       hasIdentityInformation: has('device-owner', 'creator-identity', 'contact-details', 'named-people'),
       hasCaptureTime: has('capture-time'),
       hasEmbeddedThumbnail: has('embedded-thumbnail'),
-      hasAiGenerationData: has('ai-prompt', 'ai-settings', 'comfy-workflow'),
       hasEditingHistory: has('editing-history'),
       hasApproximateLocation: has('approximate-location'),
       hasNamedPeople: has('named-people'),
@@ -211,6 +210,6 @@ export function recordPrivacyScanFailure(report: PrivacyReport, mode: MetadataIn
   return {
     ...report,
     engines: completedExif ? report.engines : [...report.engines.filter((engine) => engine.id !== 'exiftool'), failedEngine],
-    scanWarnings: [...new Set([...report.scanWarnings, `${mode === 'embedded' ? 'Embedded' : 'Standard'} scan failed: ${message}`])],
+    scanWarnings: [...new Set([...report.scanWarnings, `${mode === 'embedded' ? 'Full' : 'Standard'} scan failed: ${message}`])],
   };
 }

@@ -85,6 +85,6 @@ export function createPrivacyCleanupResult(input: {
     beforeReport: input.beforeReport,
     afterReport: input.afterReport,
     diff: input.afterReport ? buildPrivacyCleanupDiff(input.beforeReport, input.afterReport) : undefined,
-    warnings: [...(input.warnings ?? []), ...(verificationStatus === 'verified' ? [] : ['Verification did not complete at the same scan depth as the original report. Do not describe this copy as safe.'])],
+    warnings: [...(input.warnings ?? []), ...(verificationStatus === 'verified' ? [] : ['Verification did not complete a full scan for both files. Do not describe this copy as safe.'])],
   };
 }

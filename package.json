@@ -18,7 +18,7 @@
     "@astrojs/react": "^6.0.2",
     "@astrojs/sitemap": "^3.6.0",
     "@colorhythm/exiftool-wasm": "1.0.4",
-    "@contentauth/c2pa-web": "^0.13.1",
+    "@contentauth/c2pa-web": "0.13.1",
     "@iconify-icons/lucide": "^1.2.135",
     "@iconify/react": "^6.0.2",
     "@tailwindcss/vite": "^4.3.3",
@@ -32,8 +32,7 @@
     "pdfjs-dist": "^6.2.108",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "tailwindcss": "^4.3.3",
-    "zod": "^4.4.3"
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
