@@ -4,10 +4,10 @@ import StaticIcon from './StaticIcon.astro';
 const pathname = Astro.url.pathname;
 const viewItems = [
   { href: '/', label: 'All Formats' },
-  { href: '/', label: 'Images' },
-  { href: '/', label: 'Videos' },
-  { href: '/', label: 'Audio' },
-  { href: '/', label: 'Documents' },
+  { href: '/image-metadata-viewer/', label: 'Images' },
+  { href: '/video-metadata-viewer/', label: 'Videos' },
+  { href: '/audio-metadata-viewer/', label: 'Audio' },
+  { href: '/pdf-metadata-viewer/', label: 'Documents' },
 ];
 const removeItems: Array<{ href?: string; label: string; available: boolean }> = [
   { href: '/metadata-remover/', label: 'Images', available: true },

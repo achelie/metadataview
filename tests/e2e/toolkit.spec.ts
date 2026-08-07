@@ -306,7 +306,7 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   await viewTrigger.click();
   await expect(viewTrigger).toHaveAttribute('aria-expanded', 'true');
   await expect(viewMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
-  const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/'], ['Videos', '/'], ['Audio', '/'], ['Documents', '/']];
+  const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/pdf-metadata-viewer/']];
   for (const [label, href] of viewLinks) {
     await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
   }
@@ -333,7 +333,7 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
   await mobileView.locator('.t-acc-head').click();
   await expect(mobileView).toHaveAttribute('data-open', 'true');
-  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/');
+  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/pdf-metadata-viewer/');
   const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
   await mobileRemove.locator('.t-acc-head').click();
   await expect(mobileView).toHaveAttribute('data-open', 'false');
