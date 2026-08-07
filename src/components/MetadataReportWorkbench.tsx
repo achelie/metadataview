@@ -364,7 +364,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
     setNotice(`${fullImageScan ? 'Full image' : 'ExifTool'} scan canceled; the initial report remains available`);
   };
 
-  return <section className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
+  return <section id={`metadata-workbench-${placement}`} className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
     <div className="workbench-topline">
       <div className="local-proof"><Icon icon={checkIcon} width="18" aria-hidden="true" /><span>Your file stays on this device.</span></div>
       <span className="status-line" role="status" aria-live="polite"><i className={busy || exifRunning ? 'pulse' : ''} />{notice}</span>

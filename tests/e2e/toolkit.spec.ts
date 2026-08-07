@@ -69,12 +69,22 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
   return Buffer.from(values);
 }
 
-test('home page opens with the universal metadata viewer and three direct next tools', async ({ page }) => {
+test('home page opens with the universal viewer, three useful next steps, and the local scan process', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
-  await expect(page.locator('.home-next-tools a')).toHaveCount(3);
-  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByText('Use the right tool next.')).toHaveCount(0);
+  await expect(page.getByText('The file never takes a network trip.')).toHaveCount(0);
+  await expect(page.locator('.home-benefit-grid a')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: /Protect private details/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Check file provenance/ })).toHaveAttribute('href', '/c2pa-viewer/');
+  await expect(page.getByRole('link', { name: /Share a cleaner copy/ })).toHaveAttribute('href', '/metadata-remover/');
+  await expect(page.locator('.home-process-list li')).toHaveCount(5);
+  const workbenchLink = page.getByRole('link', { name: /Choose a file above/ });
+  await expect(workbenchLink).toHaveAttribute('href', '#metadata-workbench-home');
+  await expect(page.locator('#metadata-workbench-home')).toHaveCount(1);
+  await workbenchLink.click();
+  await expect(page).toHaveURL(/#metadata-workbench-home$/);
 });
 
 test('home page directly parses all six promised formats', async ({ page }) => {
@@ -375,12 +385,23 @@ test('home and universal viewer show the same five expanded FAQ answers and sche
     const section = page.locator('.expanded-faq');
     await expect(section.getByRole('heading', { name: 'Frequently asked questions' })).toBeVisible();
     await expect(section.locator('details')).toHaveCount(0);
+    await expect(section).toHaveCSS('color', 'rgb(23, 24, 21)');
+    expect(await section.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe('rgb(23, 24, 21)');
     for (const question of questions) await expect(section.getByRole('heading', { name: question })).toBeVisible();
     const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
     expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
   }
   await page.goto('/image-metadata-viewer/');
   await expect(page.locator('.faq-section details').first()).toBeVisible();
+});
+
+test('home editorial sections fit an extremely narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 239, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Why view file metadata?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How the local scan works' })).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
 });
 
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {
