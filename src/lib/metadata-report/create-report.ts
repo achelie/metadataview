@@ -74,10 +74,16 @@ function makeFacts(parsed: ParsedMetadata): MetadataReportFact[] {
   if (parsed.category === 'video' || parsed.category === 'audio') facts.push(['duration', 'Duration', duration(normalized.Duration)]);
   if (parsed.category === 'video') facts.push(['codec', 'Video codec', normalized.Codec]);
   if (parsed.category === 'audio') {
+    if (normalized.Codec) facts.push(['audio-codec', 'Audio codec', normalized.Codec]);
     const bitrate = numberValue(normalized.Bitrate);
     if (bitrate) facts.push(['bitrate', 'Bitrate', `${Math.round(bitrate / 1000)} kbps`]);
     const sampleRate = numberValue(normalized.SampleRate);
     if (sampleRate) facts.push(['sample-rate', 'Sample rate', `${sampleRate.toLocaleString('en-US')} Hz`]);
+    const channels = numberValue(normalized.Channels);
+    if (channels) facts.push(['channels', 'Channels', channels]);
+    const bits = numberValue(normalized.BitsPerSample);
+    if (bits) facts.push(['bits-per-sample', 'Bit depth', `${bits}-bit`]);
+    if (typeof normalized.Lossless === 'boolean') facts.push(['lossless', 'Compression', normalized.Lossless ? 'Lossless' : 'Lossy']);
   }
   return facts.filter((entry) => entry[2] !== undefined && entry[2] !== '').map(([id, label, value]) => ({ id, label, value: String(value) }));
 }

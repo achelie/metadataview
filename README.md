@@ -15,8 +15,9 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 | Tool | MVP formats |
 | --- | --- |
-| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, MP3 |
+| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Document metadata viewer | PDF, DOCX, PPTX, XLSX |
+| Audio metadata viewer | MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Image metadata viewer | JPEG, PNG, WebP |
 | Image privacy checker | JPEG, PNG, WebP |
 | Metadata remover | JPEG, PNG, WebP |
@@ -47,7 +48,7 @@ Specialized pages reuse the same parser adapters:
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
 - **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
 - **MP4Box.js** for MP4 container and track data
-- **music-metadata** for MP3/ID3 data
+- **music-metadata** for MP3, FLAC, Ogg/Vorbis, Opus, M4A, AAC, WAV, and WMA/ASF tags and technical audio data
 - **Pako** for PNG `zTXt` and compressed `iTXt`
 - **@contentauth/c2pa-web** for browser C2PA verification
 - **Iconify / Lucide** for interface icons
@@ -109,8 +110,8 @@ pnpm build
 
 Current local verification:
 
-- 162 Vitest unit tests
-- 81 Playwright Chromium flows, including nine-format uploads, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
+- 175 Vitest unit tests
+- 81 Playwright Chromium flows, including 17-extension uploads, multi-format audio inspection, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
 - 12 generated static pages
 
 ## Browser privacy design
@@ -208,8 +209,8 @@ The project uses static output, so no Function or server runtime is needed.
 - Browser format support can differ, especially for WebP re-encoding and C2PA media types.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
-- PDF, DOCX, PPTX, XLSX, MP4, and MP3 metadata removal is not included.
-- GIF, HEIC, FLAC, WAV, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
+- PDF, DOCX, PPTX, XLSX, MP4, and audio metadata removal is not included.
+- GIF, HEIC, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap
 

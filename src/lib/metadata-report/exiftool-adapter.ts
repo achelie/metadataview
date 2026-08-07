@@ -32,7 +32,7 @@ const GROUPS: GroupDefinition[] = [
   { id: 'office', title: 'Office document', test: /ooxml|msoffice|docprops|openxml|wordprocessing|spreadsheet/i },
   { id: 'zip', title: 'ZIP package', test: /(^|:)(zip)(:|$)/i },
   { id: 'pdf', title: 'PDF', test: /pdf/i },
-  { id: 'id3', title: 'ID3', test: /id3|audio|mpeg/i },
+  { id: 'id3', title: 'Audio tags & encoding', test: /id3|audio|mpeg|flac|vorbis|ogg|opus|riff|wav|asf|wma|aac/i },
   { id: 'composite', title: 'Composite', test: /composite/i },
   { id: 'exif', title: 'EXIF', test: /exif|ifd|makernote|interop|thumbnail/i },
 ];
@@ -82,6 +82,16 @@ const READABLE_GROUPS = [
     id: 'document-statistics', title: 'Document statistics',
     note: 'Stored page, word, slide, note, and worksheet counts. These values may be stale if an editor did not refresh them.',
     tags: /^(PageCount|Pages|Words|Characters|CharactersWithSpaces|Lines|Paragraphs|Slides|Notes|HiddenSlides|WorksheetCount)$/i,
+  },
+  {
+    id: 'audio-identity', title: 'Track & release',
+    note: 'Names, album labels, dates, identifiers, comments, and rights stored in the audio file.',
+    tags: /^(Title|Track|TrackNumber|DiscNumber|Album|Artist|AlbumArtist|Composer|Conductor|Genre|Date|Year|Label|Publisher|ISRC|Barcode|Comment|Copyright)$/i,
+  },
+  {
+    id: 'audio-encoding', title: 'Audio encoding',
+    note: 'Container, codec, duration, bitrate, sample rate, channel, bit-depth, and lossless flags reported by the file.',
+    tags: /^(AudioFormat|FileType|MIMEType|CompressorID|Codec|Encoding|Duration|AudioBitrate|Bitrate|SampleRate|AudioSampleRate|NumChannels|Channels|BitsPerSample|AvgBytesPerSec|Lossless)$/i,
   },
 ] as const;
 

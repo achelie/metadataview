@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { deflate } from 'pako';
+import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
 import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
 
 const pngSignature = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
@@ -88,7 +89,8 @@ test('home page opens with the universal viewer, three useful next steps, and th
   await expect(page).toHaveURL(/#metadata-workbench-home$/);
 });
 
-test('home page directly parses all nine promised formats', async ({ page }) => {
+test('home page directly parses all 17 promised file extensions', async ({ page }) => {
+  test.setTimeout(120_000);
   const cases: Array<[string, string, Buffer, string]> = [
     ['home.png', 'image/png', png(), 'image'],
     ['home.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image'],
@@ -99,6 +101,14 @@ test('home page directly parses all nine promised formats', async ({ page }) => 
     ['home.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx')), 'document'],
     ['home.mp4', 'video/mp4', mp4(), 'video'],
     ['home.mp3', 'audio/mpeg', mp3(), 'audio'],
+    ['home.flac', 'audio/flac', Buffer.from(flacFixture()), 'audio'],
+    ['home.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'audio'],
+    ['home.opus', 'audio/opus', Buffer.from(opusFixture()), 'audio'],
+    ['home.oga', 'audio/ogg', Buffer.from(oggFixture()), 'audio'],
+    ['home.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'audio'],
+    ['home.aac', 'audio/aac', Buffer.from(aacFixture()), 'audio'],
+    ['home.wav', 'audio/wav', Buffer.from(wavFixture()), 'audio'],
+    ['home.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'audio'],
   ];
   for (const [name, mimeType, buffer, category] of cases) {
     await page.goto('/');
@@ -137,7 +147,8 @@ test('shared report progressively merges the local ExifTool field set without up
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(true);
 });
 
-test('universal report parses all nine promised formats through one workbench', async ({ page }) => {
+test('universal report parses all 17 promised file extensions through one workbench', async ({ page }) => {
+  test.setTimeout(120_000);
   const cases: Array<[string, string, Buffer, string, string | RegExp]> = [
     ['pixel.png', 'image/png', png(), 'image', '1 × 1 px'],
     ['pixel.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image', 'JPEG'],
@@ -148,6 +159,14 @@ test('universal report parses all nine promised formats through one workbench', 
     ['fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 3 })), 'document', '3'],
     ['fixture.mp4', 'video/mp4', mp4(), 'video', 'MP4'],
     ['fixture.mp3', 'audio/mpeg', mp3(), 'audio', 'Fixture Song'],
+    ['fixture.flac', 'audio/flac', Buffer.from(flacFixture()), 'audio', 'FLAC'],
+    ['fixture.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'audio', 'Vorbis I'],
+    ['fixture.opus', 'audio/opus', Buffer.from(opusFixture()), 'audio', 'Opus'],
+    ['fixture.oga', 'audio/ogg', Buffer.from(oggFixture()), 'audio', 'OGG'],
+    ['fixture.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'audio', 'M4A'],
+    ['fixture.aac', 'audio/aac', Buffer.from(aacFixture()), 'audio', 'AAC'],
+    ['fixture.wav', 'audio/wav', Buffer.from(wavFixture()), 'audio', 'PCM'],
+    ['fixture.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'audio', 'WMA'],
   ];
   for (const [name, mimeType, buffer, category, expected] of cases) {
     await page.goto('/metadata-viewer/');
@@ -166,13 +185,22 @@ test('unsupported file gives a plain error', async ({ page }) => {
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
-test('specialized document, MP3, and MP4 pages use the shared production report', async ({ page }) => {
+test('specialized document, audio, and MP4 pages use the shared production report', async ({ page }) => {
+  test.setTimeout(120_000);
   const fixtures: Array<[string, string, string, Buffer, string]> = [
     ['/document-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
     ['/document-metadata-viewer/', 'fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Word Document' })), 'Fixture Word Document'],
     ['/document-metadata-viewer/', 'fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 3 })), '3'],
     ['/document-metadata-viewer/', 'fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 4 })), '4'],
     ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
+    ['/audio-metadata-viewer/', 'fixture.flac', 'audio/flac', Buffer.from(flacFixture()), 'FLAC'],
+    ['/audio-metadata-viewer/', 'fixture.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'Vorbis I'],
+    ['/audio-metadata-viewer/', 'fixture.opus', 'audio/opus', Buffer.from(opusFixture()), 'Opus'],
+    ['/audio-metadata-viewer/', 'fixture.oga', 'audio/ogg', Buffer.from(oggFixture()), 'OGG'],
+    ['/audio-metadata-viewer/', 'fixture.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'M4A'],
+    ['/audio-metadata-viewer/', 'fixture.aac', 'audio/aac', Buffer.from(aacFixture()), 'AAC'],
+    ['/audio-metadata-viewer/', 'fixture.wav', 'audio/wav', Buffer.from(wavFixture()), 'PCM'],
+    ['/audio-metadata-viewer/', 'fixture.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'WMA'],
     ['/video-metadata-viewer/', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
   ];
   for (const [path, name, mimeType, buffer, expected] of fixtures) {
@@ -404,7 +432,7 @@ test('format viewers share the homepage editorial structure with format-specific
     ['/image-metadata-viewer/', 'See what travels with an image.', 'How the image scan works', 'Which image formats and metadata are supported?'],
     ['/document-metadata-viewer/', 'Read the properties behind the pages, slides, and sheets.', 'How the document scan works', 'Which document formats and properties are supported?'],
     ['/video-metadata-viewer/', 'Inspect the container around the frames.', 'How the MP4 scan works', 'Which video formats are supported?'],
-    ['/audio-metadata-viewer/', 'Read the tags around the sound.', 'How the MP3 scan works', 'Which MP3 tags does the viewer read?'],
+    ['/audio-metadata-viewer/', 'Read the tags around the sound.', 'How the audio scan works', 'Which audio formats and tags are supported?'],
   ];
 
   for (const [path, valueTitle, processTitle, formatQuestion] of cases) {

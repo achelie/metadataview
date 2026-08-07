@@ -1,5 +1,6 @@
 export type SupportedDocumentType = 'docx' | 'pptx' | 'xlsx';
-export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | SupportedDocumentType | 'mp4' | 'mp3' | 'unknown';
+export type SupportedAudioType = 'mp3' | 'flac' | 'ogg' | 'opus' | 'm4a' | 'aac' | 'wav' | 'wma';
+export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | SupportedDocumentType | 'mp4' | SupportedAudioType | 'unknown';
 export type ContainerSignatureType = DetectedFileType | 'zip';
 export type MetadataCategory = 'image' | 'pdf' | 'document' | 'video' | 'audio';
 
