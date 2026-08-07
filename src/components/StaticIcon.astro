@@ -1,0 +1,22 @@
+---
+import scan from '@iconify-icons/lucide/scan-search';
+import shield from '@iconify-icons/lucide/shield-check';
+import eraser from '@iconify-icons/lucide/eraser';
+import badge from '@iconify-icons/lucide/badge-check';
+import fileImage from '@iconify-icons/lucide/file-image';
+import fileText from '@iconify-icons/lucide/file-text';
+import film from '@iconify-icons/lucide/film';
+import audio from '@iconify-icons/lucide/music';
+import lock from '@iconify-icons/lucide/lock-keyhole';
+import arrow from '@iconify-icons/lucide/arrow-up-right';
+import chevronDown from '@iconify-icons/lucide/chevron-down';
+import menu from '@iconify-icons/lucide/menu';
+import close from '@iconify-icons/lucide/x';
+
+const icons = { scan, shield, eraser, badge, fileImage, fileText, film, audio, lock, arrow, chevronDown, menu, close };
+type IconName = keyof typeof icons;
+interface Props { name: IconName; size?: number; }
+const { name, size = 24 } = Astro.props;
+const icon = icons[name];
+---
+<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox={`0 0 ${icon.width} ${icon.height}`} aria-hidden="true" focusable="false"><g set:html={icon.body} /></svg>

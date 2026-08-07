@@ -302,29 +302,64 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   const desktop = page.locator('.desktop-nav');
   const viewMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'View metadata' });
   const removeMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'Remove metadata' });
-  await viewMenu.locator('summary').click();
+  const viewTrigger = viewMenu.locator('.nav-dropdown-trigger');
+  await viewTrigger.click();
+  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(viewMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
   const viewLinks: Array<[string, string]> = [['All Formats', '/metadata-viewer/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/pdf-metadata-viewer/']];
   for (const [label, href] of viewLinks) {
     await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
   }
-  await removeMenu.locator('summary').click();
-  await expect(viewMenu).not.toHaveAttribute('open', '');
+  const removeTrigger = removeMenu.locator('.nav-dropdown-trigger');
+  await removeTrigger.click();
+  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(viewMenu).toHaveAttribute('data-open', 'false');
+  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'true');
   await expect(removeMenu.getByRole('link', { name: 'Images', exact: true })).toHaveAttribute('href', '/metadata-remover/');
   await expect(removeMenu.locator('[aria-disabled=true]')).toHaveCount(3);
   await expect(removeMenu.locator('[aria-disabled=true] a')).toHaveCount(0);
   await page.keyboard.press('Escape');
-  await expect(removeMenu).not.toHaveAttribute('open', '');
+  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(removeTrigger).toBeFocused();
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
-  await page.locator('.mobile-menu > summary').click();
+  const mobileTrigger = page.getByRole('button', { name: 'Open navigation' });
+  await mobileTrigger.click();
+  const mobileLayer = page.locator('[data-mobile-menu-layer]');
+  await expect(mobileLayer).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('.mobile-menu-drawer')).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('.mobile-menu-trigger .t-icon-swap')).toHaveAttribute('data-state', 'b');
   const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
-  await mobileView.locator('summary').click();
+  await mobileView.locator('.t-acc-head').click();
+  await expect(mobileView).toHaveAttribute('data-open', 'true');
   await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/pdf-metadata-viewer/');
   const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
-  await mobileRemove.locator('summary').click();
-  await expect(mobileView).not.toHaveAttribute('open', '');
+  await mobileRemove.locator('.t-acc-head').click();
+  await expect(mobileView).toHaveAttribute('data-open', 'false');
+  await expect(mobileRemove).toHaveAttribute('data-open', 'true');
   await expect(mobileRemove.locator('[aria-disabled=true]')).toHaveCount(3);
+  await page.keyboard.press('Escape');
+  await expect(mobileLayer).toHaveAttribute('data-open', 'false');
+  await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
+});
+
+test('navigation motion uses the transition hooks and honors reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const dropdown = page.locator('.nav-dropdown').first();
+  const panel = dropdown.locator('.t-dropdown');
+  await dropdown.locator('.nav-dropdown-trigger').click();
+  await expect(panel).toHaveCSS('opacity', '1');
+  expect(await panel.evaluate((element) => getComputedStyle(element).transitionDuration)).toContain('0.25s');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  const drawer = page.locator('.mobile-menu-drawer');
+  await expect(drawer).toHaveCSS('opacity', '1');
+  expect(await drawer.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe('0s');
 });
 
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
