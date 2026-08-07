@@ -36,7 +36,7 @@ function withExif(jpeg: Buffer): Buffer {
   return Buffer.concat([jpeg.subarray(0,2),Buffer.from([0xff,0xe1]),length,payload,jpeg.subarray(2)]);
 }
 
-async function open(page: Page) { await page.goto('/image-metadata-viewer'); await page.locator('astro-island:not([ssr])').waitFor({state:'attached'}); }
+async function open(page: Page) { await page.goto('/image-metadata-viewer/'); await page.locator('astro-island:not([ssr])').waitFor({state:'attached'}); }
 async function upload(page: Page,name:string,buffer:Buffer,mimeType:string){ await page.locator('input[type=file]').setInputFiles({name,buffer,mimeType}); }
 async function ready(page: Page,name: string|RegExp=/metadata report$/){ await expect(page.getByRole('heading',{name})).toBeVisible({timeout:20_000}); }
 

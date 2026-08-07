@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { canonicalUrl } from '../lib/seo';
 import '../styles/global.css';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { title, description, path = '/', schemas = [], noindex = false } = Astro.props;
-const canonical = new URL(path, Astro.site ?? 'https://achelie-metadataview.pages.dev').toString();
+const canonical = canonicalUrl(path, Astro.site);
 ---
 <!doctype html>
 <html lang="en">
@@ -30,7 +31,10 @@ const canonical = new URL(path, Astro.site ?? 'https://achelie-metadataview.page
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
   </head>

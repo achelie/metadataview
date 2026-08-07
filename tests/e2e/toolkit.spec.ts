@@ -74,7 +74,7 @@ test('home page opens with the universal metadata viewer and three direct next t
   await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
   await expect(page.locator('.home-next-tools a')).toHaveCount(3);
-  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker');
+  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker/');
 });
 
 test('home page directly parses all six promised formats', async ({ page }) => {
@@ -98,7 +98,7 @@ test('shared report progressively merges the local ExifTool field set without up
   test.setTimeout(180_000);
   const requests: Array<{ method: string; url: string }> = [];
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
-  await page.goto('/image-metadata-viewer');
+  await page.goto('/image-metadata-viewer/');
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(false);
 
   const buffer = await canvasImage(page, 'image/jpeg');
@@ -133,7 +133,7 @@ test('universal report parses all six promised formats through one workbench', a
     ['fixture.mp3', 'audio/mpeg', mp3(), 'audio', 'Fixture Song'],
   ];
   for (const [name, mimeType, buffer, category, expected] of cases) {
-    await page.goto('/metadata-viewer');
+    await page.goto('/metadata-viewer/');
     await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
     await upload(page, name, buffer, mimeType);
     await expect(page.getByRole('heading', { name: new RegExp(`${name.replace('.', '\\.')} metadata report`) })).toBeVisible({ timeout: 20_000 });
@@ -144,16 +144,16 @@ test('universal report parses all six promised formats through one workbench', a
 });
 
 test('unsupported file gives a plain error', async ({ page }) => {
-  await page.goto('/metadata-viewer');
+  await page.goto('/metadata-viewer/');
   await upload(page, 'notes.txt', Buffer.from('not an image'), 'text/plain');
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
 test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ page }) => {
   const fixtures: Array<[string, string, string, Buffer, string]> = [
-    ['/pdf-metadata-viewer', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
-    ['/audio-metadata-viewer', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
-    ['/video-metadata-viewer', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
+    ['/pdf-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
+    ['/video-metadata-viewer/', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
   ];
   for (const [path, name, mimeType, buffer, expected] of fixtures) {
     await page.goto(path); await upload(page, name, buffer, mimeType);
@@ -163,7 +163,7 @@ test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ pag
 });
 
 test('removed application-specific reader routes return the real 404 page', async ({ page }) => {
-  for (const path of ['/ai-prompt-reader', '/comfyui-workflow-reader']) {
+  for (const path of ['/ai-prompt-reader/', '/comfyui-workflow-reader/']) {
     const response = await page.goto(path);
     expect(response?.status(), `${path} should not redirect`).toBe(404);
     await expect(page.getByRole('heading', { name: /This field.*undefined/i })).toBeVisible();
@@ -171,7 +171,7 @@ test('removed application-specific reader routes return the real 404 page', asyn
 });
 
 test('privacy checker renders an explainable report', async ({ page }) => {
-  await page.goto('/image-privacy-checker');
+  await page.goto('/image-privacy-checker/');
   await upload(page, 'author.png', png(['Artist', 'Ada Example']));
   await expect(page.locator('.privacy-scoreboard')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Author or creator name' })).toBeVisible();
@@ -180,7 +180,7 @@ test('privacy checker renders an explainable report', async ({ page }) => {
 
 test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   test.setTimeout(90_000);
-  await page.goto('/metadata-remover');
+  await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
   await expect(page.locator('.privacy-scoreboard')).toBeVisible();
   await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
@@ -196,7 +196,7 @@ test('metadata remover desktop and mobile result stay usable without console err
   const errors: string[] = [];
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/metadata-remover');
+  await page.goto('/metadata-remover/');
   await upload(page, 'visual-removal.png', png(['Artist', 'Ada Example']));
   await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
@@ -216,7 +216,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   test.setTimeout(45_000);
   const requests: Array<{ method: string; url: string }> = [];
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
-  await page.goto('/c2pa-viewer');
+  await page.goto('/c2pa-viewer/');
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(false);
   await upload(page, 'unsigned.png', png());
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
@@ -234,7 +234,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer', '/image-privacy-checker', '/metadata-remover', '/c2pa-viewer']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -242,7 +242,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer', '/image-metadata-viewer', '/image-privacy-checker', '/metadata-remover', '/c2pa-viewer'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {

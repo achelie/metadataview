@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && pnpm check:assets",
+    "build": "astro check && astro build && pnpm check:assets && pnpm check:seo",
     "check:assets": "node scripts/check-cloudflare-assets.mjs",
+    "check:seo": "node scripts/check-seo-output.mjs",
     "preview": "astro preview",
     "deploy:pages": "wrangler pages deploy ./dist --project-name achelie-metadataview --branch main",
     "test": "vitest run",

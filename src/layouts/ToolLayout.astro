@@ -9,6 +9,7 @@ import MetadataRemover from '../components/privacy/MetadataRemover';
 import C2paWorkbench from '../components/C2paWorkbench';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
+import { canonicalUrl } from '../lib/seo';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
@@ -23,7 +24,7 @@ interface Props {
   limitations: string[]; faqs: Faq[]; related: Related[];
 }
 const props = Astro.props;
-const canonical = new URL(props.path, Astro.site ?? 'https://achelie-metadataview.pages.dev').toString();
+const canonical = canonicalUrl(props.path, Astro.site);
 const visibleFaqs = props.faqs.slice(0, 4);
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: canonical, description: props.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },

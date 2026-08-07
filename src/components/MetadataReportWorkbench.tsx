@@ -413,7 +413,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">Privacy pass</span><strong>{sensitiveFields.length ? `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found` : 'No common sensitive fields in the readable set'}</strong><p>Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.</p></div>
-        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover">Remove image metadata</a></div>
+        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover/">Remove image metadata</a></div>
       </section> : null}
 
       <section className="report-ledger" aria-labelledby="metadata-results-heading">

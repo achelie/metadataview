@@ -183,7 +183,7 @@ The checked-in `wrangler.jsonc` targets the Direct Upload project `achelie-metad
 pnpm deploy:pages
 ```
 
-The canonical production origin is `https://achelie-metadataview.pages.dev`.
+The canonical production origin is `https://www.viewexif.com`. The apex domain redirects to the `www` host, and generated canonical URLs and sitemap entries use trailing slashes for content routes.
 
 ExifTool is emitted as a lazy, same-origin WASM asset. `pnpm build` fails if any generated file exceeds Cloudflare Pages' 25 MiB per-file limit or if the WASM is accidentally inlined into JavaScript.
 
