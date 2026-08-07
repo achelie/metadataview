@@ -15,10 +15,10 @@ const schemas = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatLinks = [
-  { href: '/image-metadata-viewer/', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
-  { href: '/pdf-metadata-viewer/', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
-  { href: '/video-metadata-viewer/', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
-  { href: '/audio-metadata-viewer/', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
+  { href: '/', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
+  { href: '/', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
+  { href: '/', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
+  { href: '/', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
 ];
 const nextTools = [
   { href: '/image-privacy-checker/', icon: 'shield' as const, label: 'Check image privacy', note: 'Find GPS, names, device IDs, thumbnails, and editing traces.' },
