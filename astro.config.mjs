@@ -1,18 +1,12 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://www.viewexif.com',
   output: 'static',
   trailingSlash: 'always',
-  integrations: [
-    react(),
-    sitemap({
-      filter: (page) => !page.endsWith('/404/'),
-    }),
-  ],
+  integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
     // The package contains a large generated runtime. Vite's development
