@@ -4,6 +4,7 @@ import path from 'node:path';
 const distDir = path.resolve('dist');
 const productionOrigin = 'https://www.viewexif.com';
 const retiredOrigin = 'https://achelie-metadataview.pages.dev';
+const legacySitemaps = ['sitemap-index.xml', 'sitemap-0.xml'];
 
 async function filesUnder(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -73,19 +74,26 @@ if (new Set(indexableCanonicals).size !== indexableCanonicals.length) failures.p
 
 const robots = await readFile(path.join(distDir, 'robots.txt'), 'utf8');
 if (!/User-agent:\s*\*\r?\nAllow:\s*\//.test(robots)) failures.push('robots.txt does not allow crawling');
-if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`)) failures.push('robots.txt points to the wrong sitemap');
+if (!robots.includes(`Sitemap: ${productionOrigin}/sitemap.xml`)) failures.push('robots.txt points to the wrong sitemap');
 if (robots.includes(retiredOrigin)) failures.push('robots.txt still references the retired origin');
 
-const sitemapIndex = await readFile(path.join(distDir, 'sitemap-index.xml'), 'utf8');
-if (!sitemapIndex.includes(`<loc>${productionOrigin}/sitemap-0.xml</loc>`)) failures.push('sitemap index points to the wrong origin');
+const distRootFiles = await readdir(distDir);
+for (const legacySitemap of legacySitemaps) {
+  if (distRootFiles.includes(legacySitemap)) failures.push(`${legacySitemap} should not be generated`);
+}
 
-const sitemap = await readFile(path.join(distDir, 'sitemap-0.xml'), 'utf8');
+const sitemap = await readFile(path.join(distDir, 'sitemap.xml'), 'utf8');
+if (!/<urlset\s+xmlns="http:\/\/www\.sitemaps\.org\/schemas\/sitemap\/0\.9">/.test(sitemap)) {
+  failures.push('sitemap.xml is not a direct sitemap urlset');
+}
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((entry) => entry[1]).sort();
 const canonicalUrls = [...indexableCanonicals].sort();
+if (new Set(sitemapUrls).size !== sitemapUrls.length) failures.push('sitemap contains duplicate URLs');
 if (JSON.stringify(sitemapUrls) !== JSON.stringify(canonicalUrls)) {
   failures.push(`sitemap URLs do not match public canonicals (${sitemapUrls.length} sitemap, ${canonicalUrls.length} canonical)`);
 }
 if (sitemap.includes(retiredOrigin)) failures.push('sitemap still references the retired origin');
+if (sitemap.includes('/404/')) failures.push('sitemap contains the 404 page');
 
 if (failures.length) {
   throw new Error(`SEO output check failed:\n- ${[...new Set(failures)].join('\n- ')}`);
