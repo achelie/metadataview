@@ -26,6 +26,22 @@ This package bundles Phil Harvey's ExifTool and the ZeroPerl WebAssembly runtime
 
 ExifReader supplies the fast first-pass image report and remains the fallback when the optional ExifTool engine cannot run.
 
+## zip.js
+
+- Package: `@zip.js/zip.js` 2.8.34
+- Source: https://github.com/gildas-lormeau/zip.js
+- License: BSD 3-Clause
+
+zip.js opens OOXML packages from the selected browser `Blob`. MetadataView extracts only a small allowlist of document-property XML entries and does not read document body, worksheet, slide, note, attachment, or embedded-media content.
+
+## fast-xml-parser
+
+- Package: `fast-xml-parser` 5.10.1
+- Source: https://github.com/NaturalIntelligence/fast-xml-parser
+- License: MIT
+
+fast-xml-parser reads bounded OOXML property documents after MetadataView rejects DTD and entity declarations. Entity expansion is disabled.
+
 ## Product-design references
 
 The cleanup verification flow was informed by the public behavior and documentation of these projects:

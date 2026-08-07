@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import { deflate } from 'pako';
+import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
 
 const pngSignature = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
 
@@ -87,12 +88,15 @@ test('home page opens with the universal viewer, three useful next steps, and th
   await expect(page).toHaveURL(/#metadata-workbench-home$/);
 });
 
-test('home page directly parses all six promised formats', async ({ page }) => {
+test('home page directly parses all nine promised formats', async ({ page }) => {
   const cases: Array<[string, string, Buffer, string]> = [
     ['home.png', 'image/png', png(), 'image'],
     ['home.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image'],
     ['home.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image'],
     ['home.pdf', 'application/pdf', pdf(), 'pdf'],
+    ['home.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx')), 'document'],
+    ['home.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx')), 'document'],
+    ['home.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx')), 'document'],
     ['home.mp4', 'video/mp4', mp4(), 'video'],
     ['home.mp3', 'audio/mpeg', mp3(), 'audio'],
   ];
@@ -133,12 +137,15 @@ test('shared report progressively merges the local ExifTool field set without up
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(true);
 });
 
-test('universal report parses all six promised formats through one workbench', async ({ page }) => {
+test('universal report parses all nine promised formats through one workbench', async ({ page }) => {
   const cases: Array<[string, string, Buffer, string, string | RegExp]> = [
     ['pixel.png', 'image/png', png(), 'image', '1 × 1 px'],
     ['pixel.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image', 'JPEG'],
     ['pixel.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image', 'WEBP'],
     ['fixture.pdf', 'application/pdf', pdf(), 'pdf', '1'],
+    ['fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Document' })), 'document', 'Fixture Document'],
+    ['fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 2 })), 'document', '2'],
+    ['fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 3 })), 'document', '3'],
     ['fixture.mp4', 'video/mp4', mp4(), 'video', 'MP4'],
     ['fixture.mp3', 'audio/mpeg', mp3(), 'audio', 'Fixture Song'],
   ];
@@ -159,9 +166,12 @@ test('unsupported file gives a plain error', async ({ page }) => {
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
-test('specialized PDF, MP3, and MP4 pages use the shared production report', async ({ page }) => {
+test('specialized document, MP3, and MP4 pages use the shared production report', async ({ page }) => {
   const fixtures: Array<[string, string, string, Buffer, string]> = [
-    ['/pdf-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/document-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/document-metadata-viewer/', 'fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Word Document' })), 'Fixture Word Document'],
+    ['/document-metadata-viewer/', 'fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 3 })), '3'],
+    ['/document-metadata-viewer/', 'fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 4 })), '4'],
     ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
     ['/video-metadata-viewer/', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
   ];
@@ -171,6 +181,22 @@ test('specialized PDF, MP3, and MP4 pages use the shared production report', asy
     await expect(page.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/);
     await expect(page.getByText(expected, { exact: true }).first()).toBeVisible();
   }
+});
+
+test('document viewer reads properties without surfacing body, cell, or slide content', async ({ page }) => {
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  await page.goto('/document-metadata-viewer/');
+  await expect(page.getByRole('heading', { name: 'Document Metadata Viewer' })).toBeVisible();
+  await expect(page.getByText('PDF · DOCX · PPTX · XLSX', { exact: true }).first()).toBeVisible();
+  const secret = 'PRIVATE-BODY-TEXT-MUST-STAY-UNREAD';
+  const bytes = await ooxmlFixture('docx', { title: 'Safe property title', bodyText: secret });
+  await upload(page, 'safe.docx', Buffer.from(bytes), ooxmlMime('docx'));
+  await expect(page.getByRole('heading', { name: 'safe.docx metadata report' })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText('Safe property title', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Document properties', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText(secret, { exact: false })).toHaveCount(0);
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
 
 test('removed application-specific reader routes return the real 404 page', async ({ page }) => {
@@ -245,7 +271,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/pdf-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -253,7 +279,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/pdf-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {
@@ -273,7 +299,7 @@ test('every tool treats the full upload panel as one accessible file button', as
     ['/', '.report-dropzone', 'Choose a file'],
     ['/metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/image-metadata-viewer/', '.report-dropzone', 'Choose an image'],
-    ['/pdf-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/document-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/video-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/audio-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/image-privacy-checker/', '.privacy-dropzone', 'Choose an image'],
@@ -317,7 +343,7 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   await viewTrigger.click();
   await expect(viewTrigger).toHaveAttribute('aria-expanded', 'true');
   await expect(viewMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
-  const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/pdf-metadata-viewer/']];
+  const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/document-metadata-viewer/']];
   for (const [label, href] of viewLinks) {
     await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
   }
@@ -344,7 +370,7 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
   await mobileView.locator('.t-acc-head').click();
   await expect(mobileView).toHaveAttribute('data-open', 'true');
-  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/pdf-metadata-viewer/');
+  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/document-metadata-viewer/');
   const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
   await mobileRemove.locator('.t-acc-head').click();
   await expect(mobileView).toHaveAttribute('data-open', 'false');
@@ -376,7 +402,7 @@ test('navigation motion uses the transition hooks and honors reduced motion', as
 test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
   const cases: Array<[string, string, string, string]> = [
     ['/image-metadata-viewer/', 'See what travels with an image.', 'How the image scan works', 'Which image formats and metadata are supported?'],
-    ['/pdf-metadata-viewer/', 'Read the document behind the pages.', 'How the PDF scan works', 'What PDF metadata does this viewer read?'],
+    ['/document-metadata-viewer/', 'Read the properties behind the pages, slides, and sheets.', 'How the document scan works', 'Which document formats and properties are supported?'],
     ['/video-metadata-viewer/', 'Inspect the container around the frames.', 'How the MP4 scan works', 'Which video formats are supported?'],
     ['/audio-metadata-viewer/', 'Read the tags around the sound.', 'How the MP3 scan works', 'Which MP3 tags does the viewer read?'],
   ];

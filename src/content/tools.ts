@@ -1,10 +1,11 @@
 import type { IconName } from '../components/IconGlyph';
 import type { ToolMode } from '../components/ToolWorkbench';
 import { metadataViewerFaqs } from './metadata-faqs';
+import type { DetectedFileType } from '../lib/metadata/types';
 
 export interface ToolConfig {
   title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName;
-  mode: ToolMode; formats: string; accept: string; allowedTypes?: string[]; shortDescription: string; highlights: string[];
+  mode: ToolMode; formats: string; accept: string; allowedTypes?: DetectedFileType[]; shortDescription: string; highlights: string[];
   productionMetadataReport?: boolean;
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;
@@ -61,26 +62,26 @@ const imageGuide: FormatGuide = {
   ctaLabel: 'Choose an image above',
 };
 
-const pdfGuide: FormatGuide = {
-  valueEyebrow: 'WHY PDF METADATA MATTERS',
-  valueTitle: 'Read the document behind the pages.',
-  valueDescription: 'A PDF can name its authoring tools, dates, owner, page structure, and document IDs without showing any of them on the page.',
+const documentGuide: FormatGuide = {
+  valueEyebrow: 'WHY DOCUMENT METADATA MATTERS',
+  valueTitle: 'Read the properties behind the pages, slides, and sheets.',
+  valueDescription: 'A document can carry names, dates, application history, revision labels, and custom properties that never appear in the visible content.',
   benefits: [
-    { href: '#metadata-workbench-tool', icon: 'fileText', kicker: 'Document properties', title: 'Check authorship claims', description: 'Review title, author, subject, creator, producer, keywords, and custom document properties in one report.', action: 'Inspect a PDF' },
-    { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Revision context', title: 'Review document history', description: 'Compare stored creation and modification dates, PDF version, page count, encryption state, and document identifiers.', action: 'Read local fields' },
-    { href: '/c2pa-viewer/', icon: 'badge', kicker: 'Evidence boundary', title: 'Separate labels from proof', description: 'Treat editable PDF properties as context, then check signed C2PA credentials separately when the file includes them.', action: 'Verify C2PA' },
+    { href: '#metadata-workbench-tool', icon: 'fileText', kicker: 'Document labels', title: 'Check authorship claims', description: 'Review title, author, subject, company, manager, keywords, and custom properties without opening the document in an office suite.', action: 'Inspect a document' },
+    { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Stored statistics', title: 'Read the saved counts', description: 'See PDF pages, Word page and word counts, PowerPoint slides, or Excel worksheet totals when the package records them.', action: 'Read local fields' },
+    { href: '#metadata-workbench-tool', icon: 'badge', kicker: 'Revision context', title: 'Trace the editing trail', description: 'Compare stored creation and modification dates, revision numbers, application versions, document IDs, and package details.', action: 'Audit the properties' },
   ],
-  processTitle: 'How the PDF scan works',
-  processDescription: 'The browser inspects document properties locally. It does not upload the PDF, execute embedded scripts, or read page text.',
+  processTitle: 'How the document scan works',
+  processDescription: 'The browser inspects document properties locally. It does not upload the file or extract body text, cells, slide text, notes, attachments, or media.',
   steps: [
-    { title: 'Choose one PDF', description: 'Select one PDF up to 100 MB. Its bytes remain inside the current browser tab.' },
-    { title: 'Verify the document', description: 'The PDF signature, version, size, page structure, and encryption indicators are checked first.' },
-    { title: 'Read available properties', description: 'Local parsers and ExifTool WASM inspect the information dictionary, XMP, custom keys, and document identifiers.' },
-    { title: 'Build the document report', description: 'Authoring fields, dates, pages, hashes, warnings, and exact native paths become searchable and exportable.' },
-    { title: 'Forget the PDF', description: 'Clear, replace, or refresh to stop the task and remove the temporary in-tab report.' },
+    { title: 'Choose one document', description: 'Select a PDF, DOCX, PPTX, or XLSX up to 100 MB. Its bytes remain inside this browser tab.' },
+    { title: 'Verify the real format', description: 'PDF signatures and Office ZIP content types are checked instead of trusting the extension.' },
+    { title: 'Read property records', description: 'Local parsers read PDF dictionaries or OOXML Core, App, and Custom Properties without extracting visible document content.' },
+    { title: 'Build the document report', description: 'ExifTool adds native fields while authoring labels, stored statistics, hashes, warnings, and exact paths become searchable.' },
+    { title: 'Forget the document', description: 'Clear, replace, or refresh to stop both workers and remove the temporary in-tab report.' },
   ],
   ctaLead: 'Have a document ready?',
-  ctaLabel: 'Choose a PDF above',
+  ctaLabel: 'Choose a document above',
 };
 
 const videoGuide: FormatGuide = {
@@ -132,10 +133,10 @@ export const tools: Record<string, ToolConfig> = {
     productionMetadataReport: true, metadataReportScope: 'all',
     faqDisplay: 'expanded',
     title: 'Metadata Viewer', metaTitle: 'Metadata Viewer – View Hidden File Metadata Online', path: '/metadata-viewer/', eyebrow: 'Universal file inspector', icon: 'scan', mode: 'metadata',
-    description: 'Open JPEG, PNG, WebP, PDF, MP4, or MP3 metadata in your browser. Search fields, copy values, and export the complete result without uploading the file.',
+    description: 'Open JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, or MP3 metadata in your browser. Search fields, copy values, and export the complete result without uploading the file.',
     shortDescription: 'Drop one supported file, then search, copy, or export every readable metadata field.',
     highlights: ['Checks the real file signature instead of trusting the extension.', 'Builds a readable summary and a complete native field ledger.', 'Calculates SHA-256 and MD5 while reading the file once.', 'Exports safe JSON and a concise PDF report.'],
-    formats: 'JPEG · PNG · WebP · PDF · MP4 · MP3', accept: '.jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3', allowedTypes: ['jpeg','png','webp','pdf','mp4','mp3'],
+    formats: 'JPEG · PNG · WebP · PDF · DOCX · PPTX · XLSX · MP4 · MP3', accept: '.jpg,.jpeg,.png,.webp,.pdf,.docx,.pptx,.xlsx,.mp4,.mp3', allowedTypes: ['jpeg','png','webp','pdf','docx','pptx','xlsx','mp4','mp3'],
     limitations: ['The 100 MB general limit keeps a damaged file from swallowing the tab.', 'Encrypted PDFs are reported, never brute-forced.', 'Metadata describes a file; it does not prove every field is accurate.'],
     faqs: [...metadataViewerFaqs], related: inspectRelated,
   },
@@ -156,21 +157,21 @@ export const tools: Record<string, ToolConfig> = {
       { question: 'Can image metadata prove a photo is original?', answer: 'No. Camera names, dates, authors, and coordinates are editable labels. Use them as context, and check signed C2PA credentials separately when provenance matters.' },
     ], related: inspectRelated,
   },
-  pdf: {
+  document: {
     productionMetadataReport: true, metadataReportScope: 'all',
-    faqDisplay: 'expanded', formatGuide: pdfGuide,
-    title: 'PDF Metadata Viewer', metaTitle: 'PDF Metadata Viewer – Check Author, Dates and Document Properties', path: '/pdf-metadata-viewer/', eyebrow: 'Document property reader', icon: 'fileText', mode: 'metadata',
-    description: 'Check PDF title, author, creator, producer, dates, version, page count, and readable custom properties locally in your browser.',
-    shortDescription: 'Open one PDF and read its author, dates, producer, pages, and custom properties.',
-    highlights: ['Reads the document information dictionary and custom fields.', 'Reports the PDF version, page count, and encryption state.', 'Keeps the file in browser memory.', 'Exports the parsed result as structured JSON.'],
-    formats: 'PDF', accept: '.pdf,application/pdf', allowedTypes: ['pdf'],
-    limitations: ['Password-protected files are reported as encrypted; passwords are not bypassed.', 'This tool reads metadata and does not scan or extract page text.', 'A document producer can write inaccurate author or date values.'],
+    faqDisplay: 'expanded', formatGuide: documentGuide,
+    title: 'Document Metadata Viewer', metaTitle: 'Document Metadata Viewer – View PDF, DOCX, PPTX and XLSX Properties', path: '/document-metadata-viewer/', eyebrow: 'Document property reader', icon: 'fileText', mode: 'metadata',
+    description: 'Inspect PDF, DOCX, PPTX, and XLSX author, date, application, revision, stored statistics, custom properties, and native metadata locally in your browser.',
+    shortDescription: 'Open one PDF or Office document and read the properties stored around its visible content.',
+    highlights: ['Reads PDF dictionaries and OOXML Core, App, and Custom Properties.', 'Reports stored page, word, slide, note, and worksheet statistics when available.', 'Checks the real package type instead of trusting the extension.', 'Exports a safe report without body text, cells, slides, attachments, or media bytes.'],
+    formats: 'PDF · DOCX · PPTX · XLSX', accept: '.pdf,.docx,.pptx,.xlsx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', allowedTypes: ['pdf','docx','pptx','xlsx'],
+    limitations: ['Password-protected PDFs and encrypted Office packages are not decrypted or bypassed.', 'Legacy DOC, PPT, XLS and macro-enabled DOCM, PPTM, XLSM files are outside this tool.', 'Stored authors, dates, revisions, and statistics can be missing, stale, or edited.'],
     faqs: [
-      { question: 'Will the PDF be sent to a server?', answer: 'No. The PDF parser and ExifTool WebAssembly run in this browser tab. The document, filename, hashes, and extracted properties are not uploaded.' },
-      { question: 'What PDF metadata does this viewer read?', answer: 'It reads available title, author, subject, keywords, creator, producer, creation and modification dates, PDF version, page count, encryption state, XMP, document IDs, and custom properties.' },
-      { question: 'Does the viewer execute scripts or read page text?', answer: 'No. Metadata inspection does not execute embedded JavaScript, submit forms, follow document links, run attachments, perform OCR, or extract the visible page text.' },
-      { question: 'What happens with a password-protected PDF?', answer: 'The report identifies encryption when the file exposes it, but it does not bypass passwords or decrypt protected document content.' },
-      { question: 'Can PDF author and date fields prove who made the document?', answer: 'No. PDF properties are editable and may be missing, stale, or copied from another file. Treat them as context rather than identity proof.' },
+      { question: 'Will my document be sent to a server?', answer: 'No. The PDF, OOXML, and ExifTool parsers run inside this browser tab. The document, filename, hashes, properties, and report are not posted to an upload endpoint.' },
+      { question: 'Which document formats and properties are supported?', answer: 'The viewer supports PDF, DOCX, PPTX, and XLSX up to 100 MB. It reads available title, author, subject, keywords, dates, application, revision, company, custom properties, PDF pages, Word statistics, PowerPoint counts, Excel worksheet counts, and native ExifTool fields.' },
+      { question: 'Does the viewer read document text, cells, slides, or attachments?', answer: 'No. It does not extract body text, spreadsheet values, slide text, speaker notes, attachments, embedded media, macros, OCR, or scripts. It reads document property records and safe package statistics only.' },
+      { question: 'What happens with encrypted or older Office files?', answer: 'The viewer does not bypass PDF passwords or Office encryption. Legacy DOC, PPT, XLS and macro-enabled DOCM, PPTM, XLSM packages are rejected with a clear message instead of being opened.' },
+      { question: 'Can author, date, or revision properties prove who made a document?', answer: 'No. These labels can be edited, copied, omitted, or left stale by an application. Treat them as useful context rather than identity or provenance proof.' },
     ], related: inspectRelated,
   },
   video: {

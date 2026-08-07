@@ -7,7 +7,7 @@ const viewItems = [
   { href: '/image-metadata-viewer/', label: 'Images' },
   { href: '/video-metadata-viewer/', label: 'Videos' },
   { href: '/audio-metadata-viewer/', label: 'Audio' },
-  { href: '/pdf-metadata-viewer/', label: 'Documents' },
+  { href: '/document-metadata-viewer/', label: 'Documents' },
 ];
 const removeItems: Array<{ href?: string; label: string; available: boolean }> = [
   { href: '/metadata-remover/', label: 'Images', available: true },
@@ -16,7 +16,7 @@ const removeItems: Array<{ href?: string; label: string; available: boolean }> =
   { label: 'Documents', available: false },
 ];
 const isCurrent = (href: string) => pathname === href;
-const viewCurrent = pathname === '/' || pathname === '/metadata-viewer/' || pathname === '/image-metadata-viewer/' || pathname === '/video-metadata-viewer/' || pathname === '/audio-metadata-viewer/' || pathname === '/pdf-metadata-viewer/';
+const viewCurrent = pathname === '/' || pathname === '/metadata-viewer/' || pathname === '/image-metadata-viewer/' || pathname === '/video-metadata-viewer/' || pathname === '/audio-metadata-viewer/' || pathname === '/document-metadata-viewer/';
 const removeCurrent = pathname === '/metadata-remover/';
 const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === 'All Formats' && pathname === '/';
 ---

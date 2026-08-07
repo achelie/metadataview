@@ -5,7 +5,7 @@ import sparklesIcon from '@iconify-icons/lucide/sparkles';
 import { useEffect, useRef, useState } from 'react';
 import { removeImageMetadata, type RemovalResult } from '../lib/image/remove-metadata';
 import { cleanImageFilename } from '../lib/image/privacy-cleanup';
-import type { ParsedMetadata } from '../lib/metadata/types';
+import type { DetectedFileType, ParsedMetadata } from '../lib/metadata/types';
 import { countMetadataValues, sanitizeFilename } from '../lib/metadata/utils';
 import type { PrivacyReport } from '../lib/privacy/types';
 import { runWorkerTask, type WorkerTask } from '../lib/worker-client';
@@ -24,7 +24,7 @@ interface Props {
   mode: ToolMode;
   formats: string;
   accept: string;
-  allowedTypes?: string[];
+  allowedTypes?: DetectedFileType[];
 }
 
 interface PrivacyWorkerResult { metadata: ParsedMetadata; report: PrivacyReport }

@@ -29,6 +29,8 @@ const GROUPS: GroupDefinition[] = [
   { id: 'photoshop', title: 'Photoshop', test: /photoshop|app13/i },
   { id: 'png', title: 'PNG', test: /png/i },
   { id: 'quicktime', title: 'QuickTime', test: /quicktime|track|itemlist|userdata|keys/i },
+  { id: 'office', title: 'Office document', test: /ooxml|msoffice|docprops|openxml|wordprocessing|spreadsheet/i },
+  { id: 'zip', title: 'ZIP package', test: /(^|:)(zip)(:|$)/i },
   { id: 'pdf', title: 'PDF', test: /pdf/i },
   { id: 'id3', title: 'ID3', test: /id3|audio|mpeg/i },
   { id: 'composite', title: 'Composite', test: /composite/i },
@@ -70,6 +72,16 @@ const READABLE_GROUPS = [
     id: 'embedded-content', title: 'Embedded content',
     note: 'Thumbnails, previews, depth maps, gain maps, and other payloads referenced by the container.',
     tags: /(Thumbnail|Preview|Embedded|Depth|GainMap|MPImage|JUMBF)/i,
+  },
+  {
+    id: 'document-properties', title: 'Document properties',
+    note: 'Editable title, author, subject, revision, company, and application labels stored by document software.',
+    tags: /^(Title|Subject|Author|Creator|Keywords|Description|LastModifiedBy|Revision|Category|ContentStatus|Company|Manager|Application|AppVersion)$/i,
+  },
+  {
+    id: 'document-statistics', title: 'Document statistics',
+    note: 'Stored page, word, slide, note, and worksheet counts. These values may be stale if an editor did not refresh them.',
+    tags: /^(PageCount|Pages|Words|Characters|CharactersWithSpaces|Lines|Paragraphs|Slides|Notes|HiddenSlides|WorksheetCount)$/i,
   },
 ] as const;
 

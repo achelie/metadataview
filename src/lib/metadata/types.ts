@@ -1,5 +1,7 @@
-export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | 'mp4' | 'mp3' | 'unknown';
-export type MetadataCategory = 'image' | 'pdf' | 'video' | 'audio';
+export type SupportedDocumentType = 'docx' | 'pptx' | 'xlsx';
+export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | SupportedDocumentType | 'mp4' | 'mp3' | 'unknown';
+export type ContainerSignatureType = DetectedFileType | 'zip';
+export type MetadataCategory = 'image' | 'pdf' | 'document' | 'video' | 'audio';
 
 export interface FileSummary {
   name: string;
@@ -57,7 +59,7 @@ export interface DetectionResult {
   type: DetectedFileType;
   mimeType: string;
   extensionType: DetectedFileType;
-  signatureType: DetectedFileType;
+  signatureType: ContainerSignatureType;
   warnings: ParseWarning[];
 }
 

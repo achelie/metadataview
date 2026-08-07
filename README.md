@@ -15,7 +15,8 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 | Tool | MVP formats |
 | --- | --- |
-| Universal metadata viewer | JPEG, PNG, WebP, PDF, MP4, MP3 |
+| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, MP3 |
+| Document metadata viewer | PDF, DOCX, PPTX, XLSX |
 | Image metadata viewer | JPEG, PNG, WebP |
 | Image privacy checker | JPEG, PNG, WebP |
 | Metadata remover | JPEG, PNG, WebP |
@@ -25,7 +26,7 @@ Specialized pages reuse the same parser adapters:
 
 - `/metadata-viewer`
 - `/image-metadata-viewer`
-- `/pdf-metadata-viewer`
+- `/document-metadata-viewer` (PDF, DOCX, PPTX, XLSX)
 - `/video-metadata-viewer`
 - `/audio-metadata-viewer`
 - `/image-privacy-checker`
@@ -44,6 +45,7 @@ Specialized pages reuse the same parser adapters:
 - **ExifReader** for EXIF, XMP, IPTC, ICC, and other image records
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
+- **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
 - **MP4Box.js** for MP4 container and track data
 - **music-metadata** for MP3/ID3 data
 - **Pako** for PNG `zTXt` and compressed `iTXt`
@@ -107,8 +109,8 @@ pnpm build
 
 Current local verification:
 
-- 141 Vitest unit tests
-- 72 Playwright Chromium flows, including progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
+- 162 Vitest unit tests
+- 81 Playwright Chromium flows, including nine-format uploads, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
 - 12 generated static pages
 
 ## Browser privacy design
@@ -122,13 +124,14 @@ Current local verification:
 - Unknown text fields share a two-million-character scan budget; binary fields use only ExifTool's type/length summary.
 - C2PA readers are freed and the SDK is disposed after each verification.
 - Metadata values are rendered as React text, never unsanitized HTML.
-- The PDF metadata path does not render documents or execute embedded JavaScript.
+- Document metadata paths do not render content, extract body text, cells, slides, attachments, or execute embedded scripts.
 
 The MVP does not ship analytics or ads. A future ad provider could set its own cookie, but browser isolation does not give it access to the selected file or the React result state.
 
 ## Safety limits
 
 - General file size: 100 MB
+- OOXML package entries: 10,000; one property XML: 2 MB; combined property XML: 8 MB
 - Image size: 50 MB
 - Single PNG metadata chunk: 10 MB
 - Inflated PNG text: 20 MB
@@ -205,7 +208,7 @@ The project uses static output, so no Function or server runtime is needed.
 - Browser format support can differ, especially for WebP re-encoding and C2PA media types.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
-- PDF, MP4, and MP3 metadata removal is not included.
+- PDF, DOCX, PPTX, XLSX, MP4, and MP3 metadata removal is not included.
 - GIF, HEIC, FLAC, WAV, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap

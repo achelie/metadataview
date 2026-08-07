@@ -6,17 +6,17 @@ import { canonicalUrl } from '../lib/seo';
 import { metadataViewerFaqs } from '../content/metadata-faqs';
 
 const title = 'Metadata Viewer — Inspect Files Without Uploading';
-const description = 'View metadata in JPEG, PNG, WebP, PDF, MP4, and MP3 files directly in your browser. Search fields and export a complete local report.';
+const description = 'View metadata in JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, and MP3 files directly in your browser. Search fields and export a complete local report.';
 const homeUrl = canonicalUrl('/', Astro.site);
 const faqs = [...metadataViewerFaqs];
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description, inLanguage: 'en' },
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: homeUrl, description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read six common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: homeUrl, description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read nine common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatLinks = [
   { href: '/image-metadata-viewer/', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
-  { href: '/pdf-metadata-viewer/', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
+  { href: '/document-metadata-viewer/', label: 'Documents', formats: 'PDF · DOCX · PPTX · XLSX', detail: 'Authors, dates, applications, revisions, statistics, and custom properties' },
   { href: '/video-metadata-viewer/', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
   { href: '/audio-metadata-viewer/', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
 ];
@@ -44,7 +44,7 @@ const metadataBenefits = [
   },
 ];
 const localProcess = [
-  { title: 'Choose one file', note: 'Drop a JPEG, PNG, WebP, PDF, MP4, or MP3. The bytes stay in this browser tab.' },
+  { title: 'Choose one file', note: 'Drop a JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, or MP3. The bytes stay in this browser tab.' },
   { title: 'Verify the format', note: 'The browser checks the file signature and size before a parser starts.' },
   { title: 'Read available metadata', note: 'A local Worker and ExifTool WASM read the fields supported by that format.' },
   { title: 'Build a useful report', note: 'Fields are grouped, searchable, copyable, and exported with local hashes and header evidence.' },
@@ -55,11 +55,11 @@ const localProcess = [
   <div class="home-shell home-tool-first">
     <section class="home-tool-intro" aria-labelledby="home-title">
       <div class="home-intro-rail"><span>LOCAL / NO UPLOAD</span><i></i></div>
-      <div><span class="eyebrow">Free metadata viewer</span><h1 id="home-title">View file metadata in your browser</h1><p>Drop a JPEG, PNG, WebP, PDF, MP4, or MP3. Your file stays on this device.</p></div>
+      <div><span class="eyebrow">Free metadata viewer</span><h1 id="home-title">View file metadata in your browser</h1><p>Drop a JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, or MP3. Your file stays on this device.</p></div>
       <aside><strong>100 MB</strong><span>one-file limit</span></aside>
     </section>
 
-    <MetadataReportWorkbench client:load placement="home" scope="all" formats="JPEG · PNG · WebP · PDF · MP4 · MP3" accept=".jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3" allowedTypes={['jpeg','png','webp','pdf','mp4','mp3']} />
+    <MetadataReportWorkbench client:load placement="home" scope="all" formats="JPEG · PNG · WebP · PDF · DOCX · PPTX · XLSX · MP4 · MP3" accept=".jpg,.jpeg,.png,.webp,.pdf,.docx,.pptx,.xlsx,.mp4,.mp3" allowedTypes={['jpeg','png','webp','pdf','docx','pptx','xlsx','mp4','mp3']} />
 
     <nav class="home-format-links" aria-label="Metadata viewers by file format">
       <span class="section-index">BROWSE BY FORMAT</span>

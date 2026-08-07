@@ -19,7 +19,8 @@ function slug(value: string): string {
 function sourceFor(root: string): string {
   const known: Record<string, string> = {
     exif: 'EXIF', iptc: 'IPTC', xmp: 'XMP', png: 'PNG chunks', webp: 'WebP container', jpeg: 'JPEG container',
-    info: 'PDF info dictionary', custom: 'PDF XMP', common: 'ID3 common tags', format: 'Audio format', native: 'Native audio tags',
+    info: 'PDF info dictionary', core: 'OOXML core properties', application: 'OOXML application properties', custom: 'Custom properties', package: 'OOXML package',
+    common: 'ID3 common tags', format: 'Audio format', native: 'Native audio tags',
     container: 'Container', imageSummary: 'Image parser',
   };
   return known[root.toLowerCase()] ?? humanize(root);

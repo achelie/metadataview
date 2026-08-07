@@ -24,12 +24,13 @@ import { createSafeReportExport } from '../lib/metadata-report/safe-export';
 import type { MetadataInspectionMode, MetadataReport, MetadataReportField, MetadataReportSection } from '../lib/metadata-report/types';
 import { runWorkerTask, type WorkerTask } from '../lib/worker-client';
 import type { ExifToolProgressStage } from '../workers/exiftool-protocol';
+import type { DetectedFileType } from '../lib/metadata/types';
 
 interface Props {
   scope: 'all' | 'image';
   formats: string;
   accept: string;
-  allowedTypes: string[];
+  allowedTypes: DetectedFileType[];
   placement?: 'home' | 'tool';
 }
 

@@ -11,12 +11,13 @@ import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
 import type { FormatGuide } from '../content/tools';
+import type { DetectedFileType } from '../lib/metadata/types';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
 interface Props {
   title: string; metaTitle: string; description: string; shortDescription: string; path: string; eyebrow: string; icon: IconName;
-  mode: ToolMode; formats: string; accept: string; allowedTypes?: string[]; highlights: string[];
+  mode: ToolMode; formats: string; accept: string; allowedTypes?: DetectedFileType[]; highlights: string[];
   productionMetadataReport?: boolean;
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;

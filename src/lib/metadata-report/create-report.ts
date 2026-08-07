@@ -59,6 +59,18 @@ function makeFacts(parsed: ParsedMetadata): MetadataReportFact[] {
   if (width && height) facts.push(['dimensions', 'Dimensions', `${width.toLocaleString('en-US')} × ${height.toLocaleString('en-US')} px`]);
   if (parsed.category === 'image' && file.megapixels) facts.push(['megapixels', 'Megapixels', `${Number(file.megapixels).toFixed(2)} MP`]);
   if (parsed.category === 'pdf') facts.push(['pages', 'Pages', normalized.PageCount]);
+  if (parsed.category === 'document') {
+    if (file.detectedType === 'docx') {
+      facts.push(['stored-pages', 'Stored pages', normalized.Pages ?? normalized.StoredPageCount]);
+      facts.push(['stored-words', 'Stored words', normalized.Words]);
+    }
+    if (file.detectedType === 'pptx') {
+      facts.push(['slides', 'Slides', normalized.SlideCount ?? normalized.Slides]);
+      facts.push(['notes', 'Notes pages', normalized.NotesPageCount ?? normalized.Notes]);
+    }
+    if (file.detectedType === 'xlsx') facts.push(['worksheets', 'Worksheets', normalized.WorksheetCount]);
+    facts.push(['application', 'Authoring app', normalized.Application]);
+  }
   if (parsed.category === 'video' || parsed.category === 'audio') facts.push(['duration', 'Duration', duration(normalized.Duration)]);
   if (parsed.category === 'video') facts.push(['codec', 'Video codec', normalized.Codec]);
   if (parsed.category === 'audio') {
