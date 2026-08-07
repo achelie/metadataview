@@ -257,9 +257,101 @@ test('primary file buttons are visible above the fold on desktop and mobile', as
   }
 });
 
+test('every tool treats the full upload panel as one accessible file button', async ({ page }) => {
+  const cases: Array<[string, string, string]> = [
+    ['/', '.report-dropzone', 'Choose a file'],
+    ['/metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/image-metadata-viewer/', '.report-dropzone', 'Choose an image'],
+    ['/pdf-metadata-viewer/', '.dropzone', 'Choose a file'],
+    ['/video-metadata-viewer/', '.dropzone', 'Choose a file'],
+    ['/audio-metadata-viewer/', '.dropzone', 'Choose a file'],
+    ['/image-privacy-checker/', '.privacy-dropzone', 'Choose an image'],
+    ['/metadata-remover/', '.remover-dropzone', 'Choose an image'],
+    ['/c2pa-viewer/', '.c2pa-dropzone', 'Choose a file'],
+  ];
+
+  for (const [path, selector, label] of cases) {
+    await page.goto(path);
+    const panel = page.locator(selector);
+    await expect(panel).toHaveRole('button');
+    await expect(panel).toHaveAccessibleName(label);
+    await expect(panel.locator('button')).toHaveCount(0);
+    const input = page.locator('input[type=file]').first();
+    await expect(input).toHaveAttribute('tabindex', '-1');
+    await expect(input).toHaveAttribute('aria-hidden', 'true');
+    const chooser = page.waitForEvent('filechooser');
+    const box = await panel.boundingBox();
+    expect(box).not.toBeNull();
+    await panel.click({ position: { x: Math.max(8, box!.width - 12), y: Math.max(8, box!.height - 12) } });
+    await chooser;
+  }
+});
+
+test('icon, copy, and green visual label all open the same picker once', async ({ page }) => {
+  await page.goto('/');
+  for (const selector of ['.report-drop-mark', '.report-drop-copy strong', '.report-pick-button']) {
+    const chooser = page.waitForEvent('filechooser');
+    await page.locator(selector).click();
+    await chooser;
+  }
+});
+
+test('metadata and remover format menus work on desktop and mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const desktop = page.locator('.desktop-nav');
+  const viewMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'View metadata' });
+  const removeMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'Remove metadata' });
+  await viewMenu.locator('summary').click();
+  const viewLinks: Array<[string, string]> = [['All Formats', '/metadata-viewer/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/pdf-metadata-viewer/']];
+  for (const [label, href] of viewLinks) {
+    await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
+  }
+  await removeMenu.locator('summary').click();
+  await expect(viewMenu).not.toHaveAttribute('open', '');
+  await expect(removeMenu.getByRole('link', { name: 'Images', exact: true })).toHaveAttribute('href', '/metadata-remover/');
+  await expect(removeMenu.locator('[aria-disabled=true]')).toHaveCount(3);
+  await expect(removeMenu.locator('[aria-disabled=true] a')).toHaveCount(0);
+  await page.keyboard.press('Escape');
+  await expect(removeMenu).not.toHaveAttribute('open', '');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.locator('.mobile-menu > summary').click();
+  const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
+  await mobileView.locator('summary').click();
+  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/pdf-metadata-viewer/');
+  const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
+  await mobileRemove.locator('summary').click();
+  await expect(mobileView).not.toHaveAttribute('open', '');
+  await expect(mobileRemove.locator('[aria-disabled=true]')).toHaveCount(3);
+});
+
+test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
+  const questions = [
+    'Is this metadata viewer safe to use?',
+    'Does this work for EXIF data?',
+    'Can this reveal where a photo was taken?',
+    'Can metadata be wrong?',
+    'Can metadata restore blurred or redacted parts of an image?',
+  ];
+  for (const path of ['/', '/metadata-viewer/']) {
+    await page.goto(path);
+    const section = page.locator('.expanded-faq');
+    await expect(section.getByRole('heading', { name: 'Frequently asked questions' })).toBeVisible();
+    await expect(section.locator('details')).toHaveCount(0);
+    for (const question of questions) await expect(section.getByRole('heading', { name: question })).toBeVisible();
+    const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+    expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
+  }
+  await page.goto('/image-metadata-viewer/');
+  await expect(page.locator('.faq-section details').first()).toBeVisible();
+});
+
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {
   await page.goto('/');
-  for (const label of ['View metadata', 'Check privacy', 'Remove metadata', 'Verify C2PA']) await expect(page.getByRole('link', { name: label, exact: true }).first()).toBeVisible();
+  for (const label of ['View metadata', 'Remove metadata']) await expect(page.locator('.desktop-nav').getByText(label, { exact: true })).toBeVisible();
+  for (const label of ['Check privacy', 'Verify C2PA']) await expect(page.locator('.desktop-nav').getByRole('link', { name: label, exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /Read AI prompts|ComfyUI/i })).toHaveCount(0);
   const text = await page.locator('body').innerText();
   expect(text).not.toMatch(/鈥|鈫|路|攁|攏|渘|渁|渟|�/);

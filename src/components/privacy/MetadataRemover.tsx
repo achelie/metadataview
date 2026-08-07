@@ -41,7 +41,7 @@ export default function MetadataRemover() {
   const exifClient = useRef<ExifToolWorkerClient | null>(null);
   const request = useRef(0);
   const picker = useRef<HTMLInputElement>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
   const previewUrl = useRef<string | null>(null);
   const downloadUrl = useRef<string | null>(null);
@@ -64,6 +64,11 @@ export default function MetadataRemover() {
 
   const revokePreview = () => { if (previewUrl.current) URL.revokeObjectURL(previewUrl.current); previewUrl.current = null; };
   const revokeDownload = () => { if (downloadUrl.current) URL.revokeObjectURL(downloadUrl.current); downloadUrl.current = null; };
+  const openPicker = () => {
+    if (!picker.current) return;
+    picker.current.value = '';
+    picker.current.click();
+  };
 
   useEffect(() => {
     quickClient.current = new ImageWorkerClient();
@@ -179,10 +184,10 @@ export default function MetadataRemover() {
   const visibleReport = cleanupResult?.afterReport ?? report;
   return <section className="workbench privacy-checker metadata-remover" aria-busy={quickBusy || deepPending || cleanupPending}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>Your files never leave your device.</span></div><span className="status-line" aria-live="polite"><i className={quickBusy || deepPending || cleanupPending ? 'pulse' : ''} />{status}</span></div>
-    <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
+    <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
 
-    {!selection && <div className={`privacy-dropzone remover-dropzone ${dragging ? 'is-dragging' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
-      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Strip it, then prove it</span><strong>Drop an image here</strong><p id="remover-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><button ref={chooseButton} className="button button-primary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }} aria-describedby="remover-drop-help">Choose an image</button></div><p className="privacy-check-scope">The clean copy is scored with the same full scan as Privacy Checker before download.</p><small>The initial result appears fast, then one automatic full scan finishes the baseline.</small>
+    {!selection && <div ref={chooseButton} className={`privacy-dropzone remover-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label="Choose an image" aria-describedby="remover-drop-help" onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
+      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Strip it, then prove it</span><strong>Drop an image here</strong><p id="remover-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><span className="button button-primary privacy-pick-label" aria-hidden="true">Choose an image</span></div><p className="privacy-check-scope">The clean copy is scored with the same full scan as Privacy Checker before download.</p><small>The initial result appears fast, then one automatic full scan finishes the baseline.</small>
     </div>}
 
     {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={eraserIcon} width="26" /></span><div><strong>Reading the source image</strong><p>We need a real before score before claiming anything was removed.</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />Cancel</button></div>}

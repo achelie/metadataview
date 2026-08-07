@@ -163,7 +163,7 @@ function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, f
 
 export default function MetadataReportWorkbench({ scope, formats, accept, allowedTypes, placement = 'tool' }: Props) {
   const input = useRef<HTMLInputElement>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
   const task = useRef<WorkerTask<MetadataReport> | null>(null);
   const exifTool = useRef<ExifToolWorkerClient | null>(null);
@@ -369,13 +369,14 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       <div className="local-proof"><Icon icon={checkIcon} width="18" aria-hidden="true" /><span>Your file stays on this device.</span></div>
       <span className="status-line" role="status" aria-live="polite"><i className={busy || exifRunning ? 'pulse' : ''} />{notice}</span>
     </div>
-    <input ref={input} className="sr-only" type="file" accept={accept} multiple onChange={(event) => pickFiles(event.target.files)} />
+    <input ref={input} className="sr-only" type="file" accept={accept} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => pickFiles(event.target.files)} />
 
-    {!file ? <div className={`report-dropzone ${dragging ? 'is-dragging' : ''}`}
+    {!file ? <div ref={chooseButton} className={`report-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label={`Choose ${scope === 'image' ? 'an image' : 'a file'}`} aria-describedby={`report-drop-help-${placement}`}
+      onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }}
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pickFiles(event.dataTransfer.files); }}>
       <span className="report-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="33" /></span>
-      <div className="report-drop-copy"><span className="eyebrow">One file · processed locally</span><strong>Drop {scope === 'image' ? 'an image' : 'a file'} here</strong><p id={`report-drop-help-${placement}`}>{formats} · up to {formatLimit(fileLimit(scope))}</p><button ref={chooseButton} className="button button-primary report-pick-button" type="button" onClick={openPicker} aria-describedby={`report-drop-help-${placement}`}>Choose {scope === 'image' ? 'an image' : 'a file'}</button></div>
+      <div className="report-drop-copy"><span className="eyebrow">One file · processed locally</span><strong>Drop {scope === 'image' ? 'an image' : 'a file'} here</strong><p id={`report-drop-help-${placement}`}>{formats} · up to {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">Choose {scope === 'image' ? 'an image' : 'a file'}</span></div>
       <span className="report-drop-note">ExifTool loads after you choose a file.<small>Nothing is uploaded.</small></span>
     </div> : null}
 

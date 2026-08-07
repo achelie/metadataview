@@ -1,5 +1,6 @@
 import type { IconName } from '../components/IconGlyph';
 import type { ToolMode } from '../components/ToolWorkbench';
+import { metadataViewerFaqs } from './metadata-faqs';
 
 export interface ToolConfig {
   title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName;
@@ -9,6 +10,7 @@ export interface ToolConfig {
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
   productionC2paViewer?: boolean;
+  faqDisplay?: 'accordion' | 'expanded';
   limitations: string[]; faqs: { question: string; answer: string }[];
   related: { href: string; title: string; note: string }[];
 }
@@ -26,13 +28,14 @@ const protectRelated = [
 export const tools: Record<string, ToolConfig> = {
   metadata: {
     productionMetadataReport: true, metadataReportScope: 'all',
+    faqDisplay: 'expanded',
     title: 'Metadata Viewer', metaTitle: 'Metadata Viewer – View Hidden File Metadata Online', path: '/metadata-viewer/', eyebrow: 'Universal file inspector', icon: 'scan', mode: 'metadata',
     description: 'Open JPEG, PNG, WebP, PDF, MP4, or MP3 metadata in your browser. Search fields, copy values, and export the complete result without uploading the file.',
     shortDescription: 'Drop one supported file, then search, copy, or export every readable metadata field.',
     highlights: ['Checks the real file signature instead of trusting the extension.', 'Builds a readable summary and a complete native field ledger.', 'Calculates SHA-256 and MD5 while reading the file once.', 'Exports safe JSON and a concise PDF report.'],
     formats: 'JPEG · PNG · WebP · PDF · MP4 · MP3', accept: '.jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3', allowedTypes: ['jpeg','png','webp','pdf','mp4','mp3'],
     limitations: ['The 100 MB general limit keeps a damaged file from swallowing the tab.', 'Encrypted PDFs are reported, never brute-forced.', 'Metadata describes a file; it does not prove every field is accurate.'],
-    faqs: [{ question: 'Does this upload my file?', answer: 'No. Parsing happens in browser memory and the static site has no file upload endpoint.' }, { question: 'Why does the detected type differ from the extension?', answer: 'The tool trusts the file signature first. A .jpg filename can still contain PNG or unrelated bytes.' }, { question: 'Can I inspect several files at once?', answer: 'Not in this MVP. One-file-at-a-time processing keeps memory use predictable and leaves no history.' }], related: inspectRelated,
+    faqs: [...metadataViewerFaqs], related: inspectRelated,
   },
   image: {
     productionMetadataReport: true, metadataReportScope: 'image',

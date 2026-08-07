@@ -1,5 +1,23 @@
 ---
 import { IconGlyph } from './IconGlyph';
+
+const pathname = Astro.url.pathname;
+const viewItems = [
+  { href: '/metadata-viewer/', label: 'All Formats' },
+  { href: '/image-metadata-viewer/', label: 'Images' },
+  { href: '/video-metadata-viewer/', label: 'Videos' },
+  { href: '/audio-metadata-viewer/', label: 'Audio' },
+  { href: '/pdf-metadata-viewer/', label: 'Documents' },
+];
+const removeItems: Array<{ href?: string; label: string; available: boolean }> = [
+  { href: '/metadata-remover/', label: 'Images', available: true },
+  { label: 'Videos', available: false },
+  { label: 'Audio', available: false },
+  { label: 'Documents', available: false },
+];
+const isCurrent = (href: string) => pathname === href;
+const viewCurrent = viewItems.some((item) => isCurrent(item.href));
+const removeCurrent = pathname === '/metadata-remover/';
 ---
 <header class="site-header">
   <div class="header-inner">
@@ -8,17 +26,70 @@ import { IconGlyph } from './IconGlyph';
       <span>Metadata<span>View</span></span>
     </a>
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="/metadata-viewer/">View metadata</a>
-      <a href="/image-privacy-checker/">Check privacy</a>
-      <a href="/metadata-remover/">Remove metadata</a>
-      <a href="/c2pa-viewer/">Verify C2PA</a>
+      <details class="nav-dropdown" data-nav-dropdown>
+        <summary class:list={{ 'is-current': viewCurrent }}>View metadata <IconGlyph name="chevronDown" size={15} /></summary>
+        <div class="nav-dropdown-panel" aria-label="View metadata by format">
+          {viewItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}
+        </div>
+      </details>
+      <a href="/image-privacy-checker/" aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>Check privacy</a>
+      <details class="nav-dropdown" data-nav-dropdown>
+        <summary class:list={{ 'is-current': removeCurrent }}>Remove metadata <IconGlyph name="chevronDown" size={15} /></summary>
+        <div class="nav-dropdown-panel" aria-label="Remove metadata by format">
+          {removeItems.map((item) => item.available && item.href ? <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a> : <span aria-disabled="true">{item.label}<small>Coming soon</small></span>)}
+        </div>
+      </details>
+      <a href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
     </nav>
-    <a class="header-cta" href="/metadata-viewer/">View metadata <IconGlyph name="arrow" size={16} /></a>
+    <a class="header-cta" href="/metadata-viewer/" aria-current={isCurrent('/metadata-viewer/') ? 'page' : undefined}>View metadata <IconGlyph name="arrow" size={16} /></a>
     <details class="mobile-menu">
       <summary aria-label="Open navigation">Menu</summary>
       <nav aria-label="Mobile navigation">
-        <a href="/metadata-viewer/">View metadata</a><a href="/image-privacy-checker/">Check privacy</a><a href="/metadata-remover/">Remove metadata</a><a href="/c2pa-viewer/">Verify C2PA</a>
+        <details class="mobile-nav-group" data-nav-dropdown>
+          <summary>View metadata <IconGlyph name="chevronDown" size={15} /></summary>
+          <div>{viewItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}</div>
+        </details>
+        <a href="/image-privacy-checker/" aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>Check privacy</a>
+        <details class="mobile-nav-group" data-nav-dropdown>
+          <summary>Remove metadata <IconGlyph name="chevronDown" size={15} /></summary>
+          <div>{removeItems.map((item) => item.available && item.href ? <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a> : <span aria-disabled="true">{item.label}<small>Coming soon</small></span>)}</div>
+        </details>
+        <a href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
       </nav>
     </details>
   </div>
 </header>
+
+<script>
+  const dropdowns = Array.from(document.querySelectorAll<HTMLDetailsElement>('details[data-nav-dropdown]'));
+  const mobileMenu = document.querySelector<HTMLDetailsElement>('details.mobile-menu');
+
+  for (const dropdown of dropdowns) {
+    dropdown.addEventListener('toggle', () => {
+      if (!dropdown.open) return;
+      for (const other of dropdowns) {
+        if (other !== dropdown && !other.contains(dropdown) && !dropdown.contains(other)) other.open = false;
+      }
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Node)) return;
+    for (const dropdown of dropdowns) if (dropdown.open && !dropdown.contains(event.target)) dropdown.open = false;
+    if (mobileMenu?.open && !mobileMenu.contains(event.target)) mobileMenu.open = false;
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const openDropdown = [...dropdowns].reverse().find((dropdown) => dropdown.open);
+    if (openDropdown) {
+      openDropdown.open = false;
+      openDropdown.querySelector<HTMLElement>(':scope > summary')?.focus();
+      return;
+    }
+    if (mobileMenu?.open) {
+      mobileMenu.open = false;
+      mobileMenu.querySelector<HTMLElement>(':scope > summary')?.focus();
+    }
+  });
+</script>

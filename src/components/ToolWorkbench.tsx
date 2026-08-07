@@ -41,7 +41,7 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
   const [cleanMetadata, setCleanMetadata] = useState<ParsedMetadata | null>(null);
   const task = useRef<WorkerTask<WorkerResult> | null>(null);
   const cleanUrl = useRef<string | null>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
 
   const clearCleanUrl = () => { if (cleanUrl.current) URL.revokeObjectURL(cleanUrl.current); cleanUrl.current = null; };

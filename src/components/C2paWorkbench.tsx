@@ -150,7 +150,7 @@ function reportReceipt(report: C2paReport): string {
 
 export default function C2paWorkbench({ formats, accept }: Props) {
   const input = useRef<HTMLInputElement>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
   const verifier = useRef<C2paVerifierClient | null>(null);
   const runId = useRef(0);
@@ -282,11 +282,11 @@ export default function C2paWorkbench({ formats, accept }: Props) {
     </div>
     <input ref={input} className="sr-only" type="file" accept={accept} tabIndex={-1} aria-hidden="true" onChange={(event) => pick(event.currentTarget.files)} />
 
-    {!file ? <div className={`c2pa-dropzone ${dragging ? 'is-dragging' : ''}`}
+    {!file ? <div ref={chooseButton} className={`c2pa-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label="Choose a file" aria-describedby="c2pa-file-help" onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }}
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pick(event.dataTransfer.files); }}>
       <span className="c2pa-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="32" /></span>
-      <div><span className="eyebrow">Official verifier · local run</span><strong>Drop a signed file here</strong><p id="c2pa-file-help">{formats} · images up to 50 MB · MP4/PDF up to 100 MB</p><button ref={chooseButton} className="button button-primary" type="button" onClick={openPicker} aria-describedby="c2pa-file-help">Choose a file</button></div>
+      <div><span className="eyebrow">Official verifier · local run</span><strong>Drop a signed file here</strong><p id="c2pa-file-help">{formats} · images up to 50 MB · MP4/PDF up to 100 MB</p><span className="button button-primary c2pa-pick-label" aria-hidden="true">Choose a file</span></div>
       <aside><Icon icon={fingerprintIcon} width="20" /><p><strong>What gets checked?</strong>Signature, file binding, manifest structure, actions, ingredients, and assertions.</p></aside>
     </div> : null}
 
