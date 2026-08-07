@@ -159,7 +159,7 @@ test('unsupported file gives a plain error', async ({ page }) => {
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
-test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ page }) => {
+test('specialized PDF, MP3, and MP4 pages use the shared production report', async ({ page }) => {
   const fixtures: Array<[string, string, string, Buffer, string]> = [
     ['/pdf-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
     ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
@@ -167,7 +167,8 @@ test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ pag
   ];
   for (const [path, name, mimeType, buffer, expected] of fixtures) {
     await page.goto(path); await upload(page, name, buffer, mimeType);
-    await expect(page.getByRole('heading', { name: 'Metadata found' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: `${name} metadata report` })).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/);
     await expect(page.getByText(expected, { exact: true }).first()).toBeVisible();
   }
 });
@@ -244,7 +245,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/pdf-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -252,7 +253,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/pdf-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {
@@ -272,9 +273,9 @@ test('every tool treats the full upload panel as one accessible file button', as
     ['/', '.report-dropzone', 'Choose a file'],
     ['/metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/image-metadata-viewer/', '.report-dropzone', 'Choose an image'],
-    ['/pdf-metadata-viewer/', '.dropzone', 'Choose a file'],
-    ['/video-metadata-viewer/', '.dropzone', 'Choose a file'],
-    ['/audio-metadata-viewer/', '.dropzone', 'Choose a file'],
+    ['/pdf-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/video-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/audio-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/image-privacy-checker/', '.privacy-dropzone', 'Choose an image'],
     ['/metadata-remover/', '.remover-dropzone', 'Choose an image'],
     ['/c2pa-viewer/', '.c2pa-dropzone', 'Choose a file'],
@@ -372,6 +373,30 @@ test('navigation motion uses the transition hooks and honors reduced motion', as
   expect(await drawer.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe('0s');
 });
 
+test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
+  const cases: Array<[string, string, string, string]> = [
+    ['/image-metadata-viewer/', 'See what travels with an image.', 'How the image scan works', 'Which image formats and metadata are supported?'],
+    ['/pdf-metadata-viewer/', 'Read the document behind the pages.', 'How the PDF scan works', 'What PDF metadata does this viewer read?'],
+    ['/video-metadata-viewer/', 'Inspect the container around the frames.', 'How the MP4 scan works', 'Which video formats are supported?'],
+    ['/audio-metadata-viewer/', 'Read the tags around the sound.', 'How the MP3 scan works', 'Which MP3 tags does the viewer read?'],
+  ];
+
+  for (const [path, valueTitle, processTitle, formatQuestion] of cases) {
+    await page.goto(path);
+    await expect(page.getByRole('heading', { name: valueTitle })).toBeVisible();
+    await expect(page.getByRole('heading', { name: processTitle })).toBeVisible();
+    await expect(page.locator('.format-guide-benefits .home-benefit-grid a')).toHaveCount(3);
+    await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(5);
+    await expect(page.locator('.expanded-faq-list article')).toHaveCount(5);
+    await expect(page.getByRole('heading', { name: formatQuestion })).toBeVisible();
+    await expect(page.locator('.tool-notes,.specialized-notes')).toHaveCount(0);
+
+    const visibleQuestions = await page.locator('.expanded-faq-list h3').allTextContents();
+    const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+    expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+  }
+});
+
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
   const questions = [
     'Is this metadata viewer safe to use?',
@@ -391,7 +416,7 @@ test('home and universal viewer show the same five expanded FAQ answers and sche
     const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
     expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
   }
-  await page.goto('/image-metadata-viewer/');
+  await page.goto('/image-privacy-checker/');
   await expect(page.locator('.faq-section details').first()).toBeVisible();
 });
 

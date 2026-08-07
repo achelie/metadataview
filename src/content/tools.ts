@@ -10,9 +10,22 @@ export interface ToolConfig {
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
   productionC2paViewer?: boolean;
+  formatGuide?: FormatGuide;
   faqDisplay?: 'accordion' | 'expanded';
   limitations: string[]; faqs: { question: string; answer: string }[];
   related: { href: string; title: string; note: string }[];
+}
+
+export interface FormatGuide {
+  valueEyebrow: string;
+  valueTitle: string;
+  valueDescription: string;
+  benefits: { href: string; icon: IconName; kicker: string; title: string; description: string; action: string }[];
+  processTitle: string;
+  processDescription: string;
+  steps: { title: string; description: string }[];
+  ctaLead: string;
+  ctaLabel: string;
 }
 
 const inspectRelated = [
@@ -25,6 +38,95 @@ const protectRelated = [
   { href: '/image-privacy-checker/', title: 'Privacy Checker', note: 'See which fields deserve attention.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from EXIF.' },
 ];
+
+const imageGuide: FormatGuide = {
+  valueEyebrow: 'WHY IMAGE METADATA MATTERS',
+  valueTitle: 'See what travels with an image.',
+  valueDescription: 'A photo can carry location, camera, color, authorship, and editing details long after the pixels look finished.',
+  benefits: [
+    { href: '/image-privacy-checker/', icon: 'shield', kicker: 'Privacy check', title: 'Catch location leaks', description: 'Find GPS coordinates, owner names, serial numbers, and embedded previews before an image leaves your device.', action: 'Check image privacy' },
+    { href: '#metadata-workbench-tool', icon: 'fileImage', kicker: 'Capture context', title: 'Understand the shot', description: 'Review camera, lens, exposure, orientation, dates, software, color profiles, and the exact native tag paths.', action: 'Inspect an image' },
+    { href: '/metadata-remover/', icon: 'eraser', kicker: 'Cleaner sharing', title: 'Make a cleaner copy', description: 'Remove writable image metadata, rescan the result, and keep a verification receipt beside the download.', action: 'Remove metadata' },
+  ],
+  processTitle: 'How the image scan works',
+  processDescription: 'The browser reads one JPEG, PNG, or WebP in this tab. The image and its metadata are never posted to a server.',
+  steps: [
+    { title: 'Choose one image', description: 'Select a JPEG, PNG, or WebP up to 50 MB. The source stays in browser memory.' },
+    { title: 'Verify the image format', description: 'The file signature, dimensions, and container structure are checked instead of trusting the extension.' },
+    { title: 'Scan every metadata field', description: 'The quick browser parser responds first, then local ExifTool WASM inspects standard and embedded image records.' },
+    { title: 'Build the image report', description: 'EXIF, GPS, XMP, IPTC, ICC, text chunks, hashes, and native paths become searchable sections.' },
+    { title: 'Forget the image', description: 'Clear, replace, or refresh to terminate the scan, revoke the preview URL, and leave no file history.' },
+  ],
+  ctaLead: 'Have an image ready?',
+  ctaLabel: 'Choose an image above',
+};
+
+const pdfGuide: FormatGuide = {
+  valueEyebrow: 'WHY PDF METADATA MATTERS',
+  valueTitle: 'Read the document behind the pages.',
+  valueDescription: 'A PDF can name its authoring tools, dates, owner, page structure, and document IDs without showing any of them on the page.',
+  benefits: [
+    { href: '#metadata-workbench-tool', icon: 'fileText', kicker: 'Document properties', title: 'Check authorship claims', description: 'Review title, author, subject, creator, producer, keywords, and custom document properties in one report.', action: 'Inspect a PDF' },
+    { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Revision context', title: 'Review document history', description: 'Compare stored creation and modification dates, PDF version, page count, encryption state, and document identifiers.', action: 'Read local fields' },
+    { href: '/c2pa-viewer/', icon: 'badge', kicker: 'Evidence boundary', title: 'Separate labels from proof', description: 'Treat editable PDF properties as context, then check signed C2PA credentials separately when the file includes them.', action: 'Verify C2PA' },
+  ],
+  processTitle: 'How the PDF scan works',
+  processDescription: 'The browser inspects document properties locally. It does not upload the PDF, execute embedded scripts, or read page text.',
+  steps: [
+    { title: 'Choose one PDF', description: 'Select one PDF up to 100 MB. Its bytes remain inside the current browser tab.' },
+    { title: 'Verify the document', description: 'The PDF signature, version, size, page structure, and encryption indicators are checked first.' },
+    { title: 'Read available properties', description: 'Local parsers and ExifTool WASM inspect the information dictionary, XMP, custom keys, and document identifiers.' },
+    { title: 'Build the document report', description: 'Authoring fields, dates, pages, hashes, warnings, and exact native paths become searchable and exportable.' },
+    { title: 'Forget the PDF', description: 'Clear, replace, or refresh to stop the task and remove the temporary in-tab report.' },
+  ],
+  ctaLead: 'Have a document ready?',
+  ctaLabel: 'Choose a PDF above',
+};
+
+const videoGuide: FormatGuide = {
+  valueEyebrow: 'WHY VIDEO METADATA MATTERS',
+  valueTitle: 'Inspect the container around the frames.',
+  valueDescription: 'An MP4 can reveal duration, dimensions, codecs, track layout, brands, dates, and authoring software without playing a second of video.',
+  benefits: [
+    { href: '#metadata-workbench-tool', icon: 'film', kicker: 'Container facts', title: 'Check delivery details', description: 'Read duration, frame size, compatible brands, track counts, codecs, bitrate clues, and rotation from the MP4 container.', action: 'Inspect an MP4' },
+    { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Production context', title: 'Trace stored history', description: 'Find creation dates, handler names, encoder labels, comments, and other fields left by cameras and editing tools.', action: 'Read local fields' },
+    { href: '/c2pa-viewer/', icon: 'badge', kicker: 'Provenance check', title: 'Look for signed evidence', description: 'Metadata remains editable. Use the C2PA viewer when you need to check an embedded signed provenance claim.', action: 'Verify C2PA' },
+  ],
+  processTitle: 'How the MP4 scan works',
+  processDescription: 'The browser reads container metadata in this tab. It does not upload, play, transcribe, or analyze the video frames.',
+  steps: [
+    { title: 'Choose one MP4', description: 'Select one MP4 up to 100 MB. No media bytes are sent to an upload endpoint.' },
+    { title: 'Verify the container', description: 'The file signature and MP4 box structure are checked before metadata parsing begins.' },
+    { title: 'Read tracks and tags', description: 'Local parsers and ExifTool WASM inspect movie headers, track records, brands, dates, and readable custom fields.' },
+    { title: 'Build the video report', description: 'Duration, dimensions, codecs, tracks, hashes, warnings, and native paths become searchable and exportable.' },
+    { title: 'Forget the video', description: 'Clear, replace, or refresh to terminate the task and remove the in-tab report.' },
+  ],
+  ctaLead: 'Have a video ready?',
+  ctaLabel: 'Choose an MP4 above',
+};
+
+const audioGuide: FormatGuide = {
+  valueEyebrow: 'WHY AUDIO METADATA MATTERS',
+  valueTitle: 'Read the tags around the sound.',
+  valueDescription: 'An MP3 can carry track labels, credits, dates, comments, technical headers, and embedded artwork that never appear in its filename.',
+  benefits: [
+    { href: '#metadata-workbench-tool', icon: 'audio', kicker: 'Track identity', title: 'Verify music labels', description: 'Read title, artist, album, album artist, track, disc, year, genre, composer, and comment fields from ID3 tags.', action: 'Inspect an MP3' },
+    { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Technical delivery', title: 'Check the audio header', description: 'Review duration, bitrate, sample rate, channel mode, MPEG version, encoder information, and file fingerprints.', action: 'Read local fields' },
+    { href: '#metadata-workbench-tool', icon: 'fileImage', kicker: 'Embedded extras', title: 'Spot hidden attachments', description: 'See whether cover art and other binary frames exist without copying their payload into the safe report.', action: 'Check embedded data' },
+  ],
+  processTitle: 'How the MP3 scan works',
+  processDescription: 'The browser reads stored tags and technical headers locally. It does not upload, play, transcribe, or fingerprint the song.',
+  steps: [
+    { title: 'Choose one MP3', description: 'Select one MP3 up to 100 MB. The audio stays in the current browser tab.' },
+    { title: 'Verify the audio format', description: 'ID3 and MPEG signatures are checked before the page trusts the extension or MIME label.' },
+    { title: 'Read tags and headers', description: 'Local parsers and ExifTool WASM inspect ID3 frames, MPEG details, comments, credits, and binary summaries.' },
+    { title: 'Build the audio report', description: 'Track labels, technical facts, hashes, warnings, and exact native paths become searchable and exportable.' },
+    { title: 'Forget the audio', description: 'Clear, replace, or refresh to stop the task and remove the temporary report.' },
+  ],
+  ctaLead: 'Have an audio file ready?',
+  ctaLabel: 'Choose an MP3 above',
+};
+
 export const tools: Record<string, ToolConfig> = {
   metadata: {
     productionMetadataReport: true, metadataReportScope: 'all',
@@ -39,40 +141,71 @@ export const tools: Record<string, ToolConfig> = {
   },
   image: {
     productionMetadataReport: true, metadataReportScope: 'image',
+    faqDisplay: 'expanded', formatGuide: imageGuide,
     title: 'Image Metadata Viewer', metaTitle: 'Image Metadata Viewer – View EXIF, GPS, PNG and WebP Metadata', path: '/image-metadata-viewer/', eyebrow: 'Image evidence reader', icon: 'fileImage', mode: 'metadata',
     description: 'View EXIF, GPS, XMP, IPTC, ICC, PNG text chunks, and WebP metadata in JPEG, PNG, and WebP images. Everything stays in your browser.',
     shortDescription: 'Read EXIF, GPS, color, author, software, and native application data from one image.',
     highlights: ['Reads JPEG, PNG, and WebP container metadata.', 'Shows camera, GPS, color profile, authorship, and dates.', 'Keeps native ExifTool paths and unknown readable tags.', 'Links privacy-sensitive fields to the dedicated checker.'],
     formats: 'JPEG · PNG · WebP', accept: 'image/jpeg,image/png,image/webp', allowedTypes: ['jpeg','png','webp'],
     limitations: ['A field can be missing because the camera never wrote it or an editor already removed it.', 'Visible faces and text are pixels, not metadata, and are not analyzed.', 'Metadata can be edited or forged, so treat it as context rather than proof.'],
-    faqs: [{ question: 'Can this show where a photo was taken?', answer: 'Yes, when valid latitude and longitude remain in EXIF GPS. The page makes no map request until you click the map link.' }, { question: 'Does a screenshot usually contain EXIF?', answer: 'Often very little, but software labels, dates, color profiles, or PNG text can still remain.' }, { question: 'Can metadata be forged?', answer: 'Yes. Camera models, dates, authors, and coordinates are editable labels—not cryptographic proof.' }, { question: 'Does this upload my image?', answer: 'No. A Web Worker reads the bytes in browser memory. The page has no upload endpoint, file history, or metadata storage.' }], related: inspectRelated,
+    faqs: [
+      { question: 'Does this upload my image?', answer: 'No. Browser parsers and ExifTool WebAssembly read the image in this tab. The file, filename, hashes, and metadata are not posted to a server or saved to a history.' },
+      { question: 'Which image formats and metadata are supported?', answer: 'The viewer supports JPEG, PNG, and WebP. It reads available EXIF, GPS, XMP, IPTC, ICC, PNG text, WebP container fields, embedded previews, and unknown readable tags.' },
+      { question: 'Can this show where a photo was taken?', answer: 'Yes, when valid latitude and longitude remain in EXIF GPS. If those tags are missing or invalid, the report cannot reconstruct the location from the pixels.' },
+      { question: 'Why are camera or GPS fields missing?', answer: 'The camera may never have written them, an editor may have removed them, or the format may store them differently. A missing field does not prove it never existed.' },
+      { question: 'Can image metadata prove a photo is original?', answer: 'No. Camera names, dates, authors, and coordinates are editable labels. Use them as context, and check signed C2PA credentials separately when provenance matters.' },
+    ], related: inspectRelated,
   },
   pdf: {
+    productionMetadataReport: true, metadataReportScope: 'all',
+    faqDisplay: 'expanded', formatGuide: pdfGuide,
     title: 'PDF Metadata Viewer', metaTitle: 'PDF Metadata Viewer – Check Author, Dates and Document Properties', path: '/pdf-metadata-viewer/', eyebrow: 'Document property reader', icon: 'fileText', mode: 'metadata',
     description: 'Check PDF title, author, creator, producer, dates, version, page count, and readable custom properties locally in your browser.',
     shortDescription: 'Open one PDF and read its author, dates, producer, pages, and custom properties.',
     highlights: ['Reads the document information dictionary and custom fields.', 'Reports the PDF version, page count, and encryption state.', 'Keeps the file in browser memory.', 'Exports the parsed result as structured JSON.'],
     formats: 'PDF', accept: '.pdf,application/pdf', allowedTypes: ['pdf'],
     limitations: ['Password-protected files are reported as encrypted; passwords are not bypassed.', 'This tool reads metadata and does not scan or extract page text.', 'A document producer can write inaccurate author or date values.'],
-    faqs: [{ question: 'Will the PDF be sent to a server?', answer: 'No. The PDF library runs in the browser and receives the file from local memory.' }, { question: 'Can this remove PDF metadata?', answer: 'No. The remover MVP intentionally supports images only.' }, { question: 'Does it execute PDF JavaScript?', answer: 'No. Metadata inspection does not execute scripts embedded in the document.' }], related: inspectRelated,
+    faqs: [
+      { question: 'Will the PDF be sent to a server?', answer: 'No. The PDF parser and ExifTool WebAssembly run in this browser tab. The document, filename, hashes, and extracted properties are not uploaded.' },
+      { question: 'What PDF metadata does this viewer read?', answer: 'It reads available title, author, subject, keywords, creator, producer, creation and modification dates, PDF version, page count, encryption state, XMP, document IDs, and custom properties.' },
+      { question: 'Does the viewer execute scripts or read page text?', answer: 'No. Metadata inspection does not execute embedded JavaScript, submit forms, follow document links, run attachments, perform OCR, or extract the visible page text.' },
+      { question: 'What happens with a password-protected PDF?', answer: 'The report identifies encryption when the file exposes it, but it does not bypass passwords or decrypt protected document content.' },
+      { question: 'Can PDF author and date fields prove who made the document?', answer: 'No. PDF properties are editable and may be missing, stale, or copied from another file. Treat them as context rather than identity proof.' },
+    ], related: inspectRelated,
   },
   video: {
+    productionMetadataReport: true, metadataReportScope: 'all',
+    faqDisplay: 'expanded', formatGuide: videoGuide,
     title: 'Video Metadata Viewer', metaTitle: 'Video Metadata Viewer – Inspect MP4 File Information', path: '/video-metadata-viewer/', eyebrow: 'MP4 container inspector', icon: 'film', mode: 'metadata',
     description: 'Inspect MP4 duration, dimensions, codecs, tracks, brands, creation dates, and readable authoring details without uploading the video.',
     shortDescription: 'Read MP4 duration, dimensions, codecs, tracks, brands, and stored dates.',
     highlights: ['Inspects MP4 container boxes without analyzing frames.', 'Summarizes duration, dimensions, codecs, and tracks.', 'Reports compatible brands and stored authoring details.', 'Runs the parser away from the main UI thread.'],
     formats: 'MP4', accept: '.mp4,video/mp4', allowedTypes: ['mp4'],
     limitations: ['Only MP4 containers are in scope; MKV, MOV variants, and AVI are not promised.', 'Video frames and audio speech are never analyzed.', 'Metadata removal for video is not part of this MVP.'],
-    faqs: [{ question: 'Does the tool watch the video?', answer: 'No. It reads container metadata and never performs pixel recognition.' }, { question: 'Why is a codec missing?', answer: 'Damaged or unusual track boxes may not expose a readable codec label.' }, { question: 'Can a large video freeze the page?', answer: 'Parsing runs off the main thread and is capped at 100 MB with a timeout.' }], related: inspectRelated,
+    faqs: [
+      { question: 'Is the MP4 uploaded anywhere?', answer: 'No. The browser reads the MP4 locally. The video, filename, hashes, container tags, and report are not sent to an upload endpoint.' },
+      { question: 'Which video formats are supported?', answer: 'This page supports MP4 containers up to 100 MB. It does not promise MOV, MKV, AVI, WebM, or files that only use an MP4-looking extension.' },
+      { question: 'Does the tool watch, transcribe, or fingerprint the video?', answer: 'No. It reads container boxes and stored metadata without decoding frames, recognizing faces, listening to speech, or creating a media fingerprint.' },
+      { question: 'Why can the stored creation date look wrong?', answer: 'MP4 dates may use a different epoch or time basis, and editing software can rewrite them. They are useful clues, not guaranteed capture times.' },
+      { question: 'Can MP4 metadata prove a video is original?', answer: 'No. Container labels and dates are editable. A signed C2PA credential can provide stronger file-binding evidence, but even that does not prove every visible claim is true.' },
+    ], related: inspectRelated,
   },
   audio: {
+    productionMetadataReport: true, metadataReportScope: 'all',
+    faqDisplay: 'expanded', formatGuide: audioGuide,
     title: 'Audio Metadata Viewer', metaTitle: 'Audio Metadata Viewer – View MP3 Tags and File Details', path: '/audio-metadata-viewer/', eyebrow: 'ID3 tag reader', icon: 'audio', mode: 'metadata',
     description: 'Read MP3 title, artist, album, year, genre, track, comments, cover-art presence, duration, bitrate, and sample rate in your browser.',
     shortDescription: 'Read MP3 tags, duration, bitrate, sample rate, and cover-art presence.',
     highlights: ['Reads common ID3 tags and MPEG technical details.', 'Reports title, artist, album, dates, comments, and genre.', 'Detects embedded cover art without exporting its bytes.', 'Never plays or fingerprints the audio.'],
     formats: 'MP3', accept: '.mp3,audio/mpeg', allowedTypes: ['mp3'],
     limitations: ['This MVP supports MP3, not FLAC, WAV, AAC, or Ogg.', 'Lyrics and embedded artwork bytes are not rendered.', 'Audio metadata removal is intentionally not included.'],
-    faqs: [{ question: 'Will this play or fingerprint the song?', answer: 'No. It only reads stored tags and technical header information.' }, { question: 'Why is the album art not shown?', answer: 'The MVP reports whether cover art exists but avoids decoding or persisting that embedded binary.' }, { question: 'Can ID3 tags be wrong?', answer: 'Absolutely. Tags are editable labels, so verify important claims elsewhere.' }], related: inspectRelated,
+    faqs: [
+      { question: 'Is the MP3 uploaded or saved?', answer: 'No. The audio stays in this browser tab while local parsers read it. The file, filename, hashes, tags, and report are not uploaded or added to a listening history.' },
+      { question: 'Which MP3 tags does the viewer read?', answer: 'It reads available ID3 title, artist, album, album artist, track, disc, year, genre, composer, comments, encoder labels, and technical MPEG information.' },
+      { question: 'Will this play, transcribe, or fingerprint the song?', answer: 'No. It reads stored tags and technical headers without playing audio, recognizing speech, matching a music database, or generating an acoustic fingerprint.' },
+      { question: 'Why is embedded album art summarized instead of displayed?', answer: 'The safe report records the artwork type and size without exporting the binary payload or creating another persistent copy of the image.' },
+      { question: 'Can ID3 tags be wrong?', answer: 'Yes. Anyone with a tag editor can change the title, artist, year, genre, or comments. Use those fields as file labels rather than proof of authorship or ownership.' },
+    ], related: inspectRelated,
   },
   privacy: {
     title: 'Image Privacy Checker', metaTitle: 'Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata', path: '/image-privacy-checker/', eyebrow: 'Explainable risk scan', icon: 'shield', mode: 'privacy', productionPrivacyChecker: true,

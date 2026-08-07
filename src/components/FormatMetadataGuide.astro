@@ -1,0 +1,45 @@
+---
+import { IconGlyph } from './IconGlyph';
+import type { FormatGuide } from '../content/tools';
+
+interface Props {
+  guide: FormatGuide;
+  limitations: string[];
+}
+
+const { guide, limitations } = Astro.props;
+---
+
+<section class="home-benefits format-guide-benefits" aria-labelledby="format-guide-title">
+  <header class="home-section-heading">
+    <span class="section-index">{guide.valueEyebrow}</span>
+    <div><h2 id="format-guide-title">{guide.valueTitle}</h2><p>{guide.valueDescription}</p></div>
+  </header>
+  <div class="home-benefit-grid">
+    {guide.benefits.map((item) => <a href={item.href}>
+      <span class="home-benefit-icon"><IconGlyph name={item.icon} size={25} /></span>
+      <small>{item.kicker}</small>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+      <strong>{item.action} <IconGlyph name="arrow" size={15} /></strong>
+    </a>)}
+  </div>
+</section>
+
+<section class="home-process format-guide-process" aria-labelledby="format-process-title">
+  <header>
+    <span class="section-index">LOCAL, STEP BY STEP</span>
+    <h2 id="format-process-title">{guide.processTitle}</h2>
+    <p>{guide.processDescription}</p>
+  </header>
+  <div class="home-process-body">
+    <ol class="home-process-list">
+      {guide.steps.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.description}</p></div></li>)}
+    </ol>
+    <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
+    <details class="format-guide-limitations">
+      <summary>What this report cannot prove</summary>
+      <ul>{limitations.map((item) => <li>{item}</li>)}</ul>
+    </details>
+  </div>
+</section>

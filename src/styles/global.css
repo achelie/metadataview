@@ -1438,6 +1438,12 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .home-process-cta { margin: 1.25rem 24px 0 0; padding-top: 1rem; display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--ink); font-size: .84rem; font-weight: 900; }
 .home-process-cta a { display: inline-flex; align-items: center; gap: .35rem; color: var(--rust); }
 .home-process-cta a:hover { color: var(--ink); background: var(--acid); }
+.format-guide-benefits { border-top: 1px solid var(--ink); }
+.format-guide-process { margin-bottom: clamp(4rem,8vw,7rem); }
+.format-guide-limitations { margin: 1rem 24px 0 0; border-bottom: 1px solid var(--ink); }
+.format-guide-limitations summary { padding: .9rem 0; cursor: pointer; color: var(--rust); font-size: .82rem; font-weight: 900; }
+.format-guide-limitations ul { margin: 0; padding: 0 0 1.1rem 1.15rem; color: var(--ink-soft); }
+.format-guide-limitations li + li { margin-top: .45rem; }
 
 .tool-notes,.specialized-notes { display: grid; grid-template-columns: minmax(230px,.55fr) minmax(0,1.45fr); gap: clamp(2rem,6vw,6rem); padding: clamp(3.5rem,7vw,6rem) 0; border-top: 1px solid var(--ink); }
 .tool-notes h2,.specialized-notes h2 { margin: .5rem 0 .7rem; font-size: clamp(2.45rem,4.5vw,4.3rem); }
@@ -1473,6 +1479,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .home-process-list { padding-right: 12px; }
   .home-process-list li:nth-child(even) { transform: translateX(12px); }
   .home-process-cta { margin-right: 12px; }
+  .format-guide-limitations { margin-right: 12px; }
 }
 
 @media (max-width: 680px) {
@@ -1524,6 +1531,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .home-process-list li,.home-process-list li:nth-child(even) { grid-template-columns: 44px minmax(0,1fr); gap: .8rem; padding: .85rem; transform: none; }
   .home-process-list b { width: 35px; height: 35px; font-size: .9rem; box-shadow: 2px 2px 0 var(--rust); }
   .home-process-cta { margin-right: 0; flex-direction: column; }
+  .format-guide-limitations { margin-right: 0; }
   .expanded-faq-list article { padding-left: .85rem; }
   .tool-notes,.specialized-notes { grid-template-columns: 1fr; gap: 1.5rem; padding-block: 3.2rem; }
   .tool-limitations { grid-column: 1; }
