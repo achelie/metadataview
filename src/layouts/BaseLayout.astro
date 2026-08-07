@@ -35,6 +35,7 @@ const canonical = canonicalUrl(path, Astro.site);
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="7tLAA9e0vH5NusPCfeDVgw" async></script>
     {noindex && <meta name="robots" content="noindex" />}
     {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
   </head>
