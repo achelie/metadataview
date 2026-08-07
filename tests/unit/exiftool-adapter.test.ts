@@ -7,6 +7,7 @@ import {
   recordExifToolFailure,
 } from '../../src/lib/metadata-report/exiftool-adapter';
 import { createMetadataReport } from '../../src/lib/metadata-report/create-report';
+import { IMAGE_FULL_SCAN_MODE, IMAGE_FULL_SCAN_TIMEOUT_MS } from '../../src/lib/metadata-report/scan-policy';
 import type { FileEvidence } from '../../src/lib/metadata-report/types';
 import type { ParsedMetadata } from '../../src/lib/metadata/types';
 
@@ -42,6 +43,12 @@ describe('ExifTool command and adapter', () => {
     expect(standard).toContain('RequestAll=3');
     expect(standard).not.toContain('-ee3');
     expect(buildExifToolArgs('embedded')[1]).toBe('-ee3');
+  });
+
+  it('pins every automatic image scan to the one-pass embedded policy', () => {
+    expect(IMAGE_FULL_SCAN_MODE).toBe('embedded');
+    expect(IMAGE_FULL_SCAN_TIMEOUT_MS).toBe(180_000);
+    expect(buildExifToolArgs(IMAGE_FULL_SCAN_MODE)).toContain('-ee3');
   });
 
   it('creates a safe virtual filename while retaining the detected extension', () => {

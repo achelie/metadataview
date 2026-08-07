@@ -1,20 +1,19 @@
 import type { PrivacyReport } from '../../lib/privacy/types';
 
 function conclusion(report: PrivacyReport): string {
-  const parts = [report.summary.hasPreciseLocation ? 'precise location' : report.summary.hasApproximateLocation ? 'a named location' : '', report.summary.hasCaptureTime ? 'capture time' : '', report.summary.hasDeviceIdentifier ? 'a device identifier' : '', report.summary.hasIdentityInformation ? 'identity information' : '', report.summary.hasAiGenerationData ? 'AI generation data' : ''].filter(Boolean);
-  if (!parts.length) return 'No supported privacy-sensitive metadata was detected at this scan depth.';
+  const parts = [report.summary.hasPreciseLocation ? 'precise location' : report.summary.hasApproximateLocation ? 'a named location' : '', report.summary.hasCaptureTime ? 'capture time' : '', report.summary.hasDeviceIdentifier ? 'a device identifier' : '', report.summary.hasIdentityInformation ? 'identity information' : ''].filter(Boolean);
+  if (!parts.length) return 'No supported privacy-sensitive metadata has been detected in the current result.';
   const tail = parts.pop();
   return `This image contains ${parts.length ? `${parts.join(', ')} and ` : ''}${tail}.`;
 }
 
-export function PrivacyScore({ report }: { report: PrivacyReport }) {
+export function PrivacyScore({ report, pending = false }: { report: PrivacyReport; pending?: boolean }) {
   const highCount = report.risks.filter((risk) => risk.severity === 'critical' || risk.severity === 'high').length;
-  const previous = report.scoreTimeline.at(-2);
-  const delta = previous ? report.score - previous.score : 0;
+  const exif = report.engines.find((engine) => engine.id === 'exiftool');
+  const label = pending ? 'Full scan running' : report.completeness === 'embedded' && exif?.status === 'complete' ? 'Full scan complete' : 'Full scan incomplete';
   return <section className={`privacy-scoreboard level-${report.level.toLowerCase()}`} aria-labelledby="privacy-score-heading">
     <div className="privacy-score-number"><span id="privacy-score-heading">Privacy score</span><strong>{report.score}</strong><small>/ 100 · rule-based</small></div>
-    <div className="privacy-score-reading"><span className="eyebrow">{report.completeness} report</span><h2>{report.level}</h2><p>{conclusion(report)}</p>{previous && <p className="privacy-score-delta"><b>{delta > 0 ? `+${delta}` : delta}</b> from {previous.stage} scan · {report.scoreTimeline.at(-1)?.addedRiskIds.length ?? 0} newly supported risks</p>}<div className="privacy-progress" role="progressbar" aria-label={`Privacy score ${report.score} out of 100, ${report.level} level`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={report.score}><i style={{ width: `${report.score}%` }} /></div></div>
+    <div className="privacy-score-reading"><span className="eyebrow">{label}</span><h2>{report.level}</h2><p>{conclusion(report)}</p>{pending ? <p className="privacy-score-delta">The score can change while ExifTool checks embedded previews and nested records.</p> : null}<div className="privacy-progress" role="progressbar" aria-label={`Privacy score ${report.score} out of 100, ${report.level} level`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={report.score}><i style={{ width: `${report.score}%` }} /></div></div>
     <dl><div><dt>Risks</dt><dd>{report.risks.length}</dd></div><div><dt>High priority</dt><dd>{highCount}</dd></div><div><dt>Sensitive fields</dt><dd>{report.sensitiveFieldCount}</dd></div></dl>
-    {report.scoreTimeline.length > 1 && <ol className="privacy-score-timeline" aria-label="Privacy score history">{report.scoreTimeline.map((item) => <li key={`${item.stage}-${item.generatedAt}`}><span>{item.stage}</span><strong>{item.score}</strong><small>{item.riskCount} risks · {item.fieldCount} fields</small></li>)}</ol>}
   </section>;
 }

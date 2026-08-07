@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://achelie-metadataview.pages.dev/sitemap-index.xml
+Sitemap: https://www.viewexif.com/sitemap-index.xml

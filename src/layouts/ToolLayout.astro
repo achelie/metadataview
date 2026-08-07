@@ -2,28 +2,29 @@
 import BaseLayout from './BaseLayout.astro';
 import ToolHero from '../components/ToolHero.astro';
 import ToolWorkbench, { type ToolMode } from '../components/ToolWorkbench';
-import ImageMetadataWorkbench from '../components/ImageMetadataWorkbench';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
 import ImageMetadataSeo from '../components/ImageMetadataSeo.astro';
 import PrivacyChecker from '../components/privacy/PrivacyChecker';
 import MetadataRemover from '../components/privacy/MetadataRemover';
+import C2paWorkbench from '../components/C2paWorkbench';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
+import { canonicalUrl } from '../lib/seo';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
 interface Props {
   title: string; metaTitle: string; description: string; shortDescription: string; path: string; eyebrow: string; icon: IconName;
   mode: ToolMode; formats: string; accept: string; allowedTypes?: string[]; highlights: string[];
-  productionImageViewer?: boolean;
   productionMetadataReport?: boolean;
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
+  productionC2paViewer?: boolean;
   limitations: string[]; faqs: Faq[]; related: Related[];
 }
 const props = Astro.props;
-const canonical = new URL(props.path, Astro.site ?? 'https://achelie-metadataview.pages.dev').toString();
+const canonical = canonicalUrl(props.path, Astro.site);
 const visibleFaqs = props.faqs.slice(0, 4);
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: canonical, description: props.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
@@ -35,8 +36,8 @@ const schemas = [
   <div class="page-shell">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} />
-    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionImageViewer ? <ImageMetadataWorkbench client:load /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemover client:load /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
-    {props.productionImageViewer ? <ImageMetadataSeo /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
+    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemover client:load /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    {props.metadataReportScope === 'image' ? <ImageMetadataSeo /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
       <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
       <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
       <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>

@@ -19,6 +19,7 @@ import { ExifToolCancellationError, ExifToolWorkerClient } from '../lib/exiftool
 import { IMAGE_LIMITS } from '../lib/metadata/limits';
 import { sanitizeFilename } from '../lib/metadata/utils';
 import { mergeExifToolInspection, recordExifToolFailure } from '../lib/metadata-report/exiftool-adapter';
+import { IMAGE_FULL_SCAN_MODE, IMAGE_FULL_SCAN_TIMEOUT_MS, STANDARD_SCAN_TIMEOUT_MS } from '../lib/metadata-report/scan-policy';
 import { createSafeReportExport } from '../lib/metadata-report/safe-export';
 import type { MetadataInspectionMode, MetadataReport, MetadataReportField, MetadataReportSection } from '../lib/metadata-report/types';
 import { runWorkerTask, type WorkerTask } from '../lib/worker-client';
@@ -143,7 +144,14 @@ function HeaderHex({ bytes }: { bytes: number[] }) {
   </div>;
 }
 
-function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode): string {
+function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, fullImageScan: boolean): string {
+  if (fullImageScan) {
+    if (status === 'loading' || status === 'extracting' || status === 'building') return 'Scanning every metadata field, embedded preview, and nested image record locally.';
+    if (status === 'complete') return 'The full image scan is complete. Every safe ExifTool result is now searchable below.';
+    if (status === 'failed') return 'The full scan stopped. The browser-only report is intact and can be exported or retried.';
+    if (status === 'canceled') return 'The full scan was canceled. The browser-only report is still usable.';
+    return 'The browser-only report is ready. The full image scan has not started.';
+  }
   if (status === 'loading') return 'Loading the ExifTool engine from this site. Nothing from the file leaves this tab.';
   if (status === 'extracting') return mode === 'embedded' ? 'Walking tags and embedded documents locally. This is the slow pass.' : 'Reading every standard tag locally, including unknown and duplicate instances.';
   if (status === 'building') return 'Turning native tags into searchable report rows.';
@@ -245,7 +253,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       const inspection = await client.inspect(selected, mode, (stage) => {
         if (runId.current !== currentId) return;
         setExifStatus(stage);
-      }, mode === 'embedded' ? 180_000 : 120_000);
+      }, mode === 'embedded' ? IMAGE_FULL_SCAN_TIMEOUT_MS : STANDARD_SCAN_TIMEOUT_MS);
       if (runId.current !== currentId) return;
       const merged = mergeExifToolInspection(baseReport, inspection);
       setReport(merged);
@@ -285,8 +293,9 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       setReport(result);
       if (result.category === 'image' && !previewUrl.current) showPreview(selected);
       const ignored = extraFiles ? `; ${extraFiles} extra ${extraFiles === 1 ? 'file was' : 'files were'} ignored` : '';
-      setNotice(`Fast report ready · ${result.nativeSections.flatMap((section) => section.fields).length.toLocaleString('en-US')} native fields; ExifTool is running below${ignored}`);
-      void inspectWithExifTool(selected, currentId, result, 'standard');
+      const imageReport = result.category === 'image';
+      setNotice(`Initial report ready · ${result.nativeSections.flatMap((section) => section.fields).length.toLocaleString('en-US')} native fields; ${imageReport ? 'the full image scan' : 'ExifTool'} is running below${ignored}`);
+      void inspectWithExifTool(selected, currentId, result, imageReport ? IMAGE_FULL_SCAN_MODE : 'standard');
     } catch (caught) {
       if (runId.current !== currentId) return;
       setError(caught instanceof Error ? caught.message : 'The local parser could not read this file.');
@@ -317,6 +326,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
   const allFields = useMemo(() => report ? [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields) : [], [report]);
   const sensitiveFields = report?.readableSections.flatMap((section) => section.fields).filter((field) => field.sensitive) ?? [];
   const exifEngine = report?.engines.find((engine) => engine.id === 'exiftool');
+  const fullImageScan = report?.category === 'image';
 
   const copied = async (text: string, message: string) => {
     try { await copyText(text); setNotice(message); }
@@ -349,8 +359,9 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
 
   const stopExifTool = () => {
     exifTool.current?.cancel();
+    setReport((current) => current ? recordExifToolFailure(current, 'Canceled by user.', exifMode) : current);
     setExifStatus('canceled');
-    setNotice('ExifTool scan canceled; the fast report remains available');
+    setNotice(`${fullImageScan ? 'Full image' : 'ExifTool'} scan canceled; the initial report remains available`);
   };
 
   return <section className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
@@ -390,19 +401,19 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
         </div>
       </section>
 
-      <section className={`report-engine is-${exifStatus}`} aria-label="ExifTool inspection status">
+      <section className={`report-engine is-${exifStatus}${fullImageScan ? ' is-full-scan' : ''}`} aria-label="ExifTool inspection status" aria-busy={exifRunning}>
         <div className="report-engine-mark"><Icon icon={cpuIcon} width="24" /></div>
-        <div className="report-engine-copy"><span className="eyebrow">Deep field engine</span><strong>ExifTool {exifEngine?.version || 'WebAssembly'}</strong><p>{engineMessage(exifStatus, exifMode)}</p></div>
-        <ol aria-label="ExifTool progress"><li data-state={exifStatus === 'loading' ? 'active' : exifStatus === 'idle' ? 'waiting' : 'done'}>Load engine</li><li data-state={exifStatus === 'extracting' ? 'active' : ['building', 'complete'].includes(exifStatus) ? 'done' : 'waiting'}>Read tags</li><li data-state={exifStatus === 'building' ? 'active' : exifStatus === 'complete' ? 'done' : 'waiting'}>Build report</li></ol>
-        <div className="report-engine-stats"><span>{exifMode === 'embedded' ? 'Embedded scan' : 'Standard scan'}</span><b>{exifEngine?.fieldCount?.toLocaleString('en-US') || '—'} fields</b></div>
-        <div className="report-engine-actions">{exifRunning ? <button className="button button-ghost" type="button" onClick={stopExifTool}><Icon icon={xIcon} width="16" />Stop deep scan</button> : null}{exifStatus === 'complete' && exifMode === 'standard' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool('embedded')}><Icon icon={scanIcon} width="16" />Scan embedded data</button> : null}{exifStatus === 'failed' || exifStatus === 'canceled' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool('standard')}><Icon icon={scanIcon} width="16" />Retry ExifTool</button> : null}</div>
+        <div className="report-engine-copy"><span className="eyebrow">{fullImageScan ? 'One-pass image inspection' : 'Deep field engine'}</span><strong>{fullImageScan ? exifRunning ? 'Scanning every metadata field…' : exifStatus === 'complete' ? 'Full scan complete' : exifStatus === 'failed' || exifStatus === 'canceled' ? 'Full scan incomplete' : 'Full image scan' : `ExifTool ${exifEngine?.version || 'WebAssembly'}`}</strong><p>{engineMessage(exifStatus, exifMode, Boolean(fullImageScan))}</p></div>
+        {!fullImageScan ? <ol aria-label="ExifTool progress"><li data-state={exifStatus === 'loading' ? 'active' : exifStatus === 'idle' ? 'waiting' : 'done'}>Load engine</li><li data-state={exifStatus === 'extracting' ? 'active' : ['building', 'complete'].includes(exifStatus) ? 'done' : 'waiting'}>Read tags</li><li data-state={exifStatus === 'building' ? 'active' : exifStatus === 'complete' ? 'done' : 'waiting'}>Build report</li></ol> : null}
+        <div className="report-engine-stats"><span>{fullImageScan ? `ExifTool ${exifEngine?.version || 'WASM'}` : exifMode === 'embedded' ? 'Embedded scan' : 'Standard scan'}</span><b>{exifEngine?.fieldCount?.toLocaleString('en-US') || (exifRunning ? 'Counting…' : '—')} fields</b></div>
+        <div className="report-engine-actions">{exifRunning ? <button className="button button-ghost" type="button" onClick={stopExifTool}><Icon icon={xIcon} width="16" />{fullImageScan ? 'Cancel full scan' : 'Stop deep scan'}</button> : null}{!fullImageScan && exifStatus === 'complete' && exifMode === 'standard' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool('embedded')}><Icon icon={scanIcon} width="16" />Scan embedded data</button> : null}{exifStatus === 'failed' || exifStatus === 'canceled' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool(fullImageScan ? IMAGE_FULL_SCAN_MODE : exifMode)}><Icon icon={scanIcon} width="16" />{fullImageScan ? 'Retry full scan' : 'Retry ExifTool'}</button> : null}</div>
       </section>
 
       {report.warnings.length > 0 ? <section className="report-warnings" aria-label="Parser warnings"><Icon icon={warningIcon} width="22" /> <div><strong>{report.warnings.length} parser {report.warnings.length === 1 ? 'note' : 'notes'}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">Privacy pass</span><strong>{sensitiveFields.length ? `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found` : 'No common sensitive fields in the readable set'}</strong><p>Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.</p></div>
-        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover">Remove image metadata</a></div>
+        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover/">Remove image metadata</a></div>
       </section> : null}
 
       <section className="report-ledger" aria-labelledby="metadata-results-heading">
@@ -427,7 +438,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       </section>
 
       <footer className="report-export">
-        <div><span className="eyebrow">Take the receipt</span><h3>Complete JSON, readable PDF, or a quick copy.</h3><p>{exifRunning ? 'Full exports unlock when the local ExifTool pass finishes. Copy visible remains available now.' : 'PDF deliberately trims giant fields. JSON is the complete safe record and never includes file bytes or preview URLs.'}</p></div>
+        <div><span className="eyebrow">Take the receipt</span><h3>Complete JSON, readable PDF, or a quick copy.</h3><p>{exifRunning ? `${fullImageScan ? 'Full image' : 'ExifTool'} exports unlock when the local scan finishes. Copy visible remains available now.` : 'PDF deliberately trims giant fields. JSON is the complete safe record and never includes file bytes or preview URLs.'}</p></div>
         <div className="report-export-buttons">
           <button className="button button-ghost" type="button" disabled={exifRunning} onClick={() => void copied(linesFor(allFields), 'All readable and native fields copied')}><Icon icon={copyIcon} width="16" />Copy all</button>
           <button className="button button-ghost" type="button" disabled={!matchingFields.length} onClick={() => void copied(linesFor(matchingFields), `${matchingFields.length} visible fields copied`)}><Icon icon={copyIcon} width="16" />Copy visible</button>

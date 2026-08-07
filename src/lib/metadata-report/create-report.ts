@@ -21,7 +21,7 @@ function fieldFromItem(item: MetadataItem, sectionId: string, index: number): Me
     source,
     value,
     displayValue,
-    sensitive: item.sensitive ?? /gps|location|serial|owner|author|email|date|thumbnail|prompt|workflow/i.test(path),
+    sensitive: item.sensitive ?? /gps|location|serial|owner|author|email|date|thumbnail/i.test(path),
     searchValue: item.searchValue ?? `${item.label ?? item.key} ${path} ${source} ${displayValue}`.slice(0, IMAGE_LIMITS.searchPreviewChars),
     origin: 'parser',
     groupPath: source,

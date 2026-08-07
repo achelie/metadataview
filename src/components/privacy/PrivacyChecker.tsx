@@ -12,7 +12,7 @@ import { MetadataError } from '../../lib/metadata/errors';
 import { IMAGE_LIMITS } from '../../lib/metadata/limits';
 import type { NormalizedImageMetadata } from '../../lib/metadata/types';
 import { downloadJson } from '../../lib/metadata/utils';
-import type { MetadataInspectionMode } from '../../lib/metadata-report/types';
+import { IMAGE_FULL_SCAN_MODE, IMAGE_FULL_SCAN_TIMEOUT_MS } from '../../lib/metadata-report/scan-policy';
 import { recordPrivacyScanFailure } from '../../lib/privacy/create-privacy-report';
 import { createAndVerifyPrivacyCleanup } from '../../lib/privacy/cleanup-workflow';
 import { createSafeCleanupReceipt, privacyCleanupReceiptFilename } from '../../lib/privacy/safe-report-export';
@@ -27,8 +27,6 @@ import { PrivacyScore } from './PrivacyScore';
 import { PrivacySummary } from './PrivacySummary';
 
 const ACCEPT = 'image/jpeg,image/png,image/webp';
-const STANDARD_TIMEOUT = 120_000;
-const EMBEDDED_TIMEOUT = 180_000;
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -52,8 +50,7 @@ export default function PrivacyChecker() {
   const [dragging, setDragging] = useState(false);
   const [quickBusy, setQuickBusy] = useState(false);
   const [deepPending, setDeepPending] = useState(false);
-  const [deepStage, setDeepStage] = useState<ExifToolProgressStage | null>(null);
-  const [deepMode, setDeepMode] = useState<MetadataInspectionMode>('standard');
+  const [, setDeepStage] = useState<ExifToolProgressStage | null>(null);
   const [status, setStatus] = useState('Waiting for a JPEG, PNG, or WebP');
   const [source, setSource] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -125,21 +122,20 @@ export default function PrivacyChecker() {
     });
   }, [report?.file.name]);
 
-  const runMainDeepScan = async (file: File, parsed: NormalizedImageMetadata, previous: PrivacyReport, mode: MetadataInspectionMode, current: number) => {
+  const runFullScan = async (file: File, parsed: NormalizedImageMetadata, previous: PrivacyReport, current: number) => {
     setDeepPending(true);
-    setDeepMode(mode);
     setDeepStage('loading');
-    setStatus(`${mode === 'embedded' ? 'Embedded' : 'Standard'} privacy scan running locally`);
+    setStatus('Scanning every metadata field locally');
     try {
-      const inspection = await exifClient.current!.inspectPrivacy(file, parsed, previous, mode, setDeepStage, mode === 'embedded' ? EMBEDDED_TIMEOUT : STANDARD_TIMEOUT);
+      const inspection = await exifClient.current!.inspectPrivacy(file, parsed, previous, IMAGE_FULL_SCAN_MODE, setDeepStage, IMAGE_FULL_SCAN_TIMEOUT_MS);
       if (request.current !== current) return;
       setReport(inspection.report);
-      setStatus(`${mode === 'embedded' ? 'Embedded' : 'Standard'} scan complete · ${inspection.report.risks.length} supported risks`);
+      setStatus(`Full scan complete · ${inspection.report.risks.length} supported risks`);
     } catch (caught) {
       if (request.current !== current) return;
       const message = caught instanceof ExifToolCancellationError ? 'Canceled by user.' : errorMessage(caught);
-      setReport((value) => value ? recordPrivacyScanFailure(value, mode, message) : value);
-      setStatus(`${mode === 'embedded' ? 'Embedded' : 'Standard'} scan stopped · the current report remains usable`);
+      setReport((value) => value ? recordPrivacyScanFailure(value, IMAGE_FULL_SCAN_MODE, message) : value);
+      setStatus('Full scan incomplete · the browser-only result remains usable');
     } finally {
       if (request.current === current) {
         setDeepPending(false);
@@ -176,7 +172,7 @@ export default function PrivacyChecker() {
     }
 
     setQuickBusy(true);
-    setStatus('Building the Quick report in a local Worker');
+    setStatus('Reading image structure in a local Worker');
     try {
       const quick = await quickClient.current!.checkPrivacy(file);
       if (request.current !== current) return;
@@ -184,8 +180,8 @@ export default function PrivacyChecker() {
       setReport(quick.report);
       if (quick.metadata.file.animated || quick.metadata.file.width > IMAGE_LIMITS.canvasSide || quick.metadata.file.height > IMAGE_LIMITS.canvasSide || quick.metadata.file.width * quick.metadata.file.height > IMAGE_LIMITS.canvasPixels) setCleanupMode('preserve-encoding');
       setQuickBusy(false);
-      setStatus(`Quick report ready · starting ExifTool standard scan`);
-      void runMainDeepScan(file, quick.metadata, quick.report, 'standard', current);
+      setStatus('Initial result ready · starting the full image scan');
+      void runFullScan(file, quick.metadata, quick.report, current);
     } catch (caught) {
       if (request.current !== current || (caught instanceof MetadataError && caught.code === 'PARSE_CANCELLED')) return;
       setError({ code: caught instanceof MetadataError ? caught.code : 'UNKNOWN_PARSE_ERROR', message: errorMessage(caught) });
@@ -237,20 +233,20 @@ export default function PrivacyChecker() {
     <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
 
     {!selection && <div className={`privacy-dropzone ${dragging ? 'is-dragging' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
-      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Before you post it</span><strong>Drop an image here</strong><p id="privacy-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><button ref={chooseButton} className="button button-primary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }} aria-describedby="privacy-drop-help">Choose an image</button></div><p className="privacy-check-scope">Checks GPS, names, device IDs, editing history, thumbnails, and AI data.</p><small>Quick results appear first. ExifTool loads only after you choose an image.</small>
+      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Before you post it</span><strong>Drop an image here</strong><p id="privacy-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><button ref={chooseButton} className="button button-primary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }} aria-describedby="privacy-drop-help">Choose an image</button></div><p className="privacy-check-scope">Checks GPS, names, device IDs, editing history, thumbnails, and nested image records.</p><small>The initial result appears fast, then one automatic full scan finishes the job.</small>
     </div>}
 
-    {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={imageIcon} width="26" /></span><div><strong>Building the Quick report</strong><p>Image bytes are parsed off the main thread. ExifTool starts only after this first result appears.</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />Cancel</button></div>}
+    {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={imageIcon} width="26" /></span><div><strong>Reading the image structure</strong><p>The first usable result appears before the automatic full scan finishes.</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />Cancel</button></div>}
     {notice && <p className="image-notice" role="status">{notice}</p>}
     {error && <div className="image-error" role="alert"><Icon icon={alertIcon} width="26" /><div><span>{error.code}</span><strong>We stopped without keeping a report.</strong><p>{error.message}</p><button className="button button-secondary" type="button" onClick={clearState}>Choose another image</button></div></div>}
 
-    {selection && !quickBusy && <div className="privacy-result-actions"><div><span className="eyebrow">Local privacy receipt</span><h2 ref={resultHeading} tabIndex={-1}>{report ? `${report.file.name} has a ${report.completeness} report` : 'No report was created'}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }}><Icon icon={rotateIcon} width="16" />Replace image</button><button className="button button-ghost" type="button" onClick={clearState}>Clear</button></div></div>}
+    {selection && !quickBusy && <div className="privacy-result-actions"><div><span className="eyebrow">Local privacy receipt</span><h2 ref={resultHeading} tabIndex={-1}>{report ? `${report.file.name} privacy report` : 'No report was created'}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }}><Icon icon={rotateIcon} width="16" />Replace image</button><button className="button button-ghost" type="button" onClick={clearState}>Clear</button></div></div>}
 
     {report && metadata && source && <div className="privacy-result-shell">
-      <section className="privacy-file-overview" aria-label="Checked image summary">{preview && <figure><img src={preview} alt="Local preview of the selected image" /><figcaption>Local preview · never uploaded</figcaption></figure>}<div className="privacy-file-strip"><div><span>File</span><strong title={metadata.file.name}>{metadata.file.name}</strong></div><div><span>Actual format</span><strong>{metadata.file.actualFormat.toUpperCase()}</strong></div><div><span>Size</span><strong>{formatBytes(metadata.file.size)}</strong></div><div><span>Dimensions</span><strong>{metadata.file.width} × {metadata.file.height}</strong></div><div><span>Animation</span><strong>{metadata.file.animated ? 'Animated' : 'Static'}</strong></div><div><span>Quick fields</span><strong>{metadata.file.metadataFieldCount}</strong></div></div></section>
+      <section className="privacy-file-overview" aria-label="Checked image summary">{preview && <figure><img src={preview} alt="Local preview of the selected image" /><figcaption>Local preview · never uploaded</figcaption></figure>}<div className="privacy-file-strip"><div><span>File</span><strong title={metadata.file.name}>{metadata.file.name}</strong></div><div><span>Actual format</span><strong>{metadata.file.actualFormat.toUpperCase()}</strong></div><div><span>Size</span><strong>{formatBytes(metadata.file.size)}</strong></div><div><span>Dimensions</span><strong>{metadata.file.width} × {metadata.file.height}</strong></div><div><span>Animation</span><strong>{metadata.file.animated ? 'Animated' : 'Static'}</strong></div><div><span>Browser fields</span><strong>{metadata.file.metadataFieldCount}</strong></div></div></section>
       {[...report.warnings, ...report.scanWarnings].length > 0 && <div className="warning-list privacy-rule-warnings">{[...new Set([...report.warnings, ...report.scanWarnings])].map((warning, index) => <p key={`${warning}-${index}`}><strong>SCAN_NOTE</strong> {warning}</p>)}</div>}
-      <PrivacyScanStatus report={report} pending={deepPending} stage={deepStage} mode={deepMode} onCancel={() => exifClient.current?.cancel()} onRetry={() => void runMainDeepScan(source, metadata, report, 'standard', request.current)} onEmbedded={() => void runMainDeepScan(source, metadata, report, 'embedded', request.current)} />
-      <PrivacyScore report={report} />
+      <PrivacyScanStatus report={report} pending={deepPending} onCancel={() => exifClient.current?.cancel()} onRetry={() => void runFullScan(source, metadata, report, request.current)} />
+      <PrivacyScore report={report} pending={deepPending} />
       <PrivacySummary report={report} />
       <PrivacyCleanupPanel report={report} metadata={metadata} mode={cleanupMode} pending={cleanupPending} baselinePending={deepPending} stage={cleanupStage} error={cleanupError} result={cleanupResult} onMode={setCleanupMode} onClean={() => void runCleanup()} onDownload={downloadClean} onReceipt={downloadReceipt} />
       <PrivacyRiskList report={report} />

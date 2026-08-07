@@ -4,9 +4,15 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://achelie-metadataview.pages.dev',
+  site: 'https://www.viewexif.com',
   output: 'static',
-  integrations: [react(), sitemap()],
+  trailingSlash: 'always',
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) => !page.endsWith('/404/'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     // The package contains a large generated runtime. Vite's development

@@ -39,14 +39,6 @@ export const privacyCombinationRules: PrivacyCombinationRule[] = [
     },
   },
   {
-    id: 'workflow-path-combination',
-    evaluate(_context, risks) {
-      const ids = ['comfy-workflow', 'local-file-path'];
-      if (!ids.every((id) => has(risks, [id]))) return null;
-      return makeRisk({ id: this.id, category: 'ai-generation', title: 'Workflow plus local file path', severity: 'critical', score: 10, fields: fields(risks, ids), description: 'The workflow preserves both a production graph and local paths that may expose usernames or project structure.', recommendation: recommendations.workflow, combination: true });
-    },
-  },
-  {
     id: 'location-identity-time-combination',
     evaluate(_context, risks) {
       if (!has(risks, ['precise-location']) || !has(risks, ['creator-identity', 'device-owner']) || !has(risks, ['capture-time'])) return null;

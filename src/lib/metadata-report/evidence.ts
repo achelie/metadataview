@@ -11,7 +11,7 @@ function formatHeader(bytes: number[]): { hex: string; ascii: string } {
   return { hex: rows.join('\n'), ascii: asciiRows.join('\n') };
 }
 
-export async function computeFileEvidence(file: Blob): Promise<FileEvidence> {
+export async function computeFileEvidence(file: Blob, signal?: AbortSignal): Promise<FileEvidence> {
   const { createMD5, createSHA256 } = await import('hash-wasm');
   const [sha256, md5] = await Promise.all([createSHA256(), createMD5()]);
   sha256.init();
@@ -19,11 +19,13 @@ export async function computeFileEvidence(file: Blob): Promise<FileEvidence> {
   const header: number[] = [];
   const chunkBytes = 2 * 1024 * 1024;
   for (let offset = 0; offset < file.size; offset += chunkBytes) {
+    if (signal?.aborted) throw new DOMException('File inspection was canceled.', 'AbortError');
     const value = new Uint8Array(await file.slice(offset, Math.min(file.size, offset + chunkBytes)).arrayBuffer());
     sha256.update(value);
     md5.update(value);
     if (header.length < 256) header.push(...Array.from(value.subarray(0, 256 - header.length)));
   }
+  if (signal?.aborted) throw new DOMException('File inspection was canceled.', 'AbortError');
   const formatted = formatHeader(header);
   return {
     sha256: sha256.digest('hex'),

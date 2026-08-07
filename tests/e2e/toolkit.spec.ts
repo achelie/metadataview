@@ -69,12 +69,12 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
   return Buffer.from(values);
 }
 
-test('home page opens with the universal metadata viewer and four direct next tools', async ({ page }) => {
+test('home page opens with the universal metadata viewer and three direct next tools', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
-  await expect(page.locator('.home-next-tools a')).toHaveCount(4);
-  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker');
+  await expect(page.locator('.home-next-tools a')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker/');
 });
 
 test('home page directly parses all six promised formats', async ({ page }) => {
@@ -98,14 +98,15 @@ test('shared report progressively merges the local ExifTool field set without up
   test.setTimeout(180_000);
   const requests: Array<{ method: string; url: string }> = [];
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
-  await page.goto('/image-metadata-viewer');
+  await page.goto('/image-metadata-viewer/');
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(false);
 
   const buffer = await canvasImage(page, 'image/jpeg');
   await upload(page, 'camera-profile.jpg', buffer, 'image/jpeg');
   await expect(page.getByRole('heading', { name: 'camera-profile.jpg metadata report' })).toBeVisible({ timeout: 20_000 });
   await expect(page.locator('.report-engine')).toHaveClass(/is-complete/, { timeout: 150_000 });
-  await expect(page.locator('.report-engine-copy')).toContainText(/ExifTool\s+\d/i);
+  await expect(page.locator('.report-engine-copy')).toContainText('Full scan complete');
+  await expect(page.locator('.report-engine-stats')).toContainText(/ExifTool\s+\d/i);
   await expect(page.locator('.report-engine-stats')).toContainText(/\d+ fields/);
 
   await page.getByRole('button', { name: /All fields/i }).click();
@@ -114,7 +115,8 @@ test('shared report progressively merges the local ExifTool field set without up
   await expect(jfifSummary).toBeVisible();
   await jfifSummary.click();
   await expect(jfif.getByText('JFIF Version', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /Scan embedded data/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Scan embedded data/i })).toHaveCount(0);
+  await expect(page.locator('.report-engine ol')).toHaveCount(0);
 
   expect(requests.some((request) => request.method !== 'GET')).toBe(false);
   expect(requests.some((request) => request.url.includes('camera-profile') || request.url.includes('ExifTool author'))).toBe(false);
@@ -131,7 +133,7 @@ test('universal report parses all six promised formats through one workbench', a
     ['fixture.mp3', 'audio/mpeg', mp3(), 'audio', 'Fixture Song'],
   ];
   for (const [name, mimeType, buffer, category, expected] of cases) {
-    await page.goto('/metadata-viewer');
+    await page.goto('/metadata-viewer/');
     await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
     await upload(page, name, buffer, mimeType);
     await expect(page.getByRole('heading', { name: new RegExp(`${name.replace('.', '\\.')} metadata report`) })).toBeVisible({ timeout: 20_000 });
@@ -142,16 +144,16 @@ test('universal report parses all six promised formats through one workbench', a
 });
 
 test('unsupported file gives a plain error', async ({ page }) => {
-  await page.goto('/metadata-viewer');
+  await page.goto('/metadata-viewer/');
   await upload(page, 'notes.txt', Buffer.from('not an image'), 'text/plain');
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
 test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ page }) => {
   const fixtures: Array<[string, string, string, Buffer, string]> = [
-    ['/pdf-metadata-viewer', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
-    ['/audio-metadata-viewer', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
-    ['/video-metadata-viewer', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
+    ['/pdf-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
+    ['/video-metadata-viewer/', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
   ];
   for (const [path, name, mimeType, buffer, expected] of fixtures) {
     await page.goto(path); await upload(page, name, buffer, mimeType);
@@ -160,17 +162,16 @@ test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ pag
   }
 });
 
-test('AI prompt reader displays stored parameters', async ({ page }) => {
-  await page.goto('/ai-prompt-reader');
-  const parameters = 'tiny orange square\nNegative prompt: blur\nSteps: 12, Sampler: Euler, CFG scale: 6, Seed: 42, Size: 1x1';
-  await upload(page, 'generated.png', png(['parameters', parameters]));
-  await expect(page.getByRole('heading', { name: 'Stored generation data' })).toBeVisible();
-  await expect(page.getByText('tiny orange square', { exact: true })).toBeVisible();
-  await expect(page.getByText('automatic1111', { exact: true })).toBeVisible();
+test('removed application-specific reader routes return the real 404 page', async ({ page }) => {
+  for (const path of ['/ai-prompt-reader/', '/comfyui-workflow-reader/']) {
+    const response = await page.goto(path);
+    expect(response?.status(), `${path} should not redirect`).toBe(404);
+    await expect(page.getByRole('heading', { name: /This field.*undefined/i })).toBeVisible();
+  }
 });
 
 test('privacy checker renders an explainable report', async ({ page }) => {
-  await page.goto('/image-privacy-checker');
+  await page.goto('/image-privacy-checker/');
   await upload(page, 'author.png', png(['Artist', 'Ada Example']));
   await expect(page.locator('.privacy-scoreboard')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Author or creator name' })).toBeVisible();
@@ -179,10 +180,10 @@ test('privacy checker renders an explainable report', async ({ page }) => {
 
 test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   test.setTimeout(90_000);
-  await page.goto('/metadata-remover');
+  await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
   await expect(page.locator('.privacy-scoreboard')).toBeVisible();
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('standard report ready', { timeout: 30_000 });
+  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   await expect(page.locator('.privacy-cleanup-result')).toContainText('15 → 0', { timeout: 45_000 });
   const downloadPromise = page.waitForEvent('download');
@@ -195,9 +196,9 @@ test('metadata remover desktop and mobile result stay usable without console err
   const errors: string[] = [];
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/metadata-remover');
+  await page.goto('/metadata-remover/');
   await upload(page, 'visual-removal.png', png(['Artist', 'Ada Example']));
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('standard report ready', { timeout: 30_000 });
+  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   const result = page.locator('.privacy-cleanup-result');
   await expect(result).toContainText('15 → 0', { timeout: 45_000 });
@@ -211,17 +212,29 @@ test('metadata remover desktop and mobile result stay usable without console err
   expect(errors).toEqual([]);
 });
 
-test('C2PA viewer reports no credential for an unsigned PNG', async ({ page }) => {
+test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', async ({ page }) => {
   test.setTimeout(45_000);
-  await page.goto('/c2pa-viewer');
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  await page.goto('/c2pa-viewer/');
+  expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(false);
   await upload(page, 'unsigned.png', png());
-  await expect(page.getByText('Not found', { exact: true })).toBeVisible({ timeout: 35_000 });
-  await expect(page.getByText(/does not mean that a file is fake/i)).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
+  await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
+  await expect(page.locator('.c2pa-hash code')).toHaveText(/^[a-f0-9]{64}$/);
+  await expect(page.getByText('Not applicable', { exact: true })).toHaveCount(4);
+  await page.getByRole('tab', { name: 'Validation' }).click();
+  await expect(page.locator('.c2pa-validation-columns')).toBeVisible();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download JSON' }).click();
+  expect((await downloadPromise).suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer', '/image-privacy-checker', '/metadata-remover', '/ai-prompt-reader', '/c2pa-viewer']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -229,7 +242,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer', '/image-metadata-viewer', '/image-privacy-checker', '/metadata-remover', '/ai-prompt-reader', '/comfyui-workflow-reader', '/c2pa-viewer'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {
@@ -246,7 +259,8 @@ test('primary file buttons are visible above the fold on desktop and mobile', as
 
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {
   await page.goto('/');
-  for (const label of ['View metadata', 'Check privacy', 'Remove metadata', 'Read AI prompts', 'Verify C2PA']) await expect(page.getByRole('link', { name: label, exact: true }).first()).toBeVisible();
+  for (const label of ['View metadata', 'Check privacy', 'Remove metadata', 'Verify C2PA']) await expect(page.getByRole('link', { name: label, exact: true }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: /Read AI prompts|ComfyUI/i })).toHaveCount(0);
   const text = await page.locator('body').innerText();
   expect(text).not.toMatch(/鈥|鈫|路|攁|攏|渘|渁|渟|�/);
 });

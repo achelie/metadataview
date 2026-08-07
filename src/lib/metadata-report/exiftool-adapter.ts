@@ -126,7 +126,7 @@ function binarySummary(displayValue: string): MetadataReportField['binarySummary
 }
 
 function isSensitive(path: string): boolean {
-  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|preview|prompt|workflow|parameters/i.test(path);
+  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|preview/i.test(path);
 }
 
 function sectionFor(groupPath: string, key: string): GroupDefinition {

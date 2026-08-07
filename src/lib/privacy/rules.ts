@@ -4,11 +4,10 @@ import { makeRisk } from './risk-utils';
 import type { IndexedPrivacyField, PrivacyRisk, PrivacyRule } from './types';
 
 function textFields(fields: IndexedPrivacyField[]): IndexedPrivacyField[] { return fields.filter((field) => typeof field.value === 'string' && field.value.trim().length > 0); }
-function imageGroup(field: IndexedPrivacyField, group: 'camera' | 'ai'): boolean {
+function cameraGroup(field: IndexedPrivacyField): boolean {
   const path = `${field.groupPath ?? ''}:${field.path}`.toLowerCase();
-  if (field.groupPath?.toLowerCase() === group || field.path.toLowerCase().startsWith(`${group}.`)) return true;
-  if (group === 'camera') return /(?:^|:)(?:ifd\d*|exif|makernotes?|canon|nikon|sony|fujifilm|olympus|panasonic|pentax|apple|samsung)(?::|$)/i.test(path);
-  return /(?:png|comfy|automatic1111|stable.?diffusion|generation|workflow|parameters)/i.test(path);
+  if (field.groupPath?.toLowerCase() === 'camera' || field.path.toLowerCase().startsWith('camera.')) return true;
+  return /(?:^|:)(?:ifd\d*|exif|makernotes?|canon|nikon|sony|fujifilm|olympus|panasonic|pentax|apple|samsung)(?::|$)/i.test(path);
 }
 function obviousCreator(field: IndexedPrivacyField): boolean {
   const value = String(field.value).trim();
@@ -44,11 +43,6 @@ function obviousContact(field: IndexedPrivacyField): boolean {
   if (/adr|address/i.test(field.originalKey)) return value.length >= 6;
   if (/url/i.test(field.originalKey)) return /^https?:\/\/\S+$/i.test(value);
   return phoneLikeValue(value);
-}
-function validWorkflow(field: IndexedPrivacyField): boolean {
-  if (field.value && typeof field.value === 'object') return Object.keys(field.value as Record<string, unknown>).length > 0;
-  if (typeof field.value !== 'string' || !/^\s*[\[{]/.test(field.value)) return false;
-  try { const parsed = JSON.parse(field.value); return Boolean(parsed && typeof parsed === 'object'); } catch { return false; }
 }
 function thumbnailValue(field: IndexedPrivacyField): boolean {
   return field.value === true || (typeof field.value === 'string' && /binary data|\d+ bytes|thumbnail/i.test(field.value));
@@ -95,7 +89,7 @@ export const privacyRules: PrivacyRule[] = [
   },
   {
     id: 'device-model', category: 'device', title: 'Camera or phone model', severity: 'low', weight: 5,
-    evaluate({ fieldIndex }) { const fields = fieldIndex.findFieldsByAliases(FIELD_ALIASES.deviceModel).filter((field) => imageGroup(field, 'camera')); return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields, description: 'The image names the camera, phone, or lens used to create it. This is usually a small privacy signal, not a direct identifier.', recommendation: recommendations.device }); },
+    evaluate({ fieldIndex }) { const fields = fieldIndex.findFieldsByAliases(FIELD_ALIASES.deviceModel).filter(cameraGroup); return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields, description: 'The image names the camera, phone, or lens used to create it. This is usually a small privacy signal, not a direct identifier.', recommendation: recommendations.device }); },
   },
   {
     id: 'device-identifier', category: 'device', title: 'Unique device identifier', severity: 'high', weight: 25,
@@ -156,26 +150,8 @@ export const privacyRules: PrivacyRule[] = [
     evaluate({ fieldIndex }) { return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields: fieldIndex.findFieldsByAliases(FIELD_ALIASES.thumbnail).filter(thumbnailValue), description: 'The file contains an embedded thumbnail that may preserve an earlier version of the image.', recommendation: recommendations.thumbnail }); },
   },
   {
-    id: 'ai-prompt', category: 'ai-generation', title: 'Stored AI prompt', severity: 'medium', weight: 8,
-    evaluate({ fieldIndex }) { return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields: textFields(fieldIndex.findFieldsByAliases(FIELD_ALIASES.aiPrompt)).filter((field) => !/^\s*[\[{]/.test(String(field.value))), description: 'Stored prompts may expose creative ideas, private names, project details, or working methods. A prompt is not automatically sensitive, but it is worth reviewing.', recommendation: recommendations.workflow }); },
-  },
-  {
-    id: 'ai-settings', category: 'ai-generation', title: 'AI model and generation settings', severity: 'low', weight: 5,
-    evaluate({ fieldIndex }) {
-      const fields = fieldIndex.findFieldsByAliases(FIELD_ALIASES.aiSettings).filter((field) => {
-        const key = field.normalizedKey;
-        return imageGroup(field, 'ai') || key !== 'model' || /(?:safetensors|checkpoint|diffusion|flux|sdxl|lora)/i.test(String(field.value));
-      });
-      return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields, description: 'Model, seed, LoRA, sampler, or scheduler details can reveal a production setup or make an output easier to reproduce.', recommendation: recommendations.workflow });
-    },
-  },
-  {
-    id: 'comfy-workflow', category: 'ai-generation', title: 'Complete ComfyUI workflow', severity: 'high', weight: 15,
-    evaluate({ fieldIndex }) { return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields: fieldIndex.findFieldsByAliases(FIELD_ALIASES.workflow).filter(validWorkflow), description: 'A complete workflow can expose graph structure, model filenames, LoRAs, custom nodes, node parameters, and local paths.', recommendation: recommendations.workflow }); },
-  },
-  {
     id: 'local-file-path', category: 'identity', title: 'Local file path', severity: 'high', weight: 20,
-    evaluate({ fieldIndex }) { const fields = fieldIndex.fields.filter((field) => !field.binary && (WINDOWS_PATH_PATTERN.test(fieldIndex.scanText(field)) || UNIX_PATH_PATTERN.test(fieldIndex.scanText(field)))); return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields, description: 'A local path may reveal a computer username, folder structure, project name, or internal asset location.', recommendation: recommendations.workflow }); },
+    evaluate({ fieldIndex }) { const fields = fieldIndex.fields.filter((field) => !field.binary && (WINDOWS_PATH_PATTERN.test(fieldIndex.scanText(field)) || UNIX_PATH_PATTERN.test(fieldIndex.scanText(field)))); return makeRisk({ id: this.id, category: this.category, title: this.title, severity: this.severity, score: this.weight, fields, description: 'A local path may reveal a computer username, folder structure, project name, or internal asset location.', recommendation: recommendations.path }); },
   },
   {
     id: 'internal-network-address', category: 'other', title: 'Internal address or credential-bearing URL', severity: 'medium', weight: 10,

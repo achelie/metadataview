@@ -2,30 +2,31 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
 import { IconGlyph } from '../components/IconGlyph';
+import { canonicalUrl } from '../lib/seo';
 
 const title = 'Metadata Viewer — Inspect Files Without Uploading';
 const description = 'View metadata in JPEG, PNG, WebP, PDF, MP4, and MP3 files directly in your browser. Search fields and export a complete local report.';
+const homeUrl = canonicalUrl('/', Astro.site);
 const faqs = [
   { question: 'Are my files uploaded anywhere?', answer: 'No. The selected file stays in browser memory. This static site has no upload endpoint or file history.' },
   { question: 'Which files can I inspect here?', answer: 'The viewer supports JPEG, PNG, WebP, PDF, MP4, and MP3 files up to 100 MB.' },
   { question: 'What happens when I refresh?', answer: 'The selected file and its report disappear. Neither is saved to localStorage or carried to another page.' },
 ];
 const schemas = [
-  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'MetadataView', url: 'https://achelie-metadataview.pages.dev/', description },
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: 'https://achelie-metadataview.pages.dev/', description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read six common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description, inLanguage: 'en' },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: homeUrl, description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read six common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatLinks = [
-  { href: '/image-metadata-viewer', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
-  { href: '/pdf-metadata-viewer', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
-  { href: '/video-metadata-viewer', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
-  { href: '/audio-metadata-viewer', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
+  { href: '/image-metadata-viewer/', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
+  { href: '/pdf-metadata-viewer/', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
+  { href: '/video-metadata-viewer/', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
+  { href: '/audio-metadata-viewer/', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
 ];
 const nextTools = [
-  { href: '/image-privacy-checker', icon: 'shield' as const, label: 'Check image privacy', note: 'Find GPS, names, device IDs, thumbnails, editing traces, and AI data.' },
-  { href: '/metadata-remover', icon: 'eraser' as const, label: 'Remove image metadata', note: 'Create a cleaned copy, rescan it, and download the verification receipt.' },
-  { href: '/ai-prompt-reader', icon: 'wand' as const, label: 'Read stored AI prompts', note: 'Recover prompts, seeds, models, LoRAs, and ComfyUI workflow data.' },
-  { href: '/c2pa-viewer', icon: 'badge' as const, label: 'Verify C2PA credentials', note: 'Check signed provenance with the official browser verifier.' },
+  { href: '/image-privacy-checker/', icon: 'shield' as const, label: 'Check image privacy', note: 'Find GPS, names, device IDs, thumbnails, and editing traces.' },
+  { href: '/metadata-remover/', icon: 'eraser' as const, label: 'Remove image metadata', note: 'Create a cleaned copy, rescan it, and download the verification receipt.' },
+  { href: '/c2pa-viewer/', icon: 'badge' as const, label: 'Verify C2PA credentials', note: 'Check signed provenance with the official browser verifier.' },
 ];
 ---
 <BaseLayout title={title} description={description} path="/" schemas={schemas}>
@@ -51,7 +52,7 @@ const nextTools = [
     <section class="home-local-note" aria-labelledby="local-title">
       <div><span class="section-index">LOCAL BY DESIGN</span><h2 id="local-title">The file never takes a network trip.</h2></div>
       <dl><div><dt>Upload route</dt><dd>None</dd></div><div><dt>File history</dt><dd>None</dd></div><div><dt>Refresh</dt><dd>Forgets the report</dd></div></dl>
-      <p>A local Worker reads the bytes in this tab. ExifTool loads from this site only after you choose a file. <a class="inline-link" href="/privacy">Read the privacy details</a></p>
+      <p>A local Worker reads the bytes in this tab. ExifTool loads from this site only after you choose a file. <a class="inline-link" href="/privacy/">Read the privacy details</a></p>
     </section>
 
     <section class="home-faq compact-faq"><div><span class="section-index">FAQ</span><h2>Three quick answers</h2></div><div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>

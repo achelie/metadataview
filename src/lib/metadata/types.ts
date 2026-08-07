@@ -70,7 +70,6 @@ export type ImageMetadataGroup =
   | 'dates'
   | 'author'
   | 'software'
-  | 'ai'
   | 'technical';
 
 export interface ImageMetadataField {

@@ -23,12 +23,9 @@ export const FIELD_ALIASES = Object.freeze({
   editingHistory: ['History', 'HistoryAction', 'HistoryParameters', 'HistorySoftwareAgent', 'DerivedFrom', 'DocumentAncestors', 'DocumentID', 'InstanceID', 'OriginalDocumentID', 'RenditionClass', 'MetadataDate'],
   thumbnail: ['HasEmbeddedThumbnail', 'Thumbnail', 'ThumbnailImage', 'PreviewImage', 'OtherImage', 'MPImage', 'JpgFromRaw', 'PreviewTIFF', 'GainMapImage', 'DepthMap'],
   originalFile: ['OriginalFileName', 'PreservedFileName', 'RawFileName', 'OriginalRawFileName', 'SourceFileName'],
-  aiPrompt: ['Positive Prompt', 'Prompt', 'Negative Prompt', 'Generation Parameters', 'parameters'],
-  aiSettings: ['Model', 'Model Hash', 'ModelHash', 'Seed', 'LoRA', 'LoRAs', 'Sampler', 'Scheduler'],
-  workflow: ['Workflow', 'ComfyUI Workflow', 'ComfyWorkflow'],
 });
 
-export const SOFTWARE_NAMES = /\b(?:adobe|photoshop|lightroom|capture one|gimp|imagemagick|image magick|comfyui|automatic1111|stable diffusion|fooocus|invokeai|novelai|metadataview)\b/i;
+export const SOFTWARE_NAMES = /\b(?:adobe|photoshop|lightroom|capture one|gimp|imagemagick|image magick|metadataview)\b/i;
 export const EMAIL_PATTERN = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i;
 export const WINDOWS_PATH_PATTERN = /\b[A-Za-z]:\\(?:Users|Documents and Settings|ProgramData|home)\\[^\s"'<>]+/i;
 export const UNIX_PATH_PATTERN = /(?:\/Users\/[^\s"'<>]+|\/home\/[^\s"'<>]+)/i;

@@ -26,7 +26,7 @@ function sourceFor(root: string): string {
 }
 
 function sensitive(path: string): boolean {
-  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|preview|prompt|workflow|parameters/i.test(path);
+  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|preview/i.test(path);
 }
 
 export function flattenNativeFields(rawInput: Record<string, unknown>, options: FlattenOptions = {}): MetadataReportSection[] {

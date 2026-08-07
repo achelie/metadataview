@@ -1,30 +1,21 @@
 import { Icon } from '@iconify/react';
-import checkIcon from '@iconify-icons/lucide/check-circle-2';
 import cpuIcon from '@iconify-icons/lucide/cpu';
 import stopIcon from '@iconify-icons/lucide/stop-circle';
-import type { ExifToolProgressStage } from '../../workers/exiftool-protocol';
-import type { MetadataInspectionMode } from '../../lib/metadata-report/types';
 import type { PrivacyReport } from '../../lib/privacy/types';
 
-const labels: Record<ExifToolProgressStage, string> = { loading: 'Loading engine', extracting: 'Reading tags', building: 'Building report', scoring: 'Scoring evidence', cleaning: 'Removing metadata' };
-
-export function PrivacyScanStatus({ report, pending, stage, mode, onCancel, onRetry, onEmbedded }: {
+export function PrivacyScanStatus({ report, pending, onCancel, onRetry }: {
   report: PrivacyReport;
   pending: boolean;
-  stage: ExifToolProgressStage | null;
-  mode: MetadataInspectionMode;
   onCancel: () => void;
   onRetry: () => void;
-  onEmbedded: () => void;
 }) {
   const exif = report.engines.find((engine) => engine.id === 'exiftool');
-  return <section className="privacy-engine-rail" aria-live="polite">
-    <div><span className="section-index">SCAN COMPLETENESS</span><h2>{pending ? labels[stage ?? 'loading'] : `${report.completeness} report ready`}</h2><p>{pending ? `${mode === 'embedded' ? 'Embedded' : 'Standard'} ExifTool scan is running locally. The quick report stays usable.` : exif?.status === 'failed' ? exif.message : `${report.detectedFieldCount} normalized fields were considered. ExifTool ${exif?.version ?? 'version'} never sends the image anywhere.`}</p></div>
-    <ol>
-      <li className="is-complete"><Icon icon={checkIcon} width="18" /><span><b>Quick</b><small>Browser parsers</small></span></li>
-      <li className={report.completeness !== 'quick' && exif?.status === 'complete' ? 'is-complete' : exif?.status === 'failed' ? 'is-failed' : pending && mode === 'standard' ? 'is-active' : ''}><Icon icon={cpuIcon} width="18" /><span><b>Standard</b><small>ExifTool tags</small></span></li>
-      <li className={report.completeness === 'embedded' ? 'is-complete' : pending && mode === 'embedded' ? 'is-active' : ''}><Icon icon={cpuIcon} width="18" /><span><b>Embedded</b><small>Optional -ee3</small></span></li>
-    </ol>
-    <div className="button-row">{pending ? <button className="button button-secondary" type="button" onClick={onCancel}><Icon icon={stopIcon} width="16" />Cancel deep scan</button> : <>{exif?.status === 'failed' && <button className="button button-secondary" type="button" onClick={onRetry}>Retry standard scan</button>}<button className="button button-secondary" type="button" disabled={report.completeness === 'embedded'} onClick={onEmbedded}>{report.completeness === 'embedded' ? 'Embedded scan complete' : 'Scan embedded data'}</button></>}</div>
+  const failed = !pending && exif?.status === 'failed';
+  const complete = !pending && report.completeness === 'embedded' && exif?.status === 'complete';
+  return <section className={`privacy-engine-rail is-full-scan${failed ? ' is-failed' : complete ? ' is-complete' : ''}`} aria-live="polite" aria-busy={pending}>
+    <span className="privacy-engine-mark" aria-hidden="true"><Icon icon={cpuIcon} width="23" /></span>
+    <div className="privacy-engine-copy"><span className="section-index">ONE-PASS FULL SCAN</span><h2>{pending ? 'Scanning every metadata field…' : complete ? 'Full scan complete' : 'Full scan incomplete'}</h2><p>{pending ? 'ExifTool is checking standard tags, embedded previews, and nested image records locally. The current result may still change.' : failed ? `${exif.message ?? 'ExifTool stopped before the full scan finished.'} The browser-only result remains usable.` : `${report.detectedFieldCount} normalized fields were considered. The image never left this tab.`}</p></div>
+    <dl className="privacy-engine-stats"><div><dt>Engine</dt><dd>ExifTool {exif?.version ?? 'WASM'}</dd></div><div><dt>Fields</dt><dd>{exif?.fieldCount?.toLocaleString('en-US') ?? (pending ? 'Counting…' : '—')}</dd></div></dl>
+    <div className="button-row">{pending ? <button className="button button-secondary" type="button" onClick={onCancel}><Icon icon={stopIcon} width="16" />Cancel full scan</button> : failed ? <button className="button button-secondary" type="button" onClick={onRetry}>Retry full scan</button> : null}</div>
   </section>;
 }

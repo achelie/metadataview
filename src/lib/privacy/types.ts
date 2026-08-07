@@ -4,7 +4,7 @@ import type { PrivacyFieldIndex } from './field-index';
 
 export type RiskSeverity = 'low' | 'medium' | 'high' | 'critical';
 export type PrivacyLevel = 'Low' | 'Moderate' | 'High' | 'Critical';
-export type PrivacyCategory = 'location' | 'device' | 'identity' | 'time' | 'editing' | 'thumbnail' | 'ai-generation' | 'document-history' | 'other';
+export type PrivacyCategory = 'location' | 'device' | 'identity' | 'time' | 'editing' | 'thumbnail' | 'document-history' | 'other';
 export type PrivacyCompleteness = 'quick' | 'standard' | 'embedded';
 export type PrivacyScanStage = PrivacyCompleteness | 'cleaned';
 export type PrivacyFieldOrigin = MetadataReportField['origin'] | 'derived';
@@ -66,7 +66,6 @@ export interface PrivacySummary {
   hasIdentityInformation: boolean;
   hasCaptureTime: boolean;
   hasEmbeddedThumbnail: boolean;
-  hasAiGenerationData: boolean;
   hasEditingHistory: boolean;
   hasApproximateLocation: boolean;
   hasNamedPeople: boolean;
@@ -106,8 +105,8 @@ export interface PrivacyFieldStats {
 }
 
 export interface PrivacyReport {
-  version: '1.2';
-  evidencePolicyVersion: '1.0';
+  version: '1.3';
+  evidencePolicyVersion: '1.1';
   generatedAt: string;
   file: { name: string; size: number; type: string; width?: number; height?: number };
   score: number;

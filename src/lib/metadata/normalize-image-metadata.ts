@@ -1,4 +1,3 @@
-import { detectAndParseGenerator } from '../generators/detect-generator';
 import type { ExifFieldEntry } from './exif-reader';
 import { coordinatesText, extractGps } from './gps';
 import { IMAGE_LIMITS } from './limits';
@@ -16,7 +15,7 @@ const LABELS: Record<string, string> = {
   gpsaltitude: 'GPS altitude', gpsimgdirection: 'Camera direction', artist: 'Artist', author: 'Author', copyright: 'Copyright',
   software: 'Software', orientation: 'Orientation', exposuretime: 'Exposure time', fnumber: 'Aperture', isospeedratings: 'ISO speed',
   photographicSensitivity: 'ISO speed', focallength: 'Focal length', colorspace: 'Color space', pixelxdimension: 'EXIF width',
-  pixelydimension: 'EXIF height', parameters: 'Generation parameters', prompt: 'Prompt', workflow: 'ComfyUI workflow',
+  pixelydimension: 'EXIF height',
 };
 
 const SECTION_COPY: Record<ImageMetadataGroup, { title: string; note: string }> = {
@@ -27,11 +26,10 @@ const SECTION_COPY: Record<ImageMetadataGroup, { title: string; note: string }> 
   dates: { title: 'Dates', note: 'Original strings stay untouched. No timezone guessing, no quiet UTC conversion.' },
   author: { title: 'Author & rights', note: 'Names, credits, contact fields, and copyright labels saved inside the file.' },
   software: { title: 'Software & editing', note: 'Apps, persistent document IDs, and editing-history breadcrumbs.' },
-  ai: { title: 'AI generation data', note: 'Stored prompts and workflows only. This page does not infer a prompt from pixels.' },
   technical: { title: 'Technical details', note: 'Container flags, color data, profiles, and remaining readable fields.' },
 };
 
-const ORDER: ImageMetadataGroup[] = ['privacy', 'location', 'camera', 'capture', 'dates', 'author', 'software', 'ai', 'technical'];
+const ORDER: ImageMetadataGroup[] = ['privacy', 'location', 'camera', 'capture', 'dates', 'author', 'software', 'technical'];
 
 function normalizedKey(key: string): string { return key.toLowerCase().replace(/[^a-z0-9]/g, ''); }
 function labelFor(key: string): string {
@@ -46,7 +44,6 @@ function groupFor(key: string): ImageMetadataGroup {
   if (/gps|location|latitude|longitude|altitude|city|state|country/.test(value)) return 'location';
   if (/datetime|createdate|modifydate|timestamp|timeoffset|datecreated|gpsdate/.test(value)) return 'dates';
   if (/artist|author|creator|copyright|credit|contact|byline|email|owner/.test(value)) return 'author';
-  if (/prompt|workflow|parameters|seed|sampler|scheduler|cfg|denois|lora|checkpoint|modelhash|clip.?skip|steps/.test(value)) return 'ai';
   if (/software|creatortool|history|documentid|instanceid|derivedfrom|editing/.test(value)) return 'software';
   if (/exposure|fnumber|aperture|iso|focal|flash|whitebalance|metering|orientation|shutter|brightness|digitalzoom/.test(value)) return 'capture';
   if (/camera|lens|make|model/.test(value)) return 'camera';
@@ -54,7 +51,7 @@ function groupFor(key: string): ImageMetadataGroup {
 }
 
 function sensitive(key: string): boolean {
-  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|previewimage|prompt|workflow|parameters/i.test(key);
+  return /gps|location|latitude|longitude|serial|owner|artist|author|creator|copyright|contact|email|datetime|datecreated|thumbnail|previewimage/i.test(key);
 }
 
 function usable(value: unknown): boolean { return value !== undefined && value !== null && value !== ''; }
@@ -85,22 +82,6 @@ function makeField(candidate: Candidate, index: number): ImageMetadataField {
   };
 }
 
-function aiCandidates(textMetadata: Record<string, unknown>, fields: ExifFieldEntry[]): Candidate[] {
-  const input: Record<string, unknown> = { ...textMetadata };
-  for (const field of fields) if (input[field.key] === undefined) input[field.key] = field.value;
-  const parsed = detectAndParseGenerator(input);
-  const output: Candidate[] = [];
-  const values: Record<string, unknown> = {
-    Generator: parsed.source !== 'unknown' ? parsed.source : undefined,
-    'Positive prompt': parsed.positivePrompt, 'Negative prompt': parsed.negativePrompt, Model: parsed.model, 'Model hash': parsed.modelHash,
-    Sampler: parsed.sampler, Scheduler: parsed.scheduler, Seed: parsed.seed, Steps: parsed.steps, 'CFG scale': parsed.cfgScale,
-    'Generated width': parsed.width, 'Generated height': parsed.height, 'Denoising strength': parsed.denoisingStrength,
-    'Clip skip': parsed.clipSkip, Version: parsed.version, LoRAs: parsed.loras.length ? parsed.loras : undefined, Workflow: parsed.workflow,
-  };
-  for (const [key, value] of Object.entries(values)) add(output, key, value, 'AI metadata', 'ai');
-  return output;
-}
-
 export function normalizeImageMetadataDetailed(input: NormalizeInput): { sections: ImageMetadataSection[]; location: ImageLocation; legacy: Record<string, unknown> } {
   const candidates: Candidate[] = [];
   const seen = new Set<string>();
@@ -112,8 +93,6 @@ export function normalizeImageMetadataDetailed(input: NormalizeInput): { section
     if (!seen.has(identity)) { add(candidates, field.key, field.value, field.source, undefined, field.path); seen.add(identity); }
   }
   for (const [key, value] of Object.entries(input.textMetadata)) add(candidates, key, value, 'PNG text', undefined, `png.text.${key}`);
-  candidates.push(...aiCandidates(input.textMetadata, input.exifFields));
-
   const location = extractGps(input.exifFields);
   const coordinates = coordinatesText(location);
   if (coordinates) add(candidates, 'Decimal coordinates', coordinates, 'Calculated from EXIF GPS', 'location');

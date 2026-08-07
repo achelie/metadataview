@@ -4,13 +4,12 @@ MetadataView is a static, English-language toolkit for inspecting and removing h
 
 The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vitest, and Playwright. It can be deployed as static files to Cloudflare Pages or Vercel without environment variables.
 
-## The five tools
+## The four tools
 
 1. **Metadata Viewer** — detects a file from its signature and reads normalized plus raw metadata.
-2. **Image Privacy Checker** — shows a Quick report, adds a lazy ExifTool Standard/Embedded scan, scores explainable evidence, creates either a privacy-first or preserve-encoding clean copy, and verifies the result in the same tab.
-3. **Metadata Remover** — builds Quick and ExifTool baselines, offers privacy-first or preserve-encoding cleanup, validates the output, rescans it to the same depth, and reports the exact score change before download.
-4. **AI Image Prompt Reader** — reads AUTOMATIC1111, ComfyUI, Fooocus, InvokeAI, NovelAI, and generic Stable Diffusion fields already stored in image metadata.
-5. **C2PA Viewer** — dynamically loads the official `@contentauth/c2pa-web` WebAssembly verifier and displays manifest and validation data.
+2. **Image Privacy Checker** — shows an initial browser result while one automatic ExifTool full scan checks standard and embedded records, scores explainable evidence, creates either a privacy-first or preserve-encoding clean copy, and verifies the result in the same tab.
+3. **Metadata Remover** — builds an initial baseline followed by one automatic full scan, offers privacy-first or preserve-encoding cleanup, validates the output, fully rescans it, and reports the exact score change before download.
+4. **C2PA Viewer** — dynamically loads the official `@contentauth/c2pa-web` WebAssembly verifier and displays manifest and validation data.
 
 ## Supported formats
 
@@ -20,7 +19,6 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 | Image metadata viewer | JPEG, PNG, WebP |
 | Image privacy checker | JPEG, PNG, WebP |
 | Metadata remover | JPEG, PNG, WebP |
-| AI prompt / ComfyUI reader | PNG, JPEG, WebP |
 | C2PA viewer | Formats supported by the installed official C2PA WASM library; the UI currently accepts JPEG, PNG, WebP, MP4, and PDF |
 
 Specialized pages reuse the same parser adapters:
@@ -32,8 +30,6 @@ Specialized pages reuse the same parser adapters:
 - `/audio-metadata-viewer`
 - `/image-privacy-checker`
 - `/metadata-remover`
-- `/ai-prompt-reader`
-- `/comfyui-workflow-reader`
 - `/c2pa-viewer`
 - `/privacy`
 - `/about`
@@ -44,14 +40,13 @@ Specialized pages reuse the same parser adapters:
 - **React 19** islands for the interactive workbench
 - **TypeScript** in strict mode
 - **Tailwind CSS 4** through the Vite plugin, plus a project-specific design system
-- **Web Worker** task protocols for parsing, AI metadata extraction, ExifTool privacy scoring, cancellation, and preserve-encoding cleanup
+- **Web Worker** task protocols for parsing, ExifTool privacy scoring, cancellation, and preserve-encoding cleanup
 - **ExifReader** for EXIF, XMP, IPTC, ICC, and other image records
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
 - **MP4Box.js** for MP4 container and track data
 - **music-metadata** for MP3/ID3 data
 - **Pako** for PNG `zTXt` and compressed `iTXt`
-- **Zod** for guarded ComfyUI graph structures
 - **@contentauth/c2pa-web** for browser C2PA verification
 - **Iconify / Lucide** for interface icons
 - **Vitest** and **Playwright** for unit and browser coverage
@@ -65,13 +60,12 @@ src/
 ├── layouts/                Shared base and tool-page layouts
 ├── lib/
 │   ├── c2pa/               Lazy C2PA verifier
-│   ├── generators/         A1111 and ComfyUI adapters plus generic detection
 │   ├── image/              Canvas image re-encoding
 │   ├── metadata/           Signature detection, image engine, safety limits, and format adapters
 │   ├── privacy/            Rules, combinations, recommendations, scoring
 │   ├── image-worker-client.ts  Restartable image Worker with stale-result and timeout handling
 │   └── worker-client.ts    Cancellable shared-tool Worker tasks
-├── pages/                  Fourteen statically generated routes
+├── pages/                  Twelve statically generated routes
 ├── styles/                 Responsive project design system
 └── workers/                Worker protocol and metadata worker
 
@@ -83,8 +77,6 @@ tests/
 `src/lib/metadata/parse-file.ts` selects a format adapter after `detect-file-type.ts` checks magic bytes. Extension and MIME mismatches produce warnings rather than overriding the signature. Unknown readable metadata is retained in the raw result.
 
 The image engine follows one path for every consumer: signature detection → JPEG/PNG/WebP container parsing → EXIF-family extraction → normalization → bounded serialization. The custom PNG parser validates structural boundaries, caps compressed output, reads `tEXt`, `iTXt`, `zTXt`, `eXIf`, and `iCCP`, and skips an individual damaged text block with a warning when the rest of the image remains readable.
-
-ComfyUI parsing begins at `KSampler` or `KSamplerAdvanced`, follows positive and negative connections, guards cycles with a visited set, and rejects graphs above 5,000 nodes. Nodes are treated as inert JSON and are never executed.
 
 ## Local development
 
@@ -115,9 +107,9 @@ pnpm build
 
 Current local verification:
 
-- 157 Vitest unit tests
-- 71 Playwright Chromium flows, including progressive privacy scanning, both cleanup modes, cross-page rescanning, APNG protection, desktop/mobile visual checkpoints, and 390 px overflow passes
-- 14 generated static pages
+- 141 Vitest unit tests
+- 72 Playwright Chromium flows, including progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
+- 12 generated static pages
 
 ## Browser privacy design
 
@@ -131,7 +123,6 @@ Current local verification:
 - C2PA readers are freed and the SDK is disposed after each verification.
 - Metadata values are rendered as React text, never unsanitized HTML.
 - The PDF metadata path does not render documents or execute embedded JavaScript.
-- ComfyUI workflows are parsed as data and never execute nodes or load remote references.
 
 The MVP does not ship analytics or ads. A future ad provider could set its own cookie, but browser isolation does not give it access to the selected file or the React result state.
 
@@ -145,10 +136,9 @@ The MVP does not ship analytics or ads. A future ad provider could set its own c
 - Privacy text scan budget per report: 2,000,000 characters
 - Privacy-first Canvas limit: 40 megapixels and 16,384 pixels per side
 - Search preview per field: 100 KB
-- ComfyUI graph: 5,000 nodes
 - Production image Worker timeout: 15 seconds
 - Shared-tool Worker timeout: 25 seconds
-- ExifTool standard scan timeout: 120 seconds
+- ExifTool image full scan timeout: 180 seconds
 - User-triggered embedded-content scan timeout: 180 seconds
 - MP4 adapter timeout: 15 seconds
 - Image JSON normalization: 50 levels and 20,000 keys
@@ -156,7 +146,7 @@ The MVP does not ship analytics or ads. A future ad provider could set its own c
 
 ## Metadata removal
 
-The dedicated remover and Image Privacy Checker share one cleanup-and-verification workflow. The source and clean copy always use the same completed scan depth before the UI says verification is complete.
+The dedicated remover and Image Privacy Checker share one cleanup-and-verification workflow. Images automatically receive one full `-ee3` scan; the source and clean copy must both complete that scan before the UI says verification is complete.
 
 - **Privacy-first** decodes the static image, applies Orientation to pixels, and writes a new PNG losslessly or JPEG/WebP at 92% quality. It copies no original metadata or ICC profile.
 - **Preserve encoding** uses local ExifTool WASM to keep the compressed image stream, animation, Orientation, ICC profile, and required color-space tags while removing writable privacy metadata.
@@ -167,9 +157,11 @@ The dedicated remover and Image Privacy Checker share one cleanup-and-verificati
 
 ## C2PA behavior
 
-The C2PA bundle is code-split and loaded only from `/c2pa-viewer`. Results use five states: Verified, Invalid, Not Found, Unsupported, and Error.
+The C2PA bundle is code-split and loaded only after a file is selected on `/c2pa-viewer`. The production workbench uses the official `@contentauth/c2pa-web` Worker and reports the SDK's real `Trusted`, `Valid`, and `Invalid` states, plus `No Content Credentials` and `Unsupported` outcomes.
 
-`Verified` means the credential is cryptographically associated with the current file. It does not prove that every visible claim is true. `Not Found` does not mean that a file is fake.
+`Valid` means the manifest structure, signature, and file binding passed. `Trusted` additionally requires a signer that chains to a configured trust anchor. This static privacy-first deployment performs cryptographic validation with trust-list checking disabled, so it normally reports `Valid` and shows publisher trust separately as `Not checked`. It never turns a valid signature into a truth claim, and `No Content Credentials` never means that a file is fake.
+
+The report includes SHA-256, exact validation buckets, actions, ingredients, assertions, manifest history, signer details, and a safe JSON receipt. Cancellation terminates the SDK Worker. Source bytes, binary resources, thumbnails, Blob URLs, and Worker state are excluded from exports. Cloudflare's `connect-src 'self'` policy prevents a credential from triggering an external trust-list, remote-manifest, or OCSP request.
 
 The production host must serve `.wasm` files with `Content-Type: application/wasm`. `public/_headers` supplies this for Cloudflare Pages; Vercel sets the MIME type for generated WASM assets automatically.
 
@@ -191,7 +183,7 @@ The checked-in `wrangler.jsonc` targets the Direct Upload project `achelie-metad
 pnpm deploy:pages
 ```
 
-The canonical production origin is `https://achelie-metadataview.pages.dev`.
+The canonical production origin is `https://www.viewexif.com`. The apex domain redirects to the `www` host, and generated canonical URLs and sitemap entries use trailing slashes for content routes.
 
 ExifTool is emitted as a lazy, same-origin WASM asset. `pnpm build` fails if any generated file exceeds Cloudflare Pages' 25 MiB per-file limit or if the WASM is accidentally inlined into JavaScript.
 
@@ -213,14 +205,12 @@ The project uses static output, so no Function or server runtime is needed.
 - Browser format support can differ, especially for WebP re-encoding and C2PA media types.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
-- Complex custom ComfyUI nodes may appear only in raw JSON.
 - PDF, MP4, and MP3 metadata removal is not included.
-- GIF, HEIC, FLAC, WAV, MKV, MOV, batch processing, OCR, face recognition, prompt reconstruction, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
+- GIF, HEIC, FLAC, WAV, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap
 
 - CRC verification for PNG chunks
-- More generator-specific normalization and ComfyUI custom-node mappings
 - Optional additional browser-safe media adapters
 - Performance profiling against larger local fixtures
 - Accessibility audits with additional screen readers
