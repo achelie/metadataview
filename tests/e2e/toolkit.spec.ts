@@ -450,15 +450,19 @@ test('navigation motion uses the transition hooks and honors reduced motion', as
 
 test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
   const cases: Array<[string, string, string, string]> = [
-    ['/image-metadata-viewer/', 'See what travels with an image.', 'How the image scan works', 'Which image formats and metadata are supported?'],
-    ['/document-metadata-viewer/', 'Read the properties behind the pages, slides, and sheets.', 'How the document scan works', 'Which document formats and properties are supported?'],
-    ['/video-metadata-viewer/', 'Inspect the container around the frames.', 'How the video scan works', 'Which video formats and fields are supported?'],
-    ['/audio-metadata-viewer/', 'Read the tags around the sound.', 'How the audio scan works', 'Which audio formats and tags are supported?'],
+    ['/image-metadata-viewer/', 'Why inspect images?', 'How the image scan works', 'Which image formats and metadata are supported?'],
+    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?'],
+    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?'],
+    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?'],
   ];
 
   for (const [path, valueTitle, processTitle, formatQuestion] of cases) {
     await page.goto(path);
-    await expect(page.getByRole('heading', { name: valueTitle })).toBeVisible();
+    const valueHeading = page.getByRole('heading', { name: valueTitle });
+    await expect(valueHeading).toBeVisible();
+    const valueHeadingBox = await valueHeading.boundingBox();
+    expect(valueHeadingBox?.height).toBeLessThan(170);
+    await expect(page.locator('.format-guide-benefits .section-index')).toHaveText('WHY IT MATTERS');
     await expect(page.getByRole('heading', { name: processTitle })).toBeVisible();
     await expect(page.locator('.format-guide-benefits .home-benefit-grid a')).toHaveCount(3);
     await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(5);

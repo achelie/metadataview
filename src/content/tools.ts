@@ -41,9 +41,9 @@ const protectRelated = [
 ];
 
 const imageGuide: FormatGuide = {
-  valueEyebrow: 'WHY IMAGE METADATA MATTERS',
-  valueTitle: 'See what travels with an image.',
-  valueDescription: 'A photo can carry location, camera, color, authorship, and editing details long after the pixels look finished.',
+  valueEyebrow: 'WHY IT MATTERS',
+  valueTitle: 'Why inspect images?',
+  valueDescription: 'Image metadata can reveal GPS, camera IDs, authors, edits, and color details hidden behind the pixels.',
   benefits: [
     { href: '/image-privacy-checker/', icon: 'shield', kicker: 'Privacy check', title: 'Catch location leaks', description: 'Find GPS coordinates, owner names, serial numbers, and embedded previews before an image leaves your device.', action: 'Check image privacy' },
     { href: '#metadata-workbench-tool', icon: 'fileImage', kicker: 'Capture context', title: 'Understand the shot', description: 'Review camera, lens, exposure, orientation, dates, software, color profiles, and the exact native tag paths.', action: 'Inspect an image' },
@@ -63,9 +63,9 @@ const imageGuide: FormatGuide = {
 };
 
 const documentGuide: FormatGuide = {
-  valueEyebrow: 'WHY DOCUMENT METADATA MATTERS',
-  valueTitle: 'Read the properties behind the pages, slides, and sheets.',
-  valueDescription: 'A document can carry names, dates, application history, revision labels, and custom properties that never appear in the visible content.',
+  valueEyebrow: 'WHY IT MATTERS',
+  valueTitle: 'Why inspect documents?',
+  valueDescription: 'Document metadata can reveal authors, edit dates, software history, saved counts, and custom properties.',
   benefits: [
     { href: '#metadata-workbench-tool', icon: 'fileText', kicker: 'Document labels', title: 'Check authorship claims', description: 'Review title, author, subject, company, manager, keywords, and custom properties without opening the document in an office suite.', action: 'Inspect a document' },
     { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Stored statistics', title: 'Read the saved counts', description: 'See PDF pages, Word page and word counts, PowerPoint slides, or Excel worksheet totals when the package records them.', action: 'Read local fields' },
@@ -85,9 +85,9 @@ const documentGuide: FormatGuide = {
 };
 
 const videoGuide: FormatGuide = {
-  valueEyebrow: 'WHY VIDEO METADATA MATTERS',
-  valueTitle: 'Inspect the container around the frames.',
-  valueDescription: 'A video container can reveal duration, dimensions, codecs, track layout, dates, and editing software without playing a second of footage.',
+  valueEyebrow: 'WHY IT MATTERS',
+  valueTitle: 'Why inspect video?',
+  valueDescription: 'Video metadata can explain duration, dimensions, codecs, tracks, dates, and editing software.',
   benefits: [
     { href: '#metadata-workbench-tool', icon: 'film', kicker: 'Container facts', title: 'Check delivery details', description: 'Read duration, frame size, track counts, codecs, bitrate clues, brands, and rotation across nine common video extensions.', action: 'Inspect a video' },
     { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Production context', title: 'Trace stored history', description: 'Find creation dates, handler names, encoder labels, comments, and other fields left by cameras and editing tools.', action: 'Read local fields' },
@@ -107,9 +107,9 @@ const videoGuide: FormatGuide = {
 };
 
 const audioGuide: FormatGuide = {
-  valueEyebrow: 'WHY AUDIO METADATA MATTERS',
-  valueTitle: 'Read the tags around the sound.',
-  valueDescription: 'An audio file can carry track labels, credits, dates, comments, codec details, and embedded artwork that never appear in its filename.',
+  valueEyebrow: 'WHY IT MATTERS',
+  valueTitle: 'Why inspect audio?',
+  valueDescription: 'Audio metadata can reveal titles, credits, dates, comments, codec details, and embedded artwork.',
   benefits: [
     { href: '#metadata-workbench-tool', icon: 'audio', kicker: 'Track identity', title: 'Verify music labels', description: 'Read title, artist, album, track, disc, date, genre, composer, label, ISRC, and comments across ID3, Vorbis, iTunes, and ASF tags.', action: 'Inspect an audio file' },
     { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Technical delivery', title: 'Check the audio header', description: 'Review the real container, codec, duration, bitrate, sample rate, channels, bit depth, and lossless status.', action: 'Read local fields' },

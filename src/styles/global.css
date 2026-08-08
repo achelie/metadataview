@@ -1439,6 +1439,8 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .home-process-cta a { display: inline-flex; align-items: center; gap: .35rem; color: var(--rust); }
 .home-process-cta a:hover { color: var(--ink); background: var(--acid); }
 .format-guide-benefits { border-top: 1px solid var(--ink); }
+.format-guide-benefits .home-section-heading h2 { max-width: 620px; font-size: clamp(2.75rem,4.55vw,4.55rem); line-height: .96; text-wrap: balance; }
+.format-guide-benefits .home-section-heading p { max-width: 390px; text-wrap: balance; }
 .format-guide-process { margin-bottom: clamp(4rem,8vw,7rem); }
 .format-guide-limitations { margin: 1rem 24px 0 0; border-bottom: 1px solid var(--ink); }
 .format-guide-limitations summary { padding: .9rem 0; cursor: pointer; color: var(--rust); font-size: .82rem; font-weight: 900; }
