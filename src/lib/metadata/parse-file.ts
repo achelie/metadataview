@@ -13,7 +13,7 @@ export async function parseFile(file: File, allowedTypes?: DetectedFileType[]): 
   const detection = await detectFileType(file);
   if (allowedTypes && !allowedTypes.includes(detection.type)) throw new MetadataError('UNSUPPORTED_FILE_TYPE', `This tool does not support ${detection.type.toUpperCase()} files.`);
   const adapter = adapters.find((candidate) => candidate.supports(detection.type));
-  if (!adapter) throw new MetadataError('UNSUPPORTED_FILE_TYPE', 'Supported formats are JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, and WMA.');
+  if (!adapter) throw new MetadataError('UNSUPPORTED_FILE_TYPE', 'Supported formats are JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, and WMA.');
   return adapter.parse({ file, fileType: detection.type, warnings: detection.warnings });
 }
 

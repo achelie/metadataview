@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { deflate } from 'pako';
 import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
+import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
 import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
 import { videoFixture, videoMime, type VideoFixtureType } from '../fixtures/video';
 
@@ -76,6 +77,9 @@ test('home page opens with the universal viewer, three useful next steps, and th
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
+  await expect(page.locator('.report-drop-copy p')).toContainText(/Images.*Videos.*Documents.*Audio/);
+  await expect(page.locator('.home-format-links a strong')).toHaveText(['Images', 'Videos', 'Documents', 'Audio']);
+  await expect(page.locator('.home-format-links')).not.toContainText('JPEG · PNG · WebP');
   await expect(page.getByText('Use the right tool next.')).toHaveCount(0);
   await expect(page.getByText('The file never takes a network trip.')).toHaveCount(0);
   await expect(page.locator('.home-benefit-grid a')).toHaveCount(3);
@@ -90,12 +94,15 @@ test('home page opens with the universal viewer, three useful next steps, and th
   await expect(page).toHaveURL(/#metadata-workbench-home$/);
 });
 
-test('home page directly parses all 25 promised file extensions', async ({ page }) => {
+test('home page directly parses all 28 promised file extensions', async ({ page }) => {
   test.setTimeout(180_000);
   const cases: Array<[string, string, Buffer, string]> = [
     ['home.png', 'image/png', png(), 'image'],
     ['home.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image'],
     ['home.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image'],
+    ['home.heic', 'image/heic', Buffer.from(heicFixture()), 'image'],
+    ['home.tiff', 'image/tiff', Buffer.from(tiffFixture()), 'image'],
+    ['home.gif', 'image/gif', Buffer.from(gifFixture()), 'image'],
     ['home.pdf', 'application/pdf', pdf(), 'pdf'],
     ['home.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx')), 'document'],
     ['home.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx')), 'document'],
@@ -149,12 +156,15 @@ test('shared report progressively merges the local ExifTool field set without up
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(true);
 });
 
-test('universal report parses all 25 promised file extensions through one workbench', async ({ page }) => {
+test('universal report parses all 28 promised file extensions through one workbench', async ({ page }) => {
   test.setTimeout(180_000);
   const cases: Array<[string, string, Buffer, string, string | RegExp]> = [
     ['pixel.png', 'image/png', png(), 'image', '1 × 1 px'],
     ['pixel.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image', 'JPEG'],
     ['pixel.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image', 'WEBP'],
+    ['pixel.heic', 'image/heic', Buffer.from(heicFixture()), 'image', 'HEIC'],
+    ['pixel.tiff', 'image/tiff', Buffer.from(tiffFixture()), 'image', 'TIFF'],
+    ['pixel.gif', 'image/gif', Buffer.from(gifFixture()), 'image', 'GIF'],
     ['fixture.pdf', 'application/pdf', pdf(), 'pdf', '1'],
     ['fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Document' })), 'document', 'Fixture Document'],
     ['fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 2 })), 'document', '2'],

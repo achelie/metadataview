@@ -3,13 +3,13 @@ import { inspectOoxmlPackage } from './ooxml-package';
 import type { ContainerSignatureType, DetectedFileType, DetectionResult, ParseWarning } from './types';
 
 const EXTENSIONS: Record<string, DetectedFileType> = {
-  jpg: 'jpeg', jpeg: 'jpeg', png: 'png', webp: 'webp', pdf: 'pdf', docx: 'docx', pptx: 'pptx', xlsx: 'xlsx', mp4: 'mp4', m4v: 'mp4',
+  jpg: 'jpeg', jpeg: 'jpeg', png: 'png', webp: 'webp', heic: 'heic', heif: 'heic', tif: 'tiff', tiff: 'tiff', gif: 'gif', pdf: 'pdf', docx: 'docx', pptx: 'pptx', xlsx: 'xlsx', mp4: 'mp4', m4v: 'mp4',
   mov: 'mov', mkv: 'mkv', webm: 'webm', avi: 'avi', flv: 'flv', '3gp': '3gp', '3g2': '3g2',
   mp3: 'mp3', flac: 'flac', ogg: 'ogg', oga: 'ogg', opus: 'opus', m4a: 'm4a', aac: 'aac', wav: 'wav', wave: 'wav', wma: 'wma',
 };
 
 const MIME_TYPES: Record<string, DetectedFileType> = {
-  'image/jpeg': 'jpeg', 'image/png': 'png', 'image/webp': 'webp', 'application/pdf': 'pdf',
+  'image/jpeg': 'jpeg', 'image/png': 'png', 'image/webp': 'webp', 'image/heic': 'heic', 'image/heif': 'heic', 'image/tiff': 'tiff', 'image/gif': 'gif', 'application/pdf': 'pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
   'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
@@ -43,7 +43,7 @@ function isAsf(bytes: Uint8Array): boolean {
   return bytes.length >= signature.length && signature.every((byte, index) => bytes[index] === byte);
 }
 
-function isoBmffType(bytes: Uint8Array): 'mp4' | 'm4a' | 'mov' | '3gp' | '3g2' {
+function isoBmffType(bytes: Uint8Array): 'mp4' | 'm4a' | 'mov' | '3gp' | '3g2' | 'heic' | 'unknown' {
   if (bytes.length < 12 || ascii(bytes, 4, 4) !== 'ftyp') return 'mp4';
   const declaredSize = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(0, false);
   const end = Math.min(bytes.length, declaredSize >= 16 ? declaredSize : 64, 64);
@@ -52,6 +52,8 @@ function isoBmffType(bytes: Uint8Array): 'mp4' | 'm4a' | 'mov' | '3gp' | '3g2' {
     if (offset === 12) continue;
     brands.push(ascii(bytes, offset, 4).toLowerCase());
   }
+  if (brands.some((brand) => brand === 'avif' || brand === 'avis')) return 'unknown';
+  if (brands.some((brand) => ['heic', 'heix', 'hevc', 'hevx', 'heim', 'heis', 'mif1', 'msf1'].includes(brand))) return 'heic';
   if (brands.some((brand) => ['m4a ', 'm4b ', 'm4p ', 'm4r '].includes(brand))) return 'm4a';
   if (brands.some((brand) => brand === 'qt  ')) return 'mov';
   if (brands.some((brand) => brand.startsWith('3g2'))) return '3g2';
@@ -102,6 +104,8 @@ function id3PayloadOffset(bytes: Uint8Array): number | undefined {
 export function detectSignature(bytes: Uint8Array): ContainerSignatureType {
   if (bytes.length >= 8 && bytes[0] === 0x89 && ascii(bytes, 1, 3) === 'PNG' && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a) return 'png';
   if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'jpeg';
+  if (bytes.length >= 6 && (ascii(bytes, 0, 6) === 'GIF87a' || ascii(bytes, 0, 6) === 'GIF89a')) return 'gif';
+  if (bytes.length >= 8 && ((ascii(bytes, 0, 2) === 'II' && (bytes[2] === 0x2a || bytes[2] === 0x2b) && bytes[3] === 0x00) || (ascii(bytes, 0, 2) === 'MM' && bytes[2] === 0x00 && (bytes[3] === 0x2a || bytes[3] === 0x2b)))) return 'tiff';
   if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'WEBP') return 'webp';
   if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'WAVE') return 'wav';
   if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'AVI ') return 'avi';
@@ -172,7 +176,7 @@ export async function detectFileType(file: File): Promise<DetectionResult> {
     }
     return { type: inspection.type, signatureType: 'zip', extensionType: result.extensionType, mimeType: file.type, warnings };
   }
-  if (['jpeg', 'png', 'webp'].includes(result.type) && file.size > MAX_IMAGE_SIZE) {
+  if (['jpeg', 'png', 'webp', 'heic', 'tiff', 'gif'].includes(result.type) && file.size > MAX_IMAGE_SIZE) {
     throw new MetadataError('FILE_TOO_LARGE', 'Images are limited to 50 MB.');
   }
   return result;

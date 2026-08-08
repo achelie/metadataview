@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { detectFileType, detectFromBytes, detectSignature, typeFromFilename, typeFromMime } from '../../src/lib/metadata/detect-file-type';
 import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
+import { additionalImageFixture, additionalImageMime, type AdditionalImageFixtureType } from '../fixtures/images';
 import { videoFixture, videoMime, type VideoFixtureType } from '../fixtures/video';
 
 describe('file signature detection', () => {
   it('detects PNG', () => expect(detectSignature(Uint8Array.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))).toBe('png'));
   it('detects JPEG', () => expect(detectSignature(Uint8Array.from([0xff,0xd8,0xff,0xe0]))).toBe('jpeg'));
+  it.each(['heic', 'tiff', 'gif'] as AdditionalImageFixtureType[])('detects a real %s image container signature', (type) => {
+    expect(detectSignature(additionalImageFixture(type))).toBe(type);
+    expect(detectFromBytes(additionalImageFixture(type), `fixture.${type}`, additionalImageMime(type))).toMatchObject({ type, warnings: [] });
+  });
   it('detects WebP', () => expect(detectSignature(Uint8Array.from([82,73,70,70,0,0,0,0,87,69,66,80]))).toBe('webp'));
   it('detects PDF', () => expect(detectSignature(new TextEncoder().encode('%PDF-1.7'))).toBe('pdf'));
   it('recognizes the ZIP container before OOXML package inspection', () => expect(detectSignature(Uint8Array.from([0x50, 0x4b, 0x03, 0x04]))).toBe('zip'));
@@ -46,6 +51,14 @@ describe('file signature detection', () => {
     expect(typeFromMime('video/quicktime')).toBe('mov');
     expect(typeFromMime('video/x-matroska')).toBe('mkv');
     expect(typeFromMime('video/3gpp')).toBe('3gp');
+  });
+  it('maps HEIC, TIFF, and GIF extensions and MIME labels', () => {
+    expect(typeFromFilename('photo.heif')).toBe('heic');
+    expect(typeFromFilename('scan.tif')).toBe('tiff');
+    expect(typeFromFilename('loop.gif')).toBe('gif');
+    expect(typeFromMime('image/heic')).toBe('heic');
+    expect(typeFromMime('image/tiff')).toBe('tiff');
+    expect(typeFromMime('image/gif')).toBe('gif');
   });
   it('recognizes generic ISO BMFF audio as M4A when the filename identifies the audio profile', () => {
     const genericFtyp = Uint8Array.from([0, 0, 0, 24, 102, 116, 121, 112, 105, 115, 111, 109, 0, 0, 0, 0]);

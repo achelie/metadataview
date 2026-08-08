@@ -394,7 +394,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       </header>
 
       <section className="report-summary" aria-labelledby="report-summary-title">
-        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={`Local preview of ${report.file.name}`} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
+        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={`Local preview of ${report.file.name}`} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
         <div className="report-file-title"><span id="report-summary-title">File summary</span><strong>{report.file.name}</strong><small>{report.category} / {report.file.detectedType}</small></div>
         <dl className="report-facts">{report.facts.map((fact) => <div key={fact.id}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
         <div className="report-hashes">

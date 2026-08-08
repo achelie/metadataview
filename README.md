@@ -15,11 +15,11 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 | Tool | MVP formats |
 | --- | --- |
-| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
+| Universal metadata viewer | JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Document metadata viewer | PDF, DOCX, PPTX, XLSX |
 | Video metadata viewer | MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2 |
 | Audio metadata viewer | MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
-| Image metadata viewer | JPEG, PNG, WebP |
+| Image metadata viewer | PNG, JPEG, WebP, HEIC/HEIF, TIFF, GIF |
 | Image privacy checker | JPEG, PNG, WebP |
 | Metadata remover | JPEG, PNG, WebP |
 | C2PA viewer | Formats supported by the installed official C2PA WASM library; the UI currently accepts JPEG, PNG, WebP, MP4, and PDF |
@@ -44,7 +44,7 @@ Specialized pages reuse the same parser adapters:
 - **TypeScript** in strict mode
 - **Tailwind CSS 4** through the Vite plugin, plus a project-specific design system
 - **Web Worker** task protocols for parsing, ExifTool privacy scoring, cancellation, and preserve-encoding cleanup
-- **ExifReader** for EXIF, XMP, IPTC, ICC, and other image records
+- **ExifReader** plus bounded HEIC, TIFF, and GIF container readers for EXIF, XMP, IPTC, ICC, comments, animation, and other image records
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
 - **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
@@ -112,8 +112,8 @@ pnpm build
 
 Current local verification:
 
-- 175 Vitest unit tests
-- 81 Playwright Chromium flows, including 17-extension uploads, multi-format audio inspection, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
+- 207 Vitest unit tests
+- 84 Playwright Chromium flows, including 28-format uploads, six image families, multi-format audio inspection, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
 - 12 generated static pages
 
 ## Browser privacy design
@@ -208,11 +208,11 @@ The project uses static output, so no Function or server runtime is needed.
 ## Known limitations
 
 - Metadata is editable and should not be treated as proof by itself.
-- Browser format support can differ, especially for WebP re-encoding and C2PA media types.
+- Browser preview support can differ, especially for HEIC and TIFF; metadata inspection does not depend on a successful pixel preview.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
 - PDF, DOCX, PPTX, XLSX, video, and audio metadata removal is not included.
-- GIF, HEIC, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
+- AVIF, camera RAW formats, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap
 

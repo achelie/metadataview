@@ -1,7 +1,7 @@
 export type SupportedDocumentType = 'docx' | 'pptx' | 'xlsx';
 export type SupportedAudioType = 'mp3' | 'flac' | 'ogg' | 'opus' | 'm4a' | 'aac' | 'wav' | 'wma';
 export type SupportedVideoType = 'mp4' | 'mov' | 'mkv' | 'webm' | 'avi' | 'flv' | '3gp' | '3g2';
-export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | SupportedDocumentType | SupportedVideoType | SupportedAudioType | 'unknown';
+export type DetectedFileType = SupportedImageType | 'pdf' | SupportedDocumentType | SupportedVideoType | SupportedAudioType | 'unknown';
 export type ContainerSignatureType = DetectedFileType | 'zip';
 export type MetadataCategory = 'image' | 'pdf' | 'document' | 'video' | 'audio';
 
@@ -65,7 +65,7 @@ export interface DetectionResult {
   warnings: ParseWarning[];
 }
 
-export type SupportedImageType = 'jpeg' | 'png' | 'webp';
+export type SupportedImageType = 'jpeg' | 'png' | 'webp' | 'heic' | 'tiff' | 'gif';
 export type ImageMetadataGroup =
   | 'privacy'
   | 'location'
