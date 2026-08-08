@@ -349,7 +349,10 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       const { downloadMetadataReportPdf } = await import('../lib/metadata-report/pdf-export');
       await downloadMetadataReportPdf(report, sanitizeFilename(report.file.name, '-metadata-report.pdf'));
       setNotice('Readable PDF report downloaded; JSON remains the complete record');
-    } catch { setNotice('The PDF could not be built. The JSON report is still available.'); }
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : 'Unknown browser error';
+      setNotice(`The PDF could not be built (${reason}). The JSON report is still available.`);
+    }
     finally { setExportingPdf(false); }
   };
 
@@ -415,7 +418,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">Privacy pass</span><strong>{sensitiveFields.length ? `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found` : 'No common sensitive fields in the readable set'}</strong><p>Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.</p></div>
-        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover/">Remove image metadata</a></div>
+        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/image-metadata-remover/">Remove image metadata</a></div>
       </section> : null}
 
       <section className="report-ledger" aria-labelledby="metadata-results-heading">

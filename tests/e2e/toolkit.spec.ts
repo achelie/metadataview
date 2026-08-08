@@ -1,4 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { BlobReader, TextWriter, ZipReader } from '@zip.js/zip.js';
 import { deflate } from 'pako';
 import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
 import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
@@ -268,13 +270,81 @@ test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
-  await expect(page.locator('.privacy-scoreboard')).toBeVisible();
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
+  await expect(page.locator('.removal-report')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
-  await expect(page.locator('.privacy-cleanup-result')).toContainText('15 → 0', { timeout: 45_000 });
+  await expect(page.locator('.removal-result')).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator('.removal-result')).toContainText('Removed');
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download clean copy' }).click();
   expect((await downloadPromise).suggestedFilename()).toMatch(/clean\.png$/);
+});
+
+test('PDF removal rewrites the file with qpdf and removes the old Info author', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/document-metadata-remover/');
+  await upload(page, 'signed-off.pdf', pdf(), 'application/pdf');
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 60_000 });
+  await expect(result).toContainText('qpdf');
+  await expect(result).not.toHaveClass(/is-blocked/);
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  const pdfDownload = await downloadEvent;
+  const pdfPath = await pdfDownload.path();
+  const bytes = await readFile(pdfPath as string);
+  expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+  expect(bytes.toString('latin1')).not.toContain('Ada Example');
+});
+
+test('audio removal uses TagLib without re-encoding the stream container', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/audio-metadata-remover/');
+  await upload(page, 'credits.mp3', mp3(), 'audio/mpeg');
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 60_000 });
+  await expect(result).toContainText('taglib');
+  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
+});
+
+test('Office removal keeps body XML while clearing Core and Custom properties', async ({ page }) => {
+  test.setTimeout(120_000);
+  const source = await ooxmlFixture('docx', { author: 'Ada Example', customName: 'Client', customValue: 'Secret Account', bodyText: 'BODY-STAYS-HERE' });
+  await page.goto('/document-metadata-remover/');
+  await upload(page, 'brief.docx', Buffer.from(source), ooxmlMime('docx'));
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  await expect(page.locator('.removal-result')).toContainText('ooxml-zip', { timeout: 60_000 });
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  const officeDownload = await downloadEvent;
+  const officePath = await officeDownload.path();
+  const output = await readFile(officePath as string);
+  const zip = new ZipReader(new BlobReader(new Blob([output])));
+  const entries = await zip.getEntries();
+  const text = async (name: string) => {
+    const entry = entries.find((item) => item.filename === name);
+    if (!entry || entry.directory || !('getData' in entry)) return '';
+    return entry.getData(new TextWriter());
+  };
+  expect(await text('word/document.xml')).toContain('BODY-STAYS-HERE');
+  expect(await text('docProps/core.xml')).not.toContain('Ada Example');
+  expect(await text('docProps/custom.xml')).not.toContain('Secret Account');
+  await zip.close();
+});
+
+test('AVI removal keeps the RIFF container valid after the custom scrubber runs', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/video-metadata-remover/');
+  await upload(page, 'clip.avi', Buffer.from(videoFixture('avi')), videoMime('avi'));
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  await expect(page.locator('.removal-result')).toContainText('riff', { timeout: 60_000 });
+  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
 });
 
 test('metadata remover desktop and mobile result stay usable without console errors', async ({ page }, testInfo) => {
@@ -284,10 +354,10 @@ test('metadata remover desktop and mobile result stay usable without console err
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/metadata-remover/');
   await upload(page, 'visual-removal.png', png(['Artist', 'Ada Example']));
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
-  const result = page.locator('.privacy-cleanup-result');
-  await expect(result).toContainText('15 → 0', { timeout: 45_000 });
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 45_000 });
   await result.scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath('desktop-remover.png'), fullPage: false });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -320,7 +390,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/image-metadata-remover/', '/video-metadata-remover/', '/audio-metadata-remover/', '/document-metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -328,7 +398,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/image-metadata-remover/', '/video-metadata-remover/', '/audio-metadata-remover/', '/document-metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {
@@ -352,7 +422,11 @@ test('every tool treats the full upload panel as one accessible file button', as
     ['/video-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/audio-metadata-viewer/', '.report-dropzone', 'Choose a file'],
     ['/image-privacy-checker/', '.privacy-dropzone', 'Choose an image'],
-    ['/metadata-remover/', '.remover-dropzone', 'Choose an image'],
+    ['/metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/image-metadata-remover/', '.removal-dropzone', 'Choose an image'],
+    ['/video-metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/audio-metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/document-metadata-remover/', '.removal-dropzone', 'Choose a file'],
     ['/c2pa-viewer/', '.c2pa-dropzone', 'Choose a file'],
   ];
 
@@ -401,9 +475,10 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   await expect(viewTrigger).toHaveAttribute('aria-expanded', 'false');
   await expect(viewMenu).toHaveAttribute('data-open', 'false');
   await expect(removeTrigger).toHaveAttribute('aria-expanded', 'true');
-  await expect(removeMenu.getByRole('link', { name: 'Images', exact: true })).toHaveAttribute('href', '/metadata-remover/');
-  await expect(removeMenu.locator('[aria-disabled=true]')).toHaveCount(3);
-  await expect(removeMenu.locator('[aria-disabled=true] a')).toHaveCount(0);
+  const removeLinks: Array<[string, string]> = [['All Formats', '/metadata-remover/'], ['Images', '/image-metadata-remover/'], ['Videos', '/video-metadata-remover/'], ['Audio', '/audio-metadata-remover/'], ['Documents', '/document-metadata-remover/']];
+  for (const [label, href] of removeLinks) {
+    await expect(removeMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
+  }
   await page.keyboard.press('Escape');
   await expect(removeTrigger).toHaveAttribute('aria-expanded', 'false');
   await expect(removeTrigger).toBeFocused();
@@ -424,7 +499,7 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   await mobileRemove.locator('.t-acc-head').click();
   await expect(mobileView).toHaveAttribute('data-open', 'false');
   await expect(mobileRemove).toHaveAttribute('data-open', 'true');
-  await expect(mobileRemove.locator('[aria-disabled=true]')).toHaveCount(3);
+  await expect(mobileRemove.getByRole('link', { name: 'Audio', exact: true })).toHaveAttribute('href', '/audio-metadata-remover/');
   await page.keyboard.press('Escape');
   await expect(mobileLayer).toHaveAttribute('data-open', 'false');
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();

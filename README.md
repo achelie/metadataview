@@ -8,7 +8,7 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 1. **Metadata Viewer** — detects a file from its signature and reads normalized plus raw metadata.
 2. **Image Privacy Checker** — shows an initial browser result while one automatic ExifTool full scan checks standard and embedded records, scores explainable evidence, creates either a privacy-first or preserve-encoding clean copy, and verifies the result in the same tab.
-3. **Metadata Remover** — builds an initial baseline followed by one automatic full scan, offers privacy-first or preserve-encoding cleanup, validates the output, fully rescans it, and reports the exact score change before download.
+3. **Metadata Remover** — chooses a format-specific metadata-only engine for 28 formats, preserves media or document content, rescans the output, and reports removed, preserved, and residual fields before download.
 4. **C2PA Viewer** — dynamically loads the official `@contentauth/c2pa-web` WebAssembly verifier and displays manifest and validation data.
 
 ## Supported formats
@@ -21,7 +21,7 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 | Audio metadata viewer | MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Image metadata viewer | PNG, JPEG, WebP, HEIC/HEIF, TIFF, GIF |
 | Image privacy checker | JPEG, PNG, WebP |
-| Metadata remover | JPEG, PNG, WebP |
+| Metadata remover | JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | C2PA viewer | Formats supported by the installed official C2PA WASM library; the UI currently accepts JPEG, PNG, WebP, MP4, and PDF |
 
 Specialized pages reuse the same parser adapters:
@@ -33,6 +33,10 @@ Specialized pages reuse the same parser adapters:
 - `/audio-metadata-viewer`
 - `/image-privacy-checker`
 - `/metadata-remover`
+- `/image-metadata-remover`
+- `/video-metadata-remover`
+- `/audio-metadata-remover`
+- `/document-metadata-remover`
 - `/c2pa-viewer`
 - `/privacy`
 - `/about`
@@ -48,6 +52,8 @@ Specialized pages reuse the same parser adapters:
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
 - **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
+- **TagLib-Wasm** for local audio and Matroska/WebM metadata-only cleanup
+- **qpdf-wasm** for rewriting cleaned PDF files so removed incremental metadata is not recoverable from prior revisions
 - **MP4Box.js** for chunked MP4, M4V, MOV, 3GP, and 3G2 container and track data
 - **Bounded local header readers** for Matroska/WebM EBML, AVI/RIFF, and FLV facts before ExifTool completes
 - **music-metadata** for MP3, FLAC, Ogg/Vorbis, Opus, M4A, AAC, WAV, and WMA/ASF tags and technical audio data

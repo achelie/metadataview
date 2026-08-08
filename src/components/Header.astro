@@ -9,15 +9,16 @@ const viewItems = [
   { href: '/audio-metadata-viewer/', label: 'Audio' },
   { href: '/document-metadata-viewer/', label: 'Documents' },
 ];
-const removeItems: Array<{ href?: string; label: string; available: boolean }> = [
-  { href: '/metadata-remover/', label: 'Images', available: true },
-  { label: 'Videos', available: false },
-  { label: 'Audio', available: false },
-  { label: 'Documents', available: false },
+const removeItems: Array<{ href: string; label: string }> = [
+  { href: '/metadata-remover/', label: 'All Formats' },
+  { href: '/image-metadata-remover/', label: 'Images' },
+  { href: '/video-metadata-remover/', label: 'Videos' },
+  { href: '/audio-metadata-remover/', label: 'Audio' },
+  { href: '/document-metadata-remover/', label: 'Documents' },
 ];
 const isCurrent = (href: string) => pathname === href;
 const viewCurrent = pathname === '/' || pathname === '/metadata-viewer/' || pathname === '/image-metadata-viewer/' || pathname === '/video-metadata-viewer/' || pathname === '/audio-metadata-viewer/' || pathname === '/document-metadata-viewer/';
-const removeCurrent = pathname === '/metadata-remover/';
+const removeCurrent = removeItems.some((item) => pathname === item.href);
 const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === 'All Formats' && pathname === '/';
 ---
 <header class="site-header">
@@ -37,7 +38,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
       <div class="nav-dropdown" data-nav-dropdown data-open="false">
         <button class:list={['nav-dropdown-trigger', { 'is-current': removeCurrent }]} type="button" aria-expanded="false">Remove metadata <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
         <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label="Remove metadata by format" aria-hidden="true" inert>
-          {removeItems.map((item) => item.available && item.href ? <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a> : <span aria-disabled="true">{item.label}<small>Coming soon</small></span>)}
+          {removeItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}
         </div>
       </div>
       <a href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
@@ -65,7 +66,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
         <a class="mobile-nav-link" href="/image-privacy-checker/" aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>Check privacy</a>
         <div class="mobile-nav-group t-acc" data-mobile-accordion data-open="false">
           <button class="t-acc-head" type="button" aria-expanded="false">Remove metadata <span class="t-acc-chevron"><StaticIcon name="chevronDown" size={17} /></span></button>
-          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{removeItems.map((item) => item.available && item.href ? <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a> : <span aria-disabled="true">{item.label}<small>Coming soon</small></span>)}</div></div></div>
+          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{removeItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
         </div>
         <a class="mobile-nav-link" href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
       </div>

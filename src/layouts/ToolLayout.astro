@@ -5,13 +5,14 @@ import ToolWorkbench, { type ToolMode } from '../components/ToolWorkbench';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
 import FormatMetadataGuide from '../components/FormatMetadataGuide.astro';
 import PrivacyChecker from '../components/privacy/PrivacyChecker';
-import MetadataRemover from '../components/privacy/MetadataRemover';
+import MetadataRemovalWorkbench from '../components/MetadataRemovalWorkbench';
 import C2paWorkbench from '../components/C2paWorkbench';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
 import type { FormatGuide } from '../content/tools';
 import type { DetectedFileType } from '../lib/metadata/types';
+import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
@@ -22,6 +23,7 @@ interface Props {
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
+  metadataRemovalScope?: MetadataRemovalScope;
   productionC2paViewer?: boolean;
   formatGuide?: FormatGuide;
   faqDisplay?: 'accordion' | 'expanded';
@@ -41,7 +43,7 @@ const schemas = [
   <div class="page-shell">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} />
-    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemover client:load /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
     {props.formatGuide ? <FormatMetadataGuide guide={props.formatGuide} limitations={props.limitations} /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
       <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
       <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>

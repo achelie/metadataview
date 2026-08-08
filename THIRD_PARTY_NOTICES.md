@@ -6,7 +6,8 @@ MetadataView includes open-source software that runs locally in the visitor's br
 
 - Package: `@contentauth/c2pa-web` 0.13.1
 - Source: https://github.com/contentauth/c2pa-js
-- License: MIT
+- JavaScript wrapper license: MIT
+- Bundled TagLib WebAssembly license: LGPL-2.1-or-later
 
 The package provides the official browser SDK and WebAssembly bindings used to read and validate C2PA Content Credentials. MetadataView loads it only after the visitor selects a file, terminates the SDK Worker after each run, and exports only a bounded safe report rather than file or resource bytes.
 
@@ -41,6 +42,23 @@ zip.js opens OOXML packages from the selected browser `Blob`. MetadataView extra
 - License: MIT
 
 fast-xml-parser reads bounded OOXML property documents after MetadataView rejects DTD and entity declarations. Entity expansion is disabled.
+
+## TagLib-Wasm
+
+- Package: `taglib-wasm` 1.8.3
+- Source: https://github.com/CharlesWiltgen/TagLib-Wasm
+- License: MIT
+
+TagLib-Wasm supplies the browser WebAssembly interface used to remove writable audio tags and Matroska/WebM tags without transcoding media. The package repository includes the TagLib source and documented relinking instructions required by its LGPL terms. MetadataView snapshots and restores supported cover art and chapters according to its metadata-only policy, then rescans the generated file.
+
+## qpdf WebAssembly
+
+- Package: `@neslinesli93/qpdf-wasm` 0.3.0
+- Package source: https://github.com/neslinesli93/qpdf-wasm
+- Upstream qpdf source: https://github.com/qpdf/qpdf
+- Wrapper license: ISC
+
+The qpdf WebAssembly build omits top-level Info and XMP dictionaries while rewriting the complete PDF. This prevents old incremental PDF revisions from retaining recoverable top-level metadata. Page content, forms, annotations, attachments, and metadata inside embedded files are intentionally outside this cleanup policy.
 
 ## Product-design references
 

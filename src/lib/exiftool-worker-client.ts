@@ -1,6 +1,7 @@
 import type { NormalizedImageMetadata } from './metadata/types';
 import type { ExifToolInspection, MetadataInspectionMode } from './metadata-report/types';
 import type { PrivacyDeepInspection, PrivacyReport, PrivacyStructuralCleanup } from './privacy/types';
+import type { MetadataWorkerCleanup } from './metadata-removal/types';
 import type { ExifToolOperation, ExifToolProgressStage, ExifToolWorkerRequest, ExifToolWorkerResponse } from '../workers/exiftool-protocol';
 
 type ExifToolRequestWithoutId = ExifToolWorkerRequest extends infer Request
@@ -92,6 +93,10 @@ export class ExifToolWorkerClient {
 
   cleanPreservingEncoding(file: File, onProgress: (stage: ExifToolProgressStage) => void, timeoutMs = 120_000): Promise<PrivacyStructuralCleanup> {
     return this.run<PrivacyStructuralCleanup>({ type: 'clean-preserve-encoding', file }, 'cleanup', onProgress, timeoutMs);
+  }
+
+  cleanMetadata(file: File, family: 'image' | 'quicktime' | 'pdf', onProgress: (stage: ExifToolProgressStage) => void, timeoutMs = 180_000): Promise<MetadataWorkerCleanup> {
+    return this.run<MetadataWorkerCleanup>({ type: 'clean-metadata-exiftool', file, family }, 'metadata-cleanup', onProgress, timeoutMs);
   }
 
   cancel(): void {

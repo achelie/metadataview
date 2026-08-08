@@ -2,6 +2,7 @@ import type { IconName } from '../components/IconGlyph';
 import type { ToolMode } from '../components/ToolWorkbench';
 import { metadataViewerFaqs } from './metadata-faqs';
 import type { DetectedFileType } from '../lib/metadata/types';
+import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
 
 export interface ToolConfig {
   title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName;
@@ -10,6 +11,7 @@ export interface ToolConfig {
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
+  metadataRemovalScope?: MetadataRemovalScope;
   productionC2paViewer?: boolean;
   formatGuide?: FormatGuide;
   faqDisplay?: 'accordion' | 'expanded';
@@ -31,7 +33,7 @@ export interface FormatGuide {
 
 const inspectRelated = [
   { href: '/image-privacy-checker/', title: 'Image Privacy Checker', note: 'Turn metadata into an explainable risk score.' },
-  { href: '/metadata-remover/', title: 'Metadata Remover', note: 'Re-encode an image without the hidden baggage.' },
+  { href: '/metadata-remover/', title: 'Metadata Remover', note: 'Remove writable tags without re-encoding the file.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from metadata.' },
 ];
 const protectRelated = [
@@ -47,7 +49,7 @@ const imageGuide: FormatGuide = {
   benefits: [
     { href: '/image-privacy-checker/', icon: 'shield', kicker: 'Privacy check', title: 'Catch location leaks', description: 'Find GPS coordinates, owner names, serial numbers, and embedded previews before an image leaves your device.', action: 'Check image privacy' },
     { href: '#metadata-workbench-tool', icon: 'fileImage', kicker: 'Capture context', title: 'Understand the shot', description: 'Review camera, lens, exposure, orientation, dates, software, color profiles, and the exact native tag paths.', action: 'Inspect an image' },
-    { href: '/metadata-remover/', icon: 'eraser', kicker: 'Cleaner sharing', title: 'Make a cleaner copy', description: 'Remove writable image metadata, rescan the result, and keep a verification receipt beside the download.', action: 'Remove metadata' },
+    { href: '/image-metadata-remover/', icon: 'eraser', kicker: 'Cleaner sharing', title: 'Make a cleaner copy', description: 'Remove writable image metadata, rescan the result, and keep a verification receipt beside the download.', action: 'Remove metadata' },
   ],
   processTitle: 'How the image scan works',
   processDescription: 'The browser reads one PNG, JPEG, WebP, HEIC, TIFF, or GIF in this tab. The image and its metadata are never posted to a server.',
@@ -128,6 +130,50 @@ const audioGuide: FormatGuide = {
   ctaLabel: 'Choose an audio file above',
 };
 
+function removalGuide(kind: string, formats: string, detail: string): FormatGuide {
+  const selection = kind === 'file' ? 'Select one supported file.' : `Select a supported ${kind} file.`;
+  return {
+    valueEyebrow: 'WHY CLEAN IT',
+    valueTitle: `Why remove ${kind} metadata?`,
+    valueDescription: detail,
+    benefits: [
+      { href: '#metadata-workbench-tool', icon: 'eraser', kicker: 'Metadata only', title: 'Strip labels, not content', description: 'Remove writable identity, location, software, date, and custom fields without transcoding the actual file.', action: 'Clean one file' },
+      { href: '#metadata-workbench-tool', icon: 'scan', kicker: 'Proof after cleanup', title: 'Trust the rescan', description: 'The generated copy is parsed again at the same depth. Removed, preserved, and residual fields stay separate.', action: 'See verification' },
+      { href: '/', icon: 'badge', kicker: 'Keep the source', title: 'Download a receipt', description: 'The original never changes. Save the clean copy and a safe JSON record of every output check.', action: 'View metadata first' },
+    ],
+    processTitle: `How ${kind} cleanup works`,
+    processDescription: `${formats} files are cleaned inside this browser tab. The selected file and generated copy are never uploaded.`,
+    steps: [
+      { title: 'Choose one file', description: `${selection} The bytes remain inside this browser tab.` },
+      { title: 'Scan the original', description: 'The real signature, technical structure, writable metadata, and signatures are checked before cleanup.' },
+      { title: 'Remove metadata locally', description: 'A format-specific engine removes descriptive tags while retaining media and document content.' },
+      { title: 'Verify the output', description: 'The copy is reopened, structurally compared, and scanned again before download is enabled.' },
+      { title: 'Forget the session', description: 'Clear, replace, or refresh to stop workers and release temporary browser objects.' },
+    ],
+    ctaLead: 'Have a file ready?',
+    ctaLabel: 'Choose a file above',
+  };
+}
+
+const imageRemovalGuide = removalGuide('image', 'PNG, JPEG, WebP, HEIC, TIFF, and GIF', 'Photos can carry GPS, owner names, serial numbers, edit history, and stale previews long after the pixels look harmless.');
+const videoRemovalGuide = removalGuide('video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2', 'Video containers can name the authoring app, device, owner, location, and edit dates without showing any of it in playback.');
+const audioRemovalGuide = removalGuide('audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, and WMA', 'Audio tags can expose names, comments, software, dates, library labels, and broadcast notes around an otherwise ordinary recording.');
+const documentRemovalGuide = removalGuide('document', 'PDF, DOCX, PPTX, and XLSX', 'Documents can retain authors, companies, templates, software, edit dates, revision labels, and custom properties after the visible page looks finished.');
+const allRemovalGuide = removalGuide('file', 'Image, video, audio, and document', 'Choose the file you actually plan to share. The cleaner picks a format-specific engine and proves what changed.');
+
+function makeRemovalTool(input: {
+  scope: MetadataRemovalScope; title: string; metaTitle: string; path: string; eyebrow: string; icon: IconName;
+  description: string; shortDescription: string; formats: string; accept: string; allowedTypes: DetectedFileType[];
+  guide: FormatGuide; highlights: string[]; limitations: string[]; faqs: { question: string; answer: string }[];
+}): ToolConfig {
+  return {
+    productionMetadataRemover: true, metadataRemovalScope: input.scope, faqDisplay: 'expanded', formatGuide: input.guide,
+    title: input.title, metaTitle: input.metaTitle, path: input.path, eyebrow: input.eyebrow, icon: input.icon, mode: 'remover',
+    description: input.description, shortDescription: input.shortDescription, formats: input.formats, accept: input.accept, allowedTypes: input.allowedTypes,
+    highlights: input.highlights, limitations: input.limitations, faqs: input.faqs, related: protectRelated,
+  };
+}
+
 export const tools: Record<string, ToolConfig> = {
   metadata: {
     productionMetadataReport: true, metadataReportScope: 'all',
@@ -148,7 +194,7 @@ export const tools: Record<string, ToolConfig> = {
     shortDescription: 'Read camera, GPS, color, author, software, animation, and container data from one image.',
     highlights: ['Checks the real PNG, JPEG, WebP, HEIC, TIFF, or GIF signature.', 'Shows dimensions, animation, camera, GPS, color, authorship, and dates.', 'Keeps native ExifTool paths and unknown readable tags.', 'Falls back to a format badge when the browser cannot preview HEIC or TIFF pixels.'],
     formats: 'PNG · JPG / JPEG · WebP · HEIC · TIFF · GIF', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,image/png,image/jpeg,image/webp,image/heic,image/heif,image/tiff,image/gif', allowedTypes: ['png','jpeg','webp','heic','tiff','gif'],
-    limitations: ['Some browsers cannot preview HEIC or TIFF pixels; metadata inspection still works.', 'Privacy Checker and Metadata Remover remain limited to JPEG, PNG, and WebP.', 'Visible faces and text are pixels, not metadata, and are not analyzed.'],
+    limitations: ['Some browsers cannot preview HEIC or TIFF pixels; metadata inspection still works.', 'Image Metadata Remover supports all six image families; Privacy Checker remains focused on JPEG, PNG, and WebP.', 'Visible faces and text are pixels, not metadata, and are not analyzed.'],
     faqs: [
       { question: 'Does this upload my image?', answer: 'No. Browser parsers and ExifTool WebAssembly read the image in this tab. The file, filename, hashes, and metadata are not posted to a server or saved to a history.' },
       { question: 'Which image formats and metadata are supported?', answer: 'The viewer supports PNG, JPG/JPEG, WebP, HEIC, TIFF, and GIF up to 50 MB. It reads available EXIF, GPS, XMP, IPTC, ICC, comments, animation flags, container fields, embedded previews, and unknown readable tags.' },
@@ -223,15 +269,81 @@ export const tools: Record<string, ToolConfig> = {
     ], related: protectRelated,
   },
   remover: {
-    productionMetadataRemover: true,
-    title: 'Metadata Remover', metaTitle: 'Metadata Remover – Remove EXIF and Hidden Image Data', path: '/metadata-remover/', eyebrow: 'Pixel-only re-encoder', icon: 'eraser', mode: 'remover',
-    description: 'Remove EXIF, XMP, IPTC, PNG text, and other removable image metadata locally in your browser.',
-    shortDescription: 'Create a new image without removable metadata, then scan the copy again.',
-    highlights: ['Leaves the original file unchanged.', 'Re-encodes pixels into a fresh local image.', 'Checks the generated copy before download.', 'Reports the before-and-after field and file-size change.'],
-    formats: 'JPEG · PNG · WebP', accept: '.jpg,.jpeg,.png,.webp', allowedTypes: ['jpeg','png','webp'],
-    limitations: ['JPEG and WebP re-encoding can make tiny visual changes.', 'Color profiles may be removed and file size can increase or decrease.', 'Metadata removal does not hide visible people, text, plates, or locations.'],
-    faqs: [{ question: 'Does this selectively preserve some EXIF?', answer: 'No. The reliable MVP mode removes all removable metadata instead of pretending selective deletion is safe.' }, { question: 'Is PNG output lossy?', answer: 'No. PNG is encoded losslessly; the quality selector is disabled for it.' }, { question: 'Does the original file change?', answer: 'Never. The browser creates a new downloadable Blob and leaves the source untouched.' }], related: protectRelated,
+    productionMetadataRemover: true, metadataRemovalScope: 'all', faqDisplay: 'expanded', formatGuide: allRemovalGuide,
+    title: 'Metadata Remover', metaTitle: 'Metadata Remover — Clean Image, Video, Audio and Document Tags', path: '/metadata-remover/', eyebrow: 'All-format metadata cleaner', icon: 'eraser', mode: 'remover',
+    description: 'Remove writable metadata from 28 image, video, audio, and document formats locally, then verify the generated copy before download.',
+    shortDescription: 'Drop one supported file. Remove descriptive tags without re-encoding its content, then rescan the copy.',
+    highlights: ['Selects a real format-specific cleanup engine.', 'Keeps media and document content intact.', 'Rescans the generated copy before download.', 'Separates removed, preserved, and residual fields.'],
+    formats: 'Images · Videos · Audio · Documents', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma', allowedTypes: ['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma'] as DetectedFileType[],
+    limitations: ['Required technical fields remain because deleting them would break the file.', 'Cover art, chapters, subtitles, attachments, comments, revisions, and visible content are preserved.', 'A verified cleanup does not hide people, text, locations, or other details visible in the content.'],
+    faqs: [
+      { question: 'Does this upload or replace my original file?', answer: 'No. Cleanup and verification run inside this browser tab. The original remains unchanged, and only a new downloadable copy is created.' },
+      { question: 'Which formats can be cleaned?', answer: 'The cleaner supports six image formats, nine video formats, nine audio formats, and PDF, DOCX, PPTX, and XLSX. It checks the real signature before selecting an engine.' },
+      { question: 'Will audio or video be re-encoded?', answer: 'No. Metadata-only cleanup keeps encoded media packets, tracks, chapters, subtitles, cover art, and attachments. A structural mismatch blocks the download.' },
+      { question: 'Why can some metadata remain?', answer: 'Some fields are required for decoding, color, dimensions, duration, pages, or container integrity. Preserved and format-limited residual fields are listed instead of hidden.' },
+      { question: 'What happens to signed files?', answer: 'Any metadata change can invalidate C2PA or document signatures. The cleaner detects likely signatures and requires a separate confirmation first.' },
+    ], related: protectRelated,
   },
+  imageRemover: makeRemovalTool({
+    scope: 'image', title: 'Image Metadata Remover', metaTitle: 'Image Metadata Remover — Clean PNG, JPEG, WebP, HEIC, TIFF and GIF', path: '/image-metadata-remover/', eyebrow: 'Image tag scrubber', icon: 'eraser', guide: imageRemovalGuide,
+    description: 'Remove writable EXIF, GPS, XMP, IPTC, MakerNote, comments, and hidden previews from PNG, JPEG, WebP, HEIC, TIFF, and GIF images without re-encoding pixels.',
+    shortDescription: 'Clean six image formats while retaining ICC color, orientation, dimensions, and animation.',
+    formats: 'PNG · JPG / JPEG · WebP · HEIC · TIFF · GIF', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,image/png,image/jpeg,image/webp,image/heic,image/heif,image/tiff,image/gif', allowedTypes: ['png','jpeg','webp','heic','tiff','gif'],
+    highlights: ['Removes writable image identity and location fields.', 'Keeps compressed pixels and animation intact.', 'Retains color and orientation needed for correct display.', 'Runs the same full embedded scan before and after.'],
+    limitations: ['TIFF keeps structural IFD fields required to render pixels.', 'ICC color and Orientation are intentionally preserved.', 'Removing metadata cannot hide visible faces, text, plates, screens, or landmarks.'],
+    faqs: [
+      { question: 'Are the image pixels recompressed?', answer: 'No. This metadata-only tool edits supported metadata blocks while retaining compressed image data, dimensions, orientation, color, and animation.' },
+      { question: 'Does it remove GPS and camera serial numbers?', answer: 'Writable GPS, owner, camera, lens, serial, XMP, IPTC, EXIF, MakerNote, comment, and hidden-preview records are targeted and then rescanned.' },
+      { question: 'Why are ICC and Orientation preserved?', answer: 'Removing them can change color or rotate the image incorrectly. The report labels them as required technical data rather than claiming they were missed.' },
+      { question: 'Does GIF animation survive?', answer: 'Yes. Animation frames, timing, transparency, and looping data are retained. Comments and writable descriptive extensions are removed.' },
+      { question: 'Does zero residual metadata mean the picture is anonymous?', answer: 'No. Visible pixels and the output filename can still expose people, text, places, screens, reflections, or account information.' },
+    ],
+  }),
+  videoRemover: makeRemovalTool({
+    scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover — Clean MP4, MOV, MKV, WebM, AVI and FLV Tags', path: '/video-metadata-remover/', eyebrow: 'Container tag scrubber', icon: 'film', guide: videoRemovalGuide,
+    description: 'Remove writable descriptive metadata from MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2 files without transcoding the video.',
+    shortDescription: 'Keep tracks, codecs, chapters, subtitles, and frames while stripping writable container labels.',
+    formats: 'MP4 / M4V · MOV · MKV · WebM · AVI · FLV · 3GP · 3G2', accept: '.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,video/mp4,video/x-m4v,video/quicktime,video/x-matroska,video/webm,video/x-msvideo,video/x-flv,video/3gpp,video/3gpp2', allowedTypes: ['mp4','mov','mkv','webm','avi','flv','3gp','3g2'],
+    highlights: ['Never transcodes video or audio tracks.', 'Uses ExifTool, TagLib, RIFF, or FLV cleanup by real container.', 'Retains chapters, subtitles, cover art, and attachments.', 'Blocks output when structure or technical facts change.'],
+    limitations: ['Mandatory track dates or handler labels may remain in some containers.', 'Subtitles, chapters, attachments, and visible frames are preserved.', 'Cleaning metadata does not remove faces, speech, logos, captions, or visible locations.'],
+    faqs: [
+      { question: 'Will the video be transcoded?', answer: 'No. The tool edits container metadata only. Encoded tracks and frames are preserved, and a changed duration, codec, dimension, or track fact blocks download.' },
+      { question: 'Which video tags are removed?', answer: 'Writable titles, authors, comments, locations, software, device labels, dates, copyright, XMP, and custom container tags are targeted.' },
+      { question: 'Are chapters and subtitles deleted?', answer: 'No. The selected metadata-only policy preserves chapters, subtitle tracks, attachments, cover art, and other user-visible content.' },
+      { question: 'Why can MP4 or MOV fields remain?', answer: 'Some ISO BMFF values are required to address tracks or decode media. The rescan lists these as structural or residual instead of calling them removed.' },
+      { question: 'Does this make the visible video private?', answer: 'No. Frames and audio can still reveal faces, voices, signs, locations, screens, captions, or account details.' },
+    ],
+  }),
+  audioRemover: makeRemovalTool({
+    scope: 'audio', title: 'Audio Metadata Remover', metaTitle: 'Audio Metadata Remover — Clean MP3, FLAC, OGG, M4A, WAV and WMA Tags', path: '/audio-metadata-remover/', eyebrow: 'Audio tag scrubber', icon: 'audio', guide: audioRemovalGuide,
+    description: 'Remove ID3, Vorbis, Opus, iTunes, RIFF, BEXT, iXML, and ASF descriptive metadata from nine audio formats without re-encoding sound.',
+    shortDescription: 'Strip writable audio labels while retaining sound, cover art, chapters, codec, and sample properties.',
+    formats: 'MP3 · FLAC · OGG · OPUS · OGA · M4A · AAC · WAV · WMA', accept: '.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma,audio/mpeg,audio/flac,audio/ogg,audio/opus,audio/mp4,audio/aac,audio/wav,audio/x-ms-wma', allowedTypes: ['mp3','flac','ogg','opus','m4a','aac','wav','wma'],
+    highlights: ['Uses TagLib WASM locally in a dedicated Worker.', 'Keeps cover art and chapters by policy.', 'Removes broadcast notes and custom descriptive tags.', 'Verifies format, duration, sample rate, channels, and codec.'],
+    limitations: ['Cover art and chapters are intentionally preserved.', 'Required codec headers and technical audio properties remain.', 'The tool does not edit, normalize, transcribe, fingerprint, or listen to audio.'],
+    faqs: [
+      { question: 'Is the sound re-encoded?', answer: 'No. TagLib changes metadata containers and returns a new file while keeping the encoded audio stream and its technical properties.' },
+      { question: 'Which tags are removed?', answer: 'Titles, artists, albums, comments, dates, software, custom tags, ratings, lyrics, ID3, Vorbis comments, ASF fields, RIFF INFO, BEXT, and iXML are targeted.' },
+      { question: 'Will cover art and chapters remain?', answer: 'Yes. The metadata-only policy snapshots and restores embedded pictures and supported chapter markers after descriptive fields are cleared.' },
+      { question: 'Does it support broadcast WAV metadata?', answer: 'Yes. Writable RIFF INFO, BEXT, and iXML records are removed while PCM data, format, sample rate, channels, and bit depth remain.' },
+      { question: 'Can cleaned audio still identify someone?', answer: 'Yes. A voice, spoken name, lyric, audible room, acoustic fingerprint, or filename can reveal information outside metadata.' },
+    ],
+  }),
+  documentRemover: makeRemovalTool({
+    scope: 'document', title: 'Document Metadata Remover', metaTitle: 'Document Metadata Remover — Clean PDF, DOCX, PPTX and XLSX Properties', path: '/document-metadata-remover/', eyebrow: 'Document property scrubber', icon: 'fileText', guide: documentRemovalGuide,
+    description: 'Remove writable PDF and Office document properties locally while preserving pages, body content, cells, slides, comments, revisions, media, and attachments.',
+    shortDescription: 'Clean PDF, DOCX, PPTX, and XLSX property records, then reopen and verify the generated document.',
+    formats: 'PDF · DOCX · PPTX · XLSX', accept: '.pdf,.docx,.pptx,.xlsx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', allowedTypes: ['pdf','docx','pptx','xlsx'],
+    highlights: ['Rewrites Office property XML without reading body content.', 'Uses qpdf to omit top-level PDF Info and XMP during a full rewrite.', 'Keeps document content and embedded objects.', 'Warns before invalidating a digital signature.'],
+    limitations: ['PDF page content and embedded files can carry their own metadata and are not rewritten.', 'Office comments, revisions, hidden sheets or slides, macros, and embedded objects are preserved.', 'Any existing PDF or OOXML digital signature becomes invalid after modification.'],
+    faqs: [
+      { question: 'Does this read or change the document body?', answer: 'No. Office cleanup rewrites property parts only. PDF cleanup rewrites top-level Info and XMP while retaining pages, forms, annotations, attachments, and visible content.' },
+      { question: 'Why does PDF use qpdf instead of a normal tag edit?', answer: 'A normal PDF metadata edit is incremental and can leave the old value recoverable. qpdf omits the top-level Info and XMP dictionaries while rewriting the complete file.' },
+      { question: 'Which Office properties are removed?', answer: 'Core author, title, subject, keywords, dates, revision, company, manager, application identity, template labels, and custom properties are targeted.' },
+      { question: 'Are comments and tracked changes removed?', answer: 'No. They are document content under the selected metadata-only policy. The page warns that those features may still contain names or history.' },
+      { question: 'What happens to digital signatures?', answer: 'Changing document bytes invalidates the existing signature. The cleaner detects likely signatures and requires explicit confirmation before creating a copy.' },
+    ],
+  }),
   c2pa: {
     productionC2paViewer: true,
     title: 'C2PA Viewer', metaTitle: 'C2PA Viewer – Verify Content Credentials and File Provenance', path: '/c2pa-viewer/', eyebrow: 'Cryptographic provenance check', icon: 'badge', mode: 'metadata',
