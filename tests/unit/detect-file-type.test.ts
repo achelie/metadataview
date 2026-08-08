@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { detectFileType, detectFromBytes, detectSignature, typeFromFilename, typeFromMime } from '../../src/lib/metadata/detect-file-type';
 import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
+import { videoFixture, videoMime, type VideoFixtureType } from '../fixtures/video';
 
 describe('file signature detection', () => {
   it('detects PNG', () => expect(detectSignature(Uint8Array.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]))).toBe('png'));
@@ -9,6 +10,14 @@ describe('file signature detection', () => {
   it('detects PDF', () => expect(detectSignature(new TextEncoder().encode('%PDF-1.7'))).toBe('pdf'));
   it('recognizes the ZIP container before OOXML package inspection', () => expect(detectSignature(Uint8Array.from([0x50, 0x4b, 0x03, 0x04]))).toBe('zip'));
   it('detects MP4', () => expect(detectSignature(Uint8Array.from([0,0,0,24,102,116,121,112,105,115,111,109]))).toBe('mp4'));
+  it.each(['mp4', 'mov', 'mkv', 'webm', 'avi', 'flv', '3gp', '3g2'] as VideoFixtureType[])('detects a real %s video container signature', (type) => {
+    expect(detectSignature(videoFixture(type))).toBe(type);
+    expect(detectFromBytes(videoFixture(type), `fixture.${type}`, videoMime(type))).toMatchObject({ type, warnings: [] });
+  });
+  it('treats M4V as the MP4 family while preserving its filename extension', () => {
+    expect(typeFromFilename('camera.m4v')).toBe('mp4');
+    expect(detectFromBytes(videoFixture('m4v'), 'camera.m4v', videoMime('m4v'))).toMatchObject({ type: 'mp4', warnings: [] });
+  });
   it('detects MP3 from ID3 and MPEG headers', () => {
     expect(detectSignature(new TextEncoder().encode('ID3\u0004\u0000'))).toBe('mp3');
     expect(detectSignature(Uint8Array.from([0xff, 0xfb, 0x90, 0x64]))).toBe('mp3');
@@ -29,6 +38,14 @@ describe('file signature detection', () => {
     expect(typeFromFilename('recording.wma')).toBe('wma');
     expect(typeFromMime('audio/ogg; codecs=opus')).toBe('ogg');
     expect(typeFromMime('audio/x-m4a')).toBe('m4a');
+  });
+  it('maps video extensions and MIME labels', () => {
+    expect(typeFromFilename('clip.mov')).toBe('mov');
+    expect(typeFromFilename('clip.webm')).toBe('webm');
+    expect(typeFromFilename('clip.3g2')).toBe('3g2');
+    expect(typeFromMime('video/quicktime')).toBe('mov');
+    expect(typeFromMime('video/x-matroska')).toBe('mkv');
+    expect(typeFromMime('video/3gpp')).toBe('3gp');
   });
   it('recognizes generic ISO BMFF audio as M4A when the filename identifies the audio profile', () => {
     const genericFtyp = Uint8Array.from([0, 0, 0, 24, 102, 116, 121, 112, 105, 115, 111, 109, 0, 0, 0, 0]);

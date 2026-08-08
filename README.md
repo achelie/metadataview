@@ -15,8 +15,9 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 | Tool | MVP formats |
 | --- | --- |
-| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
+| Universal metadata viewer | JPEG, PNG, WebP, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Document metadata viewer | PDF, DOCX, PPTX, XLSX |
+| Video metadata viewer | MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2 |
 | Audio metadata viewer | MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
 | Image metadata viewer | JPEG, PNG, WebP |
 | Image privacy checker | JPEG, PNG, WebP |
@@ -47,7 +48,8 @@ Specialized pages reuse the same parser adapters:
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
 - **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
-- **MP4Box.js** for MP4 container and track data
+- **MP4Box.js** for chunked MP4, M4V, MOV, 3GP, and 3G2 container and track data
+- **Bounded local header readers** for Matroska/WebM EBML, AVI/RIFF, and FLV facts before ExifTool completes
 - **music-metadata** for MP3, FLAC, Ogg/Vorbis, Opus, M4A, AAC, WAV, and WMA/ASF tags and technical audio data
 - **Pako** for PNG `zTXt` and compressed `iTXt`
 - **@contentauth/c2pa-web** for browser C2PA verification
@@ -144,7 +146,7 @@ The MVP does not ship analytics or ads. A future ad provider could set its own c
 - Shared-tool Worker timeout: 25 seconds
 - ExifTool image full scan timeout: 180 seconds
 - User-triggered embedded-content scan timeout: 180 seconds
-- MP4 adapter timeout: 15 seconds
+- ISO BMFF video adapter timeout: 15 seconds
 - Image JSON normalization: 50 levels and 20,000 keys
 - One file per task; no retained history or batch queue
 
@@ -209,8 +211,8 @@ The project uses static output, so no Function or server runtime is needed.
 - Browser format support can differ, especially for WebP re-encoding and C2PA media types.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
-- PDF, DOCX, PPTX, XLSX, MP4, and audio metadata removal is not included.
-- GIF, HEIC, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
+- PDF, DOCX, PPTX, XLSX, video, and audio metadata removal is not included.
+- GIF, HEIC, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap
 

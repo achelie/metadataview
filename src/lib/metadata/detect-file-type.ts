@@ -4,6 +4,7 @@ import type { ContainerSignatureType, DetectedFileType, DetectionResult, ParseWa
 
 const EXTENSIONS: Record<string, DetectedFileType> = {
   jpg: 'jpeg', jpeg: 'jpeg', png: 'png', webp: 'webp', pdf: 'pdf', docx: 'docx', pptx: 'pptx', xlsx: 'xlsx', mp4: 'mp4', m4v: 'mp4',
+  mov: 'mov', mkv: 'mkv', webm: 'webm', avi: 'avi', flv: 'flv', '3gp': '3gp', '3g2': '3g2',
   mp3: 'mp3', flac: 'flac', ogg: 'ogg', oga: 'ogg', opus: 'opus', m4a: 'm4a', aac: 'aac', wav: 'wav', wave: 'wav', wma: 'wma',
 };
 
@@ -12,7 +13,11 @@ const MIME_TYPES: Record<string, DetectedFileType> = {
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
   'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
-  'video/mp4': 'mp4', 'audio/mp4': 'm4a', 'audio/x-m4a': 'm4a',
+  'video/mp4': 'mp4', 'video/x-m4v': 'mp4', 'video/quicktime': 'mov',
+  'video/x-matroska': 'mkv', 'video/webm': 'webm',
+  'video/x-msvideo': 'avi', 'video/avi': 'avi', 'video/msvideo': 'avi',
+  'video/x-flv': 'flv', 'video/3gpp': '3gp', 'video/3gpp2': '3g2',
+  'audio/mp4': 'm4a', 'audio/x-m4a': 'm4a',
   'audio/mpeg': 'mp3', 'audio/mp3': 'mp3',
   'audio/flac': 'flac', 'audio/x-flac': 'flac',
   'audio/ogg': 'ogg', 'application/ogg': 'ogg', 'audio/opus': 'opus',
@@ -38,13 +43,39 @@ function isAsf(bytes: Uint8Array): boolean {
   return bytes.length >= signature.length && signature.every((byte, index) => bytes[index] === byte);
 }
 
-function isM4aBrand(bytes: Uint8Array): boolean {
-  if (bytes.length < 12 || ascii(bytes, 4, 4) !== 'ftyp') return false;
-  const end = Math.min(bytes.length, 64);
+function isoBmffType(bytes: Uint8Array): 'mp4' | 'm4a' | 'mov' | '3gp' | '3g2' {
+  if (bytes.length < 12 || ascii(bytes, 4, 4) !== 'ftyp') return 'mp4';
+  const declaredSize = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(0, false);
+  const end = Math.min(bytes.length, declaredSize >= 16 ? declaredSize : 64, 64);
+  const brands: string[] = [];
   for (let offset = 8; offset + 4 <= end; offset += 4) {
-    if (['M4A ', 'M4B ', 'M4P ', 'M4R '].includes(ascii(bytes, offset, 4).toUpperCase())) return true;
+    if (offset === 12) continue;
+    brands.push(ascii(bytes, offset, 4).toLowerCase());
   }
-  return false;
+  if (brands.some((brand) => ['m4a ', 'm4b ', 'm4p ', 'm4r '].includes(brand))) return 'm4a';
+  if (brands.some((brand) => brand === 'qt  ')) return 'mov';
+  if (brands.some((brand) => brand.startsWith('3g2'))) return '3g2';
+  if (brands.some((brand) => brand.startsWith('3gp'))) return '3gp';
+  return 'mp4';
+}
+
+function ebmlDocType(bytes: Uint8Array): 'mkv' | 'webm' {
+  const end = Math.min(bytes.length, 4_096);
+  for (let offset = 4; offset + 4 <= end; offset += 1) {
+    if (bytes[offset] !== 0x42 || bytes[offset + 1] !== 0x82) continue;
+    const first = bytes[offset + 2]!;
+    let length = 1;
+    let mask = 0x80;
+    while (length <= 8 && (first & mask) === 0) { length += 1; mask >>= 1; }
+    if (length > 8 || offset + 2 + length > end) continue;
+    let size = first & (mask - 1);
+    for (let index = 1; index < length; index += 1) size = size * 256 + bytes[offset + 2 + index]!;
+    const start = offset + 2 + length;
+    const docType = ascii(bytes, start, Math.min(size, end - start)).toLowerCase();
+    if (docType === 'webm') return 'webm';
+    if (docType === 'matroska') return 'mkv';
+  }
+  return 'mkv';
 }
 
 function oggCodec(bytes: Uint8Array): 'ogg' | 'opus' {
@@ -73,12 +104,15 @@ export function detectSignature(bytes: Uint8Array): ContainerSignatureType {
   if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'jpeg';
   if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'WEBP') return 'webp';
   if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'WAVE') return 'wav';
+  if (bytes.length >= 12 && ascii(bytes, 0, 4) === 'RIFF' && ascii(bytes, 8, 4) === 'AVI ') return 'avi';
+  if (bytes.length >= 4 && bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3) return ebmlDocType(bytes);
+  if (bytes.length >= 4 && ascii(bytes, 0, 3) === 'FLV' && bytes[3] === 0x01) return 'flv';
   if (bytes.length >= 4 && ascii(bytes, 0, 4) === 'fLaC') return 'flac';
   if (bytes.length >= 4 && ascii(bytes, 0, 4) === 'OggS') return oggCodec(bytes);
   if (isAsf(bytes)) return 'wma';
   if (bytes.length >= 5 && ascii(bytes, 0, 5) === '%PDF-') return 'pdf';
   if (bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4b && ((bytes[2] === 0x03 && bytes[3] === 0x04) || (bytes[2] === 0x05 && bytes[3] === 0x06) || (bytes[2] === 0x07 && bytes[3] === 0x08))) return 'zip';
-  if (bytes.length >= 12 && ascii(bytes, 4, 4) === 'ftyp') return isM4aBrand(bytes) ? 'm4a' : 'mp4';
+  if (bytes.length >= 12 && ascii(bytes, 4, 4) === 'ftyp') return isoBmffType(bytes);
   if (bytes.length >= 3 && ascii(bytes, 0, 3) === 'ID3') return 'mp3';
   if (bytes.length >= 2 && bytes[0] === 0xff && (bytes[1]! & 0xf6) === 0xf0) return 'aac';
   if (bytes.length >= 2 && bytes[0] === 0xff && (bytes[1]! & 0xe0) === 0xe0 && (bytes[1]! & 0x18) !== 0x08 && (bytes[1]! & 0x06) !== 0) return 'mp3';
@@ -116,7 +150,7 @@ export function detectFromBytes(bytes: Uint8Array, name = '', mime = ''): Detect
 
 export async function detectFileType(file: File): Promise<DetectionResult> {
   if (file.size > MAX_FILE_SIZE) throw new MetadataError('FILE_TOO_LARGE', 'This file is larger than the 100 MB inspection limit.');
-  let header = new Uint8Array(await file.slice(0, 64).arrayBuffer());
+  let header = new Uint8Array(await file.slice(0, 4_096).arrayBuffer());
   const audioOffset = id3PayloadOffset(header);
   if (audioOffset !== undefined && audioOffset < file.size) {
     const frameHeader = new Uint8Array(await file.slice(audioOffset, Math.min(file.size, audioOffset + 16)).arrayBuffer());

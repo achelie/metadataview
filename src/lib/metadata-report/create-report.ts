@@ -72,7 +72,14 @@ function makeFacts(parsed: ParsedMetadata): MetadataReportFact[] {
     facts.push(['application', 'Authoring app', normalized.Application]);
   }
   if (parsed.category === 'video' || parsed.category === 'audio') facts.push(['duration', 'Duration', duration(normalized.Duration)]);
-  if (parsed.category === 'video') facts.push(['codec', 'Video codec', normalized.Codec]);
+  if (parsed.category === 'video') {
+    facts.push(['codec', 'Video codec', normalized.VideoCodec ?? normalized.Codec]);
+    facts.push(['audio-codec', 'Audio codec', normalized.AudioCodec]);
+    const frameRate = numberValue(normalized.FrameRate);
+    if (frameRate) facts.push(['frame-rate', 'Frame rate', `${frameRate.toFixed(frameRate < 10 ? 2 : 1)} fps`]);
+    const trackCount = numberValue(normalized.TrackCount);
+    if (trackCount) facts.push(['tracks', 'Tracks', trackCount]);
+  }
   if (parsed.category === 'audio') {
     if (normalized.Codec) facts.push(['audio-codec', 'Audio codec', normalized.Codec]);
     const bitrate = numberValue(normalized.Bitrate);

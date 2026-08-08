@@ -28,7 +28,9 @@ const GROUPS: GroupDefinition[] = [
   { id: 'xmp', title: 'XMP', test: /xmp/i },
   { id: 'photoshop', title: 'Photoshop', test: /photoshop|app13/i },
   { id: 'png', title: 'PNG', test: /png/i },
-  { id: 'quicktime', title: 'QuickTime', test: /quicktime|track|itemlist|userdata|keys/i },
+  { id: 'quicktime', title: 'QuickTime', test: /quicktime|itemlist|userdata|(^|:)keys(:|$)/i },
+  { id: 'video', title: 'Video container', test: /matroska|ebml|webm|\bavi\b|flash|\bflv\b|3gpp|3g2/i },
+  { id: 'riff', title: 'RIFF media', test: /riff/i },
   { id: 'office', title: 'Office document', test: /ooxml|msoffice|docprops|openxml|wordprocessing|spreadsheet/i },
   { id: 'zip', title: 'ZIP package', test: /(^|:)(zip)(:|$)/i },
   { id: 'pdf', title: 'PDF', test: /pdf/i },
@@ -82,6 +84,11 @@ const READABLE_GROUPS = [
     id: 'document-statistics', title: 'Document statistics',
     note: 'Stored page, word, slide, note, and worksheet counts. These values may be stale if an editor did not refresh them.',
     tags: /^(PageCount|Pages|Words|Characters|CharactersWithSpaces|Lines|Paragraphs|Slides|Notes|HiddenSlides|WorksheetCount)$/i,
+  },
+  {
+    id: 'video-encoding', title: 'Video encoding & tracks',
+    note: 'Container, duration, frame size, rate, codecs, rotation, bitrate, and track labels stored around the media streams.',
+    tags: /^(FileType|MIMEType|MajorBrand|CompatibleBrands|Duration|MediaDuration|TrackDuration|ImageWidth|ImageHeight|VideoFrameRate|FrameRate|VideoCodec|CodecID|CompressorID|VideoFormat|VideoScanType|VideoBitrate|AvgBitrate|TrackCount|TrackID|TrackType|HandlerType|HandlerDescription|Rotation|MatrixStructure|Encoder|MuxingApp|WritingApp)$/i,
   },
   {
     id: 'audio-identity', title: 'Track & release',
