@@ -3,11 +3,7 @@ import badgeIcon from '@iconify-icons/lucide/badge-check';
 import warningIcon from '@iconify-icons/lucide/shield-alert';
 import shieldIcon from '@iconify-icons/lucide/shield-check';
 import fingerprintIcon from '@iconify-icons/lucide/fingerprint';
-import stampIcon from '@iconify-icons/lucide/stamp';
 import linkIcon from '@iconify-icons/lucide/link-2';
-import clockIcon from '@iconify-icons/lucide/clock-3';
-import wrenchIcon from '@iconify-icons/lucide/wrench';
-import layersIcon from '@iconify-icons/lucide/layers-3';
 import copyIcon from '@iconify-icons/lucide/copy';
 import downloadIcon from '@iconify-icons/lucide/download';
 import replaceIcon from '@iconify-icons/lucide/replace';
@@ -20,7 +16,12 @@ import infoIcon from '@iconify-icons/lucide/info';
 import fileSearchIcon from '@iconify-icons/lucide/file-search';
 import uploadIcon from '@iconify-icons/lucide/upload-cloud';
 import searchIcon from '@iconify-icons/lucide/search';
+import imageIcon from '@iconify-icons/lucide/image';
+import shareIcon from '@iconify-icons/lucide/share-2';
+import routeIcon from '@iconify-icons/lucide/git-branch';
+import wavesIcon from '@iconify-icons/lucide/waves';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { collectWatermarkDeclarations, presentC2paValidation } from '../lib/c2pa/presentation';
 import { C2paCancellationError, C2paVerifierClient } from '../lib/c2pa/verify';
 import type {
   C2paCheckState,
@@ -35,9 +36,7 @@ interface Props {
   accept: string;
 }
 
-type ReportView = 'overview' | 'validation' | 'manifests' | 'raw';
-
-const reportViews: ReportView[] = ['overview', 'validation', 'manifests', 'raw'];
+type PreviewFacts = { width: number; height: number } | null;
 
 const progressCopy: Record<C2paProgressStage, string> = {
   'checking-file': 'Checking the real file signature',
@@ -124,7 +123,7 @@ function SafeJsonDetails({ title, note, value, className = '' }: { title: string
 function ValidationRows({ entries }: { entries: C2paValidationEntry[] }) {
   if (!entries.length) return <div className="c2pa-empty"><strong>No entries in this bucket.</strong><p>The SDK did not return a status code at this severity.</p></div>;
   return <div className="c2pa-validation-list">{entries.map((entry) => <article key={entry.id} className={`is-${entry.severity}`}>
-    <span>{entry.severity}</span>
+    <span className="c2pa-validation-mark" aria-label={entry.severity === 'success' ? 'Passed' : entry.severity === 'failure' ? 'Failed' : 'Warning'}><Icon icon={entry.severity === 'success' ? checkIcon : entry.severity === 'failure' ? failIcon : warningIcon} width="15" /></span>
     <div><h4>{entry.title}</h4><code>{entry.code}</code><p>{entry.explanation}</p><small>{entry.scope}{entry.url ? ` · ${entry.url}` : ''}</small></div>
     <button type="button" aria-label={`Copy validation code ${entry.code}`} onClick={() => void copyText(entry.code)}><Icon icon={copyIcon} width="15" /></button>
   </article>)}</div>;
@@ -161,8 +160,11 @@ export default function C2paWorkbench({ formats, accept }: Props) {
   const [stage, setStage] = useState<C2paProgressStage | null>(null);
   const [notice, setNotice] = useState('Waiting for a file');
   const [error, setError] = useState<string | null>(null);
-  const [view, setView] = useState<ReportView>('overview');
   const [query, setQuery] = useState('');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewFailed, setPreviewFailed] = useState(false);
+  const [previewFacts, setPreviewFacts] = useState<PreviewFacts>(null);
+  const [selectedProvenance, setSelectedProvenance] = useState('file');
 
   const openPicker = () => {
     if (!input.current) return;
@@ -173,7 +175,7 @@ export default function C2paWorkbench({ formats, accept }: Props) {
   const clear = (returnFocus = true) => {
     runId.current += 1;
     verifier.current?.cancel();
-    setFile(null); setReport(null); setBusy(false); setStage(null); setError(null); setNotice('Waiting for a file'); setView('overview'); setQuery('');
+    setFile(null); setReport(null); setBusy(false); setStage(null); setError(null); setNotice('Waiting for a file'); setQuery(''); setSelectedProvenance('file');
     if (input.current) input.current.value = '';
     if (returnFocus) window.requestAnimationFrame(() => chooseButton.current?.focus());
   };
@@ -183,6 +185,18 @@ export default function C2paWorkbench({ formats, accept }: Props) {
     verifier.current?.dispose();
     verifier.current = null;
   }, []);
+
+  useEffect(() => {
+    setPreviewFailed(false);
+    setPreviewFacts(null);
+    if (!file) {
+      setPreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
 
   useEffect(() => {
     if (!report) return;
@@ -203,7 +217,7 @@ export default function C2paWorkbench({ formats, accept }: Props) {
     verifier.current?.cancel();
     const client = verifier.current ?? new C2paVerifierClient();
     verifier.current = client;
-    setFile(selected); setReport(null); setBusy(true); setStage('checking-file'); setError(null); setView('overview'); setQuery('');
+    setFile(selected); setReport(null); setBusy(true); setStage('checking-file'); setError(null); setQuery(''); setSelectedProvenance('file');
     setNotice(progressCopy['checking-file']);
     try {
       const result = await client.verify(selected, {
@@ -256,6 +270,10 @@ export default function C2paWorkbench({ formats, accept }: Props) {
   const filteredIngredients = useMemo(() => report?.ingredients.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
   const filteredAssertions = useMemo(() => report?.assertions.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
   const filteredManifests = useMemo(() => report?.manifests.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
+  const validationPresentation = useMemo(() => report ? presentC2paValidation(report.validation) : null, [report]);
+  const filteredValidationPresentation = useMemo(() => presentC2paValidation(filteredValidation), [filteredValidation]);
+  const watermarkDeclarations = useMemo(() => report ? collectWatermarkDeclarations(report.actions, report.assertions) : [], [report]);
+  const filteredWatermarks = useMemo(() => watermarkDeclarations.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)), [watermarkDeclarations, needle]);
 
   const verdict = report ? verdictCopy[report.status] : null;
   const active = report?.activeManifest;
@@ -265,15 +283,12 @@ export default function C2paWorkbench({ formats, accept }: Props) {
       : report?.status === 'unsupported' ? 'Unsupported here does not mean invalid elsewhere.'
         : 'A valid signature is evidence, not a truth machine.';
 
-  const moveReportTab = (current: ReportView, direction: -1 | 1 | 'first' | 'last') => {
-    const currentIndex = reportViews.indexOf(current);
-    const nextIndex = direction === 'first' ? 0
-      : direction === 'last' ? reportViews.length - 1
-        : (currentIndex + direction + reportViews.length) % reportViews.length;
-    const nextView = reportViews[nextIndex]!;
-    setView(nextView);
-    window.requestAnimationFrame(() => document.getElementById(`c2pa-tab-${nextView}`)?.focus());
-  };
+  const selectedIngredient = report?.ingredients.find((item) => item.id === selectedProvenance) ?? null;
+  const previewableImage = report ? ['jpeg', 'png', 'webp', 'gif', 'svg', 'avif'].includes(report.file.detectedType) : false;
+  const credentialBadge = report?.status === 'trusted' ? 'Trusted'
+    : report?.status === 'valid' ? 'Valid with caveats'
+      : report?.status === 'invalid' ? 'Invalid'
+        : report?.status === 'not-found' ? 'No credential' : 'Unsupported';
 
   return <section className="workbench c2pa-workbench" aria-busy={busy}>
     <div className="workbench-topline">
@@ -298,19 +313,40 @@ export default function C2paWorkbench({ formats, accept }: Props) {
 
     {report && verdict ? <div className="c2pa-report">
       <header className="c2pa-report-heading">
-        <div><span className="eyebrow">Verification receipt · schema {report.schemaVersion}</span><h2 ref={resultHeading} tabIndex={-1}>{report.file.name}</h2><p>{report.file.detectedType.toUpperCase()} · {formatBytes(report.file.size)} · checked with {report.engine.name} {report.engine.version}</p></div>
+        <div><span className="eyebrow">Local verification receipt · schema {report.schemaVersion}</span><h2 ref={resultHeading} tabIndex={-1}>{report.file.name}</h2><p>{report.file.detectedType.toUpperCase()} · {formatBytes(report.file.size)} · checked with {report.engine.name} {report.engine.version}</p></div>
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />Replace</button><button className="button button-ghost" type="button" onClick={() => clear()}><Icon icon={trashIcon} width="16" />Clear</button></div>
       </header>
 
-      <section className={`c2pa-verdict is-${report.status}`} aria-labelledby="c2pa-verdict-title">
-        <div className="c2pa-verdict-copy"><span className="c2pa-verdict-mark"><Icon icon={report.status === 'invalid' ? warningIcon : report.status === 'not-found' || report.status === 'unsupported' ? fileSearchIcon : badgeIcon} width="34" /></span><div><span className="eyebrow">{verdict.eyebrow}</span><h3 id="c2pa-verdict-title">{verdict.title}</h3><p>{verdict.body}</p></div></div>
-        <div className="c2pa-checks">
-          <CheckFact label="File binding" value={report.checks.binding} note="Does the signed hash match these bytes?" />
-          <CheckFact label="Claim signature" value={report.checks.signature} note="Did the cryptographic signature validate?" />
-          <CheckFact label="Publisher trust" value={report.checks.publisherTrust} note="Is the signer on a configured trust list?" />
-          <CheckFact label="Revocation" value={report.checks.revocation} note="Was credential revocation established?" />
-        </div>
-      </section>
+      <div className="c2pa-report-overview">
+        <section className="c2pa-asset-card" aria-labelledby="c2pa-asset-title">
+          <div className="c2pa-asset-preview">
+            {previewableImage && previewUrl && !previewFailed ? <img src={previewUrl} alt={`Preview of ${report.file.name}`} onError={() => setPreviewFailed(true)} onLoad={(event) => setPreviewFacts({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} /> : <span><Icon icon={imageIcon} width="38" /><b>{report.file.detectedType.toUpperCase()}</b></span>}
+            <small className={`is-${report.status}`}>{credentialBadge}</small>
+          </div>
+          <div className="c2pa-asset-copy">
+            <div><span className="eyebrow">Inspected asset</span><h3 id="c2pa-asset-title" title={report.file.name}>{report.file.name}</h3><p>{formatBytes(report.file.size)} · {previewFacts ? `${previewFacts.width} × ${previewFacts.height} · ` : ''}{report.file.detectedType.toUpperCase()}</p></div>
+            <dl>
+              <div><dt>Signed by</dt><dd>{active?.signer ?? 'No signer stated'}</dd></div>
+              <div><dt>Issued</dt><dd>{active?.signedAt ?? 'Not stated'}</dd></div>
+              <div><dt>Algorithm</dt><dd>{active?.algorithm ?? 'Not stated'}</dd></div>
+              <div><dt>Cert status</dt><dd>{report.checks.publisherTrust === 'passed' ? 'Trusted signer' : report.status === 'invalid' ? 'Invalid credential' : hasCredential ? 'Trust not checked' : 'Not applicable'}</dd></div>
+              <div><dt>Software</dt><dd>{active?.claimGenerator ?? 'Not stated'}</dd></div>
+            </dl>
+            <button className="button button-primary c2pa-share-button" type="button" onClick={() => downloadJson(report, sanitizeFilename(report.file.name, '-c2pa-report'))}><Icon icon={shareIcon} width="16" />Create shareable report</button>
+            <small className="c2pa-local-export-note">Downloads a local JSON receipt. Nothing is uploaded.</small>
+          </div>
+        </section>
+
+        <section className={`c2pa-verdict is-${report.status}`} aria-labelledby="c2pa-verdict-title">
+          <div className="c2pa-verdict-copy"><span className="c2pa-verdict-mark"><Icon icon={report.status === 'invalid' ? warningIcon : report.status === 'not-found' || report.status === 'unsupported' ? fileSearchIcon : badgeIcon} width="34" /></span><div><span className="eyebrow">{verdict.eyebrow}</span><h3 id="c2pa-verdict-title">{verdict.title}</h3><p>{verdict.body}</p></div></div>
+          <div className="c2pa-checks">
+            <CheckFact label="File binding" value={report.checks.binding} note="Does the signed hash match these bytes?" />
+            <CheckFact label="Claim signature" value={report.checks.signature} note="Did the cryptographic signature validate?" />
+            <CheckFact label="Publisher trust" value={report.checks.publisherTrust} note="No external trust list is configured." />
+            <CheckFact label="Revocation" value={report.checks.revocation} note="No online OCSP request is made." />
+          </div>
+        </section>
+      </div>
 
       <section className="c2pa-file-receipt" aria-label="Inspected file receipt">
         <div><span>Detected format</span><strong>{report.file.detectedType.toUpperCase()}</strong><small>{report.file.inspectedMime ?? report.file.mime}</small></div>
@@ -320,40 +356,41 @@ export default function C2paWorkbench({ formats, accept }: Props) {
 
       {report.warnings.length ? <div className="c2pa-warning-list">{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><strong>{warning.code}</strong> {warning.message}</p>)}</div> : null}
 
-      {hasCredential ? <section className="c2pa-claim-strip" aria-label="Active claim summary">
-        <div><Icon icon={stampIcon} width="20" /><span>Signer<strong>{active?.signer ?? 'Not stated'}</strong><small>{active?.issuer ?? 'Issuer not stated'}</small></span></div>
-        <div><Icon icon={wrenchIcon} width="20" /><span>Claim generator<strong>{active?.claimGenerator ?? 'Not stated'}</strong><small>{active?.vendor ?? 'Vendor not stated'}</small></span></div>
-        <div><Icon icon={clockIcon} width="20" /><span>Signed time<strong>{active?.signedAt ?? 'Not stated'}</strong><small>{active?.algorithm ?? 'Algorithm not stated'}</small></span></div>
-        <div><Icon icon={layersIcon} width="20" /><span>Ledger<strong>{report.actions.length} actions · {report.ingredients.length} ingredients</strong><small>{report.assertions.length} assertions</small></span></div>
-      </section> : null}
+      <label className="c2pa-search"><Icon icon={searchIcon} width="17" /><span className="sr-only">Search this credential report</span><input type="search" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search checks, actions, sources, or assertions" /></label>
 
-      <section className="c2pa-ledger" aria-labelledby="c2pa-ledger-title">
-        <header><div><span className="eyebrow">Credential evidence</span><h3 id="c2pa-ledger-title">Read the claim. Keep the caveat.</h3></div><div className="c2pa-tabs" role="tablist" aria-label="Credential report views">{reportViews.map((item) => <button key={item} id={`c2pa-tab-${item}`} type="button" role="tab" aria-selected={view === item} aria-controls={`c2pa-panel-${item}`} tabIndex={view === item ? 0 : -1} onClick={() => setView(item)} onKeyDown={(event) => {
-          if (event.key === 'ArrowRight') { event.preventDefault(); moveReportTab(item, 1); }
-          else if (event.key === 'ArrowLeft') { event.preventDefault(); moveReportTab(item, -1); }
-          else if (event.key === 'Home') { event.preventDefault(); moveReportTab(item, 'first'); }
-          else if (event.key === 'End') { event.preventDefault(); moveReportTab(item, 'last'); }
-        }}>{item === 'raw' ? 'Raw JSON' : item[0]!.toUpperCase() + item.slice(1)}</button>)}</div></header>
-        {view !== 'raw' ? <label className="c2pa-search"><Icon icon={searchIcon} width="17" /><span className="sr-only">Search this credential report</span><input type="search" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder="Search actions, status codes, ingredients, or assertions" /></label> : null}
+      <div className="c2pa-evidence-stack">
+        <section className="c2pa-evidence-panel c2pa-validation-panel" aria-labelledby="c2pa-validation-title">
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">Cryptographic checks</span><h3 id="c2pa-validation-title">Validation results</h3><p>{validationPresentation?.total ?? 0} checks · {validationPresentation?.passed ?? 0} passed · {validationPresentation?.warnings ?? 0} warning{validationPresentation?.warnings === 1 ? '' : 's'}{validationPresentation?.failed ? ` · ${validationPresentation.failed} failed` : ''}</p></div><strong>{filteredValidationPresentation.entries.length}</strong></header>
+          {filteredValidationPresentation.entries.length ? <ValidationRows entries={filteredValidationPresentation.entries} /> : <div className="c2pa-empty"><strong>{query ? 'No matching validation checks.' : 'No validation checks were returned.'}</strong><p>{report.status === 'not-found' ? 'There is no C2PA manifest to validate in this file.' : 'The safe receipt still records the verifier result.'}</p></div>}
+        </section>
 
-        <div className="c2pa-view" id={`c2pa-panel-${view}`} role="tabpanel" aria-labelledby={`c2pa-tab-${view}`} tabIndex={0}>
-          {view === 'overview' ? hasCredential ? <>
-            <section className="c2pa-section"><header><span>01</span><div><h4>Actions</h4><p>What the claim generator says happened to this asset.</p></div><b>{filteredActions.length}</b></header>{filteredActions.length ? <div className="c2pa-action-list">{filteredActions.map((action, index) => <article key={action.id}><i>{String(index + 1).padStart(2, '0')}</i><div><strong>{action.label}</strong><code>{action.action}</code><p>{[action.when, action.softwareAgent, action.description].filter(Boolean).join(' · ') || 'No extra action details were stated.'}</p>{action.digitalSourceType ? <small>{action.digitalSourceType}</small> : null}{action.details ? <SafeJsonDetails title="Action details" note="Safe structured values" value={action.details} /> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>No matching actions.</strong><p>The active manifest did not include an action that matches this search.</p></div>}</section>
-            <section className="c2pa-section"><header><span>02</span><div><h4>Ingredients</h4><p>Source assets named by the active manifest.</p></div><b>{filteredIngredients.length}</b></header>{filteredIngredients.length ? <div className="c2pa-ingredient-list">{filteredIngredients.map((ingredient) => <article key={ingredient.id}><Icon icon={linkIcon} width="20" /><div><strong>{ingredient.title}</strong><p>{[ingredient.relationship, ingredient.format, ingredient.activeManifest].filter(Boolean).join(' · ') || 'No relationship details stated.'}</p><small>{ingredient.instanceId ?? ingredient.documentId ?? 'No instance identifier'}</small>{ingredient.validation.length ? <details><summary>{ingredient.validation.length} ingredient validation entries</summary><ValidationRows entries={ingredient.validation} /></details> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>No matching ingredients.</strong><p>This can be normal for a newly created asset.</p></div>}</section>
-            <section className="c2pa-section"><header><span>03</span><div><h4>Assertions</h4><p>The complete safe assertion index from the active manifest.</p></div><b>{filteredAssertions.length}</b></header>{filteredAssertions.length ? <div className="c2pa-assertion-list">{filteredAssertions.map((assertion) => <SafeJsonDetails key={assertion.id} title={assertion.label} note={`${assertion.kind ?? 'Unknown format'} · ${assertion.created ? 'created by signer' : 'gathered'}`} value={assertion.data} />)}</div> : <div className="c2pa-empty"><strong>No matching assertions.</strong><p>Clear the search to restore the full assertion index.</p></div>}</section>
-          </> : <div className="c2pa-empty is-large"><Icon icon={fileSearchIcon} width="34" /><strong>{report.status === 'not-found' ? 'There is no manifest to unpack.' : 'This format was not sent to the verifier.'}</strong><p>The SHA-256 receipt still identifies the exact local file you checked.</p></div> : null}
+        <section className="c2pa-evidence-panel c2pa-actions-panel" aria-labelledby="c2pa-actions-title">
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">Signed history</span><h3 id="c2pa-actions-title">Actions</h3><p>{report.actions.length} entr{report.actions.length === 1 ? 'y' : 'ies'} from the active C2PA actions assertion.</p></div><strong>{filteredActions.length}</strong></header>
+          {filteredActions.length ? <div className="c2pa-action-list">{filteredActions.map((action, index) => <article key={action.id}><i>{index + 1}</i><div><strong>{action.label}</strong><code>{action.action}</code></div><div><p>{action.softwareAgent ?? action.description ?? 'No tool was stated.'}</p><small>{[action.when, action.digitalSourceType].filter(Boolean).join(' · ') || 'No timestamp or source type stated.'}</small>{action.details ? <SafeJsonDetails title="Action details" note="Safe structured values" value={action.details} /> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>{query ? 'No matching actions.' : 'No actions were declared.'}</strong><p>A missing action list does not mean the file was never edited.</p></div>}
+        </section>
 
-          {view === 'validation' ? <div className="c2pa-validation-columns">
-            <section><header><span>Failure</span><b>{filteredValidation.failure.length}</b></header><ValidationRows entries={filteredValidation.failure} /></section>
-            <section><header><span>Informational</span><b>{filteredValidation.informational.length}</b></header><ValidationRows entries={filteredValidation.informational} /></section>
-            <section><header><span>Success</span><b>{filteredValidation.success.length}</b></header><ValidationRows entries={filteredValidation.success} /></section>
-          </div> : null}
+        <section className="c2pa-evidence-panel c2pa-provenance-panel" aria-labelledby="c2pa-provenance-title">
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">Direct source links</span><h3 id="c2pa-provenance-title">Provenance</h3><p>{report.ingredients.length ? `${report.ingredients.length} direct ingredient${report.ingredients.length === 1 ? '' : 's'} linked to this file.` : 'Current file only · no prior ingredients declared.'}</p></div><Icon icon={routeIcon} width="25" /></header>
+          <div className={`c2pa-provenance-flow ${filteredIngredients.length ? 'has-sources' : ''}`}>
+            {filteredIngredients.length ? <div className="c2pa-source-nodes">{filteredIngredients.map((ingredient) => <button key={ingredient.id} type="button" className={selectedProvenance === ingredient.id ? 'is-selected' : ''} aria-pressed={selectedProvenance === ingredient.id} onClick={() => setSelectedProvenance(ingredient.id)}><span>Source asset</span><strong>{ingredient.title}</strong><small>{ingredient.format ?? ingredient.relationship ?? 'Format not stated'}</small></button>)}</div> : null}
+            <button type="button" className={`c2pa-current-node ${selectedProvenance === 'file' ? 'is-selected' : ''}`} aria-pressed={selectedProvenance === 'file'} onClick={() => setSelectedProvenance('file')}><span>This file · {credentialBadge}</span><strong>{report.file.name}</strong><small>{active?.signer ? `Signed by ${active.signer}` : 'No signer stated'}</small></button>
+          </div>
+          <div className="c2pa-selected-node"><span className="eyebrow">Selected node</span><div><span className="c2pa-node-thumb"><Icon icon={selectedIngredient ? linkIcon : imageIcon} width="28" /></span><div><small>{selectedIngredient ? 'Source asset' : 'This file'} · {selectedIngredient ? selectedIngredient.relationship ?? 'relationship not stated' : credentialBadge}</small><h4>{selectedIngredient?.title ?? report.file.name}</h4><p>{selectedIngredient ? [selectedIngredient.format, selectedIngredient.instanceId ?? selectedIngredient.documentId].filter(Boolean).join(' · ') || 'No additional source details were stated.' : active?.signer ? `Signed by ${active.signer}` : 'No C2PA signer is attached to this file.'}</p></div></div><p>{report.status === 'invalid' ? 'The active credential is invalid, so treat every provenance claim as diagnostic only.' : report.status === 'not-found' ? 'No Content Credentials were found, so no signed provenance chain is available.' : 'This view shows declared direct links only. It does not invent relationships that are absent from the manifest.'}</p></div>
+        </section>
 
-          {view === 'manifests' ? filteredManifests.length ? <div className="c2pa-manifest-list">{filteredManifests.map((manifest, index) => <article key={manifest.label} className={manifest.active ? 'is-active' : undefined}><span>{manifest.active ? 'Active' : `History ${index + 1}`}</span><h4>{manifest.title ?? manifest.label}</h4><code>{manifest.label}</code><dl><div><dt>Generator</dt><dd>{manifest.claimGenerator ?? 'Not stated'}</dd></div><div><dt>Signer</dt><dd>{manifest.signer ?? 'Not stated'}</dd></div><div><dt>Signed</dt><dd>{manifest.signedAt ?? 'Not stated'}</dd></div><div><dt>Contents</dt><dd>{manifest.assertionCount} assertions · {manifest.ingredientCount} ingredients</dd></div></dl></article>)}</div> : <div className="c2pa-empty is-large"><strong>No manifest matches this search.</strong><p>Clear the search to see the whole provenance chain.</p></div> : null}
+        <section className="c2pa-evidence-panel c2pa-watermark-panel" aria-labelledby="c2pa-watermark-title">
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">Manifest declaration</span><h3 id="c2pa-watermark-title">Embedded watermark</h3><p>{watermarkDeclarations.length} declaration{watermarkDeclarations.length === 1 ? '' : 's'} found in the active manifest.</p></div><Icon icon={wavesIcon} width="25" /></header>
+          <p className="c2pa-watermark-note">This verifier reads watermark declarations in Content Credentials. It does not inspect pixels or audio samples to confirm that a watermark signal is present.</p>
+          {filteredWatermarks.length ? <div className="c2pa-watermark-list">{filteredWatermarks.map((item) => <div key={item.id}><span>{item.source}</span><strong>{item.label}</strong><code>{item.code}</code></div>)}</div> : <div className="c2pa-empty"><strong>{query ? 'No matching watermark declaration.' : 'No watermark declaration found.'}</strong><p>This result does not prove that the media contains no invisible watermark.</p></div>}
+        </section>
 
-          {view === 'raw' ? <SafeJsonDetails className="is-raw" title="Complete safe C2PA report" note="No file bytes, Blob URLs, thumbnails, or worker state" value={report} /> : null}
-        </div>
-      </section>
+        <section className="c2pa-evidence-panel c2pa-technical-panel" aria-labelledby="c2pa-technical-title">
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">Complete evidence</span><h3 id="c2pa-technical-title">Technical details</h3><p>Assertions, manifest history, and the safe normalized JSON receipt.</p></div><strong>{report.assertions.length + report.manifests.length}</strong></header>
+          <details><summary><span>Assertions<small>{filteredAssertions.length} safe entries</small></span><b>Open</b></summary>{filteredAssertions.length ? <div className="c2pa-assertion-list">{filteredAssertions.map((assertion) => <SafeJsonDetails key={assertion.id} title={assertion.label} note={`${assertion.kind ?? 'Unknown format'} · ${assertion.created ? 'created by signer' : 'gathered'}`} value={assertion.data} />)}</div> : <div className="c2pa-empty"><strong>No matching assertions.</strong><p>Clear the search to restore the assertion index.</p></div>}</details>
+          <details><summary><span>Manifest history<small>{filteredManifests.length} entries</small></span><b>Open</b></summary>{filteredManifests.length ? <div className="c2pa-manifest-list">{filteredManifests.map((manifest, index) => <article key={manifest.label} className={manifest.active ? 'is-active' : undefined}><span>{manifest.active ? 'Active' : `History ${index + 1}`}</span><h4>{manifest.title ?? manifest.label}</h4><code>{manifest.label}</code><dl><div><dt>Generator</dt><dd>{manifest.claimGenerator ?? 'Not stated'}</dd></div><div><dt>Signer</dt><dd>{manifest.signer ?? 'Not stated'}</dd></div><div><dt>Signed</dt><dd>{manifest.signedAt ?? 'Not stated'}</dd></div><div><dt>Contents</dt><dd>{manifest.assertionCount} assertions · {manifest.ingredientCount} ingredients</dd></div></dl></article>)}</div> : <div className="c2pa-empty"><strong>No manifest matches this search.</strong><p>Clear the search to restore the provenance history.</p></div>}</details>
+          <SafeJsonDetails className="is-raw" title="Complete safe C2PA report" note="No file bytes, Blob URLs, thumbnails, or worker state" value={report} />
+        </section>
+      </div>
 
       <aside className="c2pa-honest-limit"><Icon icon={infoIcon} width="22" /><div><strong>{honestTitle}</strong><p>Content Credentials can show who signed a claim and whether it still binds to this file. They cannot prove that every statement or visible scene is true. This privacy-first verifier also makes no external trust-list or OCSP request.</p></div></aside>
 

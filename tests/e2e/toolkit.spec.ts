@@ -390,13 +390,29 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
   await expect(page.locator('.c2pa-hash code')).toHaveText(/^[a-f0-9]{64}$/);
   await expect(page.getByText('Not applicable', { exact: true })).toHaveCount(4);
-  await page.getByRole('tab', { name: 'Validation' }).click();
-  await expect(page.locator('.c2pa-validation-columns')).toBeVisible();
+  await expect(page.locator('.c2pa-asset-card img')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Validation results' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Actions' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Provenance' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Embedded watermark' })).toBeVisible();
+  await expect(page.getByText('No watermark declaration found.')).toBeVisible();
+  await expect(page.getByText(/does not inspect pixels or audio samples/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Create shareable report' })).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download JSON' }).click();
-  expect((await downloadPromise).suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  await page.getByRole('button', { name: 'Create shareable report' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+  const receipt = JSON.parse(await readFile(downloadPath!, 'utf8')) as Record<string, unknown>;
+  expect(receipt).toMatchObject({ schemaVersion: '1.0', status: 'not-found' });
+  expect(JSON.stringify(receipt)).not.toMatch(/blob:|data:image|sourceBytes|wasm/i);
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
   expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
+  expect(requests.every((request) => new URL(request.url).origin === new URL(page.url()).origin)).toBe(true);
+  await page.setViewportSize({ width: 239, height: 844 });
+  const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(width.scroll).toBeLessThanOrEqual(width.client + 1);
 });
 
 test('C2PA viewer sends a signature-checked SVG to the official local verifier', async ({ page }) => {
