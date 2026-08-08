@@ -966,6 +966,34 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .c2pa-export p { margin: 0; }
 .c2pa-export .button-row { justify-self: end; }
 
+/* C2PA field manual — a dark reading room after the local verifier. */
+.c2pa-education { width: 100vw; margin: clamp(3.5rem,7vw,6.5rem) 0 0 calc(50% - 50vw); color: #f4efe3; background-color: #11130f; background-image: radial-gradient(circle at 88% 5%,rgba(217,255,67,.085),transparent 24rem),radial-gradient(circle at 8% 56%,rgba(239,106,56,.08),transparent 30rem),repeating-linear-gradient(118deg,transparent 0 34px,rgba(255,255,255,.018) 34px 35px),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.72' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.035' filter='url(%23n)'/%3E%3C/svg%3E"); border-block: 1px solid #292c25; box-shadow: inset 0 7px 0 rgba(217,255,67,.08); }
+.c2pa-education-inner { width: min(1160px,calc(100% - 40px)); margin-inline: auto; padding: clamp(3.5rem,7vw,6.5rem) 0 clamp(4rem,8vw,7rem); }
+.c2pa-chapter { display: grid; grid-template-columns: minmax(150px,.3fr) minmax(240px,.6fr) minmax(0,1.1fr); gap: clamp(1.2rem,4vw,4.5rem); padding: 0 0 clamp(3.4rem,6vw,5.7rem); border-bottom: 1px solid #34372f; }
+.c2pa-chapter + .c2pa-chapter { padding-top: clamp(3.4rem,6vw,5.7rem); }
+.c2pa-chapter-index { color: var(--orange); font-size: .66rem; font-weight: 900; letter-spacing: .14em; line-height: 1.5; text-transform: uppercase; }
+.c2pa-chapter h2,.c2pa-supported h2,.c2pa-plain-faq h2 { margin: -.18rem 0 0; color: #fffaf0; font-family: var(--body); font-size: clamp(1.35rem,2.2vw,1.9rem); font-weight: 900; letter-spacing: -.035em; line-height: 1.08; }
+.c2pa-chapter-copy { min-width: 0; }
+.c2pa-chapter-copy p { margin: 0 0 1.05rem; color: #c9c7be; font-size: clamp(.93rem,1.25vw,1.05rem); line-height: 1.7; }
+.c2pa-chapter-copy p:last-child { margin-bottom: 0; }
+.c2pa-chapter-copy a { color: var(--acid); font-weight: 900; text-decoration: underline; text-underline-offset: .2em; }
+.c2pa-chapter-copy a:hover { color: #fffaf0; }
+.c2pa-supported { padding: clamp(3.4rem,6vw,5.7rem) 0; display: grid; grid-template-columns: minmax(245px,.7fr) minmax(0,1.3fr); gap: clamp(2rem,7vw,7rem); border-bottom: 1px solid #34372f; }
+.c2pa-supported header { display: grid; align-content: start; gap: .8rem; }
+.c2pa-supported header p { max-width: 310px; margin: .25rem 0 0; color: #96978f; line-height: 1.55; }
+.c2pa-supported dl { margin: 0; border-top: 1px solid #3b3e36; }
+.c2pa-supported dl div { display: grid; grid-template-columns: 115px minmax(0,1fr); gap: 1.3rem; padding: .9rem 0; border-bottom: 1px solid #2d302a; }
+.c2pa-supported dt { color: var(--acid); font-size: .67rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.c2pa-supported dd { margin: 0; color: #dedbd1; line-height: 1.5; overflow-wrap: anywhere; }
+.c2pa-supported aside { grid-column: 2; padding: .8rem 0 0 1rem; color: #aaa99f; border-left: 3px solid var(--rust); font-size: .78rem; line-height: 1.55; }
+.c2pa-supported aside strong { color: #fffaf0; }
+.c2pa-plain-faq { padding-top: clamp(3.7rem,7vw,6.5rem); }
+.c2pa-plain-faq > header { display: grid; grid-template-columns: minmax(150px,.3fr) minmax(0,1.7fr); gap: clamp(1.2rem,4vw,4.5rem); padding-bottom: 1.35rem; }
+.c2pa-plain-faq > div { margin-left: calc(15% + clamp(1.2rem,4vw,4.5rem)); border-top: 1px solid #3b3e36; }
+.c2pa-plain-faq article { padding: 1.35rem 0 1.5rem; border-bottom: 1px solid #2f322b; }
+.c2pa-plain-faq h3 { margin: 0; color: #fffaf0; font-family: var(--body); font-size: clamp(1rem,1.55vw,1.15rem); font-weight: 900; letter-spacing: -.02em; }
+.c2pa-plain-faq p { max-width: 930px; margin: .5rem 0 0; color: #b9b8af; font-size: .94rem; line-height: 1.62; }
+
 @media (max-width: 900px) {
   .c2pa-dropzone { grid-template-columns: 68px minmax(0,1fr); }
   .c2pa-dropzone aside { grid-column: 2; }
@@ -978,6 +1006,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .c2pa-assertion-list,.c2pa-manifest-list { grid-template-columns: 1fr; }
   .c2pa-export { grid-template-columns: 1fr; }
   .c2pa-export .button-row { justify-self: start; }
+  .c2pa-chapter { grid-template-columns: 130px minmax(190px,.7fr) minmax(0,1.3fr); gap: 1.5rem; }
 }
 
 @media (max-width: 680px) {
@@ -1026,6 +1055,17 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .c2pa-honest-limit { margin-inline: .75rem; box-shadow: -4px 4px 0 var(--orange); }
   .c2pa-export { padding: 1rem .75rem; }
   .c2pa-export .button-row,.c2pa-export .button { width: 100%; }
+  .c2pa-education-inner { width: min(100% - 24px,1160px); padding-block: 3.2rem 4.2rem; }
+  .c2pa-chapter { grid-template-columns: 1fr; gap: .75rem; padding-bottom: 3rem; }
+  .c2pa-chapter + .c2pa-chapter { padding-top: 3rem; }
+  .c2pa-chapter h2,.c2pa-supported h2,.c2pa-plain-faq h2 { font-size: 1.45rem; }
+  .c2pa-chapter-copy p { font-size: .91rem; }
+  .c2pa-supported { grid-template-columns: 1fr; gap: 1.7rem; padding-block: 3rem; }
+  .c2pa-supported aside { grid-column: 1; }
+  .c2pa-supported dl div { grid-template-columns: 84px minmax(0,1fr); gap: .8rem; }
+  .c2pa-plain-faq { padding-top: 3.2rem; }
+  .c2pa-plain-faq > header { grid-template-columns: 1fr; gap: .65rem; }
+  .c2pa-plain-faq > div { margin-left: 0; }
 }
 
 /* Shared production metadata report workbench */

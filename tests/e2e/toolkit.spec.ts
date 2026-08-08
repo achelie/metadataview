@@ -374,6 +374,17 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
   await page.goto('/c2pa-viewer/');
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(false);
+  await expect(page.getByRole('heading', { name: 'What is C2PA?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Content Credentials and C2PA' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Supported files' })).toBeVisible();
+  await expect(page.getByText('JPEG, PNG, WebP, GIF, TIFF, HEIC, HEIF, AVIF, JXL, DNG, ARW, NEF, SVG', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can C2PA prove that content is true?' })).toBeVisible();
+  await expect(page.getByText('Useful details, without the lecture.')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Related tools' })).toHaveCount(0);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent ?? '{}')).find((item) => item['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(6);
+  const accept = await page.locator('input[type="file"]').getAttribute('accept');
+  for (const extension of ['.gif', '.heic', '.heif', '.avif', '.jxl', '.dng', '.arw', '.nef', '.svg', '.mov', '.avi', '.mp3', '.m4a', '.wav']) expect(accept).toContain(extension);
   await upload(page, 'unsigned.png', png());
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
   await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
@@ -384,6 +395,18 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download JSON' }).click();
   expect((await downloadPromise).suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
+});
+
+test('C2PA viewer sends a signature-checked SVG to the official local verifier', async ({ page }) => {
+  test.setTimeout(45_000);
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  await page.goto('/c2pa-viewer/');
+  await upload(page, 'unsigned.svg', Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><path d="M0 0h1v1z"/></svg>'), 'image/svg+xml');
+  await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
+  await expect(page.locator('.c2pa-file-receipt').getByText('SVG', { exact: true })).toBeVisible();
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
   expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
@@ -581,6 +604,10 @@ test('home editorial sections fit an extremely narrow viewport', async ({ page }
   await expect(page.getByRole('heading', { name: 'How the local scan works' })).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
+  await page.goto('/c2pa-viewer/');
+  await expect(page.getByRole('heading', { name: 'Content Credentials and C2PA' })).toBeVisible();
+  const c2paOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(c2paOverflow).toBeLessThanOrEqual(1);
 });
 
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {

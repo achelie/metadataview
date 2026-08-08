@@ -22,7 +22,7 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 | Image metadata viewer | PNG, JPEG, WebP, HEIC/HEIF, TIFF, GIF |
 | Image privacy checker | JPEG, PNG, WebP |
 | Metadata remover | JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
-| C2PA viewer | Formats supported by the installed official C2PA WASM library; the UI currently accepts JPEG, PNG, WebP, MP4, and PDF |
+| C2PA viewer | JPEG, PNG, WebP, GIF, TIFF, HEIC/HEIF, AVIF, JXL, DNG, ARW, NEF, SVG, MP4, MOV, AVI, MP3, M4A, WAV, and PDF |
 
 Specialized pages reuse the same parser adapters:
 
@@ -169,7 +169,7 @@ The dedicated remover and Image Privacy Checker share one cleanup-and-verificati
 
 ## C2PA behavior
 
-The C2PA bundle is code-split and loaded only after a file is selected on `/c2pa-viewer`. The production workbench uses the official `@contentauth/c2pa-web` Worker and reports the SDK's real `Trusted`, `Valid`, and `Invalid` states, plus `No Content Credentials` and `Unsupported` outcomes.
+The C2PA bundle is code-split and loaded only after a file is selected on `/c2pa-viewer`. The page checks real file signatures for 20 common image, video, audio, and document formats before handing the asset to the official `@contentauth/c2pa-web` Worker. The production workbench reports the SDK's real `Trusted`, `Valid`, and `Invalid` states, plus `No Content Credentials` and `Unsupported` outcomes.
 
 `Valid` means the manifest structure, signature, and file binding passed. `Trusted` additionally requires a signer that chains to a configured trust anchor. This static privacy-first deployment performs cryptographic validation with trust-list checking disabled, so it normally reports `Valid` and shows publisher trust separately as `Not checked`. It never turns a valid signature into a truth claim, and `No Content Credentials` never means that a file is fake.
 

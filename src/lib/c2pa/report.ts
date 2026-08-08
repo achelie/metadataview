@@ -1,5 +1,6 @@
 import { toSafeValue } from '../metadata/safe-value';
-import type { FileSummary, ParseWarning } from '../metadata/types';
+import type { ParseWarning } from '../metadata/types';
+import type { C2paFileSummary } from './formats';
 import type {
   C2paActionSummary,
   C2paAssertionSummary,
@@ -17,7 +18,7 @@ const ENGINE_VERSION = '0.13.1';
 type UnknownRecord = Record<string, unknown>;
 
 export interface C2paReportInput {
-  file: FileSummary & { declaredMime: string; inspectedMime?: string };
+  file: C2paFileSummary;
   sha256: string | null;
   manifestStore: unknown;
   activeManifest?: unknown;

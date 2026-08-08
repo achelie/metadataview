@@ -3,6 +3,7 @@ import type { ToolMode } from '../components/ToolWorkbench';
 import { metadataViewerFaqs } from './metadata-faqs';
 import type { DetectedFileType } from '../lib/metadata/types';
 import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
+import { C2PA_ACCEPT, C2PA_FORMAT_SUMMARY } from '../lib/c2pa/formats';
 
 export interface ToolConfig {
   title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName;
@@ -346,12 +347,19 @@ export const tools: Record<string, ToolConfig> = {
   }),
   c2pa: {
     productionC2paViewer: true,
-    title: 'C2PA Viewer', metaTitle: 'C2PA Viewer – Verify Content Credentials and File Provenance', path: '/c2pa-viewer/', eyebrow: 'Cryptographic provenance check', icon: 'badge', mode: 'metadata',
-    description: 'Validate C2PA Content Credentials in your browser. Check the signature, file binding, status codes, actions, ingredients, assertions, and full safe manifest report without uploading the file.',
-    shortDescription: 'Drop one file. Get a clear Valid, Invalid, Trusted, or No Credential result with the evidence behind it.',
-    highlights: ['Uses the official @contentauth browser verifier in an isolated Web Worker.', 'Separates a valid signature from publisher trust instead of showing one vague green badge.', 'Indexes actions, ingredients, assertions, manifest history, and exact validation codes.', 'Calculates SHA-256 and exports a safe verification receipt without source bytes.'],
-    formats: 'JPEG · PNG · WebP · MP4 · PDF', accept: '.jpg,.jpeg,.png,.webp,.mp4,.pdf',
+    title: 'C2PA Viewer', metaTitle: 'C2PA Viewer — Verify Content Credentials and File Provenance', path: '/c2pa-viewer/', eyebrow: 'Cryptographic provenance check', icon: 'badge', mode: 'metadata',
+    description: 'Validate C2PA Content Credentials across 20 common image, video, audio, and document formats. Check signatures, file bindings, actions, ingredients, assertions, and safe manifest data without uploading the file.',
+    shortDescription: 'Drop one image, video, audio file, or PDF. Get a clear credential result and the evidence behind it.',
+    highlights: ['Uses the official @contentauth browser verifier in an isolated Web Worker.', 'Checks 20 common C2PA asset formats by their real file signatures.', 'Separates a valid signature from publisher trust instead of showing one vague green badge.', 'Calculates SHA-256 and exports a safe verification receipt without source bytes.'],
+    formats: C2PA_FORMAT_SUMMARY, accept: C2PA_ACCEPT,
     limitations: ['No credential does not mean a file is fake.', 'A valid signature proves file binding and claim integrity, not that every claim or visible scene is true.', 'This privacy-first verifier does not contact an external trust list or OCSP service, so publisher trust and revocation may remain not checked.'],
-    faqs: [{ question: 'What does Valid mean?', answer: 'The manifest is well formed, its signature validates, and its signed content binding matches this file. Publisher trust is a separate result.' }, { question: 'Why is publisher trust “Not checked”?', answer: 'This static tool blocks external verification requests so a credential cannot trigger a trust-list, remote manifest, or OCSP lookup. Use another conforming validator when you need an online trust decision.' }, { question: 'What does No Content Credentials mean?', answer: 'No embedded C2PA manifest was detected. Many authentic files have no credential, so absence is not a fake-content verdict.' }, { question: 'Is the file uploaded for validation?', answer: 'No. The official verifier runs in a browser Worker, the network policy is same-origin only, and the report excludes file bytes and thumbnails.' }], related: protectRelated,
+    faqs: [
+      { question: 'What does Valid mean?', answer: 'The manifest is well formed, its signature validates, and its signed content binding matches this exact file. Publisher trust is a separate result.' },
+      { question: 'Why is publisher trust Not checked?', answer: 'This privacy-first page makes no external trust-list, remote-manifest, or OCSP request. Use another conforming validator when you need a current online publisher-trust decision.' },
+      { question: 'What does No Content Credentials mean?', answer: 'No embedded C2PA manifest was detected. Many genuine files have no credential, so absence is not a fake-content verdict.' },
+      { question: 'Which file formats can I check?', answer: 'JPEG, PNG, WebP, GIF, TIFF, HEIC, HEIF, AVIF, JXL, DNG, ARW, NEF, SVG, MP4, MOV, AVI, MP3, M4A, WAV, and PDF are accepted after their real file signatures are checked.' },
+      { question: 'Is my file uploaded?', answer: 'No. The official verifier runs in a browser Worker. The source bytes, filename, fingerprint, and manifest values are not posted to a server or stored in a history.' },
+      { question: 'Can C2PA prove that content is true?', answer: 'No. A valid result proves that a signed credential still binds to this file. It cannot prove that every claim, sound, or visible scene is factually true.' },
+    ], related: protectRelated,
   },
 };

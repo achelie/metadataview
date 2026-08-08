@@ -286,7 +286,7 @@ export default function C2paWorkbench({ formats, accept }: Props) {
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pick(event.dataTransfer.files); }}>
       <span className="c2pa-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="32" /></span>
-      <div><span className="eyebrow">Official verifier · local run</span><strong>Drop a signed file here</strong><p id="c2pa-file-help">{formats} · images up to 50 MB · MP4/PDF up to 100 MB</p><span className="button button-primary c2pa-pick-label" aria-hidden="true">Choose a file</span></div>
+      <div><span className="eyebrow">Official verifier · local run</span><strong>Drop a file with Content Credentials</strong><p id="c2pa-file-help">{formats} · images and RAW up to 50 MB · everything else up to 100 MB</p><span className="button button-primary c2pa-pick-label" aria-hidden="true">Choose a file</span></div>
       <aside><Icon icon={fingerprintIcon} width="20" /><p><strong>What gets checked?</strong>Signature, file binding, manifest structure, actions, ingredients, and assertions.</p></aside>
     </div> : null}
 

@@ -1,20 +1,9 @@
 import type { C2paSdk, Reader, Settings } from '@contentauth/c2pa-web';
-import { detectFileType } from '../metadata/detect-file-type';
 import { MetadataError } from '../metadata/errors';
-import type { DetectedFileType } from '../metadata/types';
-import { makeFileSummary } from '../metadata/utils';
 import { computeFileEvidence } from '../metadata-report/evidence';
 import { createC2paReport } from './report';
+import { detectC2paAsset, makeC2paFileSummary } from './formats';
 import type { C2paProgressStage, C2paReport, C2paVerificationOptions } from './types';
-
-const supportedTypes = new Set<DetectedFileType>(['jpeg', 'png', 'webp', 'mp4', 'pdf']);
-const inspectedMimes: Partial<Record<DetectedFileType, string>> = {
-  jpeg: 'image/jpeg',
-  png: 'image/png',
-  webp: 'image/webp',
-  mp4: 'video/mp4',
-  pdf: 'application/pdf',
-};
 
 interface ActiveVerification {
   id: string;
@@ -66,16 +55,11 @@ function safeVerificationError(error: unknown): Error {
 
 async function runVerification(file: File, active: ActiveVerification, onProgress: (stage: C2paProgressStage) => void): Promise<C2paReport> {
   onProgress('checking-file');
-  const detected = await detectFileType(file);
+  const detected = await detectC2paAsset(file);
   throwIfCanceled(active);
-  const inspectedMime = inspectedMimes[detected.type];
-  const summary = {
-    ...makeFileSummary(file, detected.type),
-    declaredMime: file.type || 'application/octet-stream',
-    inspectedMime,
-  };
+  const summary = makeC2paFileSummary(file, detected);
 
-  if (!supportedTypes.has(detected.type) || !inspectedMime) {
+  if (!detected.supported || !detected.inspectedMime) {
     const evidence = await computeFileEvidence(file, active.controller.signal);
     return createC2paReport({
       file: summary,
@@ -106,7 +90,7 @@ async function runVerification(file: File, active: ActiveVerification, onProgres
   throwIfCanceled(active);
 
   onProgress('reading-credential');
-  active.reader = await active.sdk.reader.fromBlob(inspectedMime, file);
+  active.reader = await active.sdk.reader.fromBlob(detected.inspectedMime, file);
   throwIfCanceled(active);
   const evidence = await evidencePromise;
   if (!active.reader) {
