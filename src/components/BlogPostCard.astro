@@ -20,7 +20,9 @@ const minutes = getReadingTime(post.body ?? '');
       <time datetime={post.data.publishedAt.toISOString()}>{formatBlogDate(post.data.publishedAt)}</time>
       <span>{minutes} min read</span>
     </div>
-    <h2><a href={blogPath(post)}>{post.data.title}</a></h2>
+    {featured
+      ? <h1><a href={blogPath(post)}>{post.data.title}</a></h1>
+      : <h2><a href={blogPath(post)}>{post.data.title}</a></h2>}
     <p>{post.data.excerpt}</p>
     <a class="blog-read-link" href={blogPath(post)}>Read the guide <span aria-hidden="true">→</span></a>
   </div>

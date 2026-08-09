@@ -77,17 +77,20 @@ const schemas = [
   <article class="blog-article page-shell">
     <header class="blog-article__header">
       <a class="blog-back-link" href="/blog/"><span aria-hidden="true">←</span> Back to blog</a>
-      <div class="blog-article__category"><span>{post.data.category}</span><span>{minutes} min read</span></div>
       <h1>{post.data.title}</h1>
-      <p class="blog-article__dek">{post.data.description}</p>
       <div class="blog-byline" aria-label="Article details">
-        <div class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></div>
-        <dl>
-          <div><dt>Written by</dt><dd>{post.data.author}</dd></div>
-          <div><dt>Technical review</dt><dd>{post.data.reviewedBy}</dd></div>
-          <div><dt>Updated</dt><dd><time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></dd></div>
-          <div><dt>Reading time</dt><dd>{minutes} minutes</dd></div>
-        </dl>
+        <div class="blog-byline__person">
+          <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span><small>Written by</small><strong>{post.data.author}</strong></span>
+        </div>
+        <div class="blog-byline__person blog-byline__person--review">
+          <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span><small>Technical review</small><strong>{post.data.reviewedBy}</strong></span>
+        </div>
+        <div class="blog-byline__date">
+          <span>Last edited <time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></span>
+          <small>{minutes} min read</small>
+        </div>
       </div>
     </header>
 

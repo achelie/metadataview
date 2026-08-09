@@ -48,11 +48,6 @@ const schemas = [
   image={featured ? { src: featured.data.cover.src, alt: featured.data.coverAlt, width: 1600, height: 900 } : undefined}
 >
   <div class="blog-index page-shell">
-    <header class="blog-index__header">
-      <div><span class="blog-kicker">MetadataView field notes</span><h1>Useful answers for files that overshare.</h1></div>
-      <p>Metadata is small, invisible, and surprisingly chatty. These guides show you what files save, what that can reveal, and what to do before you hit send.</p>
-    </header>
-
     {featured && (
       <section class="blog-feature" aria-labelledby="featured-guide-title">
         <div class="blog-section-heading"><span>Featured guide</span><p>Start here</p></div>

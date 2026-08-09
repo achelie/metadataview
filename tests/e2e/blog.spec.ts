@@ -14,7 +14,9 @@ async function assertNoHorizontalOverflow(page: Page) {
 
 test('blog index features the first guide once and exposes the editorial navigation', async ({ page }) => {
   await page.goto('/blog/');
-  await expect(page.getByRole('heading', { level: 1, name: 'Useful answers for files that overshare.' })).toBeVisible();
+  await expect(page.getByText('Useful answers for files that overshare.')).toHaveCount(0);
+  await expect(page.getByText('Metadata is small, invisible, and surprisingly chatty.')).toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
   await expect(page.locator('.blog-feature .blog-post-card')).toHaveCount(1);
   await expect(page.locator('.blog-latest')).toHaveCount(0);
   await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveCount(1);
@@ -44,6 +46,9 @@ test('article renders the byline, contents, practical take, FAQ, sources, and to
   await expect(page.getByText('MetadataView product engineering', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-09/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /hand using a smartphone/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
   await expect(page.locator('.blog-toc nav a')).toHaveCount(12);
   await expect(page.locator('.practical-take li')).toHaveCount(4);
   await expect(page.getByRole('heading', { name: 'Original photo metadata versus screenshot metadata' })).toBeVisible();
