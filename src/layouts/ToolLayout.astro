@@ -52,7 +52,7 @@ const schemas = [
         <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
       </section>}
       {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">Frequently asked questions</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>Quick answers</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>}
-      <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>
+      {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
     </>}
   </div>
 </BaseLayout>

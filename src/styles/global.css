@@ -1567,6 +1567,8 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .home-format-links a > i { font-style: normal; font-weight: 900; }
 
 .home-benefits { padding: clamp(4rem,8vw,7rem) 0; border-bottom: 1px solid var(--ink); }
+.privacy-benefits { border-top: 1px solid var(--ink); }
+.privacy-checker,.privacy-process { scroll-margin-top: 6rem; }
 .home-section-heading { display: grid; grid-template-columns: .36fr 1.64fr; gap: clamp(1.2rem,4vw,3.5rem); align-items: start; margin-bottom: clamp(1.7rem,4vw,2.8rem); }
 .home-section-heading > div { display: grid; grid-template-columns: minmax(0,1.08fr) minmax(250px,.72fr); gap: clamp(1rem,4vw,3.5rem); align-items: start; }
 .home-section-heading h2 { margin: 0; max-width: 760px; font-size: clamp(2.8rem,5vw,5rem); }

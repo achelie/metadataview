@@ -610,7 +610,25 @@ test('home and universal viewer show the same five expanded FAQ answers and sche
     expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
   }
   await page.goto('/image-privacy-checker/');
-  await expect(page.locator('.faq-section details').first()).toBeVisible();
+  const privacyFaq = page.locator('.expanded-faq');
+  await expect(privacyFaq.locator('details')).toHaveCount(0);
+  await expect(privacyFaq.locator('.expanded-faq-list article')).toHaveCount(5);
+});
+
+test('privacy checker matches the homepage editorial structure with privacy-specific copy', async ({ page }) => {
+  await page.goto('/image-privacy-checker/');
+  await expect(page.getByRole('heading', { name: 'Why check image privacy?' })).toBeVisible();
+  await expect(page.locator('.privacy-benefits .home-benefit-grid a')).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: 'How the privacy check works' })).toBeVisible();
+  await expect(page.locator('.privacy-process .home-process-list li')).toHaveCount(5);
+  await expect(page.getByText('What this score cannot see')).toBeVisible();
+  await expect(page.locator('.specialized-notes,.related-tools')).toHaveCount(0);
+  const questions = await page.locator('.expanded-faq-list h3').allTextContents();
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
+  await page.setViewportSize({ width: 239, height: 844 });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
 });
 
 test('home editorial sections fit an extremely narrow viewport', async ({ page }) => {

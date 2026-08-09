@@ -256,17 +256,18 @@ export const tools: Record<string, ToolConfig> = {
     ], related: inspectRelated,
   },
   privacy: {
-    title: 'Image Privacy Checker', metaTitle: 'Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata', path: '/image-privacy-checker/', eyebrow: 'Explainable risk scan', icon: 'shield', mode: 'privacy', productionPrivacyChecker: true,
+    title: 'Image Privacy Checker', metaTitle: 'Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata', path: '/image-privacy-checker/', eyebrow: 'Explainable risk scan', icon: 'shield', mode: 'privacy', productionPrivacyChecker: true, faqDisplay: 'expanded',
     description: 'Check images for GPS coordinates, device identifiers, timestamps, author information, and hidden metadata without uploading your files.',
     shortDescription: 'Check one image for location, identity, device, editing, and thumbnail clues.',
     highlights: ['Shows an initial result while one automatic full scan finishes.', 'Explains every score with the matched metadata fields.', 'Checks standard tags, embedded previews, and nested image records.', 'Creates, fully rescans, and compares a cleaned local copy.'],
     formats: 'JPEG · PNG · WebP', accept: 'image/jpeg,image/png,image/webp', allowedTypes: ['jpeg','png','webp'],
     limitations: ['A low score does not guarantee that an image is safe to share.', 'The checker does not inspect visible faces, text, reflections, or landmarks.', 'Rules explain likely exposure; they cannot know your personal threat model.'],
     faqs: [
-      { question: 'Can an image reveal my location?', answer: 'Yes. Valid EXIF latitude and longitude can identify where a photo was taken, so exact GPS adds 40 points to this report.' },
-      { question: 'Does this tool upload my image?', answer: 'No. A Web Worker reads the file in browser memory. The image, filename, coordinates, and report are not sent to a server.' },
-      { question: 'What does the privacy score mean?', answer: 'It is a repeatable 0–100 total from visible rules. Low means fewer supported metadata signals; it never means the image is guaranteed safe.' },
-      { question: 'Can screenshots contain metadata?', answer: 'Yes. Screenshots often have little EXIF, but software names, timestamps, PNG text, or color data can remain.' },
+      { question: 'Is my image uploaded or saved?', answer: 'No. The image stays in this browser tab while local Workers inspect it. The file, filename, coordinates, hashes, and report are not uploaded or added to a history.' },
+      { question: 'What does the checker look for?', answer: 'It checks supported GPS, names, contact details, device and lens identifiers, original filenames, timestamps, editing history, persistent IDs, thumbnails, previews, and nested image records.' },
+      { question: 'What does the 0–100 privacy score mean?', answer: 'It is a repeatable total from visible, capped rules. Exact coordinates matter more than a camera model, and duplicate copies of the same fact do not earn the same points twice.' },
+      { question: 'Can it reveal exactly where a photo was taken?', answer: 'It can show stored coordinates when a valid GPS latitude and longitude pair exists. If the image has no usable GPS tags, the checker does not guess a location or contact an online map.' },
+      { question: 'Does a zero score mean the image is safe to share?', answer: 'No. Zero only means the supported metadata rules found no scored evidence. Faces, text, addresses, plates, screens, reflections, and landmarks in the visible pixels can still reveal private information.' },
     ], related: protectRelated,
   },
   remover: {

@@ -233,7 +233,7 @@ export default function PrivacyChecker() {
   };
 
   const selection = Boolean(source);
-  return <section className="workbench privacy-checker" aria-busy={quickBusy || deepPending || cleanupPending}>
+  return <section id="privacy-checker-workbench" className="workbench privacy-checker" aria-busy={quickBusy || deepPending || cleanupPending}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>Your files never leave your device.</span></div><span className="status-line" aria-live="polite"><i className={quickBusy || deepPending || cleanupPending ? 'pulse' : ''} />{status}</span></div>
     <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
 

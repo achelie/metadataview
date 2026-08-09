@@ -1,17 +1,79 @@
-<section class="specialized-notes privacy-seo-compact" aria-labelledby="privacy-notes-title">
-  <header><span class="section-index">AFTER THE CHECK</span><h2 id="privacy-notes-title">Three things worth knowing</h2><p>The score points to stored clues. It is not a promise that an image is anonymous.</p></header>
-  <div class="specialized-note-list">
-    <details>
-      <summary>What metadata can reveal</summary>
-      <div><p>GPS can identify a place. Device serial numbers, names, contact fields, original filenames, timestamps, thumbnails, and editing IDs can connect an image to a person, device, or project.</p></div>
-    </details>
-    <details>
-      <summary>How the score works</summary>
-      <div><p>The 0–100 score uses visible, capped rules. Exact coordinates matter more than a camera model, and repeated copies of the same fact do not earn the same points twice.</p></div>
-    </details>
-    <details>
-      <summary>What the checker cannot see</summary>
-      <div><p>It does not analyze faces, signs, addresses, plates, reflections, screens, uniforms, or landmarks in the pixels. Removing metadata cannot hide visible details.</p><a class="inline-link" href="/image-metadata-remover/">Create and verify a cleaned copy</a></div>
+---
+import { IconGlyph } from './IconGlyph';
+
+const privacyBenefits = [
+  {
+    href: '#privacy-checker-workbench',
+    icon: 'shield' as const,
+    eyebrow: 'Location check',
+    title: 'Catch exact location',
+    note: 'A GPS pair can point to a doorway, trail, school, or home. The report shows the coordinates and the fields that supplied them.',
+    action: 'Check an image',
+  },
+  {
+    href: '#privacy-scan-process',
+    icon: 'scan' as const,
+    eyebrow: 'Identity check',
+    title: 'Follow the breadcrumbs',
+    note: 'Names, serial numbers, original filenames, timestamps, and editing IDs can link an image to a person, device, or project.',
+    action: 'See the process',
+  },
+  {
+    href: '/image-metadata-remover/',
+    icon: 'eraser' as const,
+    eyebrow: 'Cleaner sharing',
+    title: 'Make a cleaner copy',
+    note: 'Remove supported metadata, run the same full rescan, and download the new copy with a local verification receipt.',
+    action: 'Open remover',
+  },
+];
+
+const privacyProcess = [
+  { title: 'Choose one image', note: 'Drop a JPEG, PNG, or WebP up to 50 MB. The bytes stay in this browser tab.' },
+  { title: 'Verify the actual file', note: 'The browser checks the signature, dimensions, animation state, and size before trusting the extension.' },
+  { title: 'Scan every supported field', note: 'An initial view appears quickly while ExifTool WASM checks nested records, previews, and embedded metadata.' },
+  { title: 'Score the evidence', note: 'GPS, names, device IDs, contact details, timestamps, and editing traces earn visible points without double-counting the same fact.' },
+  { title: 'Clean and check again', note: 'Create a new local copy, scan it at the same depth, and compare removed, residual, and newly detected clues before download.' },
+];
+---
+
+<section class="home-benefits privacy-benefits" aria-labelledby="privacy-benefits-title">
+  <header class="home-section-heading">
+    <span class="section-index">WHY CHECK IT</span>
+    <div>
+      <h2 id="privacy-benefits-title">Why check image privacy?</h2>
+      <p>One photo can carry an address, a name, and a device trail even when none of that appears in the pixels.</p>
+    </div>
+  </header>
+  <div class="home-benefit-grid">
+    {privacyBenefits.map((item) => <a href={item.href}>
+      <span class="home-benefit-icon"><IconGlyph name={item.icon} size={25} /></span>
+      <small>{item.eyebrow}</small>
+      <h3>{item.title}</h3>
+      <p>{item.note}</p>
+      <strong>{item.action} <IconGlyph name="arrow" size={15} /></strong>
+    </a>)}
+  </div>
+</section>
+
+<section id="privacy-scan-process" class="home-process privacy-process" aria-labelledby="privacy-process-title">
+  <header>
+    <span class="section-index">LOCAL, STEP BY STEP</span>
+    <h2 id="privacy-process-title">How the privacy check works</h2>
+    <p>One image. One automatic full scan. Every point links back to metadata evidence.</p>
+  </header>
+  <div class="home-process-body">
+    <ol class="home-process-list">
+      {privacyProcess.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}
+    </ol>
+    <p class="home-process-cta"><span>Have an image ready?</span><a href="#privacy-checker-workbench">Check an image above <IconGlyph name="arrow" size={15} /></a></p>
+    <details class="format-guide-limitations">
+      <summary>What this score cannot see</summary>
+      <ul>
+        <li>Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.</li>
+        <li>A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.</li>
+        <li>Metadata can be edited, forged, stale, or removed, so it cannot prove who created an image or where it came from.</li>
+      </ul>
     </details>
   </div>
 </section>
