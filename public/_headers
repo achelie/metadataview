@@ -7,4 +7,4 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: connect-src 'self'
+  Content-Security-Policy: connect-src 'self' https://analytics.ahrefs.com

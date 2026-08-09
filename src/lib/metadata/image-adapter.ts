@@ -2,7 +2,7 @@ import { parseImage } from './parse-image';
 import type { MetadataAdapter, ParsedMetadata } from './types';
 
 export const imageAdapter: MetadataAdapter = {
-  supports: (type) => type === 'jpeg' || type === 'png' || type === 'webp',
+  supports: (type) => ['jpeg', 'png', 'webp', 'heic', 'tiff', 'gif'].includes(type),
   async parse({ file }): Promise<ParsedMetadata> {
     const image = await parseImage(file);
     const sections = image.sections.map((section) => ({

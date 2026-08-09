@@ -1,4 +1,7 @@
 import { MetadataError } from './errors';
+import { parseGifContainer } from './gif-container';
+import { parseHeicContainer } from './heic-container';
+import { parseTiffContainer } from './tiff-container';
 import type { DetectedFileType } from './types';
 
 export interface ImageDimensions { width: number; height: number }
@@ -48,5 +51,8 @@ export function readImageDimensions(bytes: Uint8Array, type: DetectedFileType): 
   }
   if (type === 'jpeg') return jpegDimensions(bytes);
   if (type === 'webp') return webpDimensions(bytes);
+  if (type === 'gif') { const gif = parseGifContainer(bytes); return { width: gif.width, height: gif.height }; }
+  if (type === 'tiff') { const tiff = parseTiffContainer(bytes); return { width: tiff.width, height: tiff.height }; }
+  if (type === 'heic') { const heic = parseHeicContainer(bytes); return { width: heic.width, height: heic.height }; }
   throw new MetadataError('IMAGE_DECODE_FAILED', 'Unsupported image format.');
 }

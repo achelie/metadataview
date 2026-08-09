@@ -1,5 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { BlobReader, TextWriter, ZipReader } from '@zip.js/zip.js';
 import { deflate } from 'pako';
+import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
+import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
+import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
+import { videoFixture, videoMime, type VideoFixtureType } from '../fixtures/video';
 
 const pngSignature = Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a]);
 
@@ -69,22 +75,51 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
   return Buffer.from(values);
 }
 
-test('home page opens with the universal metadata viewer and three direct next tools', async ({ page }) => {
+test('home page opens with the universal viewer, three useful next steps, and the local scan process', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
-  await expect(page.locator('.home-next-tools a')).toHaveCount(3);
-  await expect(page.getByRole('link', { name: 'Check image privacy' })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.locator('.report-drop-copy p')).toContainText(/Images.*Videos.*Documents.*Audio/);
+  await expect(page.locator('.home-format-links a strong')).toHaveText(['Images', 'Videos', 'Documents', 'Audio']);
+  await expect(page.locator('.home-format-links')).not.toContainText('JPEG · PNG · WebP');
+  await expect(page.getByText('Use the right tool next.')).toHaveCount(0);
+  await expect(page.getByText('The file never takes a network trip.')).toHaveCount(0);
+  await expect(page.locator('.home-benefit-grid a')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: /Protect private details/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Check file provenance/ })).toHaveAttribute('href', '/c2pa-viewer/');
+  await expect(page.getByRole('link', { name: /Share a cleaner copy/ })).toHaveAttribute('href', '/metadata-remover/');
+  await expect(page.locator('.home-process-list li')).toHaveCount(5);
+  const workbenchLink = page.getByRole('link', { name: /Choose a file above/ });
+  await expect(workbenchLink).toHaveAttribute('href', '#metadata-workbench-home');
+  await expect(page.locator('#metadata-workbench-home')).toHaveCount(1);
+  await workbenchLink.click();
+  await expect(page).toHaveURL(/#metadata-workbench-home$/);
 });
 
-test('home page directly parses all six promised formats', async ({ page }) => {
+test('home page directly parses all 28 promised file extensions', async ({ page }) => {
+  test.setTimeout(180_000);
   const cases: Array<[string, string, Buffer, string]> = [
     ['home.png', 'image/png', png(), 'image'],
     ['home.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image'],
     ['home.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image'],
+    ['home.heic', 'image/heic', Buffer.from(heicFixture()), 'image'],
+    ['home.tiff', 'image/tiff', Buffer.from(tiffFixture()), 'image'],
+    ['home.gif', 'image/gif', Buffer.from(gifFixture()), 'image'],
     ['home.pdf', 'application/pdf', pdf(), 'pdf'],
+    ['home.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx')), 'document'],
+    ['home.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx')), 'document'],
+    ['home.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx')), 'document'],
     ['home.mp4', 'video/mp4', mp4(), 'video'],
+    ...(['m4v', 'mov', 'mkv', 'webm', 'avi', 'flv', '3gp', '3g2'] as VideoFixtureType[]).map((type): [string, string, Buffer, string] => [`home.${type}`, videoMime(type), Buffer.from(videoFixture(type)), 'video']),
     ['home.mp3', 'audio/mpeg', mp3(), 'audio'],
+    ['home.flac', 'audio/flac', Buffer.from(flacFixture()), 'audio'],
+    ['home.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'audio'],
+    ['home.opus', 'audio/opus', Buffer.from(opusFixture()), 'audio'],
+    ['home.oga', 'audio/ogg', Buffer.from(oggFixture()), 'audio'],
+    ['home.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'audio'],
+    ['home.aac', 'audio/aac', Buffer.from(aacFixture()), 'audio'],
+    ['home.wav', 'audio/wav', Buffer.from(wavFixture()), 'audio'],
+    ['home.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'audio'],
   ];
   for (const [name, mimeType, buffer, category] of cases) {
     await page.goto('/');
@@ -123,14 +158,32 @@ test('shared report progressively merges the local ExifTool field set without up
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(true);
 });
 
-test('universal report parses all six promised formats through one workbench', async ({ page }) => {
+test('universal report parses all 28 promised file extensions through one workbench', async ({ page }) => {
+  test.setTimeout(180_000);
   const cases: Array<[string, string, Buffer, string, string | RegExp]> = [
     ['pixel.png', 'image/png', png(), 'image', '1 × 1 px'],
     ['pixel.jpg', 'image/jpeg', await canvasImage(page, 'image/jpeg'), 'image', 'JPEG'],
     ['pixel.webp', 'image/webp', await canvasImage(page, 'image/webp'), 'image', 'WEBP'],
+    ['pixel.heic', 'image/heic', Buffer.from(heicFixture()), 'image', 'HEIC'],
+    ['pixel.tiff', 'image/tiff', Buffer.from(tiffFixture()), 'image', 'TIFF'],
+    ['pixel.gif', 'image/gif', Buffer.from(gifFixture()), 'image', 'GIF'],
     ['fixture.pdf', 'application/pdf', pdf(), 'pdf', '1'],
+    ['fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Document' })), 'document', 'Fixture Document'],
+    ['fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 2 })), 'document', '2'],
+    ['fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 3 })), 'document', '3'],
     ['fixture.mp4', 'video/mp4', mp4(), 'video', 'MP4'],
+    ...([
+      ['m4v', 'MP4'], ['mov', 'MOV'], ['mkv', 'MKV'], ['webm', 'WEBM'], ['avi', 'AVI'], ['flv', 'FLV'], ['3gp', '3GP'], ['3g2', '3G2'],
+    ] as Array<[VideoFixtureType, string]>).map(([type, expected]): [string, string, Buffer, string, string] => [`fixture.${type}`, videoMime(type), Buffer.from(videoFixture(type)), 'video', expected]),
     ['fixture.mp3', 'audio/mpeg', mp3(), 'audio', 'Fixture Song'],
+    ['fixture.flac', 'audio/flac', Buffer.from(flacFixture()), 'audio', 'FLAC'],
+    ['fixture.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'audio', 'Vorbis I'],
+    ['fixture.opus', 'audio/opus', Buffer.from(opusFixture()), 'audio', 'Opus'],
+    ['fixture.oga', 'audio/ogg', Buffer.from(oggFixture()), 'audio', 'OGG'],
+    ['fixture.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'audio', 'M4A'],
+    ['fixture.aac', 'audio/aac', Buffer.from(aacFixture()), 'audio', 'AAC'],
+    ['fixture.wav', 'audio/wav', Buffer.from(wavFixture()), 'audio', 'PCM'],
+    ['fixture.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'audio', 'WMA'],
   ];
   for (const [name, mimeType, buffer, category, expected] of cases) {
     await page.goto('/metadata-viewer/');
@@ -149,17 +202,52 @@ test('unsupported file gives a plain error', async ({ page }) => {
   await expect(page.getByRole('alert')).toContainText('file signature');
 });
 
-test('specialized PDF, MP3, and MP4 pages run their lazy adapters', async ({ page }) => {
+test('specialized document, audio, and video pages use the shared production report', async ({ page }) => {
+  test.setTimeout(180_000);
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
   const fixtures: Array<[string, string, string, Buffer, string]> = [
-    ['/pdf-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/document-metadata-viewer/', 'fixture.pdf', 'application/pdf', pdf(), 'Fixture PDF'],
+    ['/document-metadata-viewer/', 'fixture.docx', ooxmlMime('docx'), Buffer.from(await ooxmlFixture('docx', { title: 'Fixture Word Document' })), 'Fixture Word Document'],
+    ['/document-metadata-viewer/', 'fixture.pptx', ooxmlMime('pptx'), Buffer.from(await ooxmlFixture('pptx', { slides: 3 })), '3'],
+    ['/document-metadata-viewer/', 'fixture.xlsx', ooxmlMime('xlsx'), Buffer.from(await ooxmlFixture('xlsx', { worksheets: 4 })), '4'],
     ['/audio-metadata-viewer/', 'fixture.mp3', 'audio/mpeg', mp3(), 'Fixture Song'],
+    ['/audio-metadata-viewer/', 'fixture.flac', 'audio/flac', Buffer.from(flacFixture()), 'FLAC'],
+    ['/audio-metadata-viewer/', 'fixture.ogg', 'audio/ogg', Buffer.from(oggFixture()), 'Vorbis I'],
+    ['/audio-metadata-viewer/', 'fixture.opus', 'audio/opus', Buffer.from(opusFixture()), 'Opus'],
+    ['/audio-metadata-viewer/', 'fixture.oga', 'audio/ogg', Buffer.from(oggFixture()), 'OGG'],
+    ['/audio-metadata-viewer/', 'fixture.m4a', 'audio/mp4', Buffer.from(m4aFixture()), 'M4A'],
+    ['/audio-metadata-viewer/', 'fixture.aac', 'audio/aac', Buffer.from(aacFixture()), 'AAC'],
+    ['/audio-metadata-viewer/', 'fixture.wav', 'audio/wav', Buffer.from(wavFixture()), 'PCM'],
+    ['/audio-metadata-viewer/', 'fixture.wma', 'audio/x-ms-wma', Buffer.from(wmaFixture()), 'WMA'],
     ['/video-metadata-viewer/', 'fixture.mp4', 'video/mp4', mp4(), 'MP4'],
+    ...([
+      ['m4v', 'MP4'], ['mov', 'MOV'], ['mkv', 'MKV'], ['webm', 'WEBM'], ['avi', 'AVI'], ['flv', 'FLV'], ['3gp', '3GP'], ['3g2', '3G2'],
+    ] as Array<[VideoFixtureType, string]>).map(([type, expected]): [string, string, string, Buffer, string] => ['/video-metadata-viewer/', `fixture.${type}`, videoMime(type), Buffer.from(videoFixture(type)), expected]),
   ];
   for (const [path, name, mimeType, buffer, expected] of fixtures) {
     await page.goto(path); await upload(page, name, buffer, mimeType);
-    await expect(page.getByRole('heading', { name: 'Metadata found' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: `${name} metadata report` })).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/);
     await expect(page.getByText(expected, { exact: true }).first()).toBeVisible();
   }
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
+});
+
+test('document viewer reads properties without surfacing body, cell, or slide content', async ({ page }) => {
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  await page.goto('/document-metadata-viewer/');
+  await expect(page.getByRole('heading', { name: 'Document Metadata Viewer' })).toBeVisible();
+  await expect(page.getByText('PDF · DOCX · PPTX · XLSX', { exact: true }).first()).toBeVisible();
+  const secret = 'PRIVATE-BODY-TEXT-MUST-STAY-UNREAD';
+  const bytes = await ooxmlFixture('docx', { title: 'Safe property title', bodyText: secret });
+  await upload(page, 'safe.docx', Buffer.from(bytes), ooxmlMime('docx'));
+  await expect(page.getByRole('heading', { name: 'safe.docx metadata report' })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByText('Safe property title', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Document properties', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText(secret, { exact: false })).toHaveCount(0);
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
 
 test('removed application-specific reader routes return the real 404 page', async ({ page }) => {
@@ -182,13 +270,81 @@ test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
-  await expect(page.locator('.privacy-scoreboard')).toBeVisible();
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
+  await expect(page.locator('.removal-report')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
-  await expect(page.locator('.privacy-cleanup-result')).toContainText('15 → 0', { timeout: 45_000 });
+  await expect(page.locator('.removal-result')).toBeVisible({ timeout: 45_000 });
+  await expect(page.locator('.removal-result')).toContainText('Removed');
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download clean copy' }).click();
   expect((await downloadPromise).suggestedFilename()).toMatch(/clean\.png$/);
+});
+
+test('PDF removal rewrites the file with qpdf and removes the old Info author', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/document-metadata-remover/');
+  await upload(page, 'signed-off.pdf', pdf(), 'application/pdf');
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 60_000 });
+  await expect(result).toContainText('qpdf');
+  await expect(result).not.toHaveClass(/is-blocked/);
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  const pdfDownload = await downloadEvent;
+  const pdfPath = await pdfDownload.path();
+  const bytes = await readFile(pdfPath as string);
+  expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+  expect(bytes.toString('latin1')).not.toContain('Ada Example');
+});
+
+test('audio removal uses TagLib without re-encoding the stream container', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/audio-metadata-remover/');
+  await upload(page, 'credits.mp3', mp3(), 'audio/mpeg');
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 60_000 });
+  await expect(result).toContainText('taglib');
+  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
+});
+
+test('Office removal keeps body XML while clearing Core and Custom properties', async ({ page }) => {
+  test.setTimeout(120_000);
+  const source = await ooxmlFixture('docx', { author: 'Ada Example', customName: 'Client', customValue: 'Secret Account', bodyText: 'BODY-STAYS-HERE' });
+  await page.goto('/document-metadata-remover/');
+  await upload(page, 'brief.docx', Buffer.from(source), ooxmlMime('docx'));
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  await expect(page.locator('.removal-result')).toContainText('ooxml-zip', { timeout: 60_000 });
+  const downloadEvent = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  const officeDownload = await downloadEvent;
+  const officePath = await officeDownload.path();
+  const output = await readFile(officePath as string);
+  const zip = new ZipReader(new BlobReader(new Blob([output])));
+  const entries = await zip.getEntries();
+  const text = async (name: string) => {
+    const entry = entries.find((item) => item.filename === name);
+    if (!entry || entry.directory || !('getData' in entry)) return '';
+    return entry.getData(new TextWriter());
+  };
+  expect(await text('word/document.xml')).toContain('BODY-STAYS-HERE');
+  expect(await text('docProps/core.xml')).not.toContain('Ada Example');
+  expect(await text('docProps/custom.xml')).not.toContain('Secret Account');
+  await zip.close();
+});
+
+test('AVI removal keeps the RIFF container valid after the custom scrubber runs', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.goto('/video-metadata-remover/');
+  await upload(page, 'clip.avi', Buffer.from(videoFixture('avi')), videoMime('avi'));
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
+  await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
+  await expect(page.locator('.removal-result')).toContainText('riff', { timeout: 60_000 });
+  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
 });
 
 test('metadata remover desktop and mobile result stay usable without console errors', async ({ page }, testInfo) => {
@@ -198,10 +354,10 @@ test('metadata remover desktop and mobile result stay usable without console err
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/metadata-remover/');
   await upload(page, 'visual-removal.png', png(['Artist', 'Ada Example']));
-  await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 30_000 });
+  await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
-  const result = page.locator('.privacy-cleanup-result');
-  await expect(result).toContainText('15 → 0', { timeout: 45_000 });
+  const result = page.locator('.removal-result');
+  await expect(result).toBeVisible({ timeout: 45_000 });
   await result.scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath('desktop-remover.png'), fullPage: false });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -218,23 +374,62 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
   await page.goto('/c2pa-viewer/');
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(false);
+  await expect(page.getByRole('heading', { name: 'What is C2PA?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Content Credentials and C2PA' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Supported files' })).toBeVisible();
+  await expect(page.getByText('JPEG, PNG, WebP, GIF, TIFF, HEIC, HEIF, AVIF, JXL, DNG, ARW, NEF, SVG', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can C2PA prove that content is true?' })).toBeVisible();
+  await expect(page.getByText('Useful details, without the lecture.')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Related tools' })).toHaveCount(0);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent ?? '{}')).find((item) => item['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(6);
+  const accept = await page.locator('input[type="file"]').getAttribute('accept');
+  for (const extension of ['.gif', '.heic', '.heif', '.avif', '.jxl', '.dng', '.arw', '.nef', '.svg', '.mov', '.avi', '.mp3', '.m4a', '.wav']) expect(accept).toContain(extension);
   await upload(page, 'unsigned.png', png());
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
   await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
   await expect(page.locator('.c2pa-hash code')).toHaveText(/^[a-f0-9]{64}$/);
   await expect(page.getByText('Not applicable', { exact: true })).toHaveCount(4);
-  await page.getByRole('tab', { name: 'Validation' }).click();
-  await expect(page.locator('.c2pa-validation-columns')).toBeVisible();
+  await expect(page.locator('.c2pa-asset-card img')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Validation results' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Actions' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Provenance' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Embedded watermark' })).toBeVisible();
+  await expect(page.getByText('No watermark declaration found.')).toBeVisible();
+  await expect(page.getByText(/does not inspect pixels or audio samples/i)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Create shareable report' })).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download JSON' }).click();
-  expect((await downloadPromise).suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  await page.getByRole('button', { name: 'Create shareable report' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toMatch(/c2pa-report\.json$/);
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+  const receipt = JSON.parse(await readFile(downloadPath!, 'utf8')) as Record<string, unknown>;
+  expect(receipt).toMatchObject({ schemaVersion: '1.0', status: 'not-found' });
+  expect(JSON.stringify(receipt)).not.toMatch(/blob:|data:image|sourceBytes|wasm/i);
+  expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
+  expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
+  expect(requests.every((request) => new URL(request.url).origin === new URL(page.url()).origin)).toBe(true);
+  await page.setViewportSize({ width: 239, height: 844 });
+  const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(width.scroll).toBeLessThanOrEqual(width.client + 1);
+});
+
+test('C2PA viewer sends a signature-checked SVG to the official local verifier', async ({ page }) => {
+  test.setTimeout(45_000);
+  const requests: Array<{ method: string; url: string }> = [];
+  page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  await page.goto('/c2pa-viewer/');
+  await upload(page, 'unsigned.svg', Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><path d="M0 0h1v1z"/></svg>'), 'image/svg+xml');
+  await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
+  await expect(page.locator('.c2pa-file-receipt').getByText('SVG', { exact: true })).toBeVisible();
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
   expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
 
 test('mobile pages do not create horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/']) {
+  for (const path of ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/image-metadata-remover/', '/video-metadata-remover/', '/audio-metadata-remover/', '/document-metadata-remover/', '/c2pa-viewer/']) {
     await page.goto(path);
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(dimensions.scroll, `${path} overflowed`).toBeLessThanOrEqual(dimensions.client + 1);
@@ -242,7 +437,7 @@ test('mobile pages do not create horizontal overflow', async ({ page }) => {
 });
 
 test('primary file buttons are visible above the fold on desktop and mobile', async ({ page }) => {
-  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/c2pa-viewer/'];
+  const paths = ['/', '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/', '/image-privacy-checker/', '/metadata-remover/', '/image-metadata-remover/', '/video-metadata-remover/', '/audio-metadata-remover/', '/document-metadata-remover/', '/c2pa-viewer/'];
   for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     for (const path of paths) {
@@ -257,9 +452,202 @@ test('primary file buttons are visible above the fold on desktop and mobile', as
   }
 });
 
+test('every tool treats the full upload panel as one accessible file button', async ({ page }) => {
+  const cases: Array<[string, string, string]> = [
+    ['/', '.report-dropzone', 'Choose a file'],
+    ['/metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/image-metadata-viewer/', '.report-dropzone', 'Choose an image'],
+    ['/document-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/video-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/audio-metadata-viewer/', '.report-dropzone', 'Choose a file'],
+    ['/image-privacy-checker/', '.privacy-dropzone', 'Choose an image'],
+    ['/metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/image-metadata-remover/', '.removal-dropzone', 'Choose an image'],
+    ['/video-metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/audio-metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/document-metadata-remover/', '.removal-dropzone', 'Choose a file'],
+    ['/c2pa-viewer/', '.c2pa-dropzone', 'Choose a file'],
+  ];
+
+  for (const [path, selector, label] of cases) {
+    await page.goto(path);
+    const panel = page.locator(selector);
+    await expect(panel).toHaveRole('button');
+    await expect(panel).toHaveAccessibleName(label);
+    await expect(panel.locator('button')).toHaveCount(0);
+    const input = page.locator('input[type=file]').first();
+    await expect(input).toHaveAttribute('tabindex', '-1');
+    await expect(input).toHaveAttribute('aria-hidden', 'true');
+    const chooser = page.waitForEvent('filechooser');
+    const box = await panel.boundingBox();
+    expect(box).not.toBeNull();
+    await panel.click({ position: { x: Math.max(8, box!.width - 12), y: Math.max(8, box!.height - 12) } });
+    await chooser;
+  }
+});
+
+test('icon, copy, and green visual label all open the same picker once', async ({ page }) => {
+  await page.goto('/');
+  for (const selector of ['.report-drop-mark', '.report-drop-copy strong', '.report-pick-button']) {
+    const chooser = page.waitForEvent('filechooser');
+    await page.locator(selector).click();
+    await chooser;
+  }
+});
+
+test('metadata and remover format menus work on desktop and mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const desktop = page.locator('.desktop-nav');
+  const viewMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'View metadata' });
+  const removeMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'Remove metadata' });
+  const viewTrigger = viewMenu.locator('.nav-dropdown-trigger');
+  await viewTrigger.click();
+  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(viewMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
+  const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/document-metadata-viewer/']];
+  for (const [label, href] of viewLinks) {
+    await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
+  }
+  const removeTrigger = removeMenu.locator('.nav-dropdown-trigger');
+  await removeTrigger.click();
+  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(viewMenu).toHaveAttribute('data-open', 'false');
+  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'true');
+  const removeLinks: Array<[string, string]> = [['All Formats', '/metadata-remover/'], ['Images', '/image-metadata-remover/'], ['Videos', '/video-metadata-remover/'], ['Audio', '/audio-metadata-remover/'], ['Documents', '/document-metadata-remover/']];
+  for (const [label, href] of removeLinks) {
+    await expect(removeMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
+  }
+  await page.keyboard.press('Escape');
+  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(removeTrigger).toBeFocused();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const mobileTrigger = page.getByRole('button', { name: 'Open navigation' });
+  await mobileTrigger.click();
+  const mobileLayer = page.locator('[data-mobile-menu-layer]');
+  await expect(mobileLayer).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('.mobile-menu-drawer')).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('.mobile-menu-trigger .t-icon-swap')).toHaveAttribute('data-state', 'b');
+  const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
+  await mobileView.locator('.t-acc-head').click();
+  await expect(mobileView).toHaveAttribute('data-open', 'true');
+  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/document-metadata-viewer/');
+  const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
+  await mobileRemove.locator('.t-acc-head').click();
+  await expect(mobileView).toHaveAttribute('data-open', 'false');
+  await expect(mobileRemove).toHaveAttribute('data-open', 'true');
+  await expect(mobileRemove.getByRole('link', { name: 'Audio', exact: true })).toHaveAttribute('href', '/audio-metadata-remover/');
+  await page.keyboard.press('Escape');
+  await expect(mobileLayer).toHaveAttribute('data-open', 'false');
+  await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
+});
+
+test('navigation motion uses the transition hooks and honors reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const dropdown = page.locator('.nav-dropdown').first();
+  const panel = dropdown.locator('.t-dropdown');
+  await dropdown.locator('.nav-dropdown-trigger').click();
+  await expect(panel).toHaveCSS('opacity', '1');
+  expect(await panel.evaluate((element) => getComputedStyle(element).transitionDuration)).toContain('0.25s');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await page.getByRole('button', { name: 'Open navigation' }).click();
+  const drawer = page.locator('.mobile-menu-drawer');
+  await expect(drawer).toHaveCSS('opacity', '1');
+  expect(await drawer.evaluate((element) => getComputedStyle(element).transitionDuration)).toBe('0s');
+});
+
+test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
+  const cases: Array<[string, string, string, string]> = [
+    ['/image-metadata-viewer/', 'Why inspect images?', 'How the image scan works', 'Which image formats and metadata are supported?'],
+    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?'],
+    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?'],
+    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?'],
+  ];
+
+  for (const [path, valueTitle, processTitle, formatQuestion] of cases) {
+    await page.goto(path);
+    const valueHeading = page.getByRole('heading', { name: valueTitle });
+    await expect(valueHeading).toBeVisible();
+    const valueHeadingBox = await valueHeading.boundingBox();
+    expect(valueHeadingBox?.height).toBeLessThan(170);
+    await expect(page.locator('.format-guide-benefits .section-index')).toHaveText('WHY IT MATTERS');
+    await expect(page.getByRole('heading', { name: processTitle })).toBeVisible();
+    await expect(page.locator('.format-guide-benefits .home-benefit-grid a')).toHaveCount(3);
+    await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(5);
+    await expect(page.locator('.expanded-faq-list article')).toHaveCount(5);
+    await expect(page.getByRole('heading', { name: formatQuestion })).toBeVisible();
+    await expect(page.locator('.tool-notes,.specialized-notes')).toHaveCount(0);
+
+    const visibleQuestions = await page.locator('.expanded-faq-list h3').allTextContents();
+    const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+    expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+  }
+});
+
+test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
+  const questions = [
+    'Is this metadata viewer safe to use?',
+    'Does this work for EXIF data?',
+    'Can this reveal where a photo was taken?',
+    'Can metadata be wrong?',
+    'Can metadata restore blurred or redacted parts of an image?',
+  ];
+  for (const path of ['/', '/metadata-viewer/']) {
+    await page.goto(path);
+    const section = page.locator('.expanded-faq');
+    await expect(section.getByRole('heading', { name: 'Frequently asked questions' })).toBeVisible();
+    await expect(section.locator('details')).toHaveCount(0);
+    await expect(section).toHaveCSS('color', 'rgb(23, 24, 21)');
+    expect(await section.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe('rgb(23, 24, 21)');
+    for (const question of questions) await expect(section.getByRole('heading', { name: question })).toBeVisible();
+    const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+    expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
+  }
+  await page.goto('/image-privacy-checker/');
+  const privacyFaq = page.locator('.expanded-faq');
+  await expect(privacyFaq.locator('details')).toHaveCount(0);
+  await expect(privacyFaq.locator('.expanded-faq-list article')).toHaveCount(5);
+});
+
+test('privacy checker matches the homepage editorial structure with privacy-specific copy', async ({ page }) => {
+  await page.goto('/image-privacy-checker/');
+  await expect(page.getByRole('heading', { name: 'Why check image privacy?' })).toBeVisible();
+  await expect(page.locator('.privacy-benefits .home-benefit-grid a')).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: 'How the privacy check works' })).toBeVisible();
+  await expect(page.locator('.privacy-process .home-process-list li')).toHaveCount(5);
+  await expect(page.getByText('What this score cannot see')).toBeVisible();
+  await expect(page.locator('.specialized-notes,.related-tools')).toHaveCount(0);
+  const questions = await page.locator('.expanded-faq-list h3').allTextContents();
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
+  await page.setViewportSize({ width: 239, height: 844 });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
+test('home editorial sections fit an extremely narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 239, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Why view file metadata?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How the local scan works' })).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  await page.goto('/c2pa-viewer/');
+  await expect(page.getByRole('heading', { name: 'Content Credentials and C2PA' })).toBeVisible();
+  const c2paOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(c2paOverflow).toBeLessThanOrEqual(1);
+});
+
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {
   await page.goto('/');
-  for (const label of ['View metadata', 'Check privacy', 'Remove metadata', 'Verify C2PA']) await expect(page.getByRole('link', { name: label, exact: true }).first()).toBeVisible();
+  for (const label of ['View metadata', 'Remove metadata']) await expect(page.locator('.desktop-nav').getByText(label, { exact: true })).toBeVisible();
+  for (const label of ['Check privacy', 'Verify C2PA']) await expect(page.locator('.desktop-nav').getByRole('link', { name: label, exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /Read AI prompts|ComfyUI/i })).toHaveCount(0);
   const text = await page.locator('body').innerText();
   expect(text).not.toMatch(/鈥|鈫|路|攁|攏|渘|渁|渟|�/);

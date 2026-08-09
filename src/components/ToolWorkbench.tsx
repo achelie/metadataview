@@ -5,7 +5,7 @@ import sparklesIcon from '@iconify-icons/lucide/sparkles';
 import { useEffect, useRef, useState } from 'react';
 import { removeImageMetadata, type RemovalResult } from '../lib/image/remove-metadata';
 import { cleanImageFilename } from '../lib/image/privacy-cleanup';
-import type { ParsedMetadata } from '../lib/metadata/types';
+import type { DetectedFileType, ParsedMetadata } from '../lib/metadata/types';
 import { countMetadataValues, sanitizeFilename } from '../lib/metadata/utils';
 import type { PrivacyReport } from '../lib/privacy/types';
 import { runWorkerTask, type WorkerTask } from '../lib/worker-client';
@@ -24,7 +24,7 @@ interface Props {
   mode: ToolMode;
   formats: string;
   accept: string;
-  allowedTypes?: string[];
+  allowedTypes?: DetectedFileType[];
 }
 
 interface PrivacyWorkerResult { metadata: ParsedMetadata; report: PrivacyReport }
@@ -41,7 +41,7 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
   const [cleanMetadata, setCleanMetadata] = useState<ParsedMetadata | null>(null);
   const task = useRef<WorkerTask<WorkerResult> | null>(null);
   const cleanUrl = useRef<string | null>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
 
   const clearCleanUrl = () => { if (cleanUrl.current) URL.revokeObjectURL(cleanUrl.current); cleanUrl.current = null; };
@@ -130,7 +130,7 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
         {metadata?.warnings.length ? <div className="warning-list">{metadata.warnings.map((warning) => <p key={warning.code}><strong>{warning.code}</strong> {warning.message}</p>)}</div> : null}
 
         {mode === 'metadata' && metadata && <><MetadataSections sections={metadata.sections} /><JsonViewer data={metadata.raw} /></>}
-        {mode === 'privacy' && privacy && metadata && <><PrivacyScore report={privacy} /><PrivacyRiskList risks={privacy.risks} /><p className="notice">{privacy.disclaimer}</p><div className="button-row"><a className="button button-primary" href="/metadata-remover/">Remove this kind of metadata</a></div><JsonViewer data={metadata.raw} title="Complete metadata" /></>}
+        {mode === 'privacy' && privacy && metadata && <><PrivacyScore report={privacy} /><PrivacyRiskList risks={privacy.risks} /><p className="notice">{privacy.disclaimer}</p><div className="button-row"><a className="button button-primary" href="/image-metadata-remover/">Remove this kind of metadata</a></div><JsonViewer data={metadata.raw} title="Complete metadata" /></>}
         {mode === 'remover' && metadata && <div className="removal-flow">
           <div className="before-after"><div><span>Before</span><strong>{countMetadataValues(metadata.normalized)} fields</strong></div><div><span>After</span><strong>{cleanMetadata ? `${countMetadataValues(cleanMetadata.normalized)} fields` : 'Not cleaned yet'}</strong></div></div>
           {!removal && <div className="removal-controls"><label><span>Output quality</span><select value={quality} onChange={(event) => setQuality(Number(event.target.value))} disabled={metadata.file.detectedType === 'png'}><option value="0.8">80%</option><option value="0.9">90%</option><option value="0.92">92% — default</option><option value="0.95">95%</option></select></label><button className="button button-primary" type="button" onClick={remove} disabled={busy}><Icon icon={sparklesIcon} width="17" />Remove all removable metadata</button></div>}

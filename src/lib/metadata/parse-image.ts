@@ -1,6 +1,8 @@
 import { detectFileType } from './detect-file-type';
 import { MetadataError } from './errors';
 import { readExifMetadata } from './exif-reader';
+import { parseGifContainer } from './gif-container';
+import { parseHeicContainer } from './heic-container';
 import { readImageDimensions } from './image-info';
 import { parseJpegContainer } from './jpeg-container';
 import { IMAGE_LIMITS } from './limits';
@@ -8,6 +10,7 @@ import { normalizeImageMetadataDetailed } from './normalize-image-metadata';
 import { displayDimensions, orientationNumber } from './orientation';
 import { parsePngChunks, type ParsedPngChunks } from './png-chunks';
 import { toSafeValue } from './safe-value';
+import { parseTiffContainer } from './tiff-container';
 import type { ImageContainerDetails, NormalizedImageMetadata, ParseWarning, SupportedImageType } from './types';
 import { makeFileSummary } from './utils';
 import { parseWebpContainer } from './webp-container';
@@ -38,7 +41,7 @@ function findExifNumber(fields: ReturnType<typeof readExifMetadata>['fields'], n
 export async function parseImage(file: File, inheritedWarnings: ParseWarning[] = []): Promise<NormalizedImageMetadata> {
   if (file.size > IMAGE_LIMITS.fileBytes) throw new MetadataError('FILE_TOO_LARGE', 'Images are limited to 50 MB.');
   const detection = await detectFileType(file);
-  if (!['jpeg', 'png', 'webp'].includes(detection.type)) throw new MetadataError('UNSUPPORTED_FILE_TYPE', 'Choose a JPEG, PNG, or WebP image.');
+  if (!['jpeg', 'png', 'webp', 'heic', 'tiff', 'gif'].includes(detection.type)) throw new MetadataError('UNSUPPORTED_FILE_TYPE', 'Choose a PNG, JPEG, WebP, HEIC, TIFF, or GIF image.');
   const actualFormat = detection.type as SupportedImageType;
   const warnings = [...inheritedWarnings, ...detection.warnings];
   const buffer = await file.arrayBuffer();
@@ -50,6 +53,8 @@ export async function parseImage(file: File, inheritedWarnings: ParseWarning[] =
   let container: ImageContainerDetails;
   let formatRaw: Record<string, unknown> = {};
   const textMetadata: Record<string, unknown> = {};
+  let textSource = 'Image text';
+  let textPath = 'image.text';
   if (actualFormat === 'png') {
     const png: ParsedPngChunks = parsePngChunks(bytes);
     warnings.push(...png.warnings);
@@ -60,18 +65,35 @@ export async function parseImage(file: File, inheritedWarnings: ParseWarning[] =
     }
     container = { kind: 'png', chunkCount: png.chunkCount, chunks: png.chunkTypes, hasIcc: png.hasIcc, hasExif: png.hasExif, hasXmp: png.hasXmp, hasAlpha: png.alpha, animated: png.animated };
     formatRaw = { png: { ...png, textChunks: png.textChunks } };
+    textSource = 'PNG text';
+    textPath = 'png.text';
   } else if (actualFormat === 'webp') {
     const webp = parseWebpContainer(bytes);
     container = { kind: 'webp', chunkCount: webp.chunks.length, chunks: webp.chunks.map((chunk) => `${chunk.type} (${chunk.size} bytes)`), hasIcc: webp.hasIcc, hasExif: webp.hasExif, hasXmp: webp.hasXmp, hasAlpha: webp.hasAlpha, animated: webp.animated };
     if (webp.xmp) textMetadata['XMP packet'] = webp.xmp;
     formatRaw = { webp };
-  } else {
+  } else if (actualFormat === 'jpeg') {
     const jpeg = parseJpegContainer(bytes);
     container = { kind: 'jpeg', chunkCount: jpeg.segments.length, chunks: jpeg.segments.map((segment) => `${segment.marker}${segment.kind ? ` ${segment.kind}` : ''} (${segment.size} bytes)`), hasIcc: jpeg.hasIcc, hasExif: jpeg.hasExif, hasXmp: jpeg.hasXmp, hasAlpha: false, animated: false };
     formatRaw = { jpeg };
+  } else if (actualFormat === 'gif') {
+    const gif = parseGifContainer(bytes);
+    gif.comments.forEach((comment, index) => { textMetadata[`Comment${gif.comments.length > 1 ? ` ${index + 1}` : ''}`] = comment; });
+    container = { kind: 'gif', chunkCount: gif.frameCount + gif.extensions.length, chunks: [`${gif.frameCount} image frame${gif.frameCount === 1 ? '' : 's'}`, ...gif.extensions], hasIcc: gif.hasIcc, hasExif: false, hasXmp: gif.hasXmp, hasAlpha: gif.hasAlpha, animated: gif.animated };
+    formatRaw = { gif };
+    textSource = 'GIF comment';
+    textPath = 'gif.comments';
+  } else if (actualFormat === 'tiff') {
+    const tiff = parseTiffContainer(bytes);
+    container = { kind: 'tiff', chunkCount: tiff.ifdCount, chunks: [`${tiff.ifdCount} image file director${tiff.ifdCount === 1 ? 'y' : 'ies'}`, `${tiff.byteOrder}${tiff.bigTiff ? ' · BigTIFF' : ''}`], hasIcc: tiff.hasIcc, hasExif: tiff.hasExif, hasXmp: tiff.hasXmp, hasAlpha: tiff.hasAlpha, animated: false };
+    formatRaw = { tiff };
+  } else {
+    const heic = parseHeicContainer(bytes);
+    container = { kind: 'heic', chunkCount: heic.topLevelBoxes.length, chunks: heic.topLevelBoxes, hasIcc: heic.hasIcc, hasExif: heic.hasExif, hasXmp: heic.hasXmp, hasAlpha: false, animated: heic.animated };
+    formatRaw = { heic };
   }
 
-  const normalized = normalizeImageMetadataDetailed({ exifFields: exif.fields, textMetadata, container });
+  const normalized = normalizeImageMetadataDetailed({ exifFields: exif.fields, textMetadata, container, textSource, textPath });
   const orientation = orientationNumber(normalized.legacy.Orientation);
   const encodedDisplay = displayDimensions(header.width, header.height, orientation);
   const decoded = await decodedDimensions(file);

@@ -1,0 +1,42 @@
+---
+import { C2PA_FORMAT_GROUPS } from '../lib/c2pa/formats';
+
+interface Faq { question: string; answer: string }
+interface Props { faqs: Faq[] }
+const { faqs } = Astro.props;
+---
+
+<section class="c2pa-education" aria-labelledby="c2pa-about-title">
+  <div class="c2pa-education-inner">
+    <article class="c2pa-chapter">
+      <span class="c2pa-chapter-index">01 / OPEN STANDARD</span>
+      <h2 id="c2pa-about-title">What is C2PA?</h2>
+      <div class="c2pa-chapter-copy">
+        <p><a href="https://c2pa.org/" rel="noreferrer">C2PA</a> is an open technical standard for recording where digital content came from and how it changed. A credential can name the tool that created a file, the edits that followed, and the source material used along the way.</p>
+        <p>The history lives in a signed manifest embedded in, or associated with, the asset. This page reads embedded credentials only. It does not contact a remote manifest service, trust list, or certificate revocation service.</p>
+        <p>Plenty of genuine files have no C2PA data. “Nothing found” means exactly that—not “fake,” “AI,” or “untrustworthy.”</p>
+      </div>
+    </article>
+
+    <article class="c2pa-chapter">
+      <span class="c2pa-chapter-index">02 / CONTENT CREDENTIALS</span>
+      <h2>Content Credentials and C2PA</h2>
+      <div class="c2pa-chapter-copy">
+        <p>Content Credentials are the public-facing name for C2PA provenance—think of them as a nutrition label for a digital file. They can list creation and editing actions, ingredients, software, dates, and the signer responsible for the claim.</p>
+        <p>Unlike ordinary EXIF or XMP labels, the claim is cryptographically signed and bound to a specific asset. Change protected bytes or the credential and validation should fail. Remove the credential and this local verifier can no longer inspect it.</p>
+        <p>A valid result proves that the credential still binds to this file. It does not prove that every statement, sound, or visible scene is true.</p>
+      </div>
+    </article>
+
+    <section class="c2pa-supported" aria-labelledby="c2pa-supported-title">
+      <header><span class="c2pa-chapter-index">03 / INPUTS</span><h2 id="c2pa-supported-title">Supported files</h2><p>Real file signatures are checked before the official browser verifier starts.</p></header>
+      <dl>{C2PA_FORMAT_GROUPS.map((group) => <div><dt>{group.label}</dt><dd>{group.formats}</dd></div>)}</dl>
+      <aside><strong>50 MB</strong> for images and camera RAW files. <strong>100 MB</strong> for video, audio, and PDF.</aside>
+    </section>
+
+    <section class="c2pa-plain-faq" aria-labelledby="c2pa-faq-title">
+      <header><span class="c2pa-chapter-index">KEEP THE CAVEAT</span><h2 id="c2pa-faq-title">Frequently asked questions</h2></header>
+      <div>{faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div>
+    </section>
+  </div>
+</section>

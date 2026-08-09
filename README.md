@@ -8,28 +8,35 @@ The MVP is built with Astro, React, TypeScript, Tailwind CSS, Web Workers, Vites
 
 1. **Metadata Viewer** — detects a file from its signature and reads normalized plus raw metadata.
 2. **Image Privacy Checker** — shows an initial browser result while one automatic ExifTool full scan checks standard and embedded records, scores explainable evidence, creates either a privacy-first or preserve-encoding clean copy, and verifies the result in the same tab.
-3. **Metadata Remover** — builds an initial baseline followed by one automatic full scan, offers privacy-first or preserve-encoding cleanup, validates the output, fully rescans it, and reports the exact score change before download.
+3. **Metadata Remover** — chooses a format-specific metadata-only engine for 28 formats, preserves media or document content, rescans the output, and reports removed, preserved, and residual fields before download.
 4. **C2PA Viewer** — dynamically loads the official `@contentauth/c2pa-web` WebAssembly verifier and displays manifest and validation data.
 
 ## Supported formats
 
 | Tool | MVP formats |
 | --- | --- |
-| Universal metadata viewer | JPEG, PNG, WebP, PDF, MP4, MP3 |
-| Image metadata viewer | JPEG, PNG, WebP |
+| Universal metadata viewer | JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
+| Document metadata viewer | PDF, DOCX, PPTX, XLSX |
+| Video metadata viewer | MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2 |
+| Audio metadata viewer | MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
+| Image metadata viewer | PNG, JPEG, WebP, HEIC/HEIF, TIFF, GIF |
 | Image privacy checker | JPEG, PNG, WebP |
-| Metadata remover | JPEG, PNG, WebP |
-| C2PA viewer | Formats supported by the installed official C2PA WASM library; the UI currently accepts JPEG, PNG, WebP, MP4, and PDF |
+| Metadata remover | JPEG, PNG, WebP, HEIC, TIFF, GIF, PDF, DOCX, PPTX, XLSX, MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2, MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA |
+| C2PA viewer | JPEG, PNG, WebP, GIF, TIFF, HEIC/HEIF, AVIF, JXL, DNG, ARW, NEF, SVG, MP4, MOV, AVI, MP3, M4A, WAV, and PDF |
 
 Specialized pages reuse the same parser adapters:
 
 - `/metadata-viewer`
 - `/image-metadata-viewer`
-- `/pdf-metadata-viewer`
+- `/document-metadata-viewer` (PDF, DOCX, PPTX, XLSX)
 - `/video-metadata-viewer`
 - `/audio-metadata-viewer`
 - `/image-privacy-checker`
 - `/metadata-remover`
+- `/image-metadata-remover`
+- `/video-metadata-remover`
+- `/audio-metadata-remover`
+- `/document-metadata-remover`
 - `/c2pa-viewer`
 - `/privacy`
 - `/about`
@@ -41,11 +48,15 @@ Specialized pages reuse the same parser adapters:
 - **TypeScript** in strict mode
 - **Tailwind CSS 4** through the Vite plugin, plus a project-specific design system
 - **Web Worker** task protocols for parsing, ExifTool privacy scoring, cancellation, and preserve-encoding cleanup
-- **ExifReader** for EXIF, XMP, IPTC, ICC, and other image records
+- **ExifReader** plus bounded HEIC, TIFF, and GIF container readers for EXIF, XMP, IPTC, ICC, comments, animation, and other image records
 - **ExifTool WebAssembly** for the lazy, exhaustive local field report and embedded-document scan
 - **pdfjs-dist** for PDF information dictionaries and readable XMP
-- **MP4Box.js** for MP4 container and track data
-- **music-metadata** for MP3/ID3 data
+- **zip.js** and **fast-xml-parser** for bounded OOXML Core, App, and Custom Properties
+- **TagLib-Wasm** for local audio and Matroska/WebM metadata-only cleanup
+- **qpdf-wasm** for rewriting cleaned PDF files so removed incremental metadata is not recoverable from prior revisions
+- **MP4Box.js** for chunked MP4, M4V, MOV, 3GP, and 3G2 container and track data
+- **Bounded local header readers** for Matroska/WebM EBML, AVI/RIFF, and FLV facts before ExifTool completes
+- **music-metadata** for MP3, FLAC, Ogg/Vorbis, Opus, M4A, AAC, WAV, and WMA/ASF tags and technical audio data
 - **Pako** for PNG `zTXt` and compressed `iTXt`
 - **@contentauth/c2pa-web** for browser C2PA verification
 - **Iconify / Lucide** for interface icons
@@ -107,8 +118,8 @@ pnpm build
 
 Current local verification:
 
-- 141 Vitest unit tests
-- 72 Playwright Chromium flows, including progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
+- 207 Vitest unit tests
+- 84 Playwright Chromium flows, including 28-format uploads, six image families, multi-format audio inspection, secure OOXML inspection, progressive privacy scanning, both cleanup modes, cross-page rescanning, removed-route 404s, desktop/mobile visual checkpoints, and 390 px overflow passes
 - 12 generated static pages
 
 ## Browser privacy design
@@ -122,13 +133,14 @@ Current local verification:
 - Unknown text fields share a two-million-character scan budget; binary fields use only ExifTool's type/length summary.
 - C2PA readers are freed and the SDK is disposed after each verification.
 - Metadata values are rendered as React text, never unsanitized HTML.
-- The PDF metadata path does not render documents or execute embedded JavaScript.
+- Document metadata paths do not render content, extract body text, cells, slides, attachments, or execute embedded scripts.
 
 The MVP does not ship analytics or ads. A future ad provider could set its own cookie, but browser isolation does not give it access to the selected file or the React result state.
 
 ## Safety limits
 
 - General file size: 100 MB
+- OOXML package entries: 10,000; one property XML: 2 MB; combined property XML: 8 MB
 - Image size: 50 MB
 - Single PNG metadata chunk: 10 MB
 - Inflated PNG text: 20 MB
@@ -140,7 +152,7 @@ The MVP does not ship analytics or ads. A future ad provider could set its own c
 - Shared-tool Worker timeout: 25 seconds
 - ExifTool image full scan timeout: 180 seconds
 - User-triggered embedded-content scan timeout: 180 seconds
-- MP4 adapter timeout: 15 seconds
+- ISO BMFF video adapter timeout: 15 seconds
 - Image JSON normalization: 50 levels and 20,000 keys
 - One file per task; no retained history or batch queue
 
@@ -157,7 +169,7 @@ The dedicated remover and Image Privacy Checker share one cleanup-and-verificati
 
 ## C2PA behavior
 
-The C2PA bundle is code-split and loaded only after a file is selected on `/c2pa-viewer`. The production workbench uses the official `@contentauth/c2pa-web` Worker and reports the SDK's real `Trusted`, `Valid`, and `Invalid` states, plus `No Content Credentials` and `Unsupported` outcomes.
+The C2PA bundle is code-split and loaded only after a file is selected on `/c2pa-viewer`. The page checks real file signatures for 20 common image, video, audio, and document formats before handing the asset to the official `@contentauth/c2pa-web` Worker. The production workbench reports the SDK's real `Trusted`, `Valid`, and `Invalid` states, plus `No Content Credentials` and `Unsupported` outcomes.
 
 `Valid` means the manifest structure, signature, and file binding passed. `Trusted` additionally requires a signer that chains to a configured trust anchor. This static privacy-first deployment performs cryptographic validation with trust-list checking disabled, so it normally reports `Valid` and shows publisher trust separately as `Not checked`. It never turns a valid signature into a truth claim, and `No Content Credentials` never means that a file is fake.
 
@@ -202,11 +214,11 @@ The project uses static output, so no Function or server runtime is needed.
 ## Known limitations
 
 - Metadata is editable and should not be treated as proof by itself.
-- Browser format support can differ, especially for WebP re-encoding and C2PA media types.
+- Browser preview support can differ, especially for HEIC and TIFF; metadata inspection does not depend on a successful pixel preview.
 - Preserve-encoding cleanup intentionally retains Orientation, ICC, and required color-space information; ICC rights text may therefore remain in the verified residual report.
 - C2PA trust and supported formats follow the installed official SDK.
-- PDF, MP4, and MP3 metadata removal is not included.
-- GIF, HEIC, FLAC, WAV, MKV, MOV, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
+- PDF, DOCX, PPTX, XLSX, video, and audio metadata removal is not included.
+- AVIF, camera RAW formats, batch processing, OCR, face recognition, malicious-file scanning, accounts, APIs, and cloud history are outside this MVP.
 
 ## Roadmap
 

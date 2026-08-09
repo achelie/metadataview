@@ -28,9 +28,16 @@ const GROUPS: GroupDefinition[] = [
   { id: 'xmp', title: 'XMP', test: /xmp/i },
   { id: 'photoshop', title: 'Photoshop', test: /photoshop|app13/i },
   { id: 'png', title: 'PNG', test: /png/i },
-  { id: 'quicktime', title: 'QuickTime', test: /quicktime|track|itemlist|userdata|keys/i },
+  { id: 'gif', title: 'GIF', test: /gif/i },
+  { id: 'heif', title: 'HEIC / HEIF', test: /heic|heif/i },
+  { id: 'tiff', title: 'TIFF', test: /tiff/i },
+  { id: 'quicktime', title: 'QuickTime', test: /quicktime|itemlist|userdata|(^|:)keys(:|$)/i },
+  { id: 'video', title: 'Video container', test: /matroska|ebml|webm|\bavi\b|flash|\bflv\b|3gpp|3g2/i },
+  { id: 'riff', title: 'RIFF media', test: /riff/i },
+  { id: 'office', title: 'Office document', test: /ooxml|msoffice|docprops|openxml|wordprocessing|spreadsheet/i },
+  { id: 'zip', title: 'ZIP package', test: /(^|:)(zip)(:|$)/i },
   { id: 'pdf', title: 'PDF', test: /pdf/i },
-  { id: 'id3', title: 'ID3', test: /id3|audio|mpeg/i },
+  { id: 'id3', title: 'Audio tags & encoding', test: /id3|audio|mpeg|flac|vorbis|ogg|opus|riff|wav|asf|wma|aac/i },
   { id: 'composite', title: 'Composite', test: /composite/i },
   { id: 'exif', title: 'EXIF', test: /exif|ifd|makernote|interop|thumbnail/i },
 ];
@@ -70,6 +77,31 @@ const READABLE_GROUPS = [
     id: 'embedded-content', title: 'Embedded content',
     note: 'Thumbnails, previews, depth maps, gain maps, and other payloads referenced by the container.',
     tags: /(Thumbnail|Preview|Embedded|Depth|GainMap|MPImage|JUMBF)/i,
+  },
+  {
+    id: 'document-properties', title: 'Document properties',
+    note: 'Editable title, author, subject, revision, company, and application labels stored by document software.',
+    tags: /^(Title|Subject|Author|Creator|Keywords|Description|LastModifiedBy|Revision|Category|ContentStatus|Company|Manager|Application|AppVersion)$/i,
+  },
+  {
+    id: 'document-statistics', title: 'Document statistics',
+    note: 'Stored page, word, slide, note, and worksheet counts. These values may be stale if an editor did not refresh them.',
+    tags: /^(PageCount|Pages|Words|Characters|CharactersWithSpaces|Lines|Paragraphs|Slides|Notes|HiddenSlides|WorksheetCount)$/i,
+  },
+  {
+    id: 'video-encoding', title: 'Video encoding & tracks',
+    note: 'Container, duration, frame size, rate, codecs, rotation, bitrate, and track labels stored around the media streams.',
+    tags: /^(FileType|MIMEType|MajorBrand|CompatibleBrands|Duration|MediaDuration|TrackDuration|ImageWidth|ImageHeight|VideoFrameRate|FrameRate|VideoCodec|CodecID|CompressorID|VideoFormat|VideoScanType|VideoBitrate|AvgBitrate|TrackCount|TrackID|TrackType|HandlerType|HandlerDescription|Rotation|MatrixStructure|Encoder|MuxingApp|WritingApp)$/i,
+  },
+  {
+    id: 'audio-identity', title: 'Track & release',
+    note: 'Names, album labels, dates, identifiers, comments, and rights stored in the audio file.',
+    tags: /^(Title|Track|TrackNumber|DiscNumber|Album|Artist|AlbumArtist|Composer|Conductor|Genre|Date|Year|Label|Publisher|ISRC|Barcode|Comment|Copyright)$/i,
+  },
+  {
+    id: 'audio-encoding', title: 'Audio encoding',
+    note: 'Container, codec, duration, bitrate, sample rate, channel, bit-depth, and lossless flags reported by the file.',
+    tags: /^(AudioFormat|FileType|MIMEType|CompressorID|Codec|Encoding|Duration|AudioBitrate|Bitrate|SampleRate|AudioSampleRate|NumChannels|Channels|BitsPerSample|AvgBytesPerSec|Lossless)$/i,
   },
 ] as const;
 

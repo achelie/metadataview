@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogPostCard from '../../../components/BlogPostCard.astro';
+import BlogToolStrip from '../../../components/BlogToolStrip.astro';
+import { getFeaturedPost, sortBlogPosts, BLOG_PAGE_SIZE } from '../../../lib/blog';
+import '../../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const posts = sortBlogPosts(await getCollection('blog'));
+  const featured = getFeaturedPost(posts);
+  const latest = posts.filter((post) => post.id !== featured?.id);
+  const pageCount = Math.ceil(latest.length / BLOG_PAGE_SIZE);
+  return Array.from({ length: Math.max(0, pageCount - 1) }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { posts: latest.slice((index + 1) * BLOG_PAGE_SIZE, (index + 2) * BLOG_PAGE_SIZE), page: index + 2, pageCount },
+  }));
+}
+
+const { posts, page, pageCount } = Astro.props;
+const path = `/blog/page/${page}/`;
+const description = `MetadataView guides about metadata privacy and file provenance, page ${page}.`;
+---
+<BaseLayout title={`Metadata Privacy Guides — Page ${page} | MetadataView`} description={description} path={path}>
+  <div class="blog-index blog-index--paged page-shell">
+    <header class="blog-index__header"><div><span class="blog-kicker">MetadataView field notes</span><h1>Latest metadata guides.</h1></div><p>Page {page} of {pageCount}. Practical explanations, no mystery-meat security claims.</p></header>
+    <section class="blog-latest" aria-labelledby="latest-posts-title">
+      <div class="blog-section-heading"><h2 id="latest-posts-title">Latest posts</h2><a href="/blog/">Back to featured guide</a></div>
+      <div class="blog-latest__grid">{posts.map((post) => <BlogPostCard post={post} />)}</div>
+      <nav class="blog-pagination" aria-label="Blog pages">
+        {Array.from({ length: pageCount }, (_, index) => index + 1).map((number) => number === page ? <span aria-current="page">{number}</span> : <a href={number === 1 ? '/blog/' : `/blog/page/${number}/`}>{number}</a>)}
+      </nav>
+    </section>
+    <BlogToolStrip />
+  </div>
+</BaseLayout>

@@ -3,29 +3,37 @@ import BaseLayout from './BaseLayout.astro';
 import ToolHero from '../components/ToolHero.astro';
 import ToolWorkbench, { type ToolMode } from '../components/ToolWorkbench';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
-import ImageMetadataSeo from '../components/ImageMetadataSeo.astro';
+import FormatMetadataGuide from '../components/FormatMetadataGuide.astro';
 import PrivacyChecker from '../components/privacy/PrivacyChecker';
-import MetadataRemover from '../components/privacy/MetadataRemover';
+import MetadataRemovalWorkbench from '../components/MetadataRemovalWorkbench';
 import C2paWorkbench from '../components/C2paWorkbench';
+import C2paEducation from '../components/C2paEducation.astro';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
+import type { FormatGuide } from '../content/tools';
+import type { DetectedFileType } from '../lib/metadata/types';
+import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
 interface Props {
   title: string; metaTitle: string; description: string; shortDescription: string; path: string; eyebrow: string; icon: IconName;
-  mode: ToolMode; formats: string; accept: string; allowedTypes?: string[]; highlights: string[];
+  mode: ToolMode; formats: string; accept: string; allowedTypes?: DetectedFileType[]; highlights: string[];
   productionMetadataReport?: boolean;
   metadataReportScope?: 'all' | 'image';
   productionPrivacyChecker?: boolean;
   productionMetadataRemover?: boolean;
+  metadataRemovalScope?: MetadataRemovalScope;
   productionC2paViewer?: boolean;
+  formatGuide?: FormatGuide;
+  faqDisplay?: 'accordion' | 'expanded';
   limitations: string[]; faqs: Faq[]; related: Related[];
 }
 const props = Astro.props;
 const canonical = canonicalUrl(props.path, Astro.site);
-const visibleFaqs = props.faqs.slice(0, 4);
+const faqDisplay = props.faqDisplay ?? 'accordion';
+const visibleFaqs = props.faqs.slice(0, props.productionC2paViewer ? 6 : faqDisplay === 'expanded' ? 5 : 4);
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: canonical, description: props.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: visibleFaqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
@@ -36,13 +44,15 @@ const schemas = [
   <div class="page-shell">
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} />
-    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemover client:load /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
-    {props.metadataReportScope === 'image' ? <ImageMetadataSeo /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
-      <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
-      <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
-      <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
-    </section>}
-    <section class="faq-section"><span class="section-index">FAQ</span><h2>Quick answers</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
-    <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>
+    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    {props.productionC2paViewer ? <C2paEducation faqs={visibleFaqs} /> : <>
+      {props.formatGuide ? <FormatMetadataGuide guide={props.formatGuide} limitations={props.limitations} /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
+        <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
+        <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
+        <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
+      </section>}
+      {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">Frequently asked questions</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>Quick answers</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>}
+      {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
+    </>}
   </div>
 </BaseLayout>

@@ -1,4 +1,5 @@
-import type { FileSummary, ParseWarning } from '../metadata/types';
+import type { ParseWarning } from '../metadata/types';
+import type { C2paFileSummary } from './formats';
 
 export type C2paReportStatus = 'trusted' | 'valid' | 'invalid' | 'not-found' | 'unsupported';
 export type C2paValidationSeverity = 'success' | 'informational' | 'failure';
@@ -76,10 +77,7 @@ export interface C2paReport {
   generatedAt: string;
   status: C2paReportStatus;
   validationState: 'Trusted' | 'Valid' | 'Invalid' | 'NotFound' | 'Unsupported';
-  file: FileSummary & {
-    declaredMime: string;
-    inspectedMime?: string;
-  };
+  file: C2paFileSummary;
   fingerprint: {
     algorithm: 'SHA-256';
     value: string;

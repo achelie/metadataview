@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+import BlogToolStrip from '../../components/BlogToolStrip.astro';
+import { getFeaturedPost, sortBlogPosts, BLOG_PAGE_SIZE } from '../../lib/blog';
+import '../../styles/blog.css';
+
+const posts = sortBlogPosts(await getCollection('blog'));
+const featured = getFeaturedPost(posts);
+const latest = posts.filter((post) => post.id !== featured?.id).slice(0, BLOG_PAGE_SIZE);
+const totalLatestPages = Math.max(1, Math.ceil(Math.max(0, posts.length - 1) / BLOG_PAGE_SIZE));
+const title = 'Metadata Privacy Guides | MetadataView Blog';
+const description = 'Plain-English guides to image metadata, EXIF privacy, file provenance, and making cleaner copies before you share.';
+const pageUrl = new URL('/blog/', Astro.site).toString();
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'MetadataView Blog',
+    description,
+    url: pageUrl,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.map((post, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: post.data.title,
+        url: new URL(`/blog/${post.id}/`, Astro.site).toString(),
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: pageUrl },
+    ],
+  },
+];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  path="/blog/"
+  schemas={schemas}
+  image={featured ? { src: featured.data.cover.src, alt: featured.data.coverAlt, width: 1600, height: 900 } : undefined}
+>
+  <div class="blog-index page-shell">
+    {featured && (
+      <section class="blog-feature" aria-labelledby="featured-guide-title">
+        <div class="blog-section-heading"><span>Featured guide</span><p>Start here</p></div>
+        <div id="featured-guide-title"><BlogPostCard post={featured} featured /></div>
+      </section>
+    )}
+
+    {latest.length > 0 && (
+      <section class="blog-latest" aria-labelledby="latest-posts-title">
+        <div class="blog-section-heading"><h2 id="latest-posts-title">Latest posts</h2><p>Page 1 of {totalLatestPages}</p></div>
+        <div class="blog-latest__grid">{latest.map((post) => <BlogPostCard post={post} />)}</div>
+        {totalLatestPages > 1 && <nav class="blog-pagination" aria-label="Blog pages"><span aria-current="page">1</span><a href="/blog/page/2/" aria-label="Go to blog page 2">2</a></nav>}
+      </section>
+    )}
+
+    <BlogToolStrip />
+  </div>
+</BaseLayout>

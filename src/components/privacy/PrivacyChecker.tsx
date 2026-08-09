@@ -43,7 +43,7 @@ export default function PrivacyChecker() {
   const exifClient = useRef<ExifToolWorkerClient | null>(null);
   const request = useRef(0);
   const picker = useRef<HTMLInputElement>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
   const previewUrl = useRef<string | null>(null);
   const downloadUrl = useRef<string | null>(null);
@@ -71,6 +71,11 @@ export default function PrivacyChecker() {
   const revokeDownload = () => {
     if (downloadUrl.current) URL.revokeObjectURL(downloadUrl.current);
     downloadUrl.current = null;
+  };
+  const openPicker = () => {
+    if (!picker.current) return;
+    picker.current.value = '';
+    picker.current.click();
   };
 
   useEffect(() => {
@@ -228,12 +233,12 @@ export default function PrivacyChecker() {
   };
 
   const selection = Boolean(source);
-  return <section className="workbench privacy-checker" aria-busy={quickBusy || deepPending || cleanupPending}>
+  return <section id="privacy-checker-workbench" className="workbench privacy-checker" aria-busy={quickBusy || deepPending || cleanupPending}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>Your files never leave your device.</span></div><span className="status-line" aria-live="polite"><i className={quickBusy || deepPending || cleanupPending ? 'pulse' : ''} />{status}</span></div>
-    <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
+    <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
 
-    {!selection && <div className={`privacy-dropzone ${dragging ? 'is-dragging' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
-      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Before you post it</span><strong>Drop an image here</strong><p id="privacy-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><button ref={chooseButton} className="button button-primary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }} aria-describedby="privacy-drop-help">Choose an image</button></div><p className="privacy-check-scope">Checks GPS, names, device IDs, editing history, thumbnails, and nested image records.</p><small>The initial result appears fast, then one automatic full scan finishes the job.</small>
+    {!selection && <div ref={chooseButton} className={`privacy-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label="Choose an image" aria-describedby="privacy-drop-help" onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
+      <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">Before you post it</span><strong>Drop an image here</strong><p id="privacy-drop-help">JPEG, PNG, or WebP · up to 50 MB</p><span className="button button-primary privacy-pick-label" aria-hidden="true">Choose an image</span></div><p className="privacy-check-scope">Checks GPS, names, device IDs, editing history, thumbnails, and nested image records.</p><small>The initial result appears fast, then one automatic full scan finishes the job.</small>
     </div>}
 
     {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={imageIcon} width="26" /></span><div><strong>Reading the image structure</strong><p>The first usable result appears before the automatic full scan finishes.</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />Cancel</button></div>}

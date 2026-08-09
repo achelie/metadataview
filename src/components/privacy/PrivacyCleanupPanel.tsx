@@ -47,6 +47,6 @@ export function PrivacyCleanupPanel({ report, metadata, mode, pending, baselineP
       {result.warnings.length > 0 && <ul>{result.warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>}
       <div className="button-row"><button className="button button-primary" type="button" disabled={integrityFailed} onClick={onDownload}><Icon icon={downloadIcon} width="16" />{integrityFailed ? 'Download blocked: invalid output' : 'Download clean copy'}</button><button className="button button-secondary" type="button" onClick={onReceipt}><Icon icon={downloadIcon} width="16" />Download cleanup receipt</button><button className="button button-ghost" type="button" onClick={onClean}>Run cleanup again</button></div>
     </div>}
-    <footer>{variant === 'remover' ? <>The score covers embedded metadata, not the output filename or visible pixels. <a href="/image-privacy-checker/">Open the full Privacy Checker</a>.</> : <>Need a simpler one-purpose flow? <a href="/metadata-remover/">Metadata Remover is still available</a>. This checker keeps the detailed before/after evidence here.</>}</footer>
+    <footer>{variant === 'remover' ? <>The score covers embedded metadata, not the output filename or visible pixels. <a href="/image-privacy-checker/">Open the full Privacy Checker</a>.</> : <>Need a simpler one-purpose flow? <a href="/image-metadata-remover/">Image Metadata Remover is available</a>. This checker keeps the detailed before/after evidence here.</>}</footer>
   </section>;
 }

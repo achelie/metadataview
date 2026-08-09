@@ -3,58 +3,99 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
 import { IconGlyph } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
+import { metadataViewerFaqs } from '../content/metadata-faqs';
 
 const title = 'Metadata Viewer — Inspect Files Without Uploading';
-const description = 'View metadata in JPEG, PNG, WebP, PDF, MP4, and MP3 files directly in your browser. Search fields and export a complete local report.';
+const description = 'View image, video, document, and audio metadata across 28 supported file formats directly in your browser. Search fields and export a complete local report.';
 const homeUrl = canonicalUrl('/', Astro.site);
-const faqs = [
-  { question: 'Are my files uploaded anywhere?', answer: 'No. The selected file stays in browser memory. This static site has no upload endpoint or file history.' },
-  { question: 'Which files can I inspect here?', answer: 'The viewer supports JPEG, PNG, WebP, PDF, MP4, and MP3 files up to 100 MB.' },
-  { question: 'What happens when I refresh?', answer: 'The selected file and its report disappear. Neither is saved to localStorage or carried to another page.' },
-];
+const faqs = [...metadataViewerFaqs];
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description, inLanguage: 'en' },
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: homeUrl, description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read six common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: homeUrl, description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatLinks = [
-  { href: '/image-metadata-viewer/', label: 'Images', formats: 'JPEG · PNG · WebP', detail: 'EXIF, GPS, XMP, IPTC, ICC, and PNG text' },
-  { href: '/pdf-metadata-viewer/', label: 'Documents', formats: 'PDF', detail: 'Author, dates, producer, pages, and custom fields' },
-  { href: '/video-metadata-viewer/', label: 'Video', formats: 'MP4', detail: 'Duration, dimensions, codecs, tracks, and dates' },
-  { href: '/audio-metadata-viewer/', label: 'Audio', formats: 'MP3', detail: 'ID3 tags, duration, bitrate, and cover presence' },
+  { href: '/image-metadata-viewer/', label: 'Images', detail: 'Camera, GPS, color, comments, animation, authorship, and editing traces' },
+  { href: '/video-metadata-viewer/', label: 'Videos', detail: 'Duration, dimensions, codecs, frame rate, tracks, brands, and dates' },
+  { href: '/document-metadata-viewer/', label: 'Documents', detail: 'Authors, dates, applications, revisions, statistics, and custom properties' },
+  { href: '/audio-metadata-viewer/', label: 'Audio', detail: 'Track tags, codec, duration, bitrate, channels, bit depth, and artwork summaries' },
 ];
-const nextTools = [
-  { href: '/image-privacy-checker/', icon: 'shield' as const, label: 'Check image privacy', note: 'Find GPS, names, device IDs, thumbnails, and editing traces.' },
-  { href: '/metadata-remover/', icon: 'eraser' as const, label: 'Remove image metadata', note: 'Create a cleaned copy, rescan it, and download the verification receipt.' },
-  { href: '/c2pa-viewer/', icon: 'badge' as const, label: 'Verify C2PA credentials', note: 'Check signed provenance with the official browser verifier.' },
+const metadataBenefits = [
+  {
+    href: '/image-privacy-checker/',
+    icon: 'shield' as const,
+    eyebrow: 'Privacy check',
+    label: 'Protect private details',
+    note: 'Spot GPS coordinates, author names, device IDs, embedded thumbnails, and editing traces before sharing.',
+  },
+  {
+    href: '/c2pa-viewer/',
+    icon: 'badge' as const,
+    eyebrow: 'Provenance check',
+    label: 'Check file provenance',
+    note: 'Review timestamps, software history, hashes, and signed C2PA credentials without treating editable metadata as proof.',
+  },
+  {
+    href: '/metadata-remover/',
+    icon: 'eraser' as const,
+    eyebrow: 'Cleaner sharing',
+    label: 'Share a cleaner copy',
+    note: 'Remove writable tags from images, video, audio, or documents, rescan the result, and keep a verification receipt.',
+  },
+];
+const localProcess = [
+  { title: 'Choose one file', note: 'Drop one of 28 supported image, video, document, or audio formats. The bytes stay in this browser tab.' },
+  { title: 'Verify the format', note: 'The browser checks the file signature and size before a parser starts.' },
+  { title: 'Read available metadata', note: 'A local Worker and ExifTool WASM read the fields supported by that format.' },
+  { title: 'Build a useful report', note: 'Fields are grouped, searchable, copyable, and exported with local hashes and header evidence.' },
+  { title: 'Forget the session', note: 'Clear, replace, or refresh to stop the task, release temporary previews, and leave no file history.' },
 ];
 ---
 <BaseLayout title={title} description={description} path="/" schemas={schemas}>
   <div class="home-shell home-tool-first">
     <section class="home-tool-intro" aria-labelledby="home-title">
       <div class="home-intro-rail"><span>LOCAL / NO UPLOAD</span><i></i></div>
-      <div><span class="eyebrow">Free metadata viewer</span><h1 id="home-title">View file metadata in your browser</h1><p>Drop a JPEG, PNG, WebP, PDF, MP4, or MP3. Your file stays on this device.</p></div>
+      <div><span class="eyebrow">Free metadata viewer</span><h1 id="home-title">View file metadata in your browser</h1><p>Drop an image, document, video, or audio file. Your file stays on this device.</p></div>
       <aside><strong>100 MB</strong><span>one-file limit</span></aside>
     </section>
 
-    <MetadataReportWorkbench client:load placement="home" scope="all" formats="JPEG · PNG · WebP · PDF · MP4 · MP3" accept=".jpg,.jpeg,.png,.webp,.pdf,.mp4,.mp3" allowedTypes={['jpeg','png','webp','pdf','mp4','mp3']} />
+    <MetadataReportWorkbench client:load placement="home" scope="all" formats="Images · Videos · Documents · Audio" accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
 
     <nav class="home-format-links" aria-label="Metadata viewers by file format">
       <span class="section-index">BROWSE BY FORMAT</span>
-      {formatLinks.map((item) => <a href={item.href}><span>{item.label}</span><strong>{item.formats}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
+      {formatLinks.map((item, index) => <a href={item.href}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
     </nav>
 
-    <section class="home-next-tools" aria-labelledby="next-tools-title">
-      <header><span class="section-index">NEED A DIFFERENT JOB?</span><h2 id="next-tools-title">Use the right tool next.</h2><p>The metadata report stays general. These tools answer one specific question.</p></header>
-      <div>{nextTools.map((tool) => <a href={tool.href}><span class="home-tool-icon"><IconGlyph name={tool.icon} size={25} /></span><h3>{tool.label}</h3><p>{tool.note}</p><small>Open tool</small></a>)}</div>
+    <section class="home-benefits" aria-labelledby="home-benefits-title">
+      <header class="home-section-heading">
+        <span class="section-index">WHY IT MATTERS</span>
+        <div><h2 id="home-benefits-title">Why view file metadata?</h2><p>Metadata can expose private details, explain how a file was made, and save time when you need technical facts.</p></div>
+      </header>
+      <div class="home-benefit-grid">
+        {metadataBenefits.map((item) => <a href={item.href}>
+          <span class="home-benefit-icon"><IconGlyph name={item.icon} size={25} /></span>
+          <small>{item.eyebrow}</small>
+          <h3>{item.label}</h3>
+          <p>{item.note}</p>
+          <strong>Open tool <IconGlyph name="arrow" size={15} /></strong>
+        </a>)}
+      </div>
     </section>
 
-    <section class="home-local-note" aria-labelledby="local-title">
-      <div><span class="section-index">LOCAL BY DESIGN</span><h2 id="local-title">The file never takes a network trip.</h2></div>
-      <dl><div><dt>Upload route</dt><dd>None</dd></div><div><dt>File history</dt><dd>None</dd></div><div><dt>Refresh</dt><dd>Forgets the report</dd></div></dl>
-      <p>A local Worker reads the bytes in this tab. ExifTool loads from this site only after you choose a file. <a class="inline-link" href="/privacy/">Read the privacy details</a></p>
+    <section class="home-process" aria-labelledby="home-process-title">
+      <header>
+        <span class="section-index">LOCAL, STEP BY STEP</span>
+        <h2 id="home-process-title">How the local scan works</h2>
+        <p>The browser reads the file in this tab. No account, upload, or server copy.</p>
+      </header>
+      <div class="home-process-body">
+        <ol class="home-process-list">
+          {localProcess.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}
+        </ol>
+        <p class="home-process-cta"><span>Have a file ready?</span><a href="#metadata-workbench-home">Choose a file above <IconGlyph name="arrow" size={15} /></a></p>
+      </div>
     </section>
 
-    <section class="home-faq compact-faq"><div><span class="section-index">FAQ</span><h2>Three quick answers</h2></div><div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
+    <section class="home-faq expanded-faq" aria-labelledby="home-faq-title"><div class="expanded-faq-inner"><h2 id="home-faq-title">Frequently asked questions</h2><div class="expanded-faq-list">{faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section>
   </div>
 </BaseLayout>

@@ -1,5 +1,9 @@
-export type DetectedFileType = 'jpeg' | 'png' | 'webp' | 'pdf' | 'mp4' | 'mp3' | 'unknown';
-export type MetadataCategory = 'image' | 'pdf' | 'video' | 'audio';
+export type SupportedDocumentType = 'docx' | 'pptx' | 'xlsx';
+export type SupportedAudioType = 'mp3' | 'flac' | 'ogg' | 'opus' | 'm4a' | 'aac' | 'wav' | 'wma';
+export type SupportedVideoType = 'mp4' | 'mov' | 'mkv' | 'webm' | 'avi' | 'flv' | '3gp' | '3g2';
+export type DetectedFileType = SupportedImageType | 'pdf' | SupportedDocumentType | SupportedVideoType | SupportedAudioType | 'unknown';
+export type ContainerSignatureType = DetectedFileType | 'zip';
+export type MetadataCategory = 'image' | 'pdf' | 'document' | 'video' | 'audio';
 
 export interface FileSummary {
   name: string;
@@ -57,11 +61,11 @@ export interface DetectionResult {
   type: DetectedFileType;
   mimeType: string;
   extensionType: DetectedFileType;
-  signatureType: DetectedFileType;
+  signatureType: ContainerSignatureType;
   warnings: ParseWarning[];
 }
 
-export type SupportedImageType = 'jpeg' | 'png' | 'webp';
+export type SupportedImageType = 'jpeg' | 'png' | 'webp' | 'heic' | 'tiff' | 'gif';
 export type ImageMetadataGroup =
   | 'privacy'
   | 'location'

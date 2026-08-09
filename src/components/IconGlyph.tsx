@@ -9,8 +9,9 @@ import film from '@iconify-icons/lucide/film';
 import audio from '@iconify-icons/lucide/music';
 import lock from '@iconify-icons/lucide/lock-keyhole';
 import arrow from '@iconify-icons/lucide/arrow-up-right';
+import chevronDown from '@iconify-icons/lucide/chevron-down';
 
-const icons = { scan, shield, eraser, badge, fileImage, fileText, film, audio, lock, arrow };
+const icons = { scan, shield, eraser, badge, fileImage, fileText, film, audio, lock, arrow, chevronDown };
 export type IconName = keyof typeof icons;
 
 export function IconGlyph({ name, size = 24 }: { name: IconName; size?: number }) {

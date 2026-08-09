@@ -24,12 +24,13 @@ import { createSafeReportExport } from '../lib/metadata-report/safe-export';
 import type { MetadataInspectionMode, MetadataReport, MetadataReportField, MetadataReportSection } from '../lib/metadata-report/types';
 import { runWorkerTask, type WorkerTask } from '../lib/worker-client';
 import type { ExifToolProgressStage } from '../workers/exiftool-protocol';
+import type { DetectedFileType } from '../lib/metadata/types';
 
 interface Props {
   scope: 'all' | 'image';
   formats: string;
   accept: string;
-  allowedTypes: string[];
+  allowedTypes: DetectedFileType[];
   placement?: 'home' | 'tool';
 }
 
@@ -163,7 +164,7 @@ function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, f
 
 export default function MetadataReportWorkbench({ scope, formats, accept, allowedTypes, placement = 'tool' }: Props) {
   const input = useRef<HTMLInputElement>(null);
-  const chooseButton = useRef<HTMLButtonElement>(null);
+  const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
   const task = useRef<WorkerTask<MetadataReport> | null>(null);
   const exifTool = useRef<ExifToolWorkerClient | null>(null);
@@ -348,7 +349,10 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       const { downloadMetadataReportPdf } = await import('../lib/metadata-report/pdf-export');
       await downloadMetadataReportPdf(report, sanitizeFilename(report.file.name, '-metadata-report.pdf'));
       setNotice('Readable PDF report downloaded; JSON remains the complete record');
-    } catch { setNotice('The PDF could not be built. The JSON report is still available.'); }
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : 'Unknown browser error';
+      setNotice(`The PDF could not be built (${reason}). The JSON report is still available.`);
+    }
     finally { setExportingPdf(false); }
   };
 
@@ -364,18 +368,19 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
     setNotice(`${fullImageScan ? 'Full image' : 'ExifTool'} scan canceled; the initial report remains available`);
   };
 
-  return <section className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
+  return <section id={`metadata-workbench-${placement}`} className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
     <div className="workbench-topline">
       <div className="local-proof"><Icon icon={checkIcon} width="18" aria-hidden="true" /><span>Your file stays on this device.</span></div>
       <span className="status-line" role="status" aria-live="polite"><i className={busy || exifRunning ? 'pulse' : ''} />{notice}</span>
     </div>
-    <input ref={input} className="sr-only" type="file" accept={accept} multiple onChange={(event) => pickFiles(event.target.files)} />
+    <input ref={input} className="sr-only" type="file" accept={accept} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => pickFiles(event.target.files)} />
 
-    {!file ? <div className={`report-dropzone ${dragging ? 'is-dragging' : ''}`}
+    {!file ? <div ref={chooseButton} className={`report-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label={`Choose ${scope === 'image' ? 'an image' : 'a file'}`} aria-describedby={`report-drop-help-${placement}`}
+      onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }}
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pickFiles(event.dataTransfer.files); }}>
       <span className="report-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="33" /></span>
-      <div className="report-drop-copy"><span className="eyebrow">One file · processed locally</span><strong>Drop {scope === 'image' ? 'an image' : 'a file'} here</strong><p id={`report-drop-help-${placement}`}>{formats} · up to {formatLimit(fileLimit(scope))}</p><button ref={chooseButton} className="button button-primary report-pick-button" type="button" onClick={openPicker} aria-describedby={`report-drop-help-${placement}`}>Choose {scope === 'image' ? 'an image' : 'a file'}</button></div>
+      <div className="report-drop-copy"><span className="eyebrow">One file · processed locally</span><strong>Drop {scope === 'image' ? 'an image' : 'a file'} here</strong><p id={`report-drop-help-${placement}`}>{formats} · up to {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">Choose {scope === 'image' ? 'an image' : 'a file'}</span></div>
       <span className="report-drop-note">ExifTool loads after you choose a file.<small>Nothing is uploaded.</small></span>
     </div> : null}
 
@@ -392,7 +397,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
       </header>
 
       <section className="report-summary" aria-labelledby="report-summary-title">
-        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={`Local preview of ${report.file.name}`} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
+        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={`Local preview of ${report.file.name}`} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
         <div className="report-file-title"><span id="report-summary-title">File summary</span><strong>{report.file.name}</strong><small>{report.category} / {report.file.detectedType}</small></div>
         <dl className="report-facts">{report.facts.map((fact) => <div key={fact.id}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
         <div className="report-hashes">
@@ -413,7 +418,7 @@ export default function MetadataReportWorkbench({ scope, formats, accept, allowe
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">Privacy pass</span><strong>{sensitiveFields.length ? `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found` : 'No common sensitive fields in the readable set'}</strong><p>Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.</p></div>
-        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/metadata-remover/">Remove image metadata</a></div>
+        <div className="button-row"><a className="button button-secondary" href="/image-privacy-checker/">Open Privacy Checker</a><a className="button button-primary" href="/image-metadata-remover/">Remove image metadata</a></div>
       </section> : null}
 
       <section className="report-ledger" aria-labelledby="metadata-results-heading">

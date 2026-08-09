@@ -6,7 +6,7 @@ import { stringifyDisplayValue, toSafeValue } from './safe-value';
 import type { ImageContainerDetails, ImageMetadataField, ImageMetadataGroup, ImageMetadataSection, ImageLocation } from './types';
 
 interface Candidate { key: string; path: string; value: unknown; source: string; forceGroup?: ImageMetadataGroup }
-interface NormalizeInput { exifFields: ExifFieldEntry[]; textMetadata: Record<string, unknown>; container: ImageContainerDetails }
+interface NormalizeInput { exifFields: ExifFieldEntry[]; textMetadata: Record<string, unknown>; container: ImageContainerDetails; textSource?: string; textPath?: string }
 
 const LABELS: Record<string, string> = {
   make: 'Camera make', model: 'Camera model', lensmodel: 'Lens model', lensmake: 'Lens make', bodyserialnumber: 'Camera serial number',
@@ -92,7 +92,7 @@ export function normalizeImageMetadataDetailed(input: NormalizeInput): { section
     const identity = `${field.source}|${plainIdentity}`;
     if (!seen.has(identity)) { add(candidates, field.key, field.value, field.source, undefined, field.path); seen.add(identity); }
   }
-  for (const [key, value] of Object.entries(input.textMetadata)) add(candidates, key, value, 'PNG text', undefined, `png.text.${key}`);
+  for (const [key, value] of Object.entries(input.textMetadata)) add(candidates, key, value, input.textSource ?? 'Image text', undefined, `${input.textPath ?? 'image.text'}.${key}`);
   const location = extractGps(input.exifFields);
   const coordinates = coordinatesText(location);
   if (coordinates) add(candidates, 'Decimal coordinates', coordinates, 'Calculated from EXIF GPS', 'location');
