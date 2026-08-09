@@ -17,21 +17,11 @@ const blog = defineCollection({
     reviewedBy: z.string().default('MetadataView product engineering'),
     cover: image(),
     coverAlt: z.string().min(20),
-    coverCredit: z.object({
-      name: z.string(),
-      url: z.string().url(),
-      source: z.string().default('Pexels'),
-    }),
     practicalTake: z.array(z.string().min(20)).min(3).max(6),
     faqs: z.array(z.object({
       question: z.string().min(10),
       answer: z.string().min(30),
     })).min(3).max(8),
-    sources: z.array(z.object({
-      title: z.string().min(5),
-      publisher: z.string().min(2),
-      url: z.string().url(),
-    })).min(1),
     related: z.array(z.string()).default([]),
   }),
 });

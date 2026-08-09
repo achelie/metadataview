@@ -39,7 +39,7 @@ test('mobile navigation exposes the current Blog route', async ({ page }) => {
   await expect(page).toHaveURL(/\/blog\/$/);
 });
 
-test('article renders the byline, contents, practical take, FAQ, sources, and tool links', async ({ page }) => {
+test('article renders the byline, concise contents, practical take, FAQ, and tool links', async ({ page }) => {
   await page.goto(ARTICLE_PATH);
   await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
   await expect(page.getByText('MetadataView Editorial Team', { exact: true })).toBeVisible();
@@ -49,17 +49,19 @@ test('article renders the byline, contents, practical take, FAQ, sources, and to
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
   expect(coverRatio).toBeGreaterThan(1.88);
   expect(coverRatio).toBeLessThan(1.92);
-  await expect(page.locator('.blog-toc nav a')).toHaveCount(12);
-  await expect(page.locator('.practical-take li')).toHaveCount(4);
-  await expect(page.getByRole('heading', { name: 'Original photo metadata versus screenshot metadata' })).toBeVisible();
-  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(7);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.getByRole('heading', { name: 'What a screenshot usually keeps' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(6);
   await expect(page.locator('.blog-faq article')).toHaveCount(5);
-  await expect(page.locator('.blog-sources li')).toHaveCount(5);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[45] min read/);
   await expect(page.getByRole('link', { name: /View image metadata/ })).toHaveAttribute('href', '/image-metadata-viewer/');
   await expect(page.getByRole('link', { name: /Check image privacy/ })).toHaveAttribute('href', '/image-privacy-checker/');
   await expect(page.getByRole('link', { name: /Make a cleaner copy/ })).toHaveAttribute('href', '/image-metadata-remover/');
-  await page.locator('.blog-toc a[href="#how-to-check-a-screenshot-before-sharing-it"]').click();
-  await expect(page).toHaveURL(/#how-to-check-a-screenshot-before-sharing-it$/);
+  await page.locator('.blog-toc a[href="#how-to-check-the-file-you-will-share"]').click();
+  await expect(page).toHaveURL(/#how-to-check-the-file-you-will-share$/);
 });
 
 test('article metadata and visible FAQ share the same source data', async ({ page }) => {

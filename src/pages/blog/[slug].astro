@@ -26,7 +26,6 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 const tocItems = [
   ...tocHeadings.map((heading) => ({ slug: heading.slug, text: heading.text })),
   { slug: 'frequently-asked-questions', text: 'Frequently asked questions' },
-  { slug: 'sources', text: 'Sources' },
 ];
 const schemas = [
   {
@@ -96,7 +95,6 @@ const schemas = [
 
     <figure class="blog-cover">
       <img src={post.data.cover.src} alt={post.data.coverAlt} width={post.data.cover.width} height={post.data.cover.height} loading="eager" decoding="async" />
-      <figcaption>Photo by <a href={post.data.coverCredit.url} rel="noopener noreferrer">{post.data.coverCredit.name}</a> on {post.data.coverCredit.source}.</figcaption>
     </figure>
 
     <details class="blog-toc-mobile">
@@ -125,11 +123,6 @@ const schemas = [
           <div>{post.data.faqs.map((faq, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{faq.question}</h3><p>{faq.answer}</p></div></article>)}</div>
         </section>
 
-        <section class="blog-sources" id="sources" aria-labelledby="blog-sources-title">
-          <header><span class="blog-kicker">Check the footnotes</span><h2 id="blog-sources-title">Sources</h2></header>
-          <ol>{post.data.sources.map((source) => <li><a href={source.url} rel="noopener noreferrer"><span>{source.publisher}</span><strong>{source.title}</strong><b aria-hidden="true">↗</b></a></li>)}</ol>
-          <p>System behavior changes across versions, device makers, apps, and export workflows. These official pages provide context; inspect your final file for the answer that matters.</p>
-        </section>
       </div>
     </div>
 

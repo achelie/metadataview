@@ -212,8 +212,6 @@
 
 .blog-cover { max-width: 1100px; margin: clamp(3rem, 5vw, 4.2rem) auto 0; }
 .blog-cover img { display: block; width: 100%; aspect-ratio: 1.9 / 1; object-fit: cover; border: 1px solid var(--line); border-radius: .34rem; }
-.blog-cover figcaption { margin-top: .8rem; color: var(--muted); font-size: .72rem; }
-.blog-cover figcaption a { color: var(--rust); text-decoration: underline; }
 
 .blog-article__layout { display: grid; grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: start; max-width: 1120px; margin: clamp(4rem, 8vw, 8rem) auto 0; }
 .blog-toc { position: sticky; top: 6rem; max-height: calc(100vh - 8rem); overflow-y: auto; padding-right: .8rem; }
@@ -251,21 +249,13 @@
 .blog-article__main > .blog-tool-strip { grid-template-columns: minmax(0, .76fr) minmax(0, 1.24fr); margin-block: clamp(4rem, 8vw, 7rem); }
 .blog-article__main > .blog-tool-strip h2 { font-size: clamp(1.8rem, 3vw, 3rem); }
 
-.blog-faq,.blog-sources { scroll-margin-top: 6rem; margin-top: clamp(4rem, 8vw, 7rem); }
-.blog-faq > header,.blog-sources > header { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; align-items: end; margin-bottom: 1.2rem; border-bottom: 1px solid var(--ink); }
-.blog-faq > header h2,.blog-sources > header h2 { margin: 0 0 .8rem; font-size: clamp(2.2rem, 4vw, 3.6rem); }
+.blog-faq { scroll-margin-top: 6rem; margin-top: clamp(4rem, 8vw, 7rem); }
+.blog-faq > header { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; align-items: end; margin-bottom: 1.2rem; border-bottom: 1px solid var(--ink); }
+.blog-faq > header h2 { margin: 0 0 .8rem; font-size: clamp(2.2rem, 4vw, 3.6rem); }
 .blog-faq article { display: grid; grid-template-columns: 2.2rem 1fr; gap: 1rem; padding: 1.35rem 0; border-bottom: 1px solid var(--line); }
 .blog-faq article > span { color: var(--rust); font-size: .65rem; font-weight: 900; }
 .blog-faq h3 { margin: 0 0 .4rem; font-family: var(--body); font-size: 1.03rem; letter-spacing: -.02em; line-height: 1.35; }
 .blog-faq p { margin: 0; }
-.blog-sources ol { margin: 0; padding: 0; list-style: none; counter-reset: source; }
-.blog-sources li { counter-increment: source; border-bottom: 1px solid var(--line); }
-.blog-sources li a { display: grid; grid-template-columns: 1.2rem minmax(8rem, .55fr) minmax(0, 1.45fr) 1.3rem; gap: 1rem; padding: 1rem 0; overflow-wrap: anywhere; }
-.blog-sources li a::before { content: counter(source, decimal-leading-zero); color: var(--rust); font-size: .65rem; font-weight: 900; }
-.blog-sources li a span { color: var(--muted); font-size: .78rem; font-weight: 800; }
-.blog-sources li a strong { font-weight: 700; }
-.blog-sources li a b { color: var(--rust); }
-.blog-sources > p { margin: 1.2rem 0 0; color: var(--muted); font-size: .8rem; }
 
 .blog-related { max-width: 1120px; margin-inline: auto; }
 
@@ -287,12 +277,7 @@
   .blog-toc-mobile a { font-size: .82rem; }
   .blog-tool-strip,.blog-article__main > .blog-tool-strip { grid-template-columns: 1fr; }
   .practical-take { grid-template-columns: 1fr; }
-  .blog-faq > header,.blog-sources > header { grid-template-columns: 1fr; gap: .3rem; }
-  .blog-sources li a { grid-template-columns: 1.2rem minmax(0, 1fr) 1rem; gap: .35rem .7rem; }
-  .blog-sources li a span { grid-column: 2; grid-row: 1; }
-  .blog-sources li a strong { grid-column: 2; grid-row: 2; }
-  .blog-sources li a b { grid-column: 3; grid-row: 1 / span 2; }
-  .blog-sources li a::before { grid-column: 1; grid-row: 1 / span 2; }
+  .blog-faq > header { grid-template-columns: 1fr; gap: .3rem; }
 }
 
 @media (max-width: 620px) {
@@ -315,7 +300,6 @@
   .blog-post-card__media { min-height: 9rem; }
   .blog-post-card__meta { font-size: .58rem; }
   .blog-tool-strip nav a { grid-template-columns: 1.35rem 1fr; gap: .4rem; padding-inline: 0; }
-  .blog-cover figcaption { overflow-wrap: anywhere; }
   .blog-prose table { font-size: .76rem; }
   .blog-prose th,.blog-prose td { min-width: 7.5rem; padding: .5rem; }
 }
