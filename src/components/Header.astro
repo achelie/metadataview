@@ -42,6 +42,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
         </div>
       </div>
       <a href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
+      <a href="/blog/" aria-current={pathname.startsWith('/blog/') ? 'page' : undefined}>Blog</a>
     </nav>
     <a class="header-cta" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>View metadata <StaticIcon name="arrow" size={16} /></a>
     <button class="mobile-menu-trigger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-navigation-drawer" data-mobile-menu-trigger>
@@ -69,6 +70,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
           <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{removeItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
         </div>
         <a class="mobile-nav-link" href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
+        <a class="mobile-nav-link" href="/blog/" aria-current={pathname.startsWith('/blog/') ? 'page' : undefined}>Blog</a>
       </div>
     </nav>
   </div>

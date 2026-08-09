@@ -1,0 +1,140 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+import BlogToolStrip from '../../components/BlogToolStrip.astro';
+import { blogPath, formatBlogDate, getReadingTime, sortBlogPosts } from '../../lib/blog';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const allPosts = sortBlogPosts(await getCollection('blog'));
+const relatedIds = new Set(post.data.related);
+const relatedPosts = allPosts.filter((candidate) => candidate.id !== post.id && (relatedIds.size === 0 || relatedIds.has(candidate.id))).slice(0, 3);
+const minutes = getReadingTime(post.body ?? '');
+const path = blogPath(post);
+const canonical = new URL(path, Astro.site).toString();
+const imageUrl = new URL(post.data.cover.src, Astro.site).toString();
+const publishedIso = post.data.publishedAt.toISOString();
+const updatedIso = post.data.updatedAt.toISOString();
+const tocHeadings = headings.filter((heading) => heading.depth === 2);
+const tocItems = [
+  ...tocHeadings.map((heading) => ({ slug: heading.slug, text: heading.text })),
+  { slug: 'frequently-asked-questions', text: 'Frequently asked questions' },
+  { slug: 'sources', text: 'Sources' },
+];
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.data.title,
+    description: post.data.description,
+    image: [imageUrl],
+    datePublished: publishedIso,
+    dateModified: updatedIso,
+    mainEntityOfPage: canonical,
+    author: { '@type': 'Organization', name: post.data.author, url: new URL('/about/', Astro.site).toString() },
+    publisher: { '@type': 'Organization', name: 'MetadataView', url: new URL('/', Astro.site).toString() },
+    articleSection: post.data.category,
+    keywords: post.data.tags.join(', '),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', Astro.site).toString() },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: post.data.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+];
+---
+<BaseLayout
+  title={`${post.data.title} | MetadataView`}
+  description={post.data.description}
+  path={path}
+  schemas={schemas}
+  ogType="article"
+  image={{ src: post.data.cover.src, alt: post.data.coverAlt, width: 1600, height: 900 }}
+  publishedTime={publishedIso}
+  modifiedTime={updatedIso}
+  author={post.data.author}
+>
+  <article class="blog-article page-shell">
+    <header class="blog-article__header">
+      <a class="blog-back-link" href="/blog/"><span aria-hidden="true">←</span> Back to blog</a>
+      <div class="blog-article__category"><span>{post.data.category}</span><span>{minutes} min read</span></div>
+      <h1>{post.data.title}</h1>
+      <p class="blog-article__dek">{post.data.description}</p>
+      <div class="blog-byline" aria-label="Article details">
+        <div class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></div>
+        <dl>
+          <div><dt>Written by</dt><dd>{post.data.author}</dd></div>
+          <div><dt>Technical review</dt><dd>{post.data.reviewedBy}</dd></div>
+          <div><dt>Updated</dt><dd><time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></dd></div>
+          <div><dt>Reading time</dt><dd>{minutes} minutes</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <figure class="blog-cover">
+      <img src={post.data.cover.src} alt={post.data.coverAlt} width={post.data.cover.width} height={post.data.cover.height} loading="eager" decoding="async" />
+      <figcaption>Photo by <a href={post.data.coverCredit.url} rel="noopener noreferrer">{post.data.coverCredit.name}</a> on {post.data.coverCredit.source}.</figcaption>
+    </figure>
+
+    <details class="blog-toc-mobile">
+      <summary>On this page <span aria-hidden="true">↓</span></summary>
+      <nav aria-label="Article contents">{tocItems.map((item, index) => <a href={`#${item.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{item.text}</a>)}</nav>
+    </details>
+
+    <div class="blog-article__layout">
+      <aside class="blog-toc" aria-label="Article contents">
+        <span class="blog-kicker">On this page</span>
+        <nav>{tocItems.map((item, index) => <a href={`#${item.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{item.text}</a>)}</nav>
+      </aside>
+
+      <div class="blog-article__main">
+        <aside class="practical-take" aria-labelledby="practical-take-title">
+          <div><span>Keep this bit</span><h2 id="practical-take-title">Practical take</h2></div>
+          <ul>{post.data.practicalTake.map((item) => <li>{item}</li>)}</ul>
+        </aside>
+
+        <div class="blog-prose"><Content /></div>
+
+        <BlogToolStrip />
+
+        <section class="blog-faq" id="frequently-asked-questions" aria-labelledby="blog-faq-title">
+          <header><span class="blog-kicker">Straight answers</span><h2 id="blog-faq-title">Frequently asked questions</h2></header>
+          <div>{post.data.faqs.map((faq, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{faq.question}</h3><p>{faq.answer}</p></div></article>)}</div>
+        </section>
+
+        <section class="blog-sources" id="sources" aria-labelledby="blog-sources-title">
+          <header><span class="blog-kicker">Check the footnotes</span><h2 id="blog-sources-title">Sources</h2></header>
+          <ol>{post.data.sources.map((source) => <li><a href={source.url} rel="noopener noreferrer"><span>{source.publisher}</span><strong>{source.title}</strong><b aria-hidden="true">↗</b></a></li>)}</ol>
+          <p>System behavior changes across versions, device makers, apps, and export workflows. These official pages provide context; inspect your final file for the answer that matters.</p>
+        </section>
+      </div>
+    </div>
+
+    {relatedPosts.length > 0 && (
+      <section class="blog-related" aria-labelledby="related-posts-title">
+        <div class="blog-section-heading"><h2 id="related-posts-title">Keep reading</h2><a href="/blog/">See all guides</a></div>
+        <div class="blog-latest__grid">{relatedPosts.map((relatedPost) => <BlogPostCard post={relatedPost} />)}</div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

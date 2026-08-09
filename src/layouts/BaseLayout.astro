@@ -10,10 +10,27 @@ interface Props {
   path?: string;
   schemas?: Record<string, unknown>[];
   noindex?: boolean;
+  ogType?: 'website' | 'article';
+  image?: { src: string; alt: string; width?: number; height?: number };
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
 }
 
-const { title, description, path = '/', schemas = [], noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  path = '/',
+  schemas = [],
+  noindex = false,
+  ogType = 'website',
+  image,
+  publishedTime,
+  modifiedTime,
+  author,
+} = Astro.props;
 const canonical = canonicalUrl(path, Astro.site);
+const socialImage = image ? new URL(image.src, Astro.site).toString() : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -26,15 +43,25 @@ const canonical = canonicalUrl(path, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Metadata Privacy Toolkit" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="MetadataView" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    {image?.alt && <meta property="og:image:alt" content={image.alt} />}
+    {image?.width && <meta property="og:image:width" content={String(image.width)} />}
+    {image?.height && <meta property="og:image:height" content={String(image.height)} />}
+    {ogType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {ogType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {ogType === 'article' && author && <meta property="article:author" content={author} />}
+    {author && <meta name="author" content={author} />}
+    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    {image?.alt && <meta name="twitter:image:alt" content={image.alt} />}
     <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="7tLAA9e0vH5NusPCfeDVgw" async></script>
     {noindex && <meta name="robots" content="noindex" />}
     {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
