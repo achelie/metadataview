@@ -2,6 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 const ARTICLE_PATH = '/blog/do-screenshots-have-metadata/';
 const ARTICLE_TITLE = 'Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save';
+const WHATSAPP_PATH = '/blog/does-whatsapp-remove-exif-data/';
+const WHATSAPP_TITLE = 'Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -18,13 +20,19 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByText('Metadata is small, invisible, and surprisingly chatty.')).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
   await expect(page.locator('.blog-feature .blog-post-card')).toHaveCount(1);
-  await expect(page.locator('.blog-latest')).toHaveCount(0);
+  await expect(page.locator('.blog-latest')).toHaveCount(1);
   await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveCount(1);
-  await expect(page.locator('.blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
-  await expect(page.getByText('Image privacy', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
+  await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveAttribute('src', /does-whatsapp-remove-exif-data/);
+  await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
+  await expect(page.locator('.blog-feature').getByText('Image privacy', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View image metadata' })).toHaveAttribute('href', '/image-metadata-viewer/');
   await expect(page.locator('.desktop-nav > a[href="/blog/"]')).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
 });
 
@@ -83,17 +91,61 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
-for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
-  test(`blog article stays readable at ${viewport.width}px`, async ({ page }) => {
-    await page.setViewportSize(viewport);
-    const consoleErrors: string[] = [];
-    page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
-    await page.goto(ARTICLE_PATH);
-    await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
-    await expect(page.locator('.blog-toc-mobile')).toBeVisible();
-    await page.locator('.blog-toc-mobile summary').click();
-    await expect(page.locator('.blog-toc-mobile nav')).toBeVisible();
-    await assertNoHorizontalOverflow(page);
-    expect(consoleErrors).toEqual([]);
-  });
+test('WhatsApp guide answers real date, filename, and recovery questions without a sources block', async ({ page }) => {
+  await page.goto(WHATSAPP_PATH);
+  await expect(page.getByRole('heading', { level: 1, name: WHATSAPP_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-10/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText('4 min read');
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /WhatsApp and Signal messaging app icons/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(8);
+  await expect(page.getByRole('heading', { name: 'Why WhatsApp photos land on the wrong date' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'A WhatsApp filename is a clue, not proof' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can you recover EXIF after WhatsApp removed it?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(3);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveAttribute('href', ARTICLE_PATH);
+  await expect(page.getByRole('link', { name: /View image metadata/ })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: /Check image privacy/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Make a cleaner copy/ })).toHaveAttribute('href', '/image-metadata-remover/');
+});
+
+test('WhatsApp guide metadata and visible FAQ share the same source data', async ({ page }) => {
+  await page.goto(WHATSAPP_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${WHATSAPP_PATH}`);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(WHATSAPP_TITLE);
+  expect(posting.keywords).toContain('WhatsApp');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
+for (const article of [
+  { path: ARTICLE_PATH, title: ARTICLE_TITLE, label: 'screenshots' },
+  { path: WHATSAPP_PATH, title: WHATSAPP_TITLE, label: 'WhatsApp' },
+]) {
+  for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
+    test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      const consoleErrors: string[] = [];
+      page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
+      await page.goto(article.path);
+      await expect(page.getByRole('heading', { level: 1, name: article.title })).toBeVisible();
+      await expect(page.locator('.blog-toc-mobile')).toBeVisible();
+      await page.locator('.blog-toc-mobile summary').click();
+      await expect(page.locator('.blog-toc-mobile nav')).toBeVisible();
+      await assertNoHorizontalOverflow(page);
+      expect(consoleErrors).toEqual([]);
+    });
+  }
 }
