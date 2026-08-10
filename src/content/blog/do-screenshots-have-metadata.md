@@ -30,7 +30,8 @@ faqs:
     answer: "A normal iPhone screenshot usually has no camera GPS EXIF. Photos, Shortcuts, editors, and export apps can change the final file, so check the copy you will send."
   - question: "Does cropping a screenshot remove its metadata?"
     answer: "Not reliably. Some editors create a fresh file, while others keep or add fields. Cropping also does not hide private details that remain visible."
-related: []
+related:
+  - does-whatsapp-remove-exif-data
 ---
 
 Yes, screenshots have metadata. They just tend to have less of it than camera photos.

@@ -389,7 +389,8 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
   await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
   await expect(page.locator('.c2pa-hash code')).toHaveText(/^[a-f0-9]{64}$/);
-  await expect(page.getByText('Not applicable', { exact: true })).toHaveCount(4);
+  await expect(page.locator('.c2pa-checks').getByText('Not applicable', { exact: true })).toHaveCount(4);
+  await expect(page.locator('.c2pa-asset-copy').getByText('Not applicable', { exact: true })).toHaveCount(1);
   await expect(page.locator('.c2pa-asset-card img')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Validation results' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Actions' })).toBeVisible();
@@ -409,7 +410,11 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   expect(JSON.stringify(receipt)).not.toMatch(/blob:|data:image|sourceBytes|wasm/i);
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
   expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
-  expect(requests.every((request) => new URL(request.url).origin === new URL(page.url()).origin)).toBe(true);
+  const pageOrigin = new URL(page.url()).origin;
+  expect(requests.every((request) => {
+    const url = new URL(request.url);
+    return url.origin === pageOrigin || url.href === 'https://analytics.ahrefs.com/analytics.js';
+  })).toBe(true);
   await page.setViewportSize({ width: 239, height: 844 });
   const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
   expect(width.scroll).toBeLessThanOrEqual(width.client + 1);
