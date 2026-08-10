@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 const ARTICLE_PATH = '/blog/do-screenshots-have-metadata/';
 const ARTICLE_TITLE = 'Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save';
 const WHATSAPP_PATH = '/blog/does-whatsapp-remove-exif-data/';
-const WHATSAPP_TITLE = 'Does WhatsApp Remove EXIF Data? Photos, HD, and Documents Explained';
+const WHATSAPP_TITLE = 'Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -91,18 +91,20 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
-test('WhatsApp guide gives the photo, HD, and document answer without a sources block', async ({ page }) => {
+test('WhatsApp guide answers real date, filename, and recovery questions without a sources block', async ({ page }) => {
   await page.goto(WHATSAPP_PATH);
   await expect(page.getByRole('heading', { level: 1, name: WHATSAPP_TITLE })).toBeVisible();
   await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-10/);
-  await expect(page.locator('.blog-byline__date small')).toHaveText('5 min read');
+  await expect(page.locator('.blog-byline__date small')).toHaveText('4 min read');
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /WhatsApp and Signal messaging app icons/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
   expect(coverRatio).toBeGreaterThan(1.88);
   expect(coverRatio).toBeLessThan(1.92);
   await expect(page.locator('.practical-take li')).toHaveCount(3);
-  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
-  await expect(page.getByRole('heading', { name: 'The answer depends on how you send it' })).toBeVisible();
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(8);
+  await expect(page.getByRole('heading', { name: 'Why WhatsApp photos land on the wrong date' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'A WhatsApp filename is a clue, not proof' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can you recover EXIF after WhatsApp removed it?' })).toBeVisible();
   await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(3);
   await expect(page.locator('.blog-faq article')).toHaveCount(5);
   await expect(page.locator('.blog-sources')).toHaveCount(0);
