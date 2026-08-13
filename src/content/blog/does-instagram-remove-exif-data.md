@@ -32,6 +32,7 @@ faqs:
     answer: "Yes, if the file contains a private location, name, device ID, or editing note. Cleaning first means the sensitive tag never enters that upload workflow."
 related:
   - does-whatsapp-remove-exif-data
+  - does-discord-remove-exif-data
   - do-screenshots-have-metadata
 ---
 

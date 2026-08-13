@@ -35,6 +35,8 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(3);
   await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(3);
   await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /does-discord-remove-exif-data/);
+  await expect(page.getByText('Page 1 of 1', { exact: true })).toBeVisible();
+  await expect(page.locator('.blog-pagination')).toHaveCount(0);
   await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
   await expect(page.locator('.blog-feature').getByText('Image privacy', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View image metadata' })).toHaveAttribute('href', '/image-metadata-viewer/');
@@ -44,6 +46,11 @@ test('blog index features the first guide once and exposes the editorial navigat
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
   expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
+});
+
+test('blog does not generate a second page before seven regular posts exist', async ({ request }) => {
+  const response = await request.get('/blog/page/2/');
+  expect(response.status()).toBe(404);
 });
 
 test('mobile navigation exposes the current Blog route', async ({ page }) => {
@@ -229,6 +236,23 @@ test('Discord guide metadata and visible FAQ share the same source data', async 
   const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
+
+const relatedGuides = [
+  { path: ARTICLE_PATH, expected: [WHATSAPP_PATH, INSTAGRAM_PATH, DISCORD_PATH] },
+  { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, DISCORD_PATH, ARTICLE_PATH] },
+  { path: INSTAGRAM_PATH, expected: [WHATSAPP_PATH, DISCORD_PATH, ARTICLE_PATH] },
+  { path: DISCORD_PATH, expected: [INSTAGRAM_PATH, WHATSAPP_PATH, ARTICLE_PATH] },
+];
+
+for (const guide of relatedGuides) {
+  test(`${guide.path} keeps exactly three manually ordered related guides`, async ({ page }) => {
+    await page.goto(guide.path);
+    const links = page.locator('.blog-related .blog-post-card h2 a');
+    await expect(links).toHaveCount(3);
+    expect(await links.evaluateAll((items) => items.map((item) => item.getAttribute('href')))).toEqual(guide.expected);
+    expect(guide.expected).not.toContain(guide.path);
+  });
+}
 
 for (const article of [
   { path: ARTICLE_PATH, title: ARTICLE_TITLE, label: 'screenshots' },

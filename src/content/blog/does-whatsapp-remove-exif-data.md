@@ -31,6 +31,8 @@ faqs:
   - question: "Does a WhatsApp chat timestamp prove when a photo was taken?"
     answer: "No. It records when a message was sent or received, not when the camera made the photo. An older image can be shared in a new message at any time."
 related:
+  - does-instagram-remove-exif-data
+  - does-discord-remove-exif-data
   - do-screenshots-have-metadata
 ---
 
