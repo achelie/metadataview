@@ -31,9 +31,9 @@ faqs:
   - question: "Should I trust Discord to remove private metadata?"
     answer: "Not for a sensitive file. Make a cleaned copy before uploading, then check it locally so a platform change cannot make the privacy decision for you."
 related:
-  - does-instagram-remove-exif-data
+  - does-telegram-remove-exif-data
   - does-whatsapp-remove-exif-data
-  - do-screenshots-have-metadata
+  - does-instagram-remove-exif-data
 ---
 
 Does Discord remove EXIF data? Usually, yes, when you upload an ordinary photo. The copy served by Discord normally loses camera details, capture time, and GPS coordinates. That does not cover every format, every old attachment, or everything people can learn from the picture.
