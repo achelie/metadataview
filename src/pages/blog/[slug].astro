@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import BlogToolStrip from '../../components/BlogToolStrip.astro';
-import { blogPath, formatBlogDate, getReadingTime, sortBlogPosts } from '../../lib/blog';
+import { blogPath, formatBlogDate, getReadingTime, resolveRelatedPosts, sortBlogPosts, validateBlogRelationships } from '../../lib/blog';
 import '../../styles/blog.css';
 
 export async function getStaticPaths() {
@@ -14,8 +14,8 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const allPosts = sortBlogPosts(await getCollection('blog'));
-const relatedIds = new Set(post.data.related);
-const relatedPosts = allPosts.filter((candidate) => candidate.id !== post.id && (relatedIds.size === 0 || relatedIds.has(candidate.id))).slice(0, 3);
+validateBlogRelationships(allPosts);
+const relatedPosts = resolveRelatedPosts(post, allPosts);
 const minutes = getReadingTime(post.body ?? '');
 const path = blogPath(post);
 const canonical = new URL(path, Astro.site).toString();

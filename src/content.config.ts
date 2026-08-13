@@ -22,7 +22,10 @@ const blog = defineCollection({
       question: z.string().min(10),
       answer: z.string().min(30),
     })).min(3).max(8),
-    related: z.array(z.string()).default([]),
+    related: z.array(z.string().min(1)).length(3).refine(
+      (items) => new Set(items).size === items.length,
+      'Keep reading must contain three different article slugs.',
+    ),
   }),
 });
 

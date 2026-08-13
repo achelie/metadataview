@@ -77,7 +77,7 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
 
 test('home page opens with the universal viewer, three useful next steps, and the local scan process', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'View file metadata in your browser' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Free Online EXIF & Metadata Viewer' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
   await expect(page.locator('.report-drop-copy p')).toContainText(/Images.*Videos.*Documents.*Audio/);
   await expect(page.locator('.home-format-links a strong')).toHaveText(['Images', 'Videos', 'Documents', 'Audio']);

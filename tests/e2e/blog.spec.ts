@@ -4,6 +4,10 @@ const ARTICLE_PATH = '/blog/do-screenshots-have-metadata/';
 const ARTICLE_TITLE = 'Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save';
 const WHATSAPP_PATH = '/blog/does-whatsapp-remove-exif-data/';
 const WHATSAPP_TITLE = 'Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained';
+const INSTAGRAM_PATH = '/blog/does-instagram-remove-exif-data/';
+const INSTAGRAM_TITLE = 'Does Instagram Remove EXIF Data? What Photos Still Reveal';
+const DISCORD_PATH = '/blog/does-discord-remove-exif-data/';
+const DISCORD_TITLE = 'Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -24,7 +28,15 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
-  await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveAttribute('src', /does-whatsapp-remove-exif-data/);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
+  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(3);
+  await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(3);
+  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /does-discord-remove-exif-data/);
+  await expect(page.getByText('Page 1 of 1', { exact: true })).toBeVisible();
+  await expect(page.locator('.blog-pagination')).toHaveCount(0);
   await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
   await expect(page.locator('.blog-feature').getByText('Image privacy', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View image metadata' })).toHaveAttribute('href', '/image-metadata-viewer/');
@@ -32,8 +44,13 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
-  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([WHATSAPP_TITLE, ARTICLE_TITLE]);
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
+});
+
+test('blog does not generate a second page before seven regular posts exist', async ({ request }) => {
+  const response = await request.get('/blog/page/2/');
+  expect(response.status()).toBe(404);
 });
 
 test('mobile navigation exposes the current Blog route', async ({ page }) => {
@@ -130,9 +147,118 @@ test('WhatsApp guide metadata and visible FAQ share the same source data', async
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
+test('Instagram guide answers separate privacy, recovery, ranking, and reused-content questions', async ({ page }) => {
+  await page.goto(INSTAGRAM_PATH);
+  await expect(page.getByRole('heading', { level: 1, name: INSTAGRAM_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-11/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText('5 min read');
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /Instagram photo grid/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.getByRole('heading', { name: 'Can someone recover the original EXIF from an Instagram download?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can an Instagram photo reveal your IP or home address?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Does changing the EXIF date improve Instagram reach?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Does removing metadata beat reused-content detection?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(5);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
+  await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveAttribute('href', ARTICLE_PATH);
+  await expect(page.getByRole('link', { name: /Image Metadata Viewer/ })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: /Image Privacy Checker/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Image Metadata Remover/ })).toHaveAttribute('href', '/image-metadata-remover/');
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10)).toBe(true);
+});
+
+test('Instagram guide metadata and visible FAQ share the same source data', async ({ page }) => {
+  await page.goto(INSTAGRAM_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${INSTAGRAM_PATH}`);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(INSTAGRAM_TITLE);
+  expect(posting.keywords).toContain('Instagram');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
+test('Discord guide covers photos, old videos, PNG data, location clues, and archive dates', async ({ page }) => {
+  await page.goto(DISCORD_PATH);
+  await expect(page.getByRole('heading', { level: 1, name: DISCORD_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-12/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText('5 min read');
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /smartphone beside a computer/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.getByRole('heading', { name: 'Can someone recover EXIF from a Discord download?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Why did Discord videos leak GPS in 2020?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Does Discord keep PNG metadata and custom chunks?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can a Discord image reveal your IP or address?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Why do saved Discord images show the wrong date?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(5);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
+  await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
+  await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveAttribute('href', ARTICLE_PATH);
+  await expect(page.getByRole('link', { name: /Image Metadata Viewer/ })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: /Image Privacy Checker/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Image Metadata Remover/ })).toHaveAttribute('href', '/image-metadata-remover/');
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10)).toBe(true);
+});
+
+test('Discord guide metadata and visible FAQ share the same source data', async ({ page }) => {
+  await page.goto(DISCORD_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${DISCORD_PATH}`);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(DISCORD_TITLE);
+  expect(posting.keywords).toContain('Discord');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
+const relatedGuides = [
+  { path: ARTICLE_PATH, expected: [WHATSAPP_PATH, INSTAGRAM_PATH, DISCORD_PATH] },
+  { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, DISCORD_PATH, ARTICLE_PATH] },
+  { path: INSTAGRAM_PATH, expected: [WHATSAPP_PATH, DISCORD_PATH, ARTICLE_PATH] },
+  { path: DISCORD_PATH, expected: [INSTAGRAM_PATH, WHATSAPP_PATH, ARTICLE_PATH] },
+];
+
+for (const guide of relatedGuides) {
+  test(`${guide.path} keeps exactly three manually ordered related guides`, async ({ page }) => {
+    await page.goto(guide.path);
+    const links = page.locator('.blog-related .blog-post-card h2 a');
+    await expect(links).toHaveCount(3);
+    expect(await links.evaluateAll((items) => items.map((item) => item.getAttribute('href')))).toEqual(guide.expected);
+    expect(guide.expected).not.toContain(guide.path);
+  });
+}
+
 for (const article of [
   { path: ARTICLE_PATH, title: ARTICLE_TITLE, label: 'screenshots' },
   { path: WHATSAPP_PATH, title: WHATSAPP_TITLE, label: 'WhatsApp' },
+  { path: INSTAGRAM_PATH, title: INSTAGRAM_TITLE, label: 'Instagram' },
+  { path: DISCORD_PATH, title: DISCORD_TITLE, label: 'Discord' },
 ]) {
   for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
     test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {

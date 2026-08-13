@@ -1673,7 +1673,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .home-tool-first { width: min(100% - 24px,1240px); }
   .report-workbench.is-home .report-dropzone { min-height: 208px; padding-block: .7rem; }
   .report-workbench.is-home .report-drop-copy p { font-size: .69rem; line-height: 1.25; }
-  .home-tool-intro { grid-template-columns: 30px minmax(0,1fr); gap: .8rem; padding: 1.55rem 0 1rem; }
+  .home-tool-intro { grid-template-columns: 30px minmax(0,1fr); gap: .8rem; padding: 1.55rem 0 .6rem; }
   .home-intro-rail span { font-size: .5rem; }
   .home-tool-intro h1 { font-size: clamp(2.75rem,14vw,4.1rem); }
   .home-tool-intro p { font-size: .92rem; }
