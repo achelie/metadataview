@@ -10,6 +10,8 @@ const DISCORD_PATH = '/blog/does-discord-remove-exif-data/';
 const DISCORD_TITLE = 'Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained';
 const TELEGRAM_PATH = '/blog/does-telegram-remove-exif-data/';
 const TELEGRAM_TITLE = 'Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained';
+const REDDIT_PATH = '/blog/does-reddit-remove-exif-data/';
+const REDDIT_TITLE = 'Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -36,9 +38,11 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
-  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(4);
-  await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(4);
-  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /does-telegram-remove-exif-data/);
+  await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveAttribute('href', REDDIT_PATH);
+  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(5);
+  await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(5);
+  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /does-reddit-remove-exif-data/);
   await expect(page.getByText('Page 1 of 1', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-pagination')).toHaveCount(0);
   await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
@@ -48,7 +52,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
-  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
 });
 
@@ -287,12 +291,59 @@ test('Telegram guide metadata and visible FAQ share the same source data', async
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
+test('Reddit guide separates hosted copies, linked originals, platform access, and visible clues', async ({ page }) => {
+  await page.goto(REDDIT_PATH);
+  await expect(page.getByRole('heading', { level: 1, name: REDDIT_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-14/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[4-7] min read/);
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /person using a smartphone/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.getByRole('heading', { level: 2, name: 'Can Reddit read EXIF before stripping it?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'What changes when you post an image link?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Why do Reddit downloads have different names and dates?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can someone recover the removed EXIF from Reddit?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Can Reddit reveal your location without GPS?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(4);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
+  await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
+  await expect(page.getByRole('link', { name: /Image Metadata Viewer/ })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: /Image Privacy Checker/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Image Metadata Remover/ })).toHaveAttribute('href', '/image-metadata-remover/');
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10)).toBe(true);
+});
+
+test('Reddit guide metadata and visible FAQ share the same source data', async ({ page }) => {
+  await page.goto(REDDIT_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${REDDIT_PATH}`);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(REDDIT_TITLE);
+  expect(posting.keywords).toContain('Reddit');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
 const relatedGuides = [
   { path: ARTICLE_PATH, expected: [WHATSAPP_PATH, INSTAGRAM_PATH, DISCORD_PATH] },
   { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, TELEGRAM_PATH, DISCORD_PATH] },
   { path: INSTAGRAM_PATH, expected: [WHATSAPP_PATH, TELEGRAM_PATH, DISCORD_PATH] },
   { path: DISCORD_PATH, expected: [TELEGRAM_PATH, WHATSAPP_PATH, INSTAGRAM_PATH] },
   { path: TELEGRAM_PATH, expected: [DISCORD_PATH, WHATSAPP_PATH, INSTAGRAM_PATH] },
+  { path: REDDIT_PATH, expected: [INSTAGRAM_PATH, DISCORD_PATH, TELEGRAM_PATH] },
 ];
 
 for (const guide of relatedGuides) {
@@ -311,6 +362,7 @@ for (const article of [
   { path: INSTAGRAM_PATH, title: INSTAGRAM_TITLE, label: 'Instagram' },
   { path: DISCORD_PATH, title: DISCORD_TITLE, label: 'Discord' },
   { path: TELEGRAM_PATH, title: TELEGRAM_TITLE, label: 'Telegram' },
+  { path: REDDIT_PATH, title: REDDIT_TITLE, label: 'Reddit' },
 ]) {
   for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
     test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {
