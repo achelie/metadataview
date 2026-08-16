@@ -7,7 +7,7 @@ interface RiskTranslation {
   recommendation: string;
 }
 
-const categoryRecommendations: Record<PrivacyCategory, string> = {
+const categoryRecommendationsZh: Record<PrivacyCategory, string> = {
   location: '分享前删除位置字段，并检查清理后的副本。',
   device: '删除设备型号、序列号和所有者信息，减少跨文件关联。',
   identity: '对外分享前删除姓名、联系方式、作者和路径信息。',
@@ -16,6 +16,17 @@ const categoryRecommendations: Record<PrivacyCategory, string> = {
   'document-history': '删除原始文件名、文档 ID 和编辑历史，然后再次扫描。',
   thumbnail: '删除内嵌缩略图，避免旧版画面跟着文件一起外流。',
   other: '删除内部地址、链接或凭据类字段，不要直接打开它们。',
+};
+
+const categoryRecommendationsDe: Record<PrivacyCategory, string> = {
+  location: 'Entferne Standortfelder vor dem Teilen und prüfe die bereinigte Kopie erneut.',
+  device: 'Entferne Gerätemodell, Seriennummern und Eigentümerdaten, um Verknüpfungen zwischen Dateien zu erschweren.',
+  identity: 'Entferne Namen, Kontaktdaten, Autoren- und Pfadangaben vor einer öffentlichen Freigabe.',
+  time: 'Entferne Zeitstempel, wenn Aufnahmezeiten Reisen oder Gewohnheiten verraten könnten.',
+  editing: 'Lasse Softwarefelder beim Export weg, wenn die verwendeten Werkzeuge privat bleiben sollen.',
+  'document-history': 'Entferne ursprüngliche Dateinamen, Dokument-IDs und Bearbeitungsverlauf und scanne danach erneut.',
+  thumbnail: 'Entferne eingebettete Vorschaubilder, damit keine ältere Bildversion mitreist.',
+  other: 'Entferne interne Adressen, Links oder Zugangsdaten und öffne sie nicht direkt.',
 };
 
 const riskCopy: Record<string, Omit<RiskTranslation, 'recommendation'> & { recommendation?: string }> = {
@@ -45,23 +56,55 @@ const riskCopy: Record<string, Omit<RiskTranslation, 'recommendation'> & { recom
   'location-identity-time-combination': { title: '位置、身份与时间关联', description: '姓名、精确地点和拍摄时间组合成了高度可识别的事件记录。' },
 };
 
+const riskCopyDe: typeof riskCopy = {
+  'precise-location': { title: 'Genaue GPS-Koordinaten', description: 'Das Bild enthält genaue Koordinaten, die den Aufnahmeort direkt verraten können.' },
+  'gps-altitude': { title: 'GPS-Höhe', description: 'Die Höhe bestimmt keinen Ort allein, ergänzt aber Hinweise zur Aufnahmeumgebung.' },
+  'gps-direction': { title: 'Aufnahmerichtung', description: 'Die Datei speichert die Blickrichtung der Kamera. Sie ist kein genauer Standort, aber ein zusätzlicher Hinweis.' },
+  'approximate-location': { title: 'Ortsname oder grober Standort', description: 'Auch ohne Koordinaten können Stadt, Veranstaltungsort oder Sehenswürdigkeit die Bildherkunft verraten.' },
+  'device-model': { title: 'Kamera- oder Smartphone-Modell', description: 'Das Bild nennt Aufnahmegerät oder Objektivmodell. Meist ist das nur ein schwacher Datenschutzhinweis.' },
+  'device-identifier': { title: 'Eindeutige Gerätekennung', description: 'Eine Seriennummer kann mehrere Bilder demselben Gerät zuordnen.' },
+  'device-owner': { title: 'Name des Kameraeigentümers', description: 'Ein Eigentümerfeld kann direkt auf eine Person verweisen.' },
+  'creator-identity': { title: 'Name von Autor oder Urheber', description: 'Autoren- oder Credit-Felder können Urheber oder Bildquelle offenlegen.' },
+  'contact-details': { title: 'E-Mail oder Kontaktdaten', description: 'Kontaktdaten im Bild können eine Person direkt identifizieren oder erreichbar machen.' },
+  'named-people': { title: 'Namen oder markierte Gesichtsbereiche', description: 'Personen- und Regions-Tags können Menschen im Bild identifizieren, obwohl wir keine Pixel analysieren.' },
+  'rights-information': { title: 'Rechte- oder Copyright-Angaben', description: 'Rechtefelder können Urheber oder Quelle offenlegen.', recommendation: 'Für mehr Privatsphäre lassen sie sich entfernen. Prüfe vor einer Veröffentlichung aber, ob der Rechtehinweis erhalten bleiben sollte.' },
+  'capture-time': { title: 'Ursprüngliche Aufnahmezeit', description: 'Der Aufnahmezeitpunkt kann ein Bild mit Alltag, Reise, Termin oder Ereignis verbinden.' },
+  'modification-time': { title: 'Eingebettete Änderungszeit', description: 'Die Datei enthält eine interne Änderungszeit. Sie ist schwächer als die Aufnahmezeit, aber weiterhin ein Hinweis.' },
+  'software-information': { title: 'Bearbeitungssoftware', description: 'Das Bild nennt die Software, mit der es erstellt oder bearbeitet wurde.' },
+  'editing-history': { title: 'Bearbeitungsverlauf oder dauerhafte Dokument-ID', description: 'Bearbeitungen, Quelldokument-Beziehungen und dauerhafte IDs können den Produktionsweg verraten und Dateiversionen verknüpfen.' },
+  'original-file-reference': { title: 'Ursprünglicher Dateiname oder Quellverweis', description: 'Ein erhaltener Quellname kann Projektname, Benennungsschema oder Herkunft eines Assets offenlegen.' },
+  'embedded-thumbnail': { title: 'Eingebettetes Vorschaubild', description: 'Ein Vorschaubild in der Datei kann eine ältere Version des Bildes enthalten.' },
+  'local-file-path': { title: 'Lokaler Dateipfad', description: 'Lokale Pfade können Benutzername, Ordnerstruktur, Projektname oder internen Speicherort verraten.' },
+  'internal-network-address': { title: 'Interne Adresse oder URL mit Zugangsdaten', description: 'Metadaten können Intranet-Adressen, lokale Ressourcen oder sogar Zugriffstoken enthalten. Der Check öffnet diese Links nicht.' },
+  'location-time-combination': { title: 'Standort + Aufnahmezeit', description: 'Standort und Zeitpunkt zusammen können verraten, wo und wann ein Foto entstand.' },
+  'location-device-combination': { title: 'Standort + Gerätedaten', description: 'Standort und Gerätedetails erleichtern gemeinsam die Verknüpfung verschiedener Dateien.' },
+  'identity-contact-combination': { title: 'Name + Kontaktdaten', description: 'Name und Kontaktangabe bilden zusammen eine direkte Identitätsverknüpfung.' },
+  'model-serial-combination': { title: 'Gerätemodell + Seriennummer', description: 'Modell und Seriennummer ergeben einen stärkeren Gerätefingerabdruck als jedes Feld allein.' },
+  'location-identity-time-combination': { title: 'Standort, Identität und Zeit verknüpft', description: 'Name, genauer Ort und Aufnahmezeit bilden gemeinsam einen sehr gut identifizierbaren Ereignisdatensatz.' },
+};
+
 export const privacyCategoryLabels: Record<Locale, Record<PrivacyCategory, string>> = {
   en: { location: 'Location', device: 'Device', identity: 'Identity', time: 'Time', editing: 'Editing', thumbnail: 'Thumbnail', 'document-history': 'Document history', other: 'Other' },
+  de: { location: 'Standort', device: 'Gerät', identity: 'Identität', time: 'Zeit', editing: 'Bearbeitung', thumbnail: 'Vorschaubild', 'document-history': 'Dokumentverlauf', other: 'Sonstiges' },
   'zh-CN': { location: '位置', device: '设备', identity: '身份', time: '时间', editing: '编辑', thumbnail: '缩略图', 'document-history': '文档历史', other: '其他' },
 };
 
 export const privacySeverityLabels: Record<Locale, Record<RiskSeverity, string>> = {
   en: { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' },
+  de: { critical: 'Kritisch', high: 'Hoch', medium: 'Mittel', low: 'Niedrig' },
   'zh-CN': { critical: '严重', high: '高', medium: '中', low: '低' },
 };
 
 export function localizePrivacyRisk(risk: PrivacyRisk, locale: Locale): RiskTranslation {
-  if (locale !== 'zh-CN') return { title: risk.title, description: risk.description, recommendation: risk.recommendation };
-  const translated = riskCopy[risk.id];
+  if (locale === 'en') return { title: risk.title, description: risk.description, recommendation: risk.recommendation };
+  const translated = locale === 'zh-CN' ? riskCopy[risk.id] : riskCopyDe[risk.id];
   if (!translated) return { title: risk.title, description: risk.description, recommendation: risk.recommendation };
-  return { ...translated, recommendation: translated.recommendation ?? categoryRecommendations[risk.category] };
+  const recommendations = locale === 'zh-CN' ? categoryRecommendationsZh : categoryRecommendationsDe;
+  return { ...translated, recommendation: translated.recommendation ?? recommendations[risk.category] };
 }
 
 export function localizePrivacyRiskId(id: string, locale: Locale): string {
-  return locale === 'zh-CN' ? riskCopy[id]?.title ?? id : id;
+  if (locale === 'zh-CN') return riskCopy[id]?.title ?? id;
+  if (locale === 'de') return riskCopyDe[id]?.title ?? id;
+  return id;
 }

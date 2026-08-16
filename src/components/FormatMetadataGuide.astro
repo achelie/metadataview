@@ -11,6 +11,8 @@ interface Props {
 
 const { guide, limitations, locale = 'en' } = Astro.props;
 const zh = locale === 'zh-CN';
+const de = locale === 'de';
+const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
 ---
 
 <section class="home-benefits format-guide-benefits" aria-labelledby="format-guide-title">
@@ -31,7 +33,7 @@ const zh = locale === 'zh-CN';
 
 <section class="home-process format-guide-process" aria-labelledby="format-process-title">
   <header>
-    <span class="section-index">{zh ? '本机处理，一步一步来' : 'LOCAL, STEP BY STEP'}</span>
+    <span class="section-index">{t('LOCAL, STEP BY STEP', '本机处理，一步一步来', 'LOKAL, SCHRITT FÜR SCHRITT')}</span>
     <h2 id="format-process-title">{guide.processTitle}</h2>
     <p>{guide.processDescription}</p>
   </header>
@@ -41,7 +43,7 @@ const zh = locale === 'zh-CN';
     </ol>
     <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>{zh ? '这份报告不能证明什么' : 'What this report cannot prove'}</summary>
+      <summary>{t('What this report cannot prove', '这份报告不能证明什么', 'Was dieser Bericht nicht beweist')}</summary>
       <ul>{limitations.map((item) => <li>{item}</li>)}</ul>
     </details>
   </div>

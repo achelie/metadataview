@@ -1,19 +1,29 @@
-export const locales = ['en', 'zh-CN'] as const;
+export const locales = ['en', 'de', 'zh-CN'] as const;
 
 export type Locale = (typeof locales)[number];
 
 export const DEFAULT_LOCALE: Locale = 'en';
 export const CHINESE_PREFIX = '/zh-cn';
+export const GERMAN_PREFIX = '/de';
+
+const localePrefixes: Record<Exclude<Locale, 'en'>, string> = {
+  de: GERMAN_PREFIX,
+  'zh-CN': CHINESE_PREFIX,
+};
 
 export function getLocaleFromPath(pathname: string): Locale {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  return path === CHINESE_PREFIX || path.startsWith(`${CHINESE_PREFIX}/`) ? 'zh-CN' : 'en';
+  if (path === CHINESE_PREFIX || path.startsWith(`${CHINESE_PREFIX}/`)) return 'zh-CN';
+  if (path === GERMAN_PREFIX || path.startsWith(`${GERMAN_PREFIX}/`)) return 'de';
+  return 'en';
 }
 
 export function stripLocale(pathname: string): string {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
-  if (path === CHINESE_PREFIX || path === `${CHINESE_PREFIX}/`) return '/';
-  if (path.startsWith(`${CHINESE_PREFIX}/`)) return path.slice(CHINESE_PREFIX.length) || '/';
+  for (const prefix of Object.values(localePrefixes)) {
+    if (path === prefix || path === `${prefix}/`) return '/';
+    if (path.startsWith(`${prefix}/`)) return path.slice(prefix.length) || '/';
+  }
   return path || '/';
 }
 
@@ -30,24 +40,28 @@ export function localizePath(pathname: string, locale: Locale): string {
   const suffix = pathname.slice(splitAt);
   const bare = normalizePath(stripLocale(pathname.slice(0, splitAt)));
   if (locale === 'en') return `${bare}${suffix}`;
-  return `${bare === '/' ? `${CHINESE_PREFIX}/` : `${CHINESE_PREFIX}${bare}`}${suffix}`;
+  const prefix = localePrefixes[locale];
+  return `${bare === '/' ? `${prefix}/` : `${prefix}${bare}`}${suffix}`;
 }
 
 export interface AlternatePaths {
   en: string;
+  de: string;
   'zh-CN': string;
   'x-default': string;
 }
 
 export function getAlternatePaths(pathname: string): AlternatePaths {
   const en = localizePath(pathname, 'en');
-  return { en, 'zh-CN': localizePath(pathname, 'zh-CN'), 'x-default': en };
+  return { en, de: localizePath(pathname, 'de'), 'zh-CN': localizePath(pathname, 'zh-CN'), 'x-default': en };
 }
 
 export function localeNumber(locale: Locale, value: number): string {
   return new Intl.NumberFormat(locale).format(value);
 }
 
-export function pick<T>(locale: Locale, en: T, zh: T): T {
-  return locale === 'zh-CN' ? zh : en;
+export function pick<T>(locale: Locale, en: T, zh: T, de: T = en): T {
+  if (locale === 'zh-CN') return zh;
+  if (locale === 'de') return de;
+  return en;
 }

@@ -84,4 +84,40 @@ const zh: HomeCopy = {
   ],
 };
 
-export const homeCopy: Record<Locale, HomeCopy> = { en, 'zh-CN': zh };
+const de: HomeCopy = {
+  title: 'Kostenloser EXIF- & Metadaten-Viewer online | ViewExif',
+  description: 'EXIF, XMP, IPTC, GPS, Kamera- und Dateimetadaten aus Bildern, Videos, Dokumenten und Audiodateien kostenlos im Browser anzeigen. Kein Upload nötig.',
+  rail: 'LOKAL / KEIN UPLOAD', eyebrow: 'Kostenloser Metadaten-Viewer', heading: 'EXIF & Metadaten kostenlos online ansehen',
+  intro: 'Lies EXIF, XMP, IPTC, GPS, Kameradaten und weitere Dateimetadaten direkt im Browser. Deine Dateien verlassen dein Gerät nicht.', limit: 'pro Datei',
+  formatsLabel: 'NACH FORMAT',
+  formats: [
+    { label: 'Bilder', detail: 'Kamera, GPS, Farbe, Kommentare, Animation, Urheberschaft und Bearbeitungsspuren' },
+    { label: 'Videos', detail: 'Dauer, Abmessungen, Codecs, Bildrate, Spuren, Marken und Zeitangaben' },
+    { label: 'Dokumente', detail: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken und eigene Eigenschaften' },
+    { label: 'Audio', detail: 'Tags, Codec, Dauer, Bitrate, Kanäle, Bittiefe und Cover-Zusammenfassungen' },
+  ],
+  benefitsLabel: 'WARUM DAS ZÄHLT', benefitsTitle: 'Warum Dateimetadaten ansehen?', benefitsIntro: 'Metadaten können Privates verraten, die Entstehung einer Datei erklären und technische Fragen ohne Rätselraten beantworten.', openTool: 'Tool öffnen',
+  benefits: [
+    { eyebrow: 'Datenschutz-Check', label: 'Private Details entdecken', note: 'Finde GPS-Koordinaten, Namen, Geräte-IDs, eingebettete Vorschaubilder und Bearbeitungsspuren vor dem Teilen.' },
+    { eyebrow: 'Herkunfts-Check', label: 'Dateiherkunft prüfen', note: 'Sieh Zeitangaben, Software-Verlauf, Hashes und signierte C2PA-Nachweise – ohne editierbare Metadaten mit Beweisen zu verwechseln.' },
+    { eyebrow: 'Sauberer teilen', label: 'Eine sauberere Kopie erstellen', note: 'Entferne beschreibbare Tags aus Bildern, Videos, Audio oder Dokumenten, prüfe die Kopie erneut und speichere einen Prüfbeleg.' },
+  ],
+  processLabel: 'LOKAL, SCHRITT FÜR SCHRITT', processTitle: 'So funktioniert der lokale Scan', processIntro: 'Der Browser liest die Datei nur in diesem Tab. Kein Konto, kein Upload, keine Serverkopie.', ready: 'Datei zur Hand?', chooseAbove: 'Oben eine Datei wählen',
+  process: [
+    { title: 'Eine Datei auswählen', note: 'Wähle eines von 28 unterstützten Bild-, Video-, Dokument- oder Audioformaten. Die Bytes bleiben in diesem Browser-Tab.' },
+    { title: 'Format verifizieren', note: 'Vor dem Parser prüft der Browser Dateisignatur und Größe – nicht bloß die Endung.' },
+    { title: 'Verfügbare Metadaten lesen', note: 'Ein lokaler Worker und ExifTool WASM lesen die Felder, die das Format hergibt.' },
+    { title: 'Einen brauchbaren Bericht bauen', note: 'Felder werden gruppiert, durchsuchbar und kopierbar. Exporte enthalten lokale Hashes und Header-Nachweise.' },
+    { title: 'Sitzung vergessen', note: 'Löschen, Ersetzen oder Neuladen stoppt den Vorgang, gibt Vorschauen frei und hinterlässt keinen Dateiverlauf.' },
+  ],
+  faqTitle: 'Häufige Fragen',
+  faqs: [
+    { question: 'Ist dieser Metadaten-Viewer sicher?', answer: 'Die Datei wird in diesem Browser-Tab verarbeitet. MetadataView besitzt keinen Upload-Endpunkt, kein Konto und keinen serverseitigen Parser für deine ausgewählte Datei.' },
+    { question: 'Funktioniert das auch mit EXIF-Daten?', answer: 'Ja. Neben EXIF liest das Tool verfügbare XMP-, IPTC-, ICC-, Mediencontainer-, Dokument- und native ExifTool-Felder.' },
+    { question: 'Kann ich sehen, wo ein Foto aufgenommen wurde?', answer: 'Enthält das Bild brauchbare GPS-Koordinaten, zeigt der Bericht sie an. Viele Dateien enthalten keinen Standort; außerdem lassen sich Metadaten entfernen oder verändern.' },
+    { question: 'Können Metadaten falsch sein?', answer: 'Ja. Daten, Orte, Kameranamen, Autoren und alle anderen editierbaren Felder können veraltet, leer oder absichtlich verändert sein.' },
+    { question: 'Können Metadaten verpixelte oder geschwärzte Bildbereiche wiederherstellen?', answer: 'Nein. Eine Metadatenprüfung rekonstruiert keine Pixel. Sie zeigt nur gespeicherte Felder oder eine bereits in der Datei eingebettete Vorschau.' },
+  ],
+};
+
+export const homeCopy: Record<Locale, HomeCopy> = { en, de, 'zh-CN': zh };

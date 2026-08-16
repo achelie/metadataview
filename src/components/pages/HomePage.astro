@@ -14,7 +14,7 @@ const homePath = hrefFor('/');
 const homeUrl = canonicalUrl(homePath, Astro.site);
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description: copy.description, inLanguage: locale },
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: locale === 'zh-CN' ? '元数据查看器' : 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: locale === 'zh-CN' ? ['读取 28 种常见文件格式', '搜索原生元数据字段', '导出 JSON 与 PDF 报告', '只在浏览器本地处理文件'] : ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: locale === 'zh-CN' ? '元数据查看器' : locale === 'de' ? 'Metadaten-Viewer' : 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: locale === 'zh-CN' ? ['读取 28 种常见文件格式', '搜索原生元数据字段', '导出 JSON 与 PDF 报告', '只在浏览器本地处理文件'] : locale === 'de' ? ['28 gängige Dateiformate lesen', 'Native Metadatenfelder durchsuchen', 'JSON- und PDF-Berichte exportieren', 'Dateien lokal im Browser verarbeiten'] : ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
   { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: copy.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatHrefs = ['/image-metadata-viewer/', '/video-metadata-viewer/', '/document-metadata-viewer/', '/audio-metadata-viewer/'];
@@ -29,9 +29,9 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
       <aside><strong>100 MB</strong><span>{copy.limit}</span></aside>
     </section>
 
-    <MetadataReportWorkbench client:load placement="home" scope="all" locale={locale} formats={locale === 'zh-CN' ? '图片 · 视频 · 文档 · 音频' : 'Images · Videos · Documents · Audio'} accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
+    <MetadataReportWorkbench client:load placement="home" scope="all" locale={locale} formats={locale === 'zh-CN' ? '图片 · 视频 · 文档 · 音频' : locale === 'de' ? 'Bilder · Videos · Dokumente · Audio' : 'Images · Videos · Documents · Audio'} accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
 
-    <nav class="home-format-links" aria-label={locale === 'zh-CN' ? '按文件格式选择元数据查看器' : 'Metadata viewers by file format'}>
+    <nav class="home-format-links" aria-label={locale === 'zh-CN' ? '按文件格式选择元数据查看器' : locale === 'de' ? 'Metadaten-Viewer nach Dateiformat' : 'Metadata viewers by file format'}>
       <span class="section-index">{copy.formatsLabel}</span>
       {copy.formats.map((item, index) => <a href={hrefFor(formatHrefs[index] ?? '/')}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
     </nav>

@@ -32,6 +32,22 @@ const removerFaqs = (kind: string, formats: string, preserved: string) => [
   { question: '清理后就完全匿名了吗？', answer: '不是。画面、声音、正文和输出文件名仍可能暴露人物、地点、账号或其他信息。这个工具只处理元数据。' },
 ];
 
+const viewerFaqsDe = (name: string, formats: string, reads: string) => [
+  { question: 'Wird meine Datei auf einen Server hochgeladen?', answer: `Nein. ${name} läuft in diesem Browser-Tab. Datei, Dateiname, Hashes, Metadaten und Bericht werden an keinen Upload-Endpunkt gesendet.` },
+  { question: 'Welche Formate und Felder werden unterstützt?', answer: `Unterstützt werden ${formats}. Das Tool liest vorhandene ${reads} und bewahrt sicher darstellbare native Felder.` },
+  { question: 'Warum fehlen Felder oder widersprechen sich?', answer: 'Geräte und Programme schreiben Metadaten unterschiedlich. Beschädigte Indizes, alte Tags und Formatunterschiede können Lücken oder Widersprüche erzeugen. Der Bericht zeigt den aktuellen Dateiinhalt.' },
+  { question: 'Beweisen diese Metadaten, dass die Datei echt ist?', answer: 'Nein. Autoren, Daten, Orte, Geräte- und Softwareangaben lassen sich ändern. Nutze sie als Hinweise; signierte Herkunft prüfst du separat über C2PA.' },
+  { question: 'Was passiert beim Löschen oder Neuladen?', answer: 'Der aktuelle Vorgang stoppt, temporäre Vorschauen und Berichte werden freigegeben. Die Website speichert keinen Dateiverlauf über Seiten hinweg.' },
+];
+
+const removerFaqsDe = (kind: string, formats: string, preserved: string) => [
+  { question: 'Wird die Originaldatei hochgeladen oder ersetzt?', answer: 'Nein. Bereinigung und Nachprüfung laufen in diesem Tab. Das Original bleibt unverändert; das Tool erstellt nur eine neue Kopie zum Herunterladen.' },
+  { question: `Welche ${kind}formate lassen sich bereinigen?`, answer: `Unterstützt werden ${formats}. Zuerst wird die echte Dateisignatur geprüft, dann startet die passende Bereinigungs-Engine.` },
+  { question: 'Werden die Inhalte neu codiert?', answer: `Nicht absichtlich. Die Bereinigung erhält ${preserved} und bearbeitet nur beschreibbare Metadaten. Bei einem Strukturfehler wird der Download blockiert.` },
+  { question: 'Warum bleiben nach der Bereinigung Felder übrig?', answer: 'Technische Angaben wie Abmessungen, Farbe, Dauer, Seitenzahl oder Container-Verweise sind für eine gültige Datei nötig. Die Nachprüfung weist erhaltene und verbliebene Felder offen aus.' },
+  { question: 'Bin ich danach vollständig anonym?', answer: 'Nein. Bild, Ton, Text und Ausgabedateiname können weiterhin Personen, Orte oder Konten verraten. Dieses Tool bearbeitet nur Metadaten.' },
+];
+
 const zhCopy: Record<ToolKey, ZhToolCopy> = {
   metadata: {
     title: '元数据查看器', metaTitle: '元数据查看器 — 在线查看文件里的隐藏信息', eyebrow: '通用文件检查台',
@@ -143,6 +159,117 @@ const zhCopy: Record<ToolKey, ZhToolCopy> = {
   },
 };
 
+const deCopy: Record<ToolKey, ZhToolCopy> = {
+  metadata: {
+    title: 'Metadaten-Viewer', metaTitle: 'Metadaten-Viewer – Versteckte Dateidaten online ansehen', eyebrow: 'Universeller Datei-Prüfplatz',
+    description: 'Metadaten aus 28 Bild-, Dokument-, Video- und Audioformaten ansehen. Felder durchsuchen, Werte kopieren und Ergebnisse exportieren – ohne Upload.',
+    shortDescription: 'Lege eine unterstützte Datei ab und durchsuche, kopiere oder exportiere alle lesbaren Metadatenfelder.',
+    highlights: ['Prüft die echte Dateisignatur statt nur der Endung zu glauben.', 'Erstellt eine lesbare Zusammenfassung und ein vollständiges natives Feldprotokoll.', 'Liest die Datei einmal und berechnet SHA-256 sowie MD5.', 'Exportiert sicheres JSON und einen kompakten PDF-Bericht.'],
+    limitations: ['Das universelle Tool ist auf 100 MB begrenzt, damit beschädigte Dateien den Tab nicht lahmlegen.', 'Verschlüsselte PDFs werden nur als solche gemeldet und nicht geknackt.', 'Metadaten beschreiben eine Datei, garantieren aber nicht, dass jedes Feld stimmt.'],
+    faqs: viewerFaqsDe('Der Metadaten-Viewer', '28 gängige Bild-, Video-, Audio- und Dokumentformate', 'EXIF-, XMP-, IPTC-, GPS-, Container-, Dokument- und technische Felder'),
+  },
+  image: {
+    title: 'Bild-Metadaten-Viewer', metaTitle: 'Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen', eyebrow: 'Bilddaten ohne Formatblindflug',
+    description: 'EXIF, GPS, XMP, IPTC, ICC, Kommentare, Animationsmerkmale und native Felder aus PNG, JPEG, WebP, HEIC, TIFF und GIF lokal ansehen.',
+    shortDescription: 'Lies Kamera-, GPS-, Farb-, Autoren-, Software-, Animations- und Containerdaten aus einem Bild.',
+    highlights: ['Verifiziert die echte PNG-, JPEG-, WebP-, HEIC-, TIFF- oder GIF-Signatur.', 'Zeigt Abmessungen, Animation, Kamera, GPS, Farbe, Autor und Daten.', 'Bewahrt native ExifTool-Pfade und unbekannte lesbare Tags.', 'Liest Metadaten auch dann, wenn der Browser HEIC- oder TIFF-Pixel nicht anzeigen kann.'],
+    limitations: ['Manche Browser können HEIC oder TIFF nicht als Vorschau darstellen; die Metadatenprüfung funktioniert trotzdem.', 'Der Datenschutz-Check akzeptiert derzeit JPEG, PNG und WebP.', 'Sichtbare Gesichter und Texte sind Pixel und werden hier nicht analysiert.'],
+    faqs: viewerFaqsDe('Der Bild-Metadaten-Viewer', 'PNG, JPG/JPEG, WebP, HEIC, TIFF und GIF bis 50 MB', 'EXIF-, GPS-, XMP-, IPTC-, ICC-, Kommentar-, Animations-, Container- und Vorschaudaten'),
+  },
+  document: {
+    title: 'Dokument-Metadaten-Viewer', metaTitle: 'Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften', eyebrow: 'Lesegerät für Dokumenteigenschaften',
+    description: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken, eigene Eigenschaften und native Metadaten aus PDF, DOCX, PPTX und XLSX lokal prüfen.',
+    shortDescription: 'Öffne ein PDF- oder Office-Dokument und lies die Eigenschaften rund um seinen Inhalt.',
+    highlights: ['Liest PDF-Wörterbücher sowie OOXML-Kern-, Anwendungs- und eigene Eigenschaften.', 'Zeigt vorhandene Seiten-, Wort-, Folien- und Tabellenstatistiken.', 'Prüft den echten Dokumentpaket-Typ statt nur der Endung.', 'Nimmt keinen Text, keine Zellen, Folien, Anhänge oder Medienbytes in den Bericht auf.'],
+    limitations: ['Passwortgeschützte PDF- und Office-Dateien werden nicht entschlüsselt oder umgangen.', 'Alte DOC-, PPT-, XLS- und Makroformate werden nicht unterstützt.', 'Autoren, Daten, Revisionen und Statistiken können fehlen, veraltet oder verändert sein.'],
+    faqs: viewerFaqsDe('Der Dokument-Metadaten-Viewer', 'PDF, DOCX, PPTX und XLSX bis 100 MB', 'Titel, Autoren, Themen, Daten, Anwendungen, Revisionen, eigene Eigenschaften und Dokumentstatistiken'),
+  },
+  video: {
+    title: 'Video-Metadaten-Viewer', metaTitle: 'Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen', eyebrow: 'Lesegerät für Videocontainer',
+    description: 'Metadaten aus MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 lokal im Browser prüfen.',
+    shortDescription: 'Lies Dauer, Abmessungen, Codecs, Spuren, Marken, Daten und Produktionsangaben eines Videos.',
+    highlights: ['Prüft ISO-BMFF-, EBML-, RIFF- und FLV-Containersignaturen.', 'Fasst Dauer, Abmessungen, Codecs, Bildrate und Spuren zusammen.', 'Bewahrt native ExifTool-Pfade und formatspezifische Felder.', 'Spielt, transkribiert und analysiert keine Videobilder.'],
+    limitations: ['M4V wird als zugrunde liegende MP4-Containerfamilie gemeldet.', 'Bildinhalt, Sprache, Gesichter, Untertitel und sichtbarer Text werden nicht analysiert.', 'Wiedergabe, Transcodierung und Reparatur gehören nicht zu diesem Tool.'],
+    faqs: viewerFaqsDe('Der Video-Metadaten-Viewer', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 bis 100 MB', 'Dauer, Abmessungen, Codecs, Bildrate, Bitrate, Spuren, Daten, Software und Containerfelder'),
+  },
+  audio: {
+    title: 'Audio-Metadaten-Viewer', metaTitle: 'Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags', eyebrow: 'Lesegerät für Audiotags',
+    description: 'Tags und technische Metadaten aus MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA lokal im Browser lesen.',
+    shortDescription: 'Prüfe Track-Tags, Credits, Codec, Dauer, Bitrate, Samplerate, Kanäle, Bittiefe und eingebettete Cover.',
+    highlights: ['Liest ID3-, Vorbis-, Opus-, iTunes-, RIFF- und ASF-Metadaten.', 'Prüft zuerst den echten Container und erst danach die Endung.', 'Fasst eingebettete Cover zusammen, ohne deren Bytes zu exportieren.', 'Spielt, transkribiert und fingerprintet keine Audiodatei.'],
+    limitations: ['OGA ist eine audioorientierte Ogg-Endung; der Bericht erkennt nach Möglichkeit den echten Codec.', 'Cover und andere Binärdaten werden nur zusammengefasst, nicht gerendert oder exportiert.', 'Das Tool spielt, transkribiert, hört oder erstellt keine akustischen Fingerabdrücke.'],
+    faqs: viewerFaqsDe('Der Audio-Metadaten-Viewer', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA bis 100 MB', 'ID3-, Vorbis-, Opus-, iTunes-, RIFF-, ASF- und technische Codec-Felder'),
+  },
+  privacy: {
+    title: 'Bild-Datenschutz-Check', metaTitle: 'Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden', eyebrow: 'Risikoscan mit Begründung',
+    description: 'Prüfe Bilder ohne Upload auf GPS, Gerätekennungen, Zeitangaben, Autoreninformationen und versteckte Metadaten.', shortDescription: 'Finde Standort-, Identitäts-, Geräte-, Bearbeitungs- und Vorschauspuren in einem Bild.',
+    highlights: ['Zeigt zuerst ein schnelles Ergebnis und beendet danach automatisch den Vollscan.', 'Jeder Punkt führt zu den passenden Metadatenfeldern.', 'Prüft Standard-Tags, eingebettete Vorschauen und verschachtelte Bilddatensätze.', 'Erstellt eine bereinigte Kopie, scannt sie vollständig und vergleicht sie mit dem Original.'],
+    limitations: ['Ein niedriger Wert garantiert nicht, dass sich das Bild sicher teilen lässt.', 'Sichtbare Gesichter, Texte, Spiegelungen und Wahrzeichen werden nicht geprüft.', 'Die Regeln erklären häufige Risiken, kennen aber dein persönliches Bedrohungsmodell nicht.'],
+    faqs: [
+      { question: 'Wird das Bild hochgeladen oder gespeichert?', answer: 'Nein. Das Bild bleibt in diesem Tab und wird von einem lokalen Worker geprüft. Datei, Dateiname, Koordinaten, Hashes und Bericht werden weder hochgeladen noch als Verlauf gespeichert.' },
+      { question: 'Wonach sucht der Check?', answer: 'Nach GPS, Namen, Kontaktdaten, Geräte- und Objektivkennungen, ursprünglichen Dateinamen, Zeiten, Bearbeitungsverlauf, dauerhaften IDs, Vorschaubildern und verschachtelten Bilddatensätzen.' },
+      { question: 'Was bedeutet der Wert von 0 bis 100?', answer: 'Er stammt aus öffentlichen, gedeckelten Regeln. Exakte Koordinaten wiegen stärker als ein Kameramodell; Kopien derselben Tatsache zählen nicht mehrfach.' },
+      { question: 'Kann der Check den genauen Aufnahmeort zeigen?', answer: 'Nur wenn gültige GPS-Koordinaten in der Datei stehen. Ohne brauchbare Tags wird kein Ort geraten und keine Online-Karte kontaktiert.' },
+      { question: 'Ist ein Wert von null eine Freigabe zum Teilen?', answer: 'Nein. Null bedeutet nur, dass die unterstützten Metadatenregeln keinen bewerteten Hinweis fanden. Gesichter, Adressen, Kennzeichen, Bildschirme und Wahrzeichen können weiterhin Privates verraten.' },
+    ],
+  },
+  remover: {
+    title: 'Metadaten-Entferner', metaTitle: 'Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen', eyebrow: 'Bereinigungsplatz für alle Formate',
+    description: 'Beschreibbare Metadaten aus 28 Bild-, Video-, Audio- und Dokumentformaten lokal entfernen und die erzeugte Kopie vor dem Download verifizieren.',
+    shortDescription: 'Lege eine unterstützte Datei ab, entferne beschreibende Tags ohne absichtliche Neucodierung und prüfe die Kopie erneut.',
+    highlights: ['Wählt die passende Engine anhand des echten Formats.', 'Erhält Medien- und Dokumentinhalt.', 'Scannt die erzeugte Kopie vor dem Download erneut.', 'Trennt entfernte, erhaltene und verbliebene Felder.'],
+    limitations: ['Notwendige technische Felder bleiben erhalten, weil ihre Entfernung die Datei beschädigen würde.', 'Cover, Kapitel, Untertitel, Anhänge, Kommentare, Revisionen und sichtbare Inhalte bleiben bestehen.', 'Auch eine verifizierte Kopie verbirgt keine sichtbaren Personen, Texte oder Orte.'],
+    faqs: removerFaqsDe('Datei', 'sechs Bild-, neun Video-, neun Audioformate sowie PDF, DOCX, PPTX und XLSX', 'Medientracks, Dokumentinhalt, Kapitel, Untertitel, Cover und Anhänge'),
+  },
+  imageRemover: {
+    title: 'Bild-Metadaten-Entferner', metaTitle: 'Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen', eyebrow: 'Bereinigungsplatz für Bild-Tags',
+    description: 'Beschreibbare EXIF-, GPS-, XMP-, IPTC-, MakerNote-, Kommentar- und Vorschaudaten aus PNG, JPEG, WebP, HEIC, TIFF und GIF entfernen, ohne Pixel neu zu codieren.',
+    shortDescription: 'Bereinige sechs Bildformate und erhalte ICC-Farbe, Ausrichtung, Abmessungen und Animation.',
+    highlights: ['Entfernt beschreibbare Identitäts- und Standortfelder.', 'Erhält komprimierte Pixel und Animationen.', 'Bewahrt Farbe und Ausrichtung für eine korrekte Darstellung.', 'Führt vor und nach der Bereinigung gleich tiefe Scans aus.'],
+    limitations: ['TIFF behält strukturelle IFD-Felder, die zum Rendern der Pixel nötig sind.', 'ICC-Farbe und Orientation werden absichtlich erhalten.', 'Metadatenbereinigung verbirgt keine sichtbaren Gesichter, Texte, Kennzeichen oder Wahrzeichen.'],
+    faqs: removerFaqsDe('Bild', 'PNG, JPEG, WebP, HEIC, TIFF und GIF', 'komprimierte Pixel, Abmessungen, Ausrichtung, Farbe und Animation'),
+  },
+  videoRemover: {
+    title: 'Video-Metadaten-Entferner', metaTitle: 'Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen', eyebrow: 'Bereinigungsplatz für Videocontainer',
+    description: 'Beschreibbare Metadaten aus MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 entfernen, ohne das Video zu transcodieren.',
+    shortDescription: 'Erhalte Spuren, Codecs, Kapitel, Untertitel und Bildinhalt; entferne nur beschreibbare Container-Tags.',
+    highlights: ['Transcodiert weder Video- noch Audiospuren.', 'Wählt die Engine anhand des echten Containers.', 'Erhält Kapitel, Untertitel, Cover und Anhänge.', 'Blockiert die Ausgabe, wenn Struktur oder technische Werte abweichen.'],
+    limitations: ['Manche Container müssen Track-Daten oder Handler-Tags behalten.', 'Untertitel, Kapitel, Anhänge und sichtbare Bilder bleiben erhalten.', 'Die Bereinigung entfernt keine Gesichter, Stimmen, Logos, Untertitel oder sichtbaren Orte.'],
+    faqs: removerFaqsDe('Video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2', 'codierte Spuren, Bildinhalt, Kapitel, Untertitel, Cover und Anhänge'),
+  },
+  audioRemover: {
+    title: 'Audio-Metadaten-Entferner', metaTitle: 'Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen', eyebrow: 'Bereinigungsplatz für Audiotags',
+    description: 'ID3-, Vorbis-, Opus-, iTunes-, RIFF-, BEXT-, iXML- und ASF-Beschreibungen aus neun Audioformaten entfernen, ohne den Ton neu zu codieren.',
+    shortDescription: 'Entferne beschreibbare Audiotags und erhalte Ton, Cover, Kapitel, Codec und Sample-Eigenschaften.',
+    highlights: ['Führt TagLib WASM lokal in einem eigenen Worker aus.', 'Erhält Cover und Kapitel nach klarer Richtlinie.', 'Entfernt Broadcast-Notizen und eigene Beschreibungstags.', 'Verifiziert Format, Dauer, Samplerate, Kanäle und Codec.'],
+    limitations: ['Cover und Kapitel bleiben absichtlich erhalten.', 'Notwendige Codec-Header und technische Audioeigenschaften bleiben bestehen.', 'Audio wird nicht bearbeitet, normalisiert, transkribiert, erkannt oder angehört.'],
+    faqs: removerFaqsDe('Audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA', 'codierte Audioströme, Cover, Kapitel, Codecs und Sample-Eigenschaften'),
+  },
+  documentRemover: {
+    title: 'Dokument-Metadaten-Entferner', metaTitle: 'Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen', eyebrow: 'Bereinigungsplatz für Dokumenteigenschaften',
+    description: 'Beschreibbare Eigenschaften aus PDF- und Office-Dokumenten lokal entfernen und Seiten, Text, Zellen, Folien, Kommentare, Revisionen, Medien und Anhänge erhalten.',
+    shortDescription: 'Bereinige PDF-, DOCX-, PPTX- und XLSX-Eigenschaften und öffne die erzeugte Datei zur Verifikation erneut.',
+    highlights: ['Liest keinen Fließtext und schreibt nur Office-Eigenschafts-XML neu.', 'Schreibt PDFs vollständig mit qpdf neu und lässt Info sowie XMP auf oberster Ebene weg.', 'Erhält Dokumentinhalt und eingebettete Objekte.', 'Warnt deutlich, bevor digitale Signaturen ungültig werden.'],
+    limitations: ['PDF-Seiteninhalte und eingebettete Dateien können eigene Metadaten enthalten und werden nicht neu geschrieben.', 'Office-Kommentare, Revisionen, ausgeblendete Tabellen, Makros und eingebettete Objekte bleiben erhalten.', 'Geänderte Bytes machen vorhandene PDF- oder OOXML-Signaturen ungültig.'],
+    faqs: removerFaqsDe('Dokument', 'PDF, DOCX, PPTX und XLSX', 'Seiten, Text, Zellen, Folien, Kommentare, Revisionen, Medien und Anhänge'),
+  },
+  c2pa: {
+    title: 'C2PA-Viewer', metaTitle: 'C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren', eyebrow: 'Kryptografischer Herkunfts-Check',
+    description: 'C2PA Content Credentials in 20 gängigen Bild-, Video-, Audio- und Dokumentformaten prüfen. Signaturen, Dateibindung, Aktionen, Zutaten und Assertions – ohne Upload.',
+    shortDescription: 'Lege ein Bild, Video, eine Audiodatei oder ein PDF ab und erhalte ein klares Ergebnis samt Nachweisen.',
+    highlights: ['Nutzt den offiziellen @contentauth-Browser-Verifier in einem isolierten Web Worker.', 'Prüft 20 gängige C2PA-Formate anhand ihrer echten Signatur.', 'Trennt gültige Signaturen von vertrauenswürdigen Herausgebern.', 'Berechnet SHA-256 und exportiert einen sicheren Beleg ohne Quelldatei-Bytes.'],
+    limitations: ['Fehlende Content Credentials bedeuten nicht, dass eine Datei gefälscht ist.', 'Eine gültige Signatur belegt Dateibindung und Integrität der Aussage, nicht die Wahrheit jedes Inhalts.', 'Zum Schutz der Privatsphäre werden keine externen Trust Lists oder OCSP-Dienste abgefragt. Herausgebervertrauen und Widerruf können daher ungeprüft bleiben.'],
+    faqs: [
+      { question: 'Was bedeutet „gültig“?', answer: 'Die Manifeststruktur ist korrekt, die Signatur wird verifiziert und die signierte Inhaltsbindung passt exakt zur aktuellen Datei. Das Vertrauen in den Herausgeber ist eine separate Aussage.' },
+      { question: 'Warum steht beim Herausgebervertrauen „nicht geprüft“?', answer: 'Diese Seite fragt keine externen Trust Lists, entfernten Manifeste oder OCSP-Dienste ab. Für eine aktuelle Online-Vertrauensaussage brauchst du zusätzlich einen anderen konformen Verifier.' },
+      { question: 'Was bedeutet „Keine Content Credentials“?', answer: 'In der Datei wurde kein eingebettetes C2PA-Manifest gefunden. Viele echte Dateien besitzen keines; das Fehlen ist kein Fälschungsnachweis.' },
+      { question: 'Welche Dateiformate werden unterstützt?', answer: 'JPEG, PNG, WebP, GIF, TIFF, HEIC, HEIF, AVIF, JXL, DNG, ARW, NEF, SVG, MP4, MOV, AVI, MP3, M4A, WAV und PDF. Zuerst wird die echte Dateisignatur geprüft.' },
+      { question: 'Wird die Datei hochgeladen?', answer: 'Nein. Der offizielle Verifier läuft in einem Browser-Worker. Quelldatei, Dateiname, Fingerabdruck und Manifestwerte werden weder an einen Server gesendet noch als Verlauf gespeichert.' },
+      { question: 'Beweist C2PA, dass ein Inhalt wahr ist?', answer: 'Nein. Ein gültiges Ergebnis beweist, dass die signierten Credentials noch zu dieser Datei gehören. Es beweist nicht, dass jede Aussage, jeder Ton oder jede sichtbare Szene wahr ist.' },
+    ],
+  },
+};
+
 const guideNames: Record<ToolKey, string> = {
   metadata: '文件', image: '图片', document: '文档', video: '视频', audio: '音频', privacy: '图片', remover: '文件', imageRemover: '图片', videoRemover: '视频', audioRemover: '音频', documentRemover: '文档', c2pa: '文件',
 };
@@ -188,16 +315,61 @@ function localizedRelated(config: ToolConfig) {
   return config.related.map((item) => ({ href: localizePath(item.href, 'zh-CN'), title: titles[item.href]?.[0] ?? item.title, note: titles[item.href]?.[1] ?? item.note }));
 }
 
+const guideNamesDe: Record<ToolKey, string> = {
+  metadata: 'Dateien', image: 'Bilder', document: 'Dokumente', video: 'Videos', audio: 'Audio', privacy: 'Bilder', remover: 'Dateien', imageRemover: 'Bilder', videoRemover: 'Videos', audioRemover: 'Audio', documentRemover: 'Dokumente', c2pa: 'Dateien',
+};
+
+function localizedGuideDe(key: ToolKey, base?: FormatGuide): FormatGuide | undefined {
+  if (!base) return undefined;
+  const name = guideNamesDe[key];
+  const cleaning = key.endsWith('Remover') || key === 'remover';
+  const benefits = cleaning ? [
+    { kicker: 'Nur Metadaten', title: 'Tags raus, Inhalt bleibt', description: `Entfernt beschreibbare Identitäts-, Standort-, Software-, Datums- und eigene Felder, ohne ${name} absichtlich neu zu codieren.`, action: 'Datei bereinigen' },
+    { kicker: 'Danach prüfen', title: 'Der Nachprüfung glauben', description: 'Die erzeugte Kopie wird genauso tief erneut gelesen. Entfernte, erhaltene und verbliebene Felder erscheinen getrennt.', action: 'Prüfergebnis ansehen' },
+    { kicker: 'Original bleibt', title: 'Kopie und Beleg mitnehmen', description: 'Die Quelldatei bleibt unverändert. Lade die bereinigte Kopie und einen JSON-Beleg ohne Dateiinhalt herunter.', action: 'Erst Metadaten ansehen' },
+  ] : [
+    { kicker: 'Datenschutzspuren', title: 'Finde, was nicht mitreisen soll', description: `Entdecke vor dem Teilen von ${name} versteckte Standort-, Identitäts-, Geräte-, Zeit- und Produktionsspuren.`, action: `${name} prüfen` },
+    { kicker: 'Technische Fakten', title: 'Verstehe die Dateistruktur', description: `Sieh Format, technische Werte, native Feldpfade, Hashes und Parser-Nachweise der ${name}.`, action: 'Lokale Felder lesen' },
+    { kicker: 'Sauberer teilen', title: 'Bei Bedarf eine Kopie bereinigen', description: 'Metadaten sind editierbar und können Privates verraten. Öffne danach den passenden Entferner und prüfe die Kopie erneut.', action: 'Passendes Tool öffnen' },
+  ];
+  return {
+    valueEyebrow: cleaning ? 'WARUM BEREINIGEN' : 'WARUM PRÜFEN',
+    valueTitle: cleaning ? `Warum Metadaten aus ${name} entfernen?` : `Warum ${name} prüfen?`,
+    valueDescription: cleaning ? `${name} können neben sichtbaren Inhalten Identität, Standort, Software, Daten und Produktionsverlauf speichern.` : `Metadaten liefern technischen Kontext und können unbemerkt private Details verraten.`,
+    benefits: base.benefits.map((item, index) => ({ ...item, href: localizePath(item.href, 'de'), ...(benefits[index] ?? benefits[0]!) })),
+    processTitle: cleaning ? `So werden ${name} bereinigt` : `So werden ${name} gescannt`,
+    processDescription: cleaning ? `Die Bereinigung läuft in diesem Tab. Original und erzeugte Kopie werden nicht hochgeladen.` : `Der Browser liest ${name} in diesem Tab und lädt sie nicht zu einem Analyseserver hoch.`,
+    steps: [
+      { title: `${name} auswählen`, description: 'Wähle eine unterstützte Datei. Ihre Bytes bleiben in diesem Browser-Tab.' },
+      { title: 'Echtes Format prüfen', description: 'Dateisignatur, Containermerkmale und Größe werden geprüft – nicht nur die Endung.' },
+      { title: cleaning ? 'Metadaten lokal entfernen' : 'Metadaten lokal lesen', description: cleaning ? 'Eine formatspezifische Engine bearbeitet beschreibende Tags und erhält den Inhalt.' : 'Lokale Parser und bei Bedarf ExifTool WASM lesen verfügbare Felder.' },
+      { title: cleaning ? 'Erzeugte Kopie nachprüfen' : 'Durchsuchbaren Bericht erstellen', description: cleaning ? 'Die Kopie wird erneut geöffnet, strukturell verglichen und gescannt. Erst danach ist der Download möglich.' : 'Felder werden nach Zweck gruppiert, durchsuchbar und kopierbar; native Pfade bleiben erhalten.' },
+      { title: 'Danach freigeben', description: 'Löschen, Ersetzen oder Neuladen stoppt Worker und entfernt temporäre Objekte aus diesem Tab.' },
+    ],
+    ctaLead: `${name} zur Hand?`, ctaLabel: 'Oben eine Datei wählen',
+  };
+}
+
+function localizedRelatedDe(config: ToolConfig) {
+  const titles: Record<string, [string, string]> = {
+    '/image-privacy-checker/': ['Bild-Datenschutz-Check', 'Übersetzt versteckte Metadaten in einen nachvollziehbaren Risikowert.'],
+    '/metadata-remover/': ['Metadaten-Entferner', 'Entfernt beschreibbare Tags, ohne den Dateiinhalt neu zu codieren.'],
+    '/metadata-viewer/': ['Metadaten-Viewer', 'Lies zuerst den vollständigen Dateibericht.'],
+    '/c2pa-viewer/': ['C2PA-Viewer', 'Prüft signierte Herkunft getrennt von gewöhnlichen Metadaten.'],
+  };
+  return config.related.map((item) => ({ href: localizePath(item.href, 'de'), title: titles[item.href]?.[0] ?? item.title, note: titles[item.href]?.[1] ?? item.note }));
+}
+
 export function getTool(key: ToolKey, locale: Locale = 'en'): ToolConfig {
   const base = tools[key];
   if (!base) throw new Error(`Unknown tool key: ${key}`);
   if (locale === 'en') return base;
-  const copy = zhCopy[key];
+  const copy = locale === 'zh-CN' ? zhCopy[key] : deCopy[key];
   return {
     ...base, ...copy,
     path: localizePath(base.path, locale),
-    formatGuide: localizedGuide(key, base.formatGuide),
-    related: localizedRelated(base),
-    formats: key === 'remover' ? '图片 · 视频 · 音频 · 文档' : base.formats,
+    formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : localizedGuideDe(key, base.formatGuide),
+    related: locale === 'zh-CN' ? localizedRelated(base) : localizedRelatedDe(base),
+    formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : 'Bilder · Video · Audio · Dokumente') : base.formats,
   };
 }

@@ -69,7 +69,7 @@ test('mobile navigation exposes the current Blog route', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/blog/');
   await page.getByRole('button', { name: 'Open navigation' }).click();
-  const blogLink = page.locator('#mobile-navigation-drawer a[href="/blog/"]');
+  const blogLink = page.locator('#mobile-navigation-drawer .mobile-nav-list > a[href="/blog/"]');
   await expect(blogLink).toBeVisible();
   await expect(blogLink).toHaveAttribute('aria-current', 'page');
   await blogLink.click();

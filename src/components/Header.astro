@@ -27,9 +27,13 @@ const isCurrent = (href: string) => basePath === href;
 const viewCurrent = basePath === '/' || basePath === '/metadata-viewer/' || basePath === '/image-metadata-viewer/' || basePath === '/video-metadata-viewer/' || basePath === '/audio-metadata-viewer/' || basePath === '/document-metadata-viewer/';
 const removeCurrent = removeItems.some((item) => basePath === item.href);
 const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.href === '/' && basePath === '/';
-const targetLocale: Locale = locale === 'en' ? 'zh-CN' : 'en';
-const languageTarget = translated ? localizePath(basePath, targetLocale) : localizePath('/', targetLocale);
-const targetLanguageName = targetLocale === 'zh-CN' ? '中文' : 'English';
+const languageOptions: Array<{ locale: Locale; label: string; short: string }> = [
+  { locale: 'en', label: 'English', short: 'EN' },
+  { locale: 'de', label: 'Deutsch', short: 'DE' },
+  { locale: 'zh-CN', label: '中文', short: '中文' },
+];
+const currentLanguage = languageOptions.find((item) => item.locale === locale) ?? languageOptions[0]!;
+const languageHref = (target: Locale) => translated ? localizePath(basePath, target) : target === 'en' ? basePath : localizePath('/', target);
 ---
 <header class="site-header">
   <div class="header-inner">
@@ -54,7 +58,14 @@ const targetLanguageName = targetLocale === 'zh-CN' ? '中文' : 'English';
       <a href={hrefFor('/c2pa-viewer/')} aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>{copy.verifyC2pa}</a>
       <a href="/blog/" aria-current={basePath.startsWith('/blog/') ? 'page' : undefined}>{copy.blog}</a>
     </nav>
-    <a class="language-ticket" href={languageTarget} hreflang={targetLocale} lang={targetLocale} aria-label={`${copy.switchTo} ${targetLanguageName}`}><StaticIcon name="languages" size={15} /><span>{targetLocale === 'zh-CN' ? '中文' : 'EN'}</span></a>
+    <div class="nav-dropdown language-dropdown" data-nav-dropdown data-open="false">
+      <button class="nav-dropdown-trigger language-ticket" type="button" aria-expanded="false" aria-label={`${copy.language}: ${currentLanguage.label}`}>
+        <StaticIcon name="languages" size={15} /><span>{currentLanguage.short}</span><span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={14} /></span>
+      </button>
+      <div class="nav-dropdown-panel language-dropdown-panel t-dropdown" data-origin="top-right" aria-label={copy.language} aria-hidden="true" inert>
+        {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span><small>{item.short}</small></a>)}
+      </div>
+    </div>
     <a class="header-cta" href={hrefFor('/')} aria-current={isCurrent('/') ? 'page' : undefined}>{copy.viewMetadata} <StaticIcon name="arrow" size={16} /></a>
     <button class="mobile-menu-trigger" type="button" aria-label={copy.openNavigation} aria-expanded="false" aria-controls="mobile-navigation-drawer" data-mobile-menu-trigger data-open-label={copy.openNavigation} data-close-label={copy.closeNavigation}>
       <span class="t-icon-swap" data-state="a" aria-hidden="true">
@@ -70,9 +81,13 @@ const targetLanguageName = targetLocale === 'zh-CN' ? '中文' : 'English';
   <div class="mobile-menu-rail">
     <nav id="mobile-navigation-drawer" class="mobile-menu-drawer t-panel-slide" data-open="false" aria-label={copy.mobileNavigation}>
       <h2>{copy.navigation}</h2>
-      <div class="mobile-language-switch" aria-label={copy.language}>
-        <a href={translated ? localizePath(basePath, 'en') : '/'} hreflang="en" lang="en" aria-current={locale === 'en' ? 'true' : undefined}>EN</a>
-        <a href={translated ? localizePath(basePath, 'zh-CN') : '/zh-cn/'} hreflang="zh-CN" lang="zh-CN" aria-current={locale === 'zh-CN' ? 'true' : undefined}>中文</a>
+      <div class="nav-dropdown language-dropdown mobile-language-dropdown" data-nav-dropdown data-open="false">
+        <button class="nav-dropdown-trigger" type="button" aria-expanded="false">
+          <span><StaticIcon name="languages" size={17} /> {copy.language}</span><strong>{currentLanguage.label}</strong><span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={16} /></span>
+        </button>
+        <div class="nav-dropdown-panel language-dropdown-panel t-dropdown" data-origin="top-right" aria-label={copy.language} aria-hidden="true" inert>
+          {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span><small>{item.short}</small></a>)}
+        </div>
       </div>
       <div class="mobile-nav-list">
         <div class="mobile-nav-group t-acc" data-mobile-accordion data-open="false">
@@ -142,8 +157,11 @@ const targetLanguageName = targetLocale === 'zh-CN' ? '中文' : 'English';
     mobileTrigger.setAttribute('aria-label', open ? mobileTrigger.dataset.closeLabel || 'Close navigation' : mobileTrigger.dataset.openLabel || 'Open navigation');
     mobileTrigger.querySelector<HTMLElement>('.t-icon-swap')?.setAttribute('data-state', open ? 'b' : 'a');
     document.body.classList.toggle('nav-drawer-open', open);
-    if (open) window.setTimeout(() => mobileAccordions[0]?.querySelector<HTMLButtonElement>('.t-acc-head')?.focus(), 50);
-    else if (restoreFocus) mobileTrigger.focus();
+    if (open) window.setTimeout(() => mobileDrawer.querySelector<HTMLButtonElement>('.mobile-language-dropdown .nav-dropdown-trigger')?.focus(), 50);
+    else {
+      for (const dropdown of dropdowns) if (mobileDrawer.contains(dropdown)) closeDropdown(dropdown);
+      if (restoreFocus) mobileTrigger.focus();
+    }
   }
 
   mobileTrigger?.addEventListener('click', () => setMobileOpen(mobileTrigger.getAttribute('aria-expanded') !== 'true'));

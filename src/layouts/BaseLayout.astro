@@ -40,8 +40,9 @@ const socialImage = image ? new URL(image.src, Astro.site).toString() : undefine
 const copy = getMessages(locale);
 const alternatePaths = translated ? getAlternatePaths(path) : undefined;
 const alternateUrls = alternatePaths ? Object.fromEntries(Object.entries(alternatePaths).map(([key, value]) => [key, canonicalUrl(value, Astro.site)])) : undefined;
-const ogLocale = locale === 'zh-CN' ? 'zh_CN' : 'en_US';
-const alternateOgLocale = locale === 'zh-CN' ? 'en_US' : 'zh_CN';
+const ogLocales: Record<Locale, string> = { en: 'en_US', de: 'de_DE', 'zh-CN': 'zh_CN' };
+const ogLocale = ogLocales[locale];
+const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key]) => key !== locale).map(([, value]) => value) : [];
 ---
 <!doctype html>
 <html lang={locale}>
@@ -55,6 +56,7 @@ const alternateOgLocale = locale === 'zh-CN' ? 'en_US' : 'zh_CN';
     <link rel="canonical" href={canonical} />
     {alternateUrls && <>
       <link rel="alternate" hreflang="en" href={alternateUrls.en} />
+      <link rel="alternate" hreflang="de" href={alternateUrls.de} />
       <link rel="alternate" hreflang="zh-CN" href={alternateUrls['zh-CN']} />
       <link rel="alternate" hreflang="x-default" href={alternateUrls['x-default']} />
     </>}
@@ -65,7 +67,7 @@ const alternateOgLocale = locale === 'zh-CN' ? 'en_US' : 'zh_CN';
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
-    {translated && <meta property="og:locale:alternate" content={alternateOgLocale} />}
+    {alternateOgLocales.map((alternate) => <meta property="og:locale:alternate" content={alternate} />)}
     {socialImage && <meta property="og:image" content={socialImage} />}
     {image?.alt && <meta property="og:image:alt" content={image.alt} />}
     {image?.width && <meta property="og:image:width" content={String(image.width)} />}

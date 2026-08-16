@@ -5,11 +5,17 @@ import { localizePath, type Locale } from '../i18n/core';
 interface Props { locale?: Locale }
 const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-CN';
+const de = locale === 'de';
+const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
 
 const privacyBenefits = zh ? [
   { href: '#privacy-checker-workbench', icon: 'shield' as const, eyebrow: '位置检查', title: '把精确位置揪出来', note: '一组 GPS 坐标可能直指门口、学校或住处。报告会显示坐标，以及提供它们的原始字段。', action: '检查一张图片' },
   { href: '#privacy-scan-process', icon: 'scan' as const, eyebrow: '身份检查', title: '顺着面包屑往回找', note: '姓名、序列号、原文件名、时间和编辑 ID，可能把图片连到某个人、设备或项目。', action: '看看检查流程' },
   { href: localizePath('/image-metadata-remover/', locale), icon: 'eraser' as const, eyebrow: '干净点再分享', title: '生成一个清理副本', note: '清除支持的元数据，执行同样深度的复扫，再连同本地验证收据一起下载。', action: '打开清除器' },
+] : de ? [
+  { href: '#privacy-checker-workbench', icon: 'shield' as const, eyebrow: 'Standort-Check', title: 'Exakten Standort erwischen', note: 'Ein GPS-Paar kann auf Haustür, Schule oder Wohnung zeigen. Der Bericht nennt Koordinaten und ihre ursprünglichen Felder.', action: 'Bild prüfen' },
+  { href: '#privacy-scan-process', icon: 'scan' as const, eyebrow: 'Identitäts-Check', title: 'Der Spur zurück folgen', note: 'Namen, Seriennummern, alte Dateinamen, Zeiten und Bearbeitungs-IDs können ein Bild mit Person, Gerät oder Projekt verbinden.', action: 'Ablauf ansehen' },
+  { href: localizePath('/image-metadata-remover/', locale), icon: 'eraser' as const, eyebrow: 'Sauberer teilen', title: 'Bereinigte Kopie erstellen', note: 'Unterstützte Metadaten entfernen, mit gleicher Tiefe nachprüfen und Kopie samt lokalem Prüfbeleg herunterladen.', action: 'Entferner öffnen' },
 ] : [
   {
     href: '#privacy-checker-workbench',
@@ -43,6 +49,12 @@ const privacyProcess = zh ? [
   { title: '扫描所有支持的字段', note: '初步结果很快出现，ExifTool WASM 随后检查嵌套记录、预览和内嵌元数据。' },
   { title: '给证据打分', note: 'GPS、姓名、设备 ID、联系方式、时间和编辑痕迹获得可见分数，同一事实不会重复计分。' },
   { title: '清理后再检查', note: '生成本地副本，以相同深度扫描，并在下载前比较已清除、残留和新发现的线索。' },
+] : de ? [
+  { title: 'Ein Bild auswählen', note: 'Lege ein JPEG, PNG oder WebP bis 50 MB ab. Die Bytes bleiben in diesem Browser-Tab.' },
+  { title: 'Echte Datei verifizieren', note: 'Signatur, Abmessungen, Animationsstatus und Größe werden geprüft – nicht nur die Endung.' },
+  { title: 'Alle unterstützten Felder scannen', note: 'Ein erstes Ergebnis erscheint schnell. Danach prüft ExifTool WASM verschachtelte Datensätze, Vorschauen und eingebettete Metadaten.' },
+  { title: 'Nachweise bewerten', note: 'GPS, Namen, Geräte-IDs, Kontaktdaten, Zeiten und Bearbeitungsspuren erhalten sichtbare Punkte, ohne dieselbe Tatsache doppelt zu zählen.' },
+  { title: 'Bereinigen und erneut prüfen', note: 'Erstelle lokal eine Kopie, scanne sie gleich tief und vergleiche entfernte, verbliebene und neu gefundene Spuren vor dem Download.' },
 ] : [
   { title: 'Choose one image', note: 'Drop a JPEG, PNG, or WebP up to 50 MB. The bytes stay in this browser tab.' },
   { title: 'Verify the actual file', note: 'The browser checks the signature, dimensions, animation state, and size before trusting the extension.' },
@@ -54,10 +66,10 @@ const privacyProcess = zh ? [
 
 <section class="home-benefits privacy-benefits" aria-labelledby="privacy-benefits-title">
   <header class="home-section-heading">
-    <span class="section-index">{zh ? '为什么要检查' : 'WHY CHECK IT'}</span>
+    <span class="section-index">{t('WHY CHECK IT', '为什么要检查', 'WARUM PRÜFEN')}</span>
     <div>
-      <h2 id="privacy-benefits-title">{zh ? '为什么要检查图片隐私？' : 'Why check image privacy?'}</h2>
-      <p>{zh ? '一张照片可能同时带着地址、姓名和设备痕迹，即使画面里一个字都没写。' : 'One photo can carry an address, a name, and a device trail even when none of that appears in the pixels.'}</p>
+      <h2 id="privacy-benefits-title">{t('Why check image privacy?', '为什么要检查图片隐私？', 'Warum den Datenschutz eines Bildes prüfen?')}</h2>
+      <p>{t('One photo can carry an address, a name, and a device trail even when none of that appears in the pixels.', '一张照片可能同时带着地址、姓名和设备痕迹，即使画面里一个字都没写。', 'Ein Foto kann Adresse, Namen und Gerätespur mitbringen, obwohl davon kein Pixel etwas verrät.')}</p>
     </div>
   </header>
   <div class="home-benefit-grid">
@@ -73,21 +85,21 @@ const privacyProcess = zh ? [
 
 <section id="privacy-scan-process" class="home-process privacy-process" aria-labelledby="privacy-process-title">
   <header>
-    <span class="section-index">{zh ? '本机处理，一步一步来' : 'LOCAL, STEP BY STEP'}</span>
-    <h2 id="privacy-process-title">{zh ? '隐私检查怎么工作' : 'How the privacy check works'}</h2>
-    <p>{zh ? '一张图片，一次自动完整扫描。每一分都能追到元数据证据。' : 'One image. One automatic full scan. Every point links back to metadata evidence.'}</p>
+    <span class="section-index">{t('LOCAL, STEP BY STEP', '本机处理，一步一步来', 'LOKAL, SCHRITT FÜR SCHRITT')}</span>
+    <h2 id="privacy-process-title">{t('How the privacy check works', '隐私检查怎么工作', 'So funktioniert der Datenschutz-Check')}</h2>
+    <p>{t('One image. One automatic full scan. Every point links back to metadata evidence.', '一张图片，一次自动完整扫描。每一分都能追到元数据证据。', 'Ein Bild, ein automatischer Vollscan. Jeder Punkt führt zurück zu einem Metadaten-Nachweis.')}</p>
   </header>
   <div class="home-process-body">
     <ol class="home-process-list">
       {privacyProcess.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}
     </ol>
-    <p class="home-process-cta"><span>{zh ? '图片准备好了？' : 'Have an image ready?'}</span><a href="#privacy-checker-workbench">{zh ? '在上面检查图片' : 'Check an image above'} <IconGlyph name="arrow" size={15} /></a></p>
+    <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?')}</span><a href="#privacy-checker-workbench">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen')} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>{zh ? '这个分数看不到什么' : 'What this score cannot see'}</summary>
+      <summary>{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann')}</summary>
       <ul>
-        <li>{zh ? '不会分析画面里可见的人脸、文字、屏幕、倒影、车牌、制服和地标。' : 'Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.'}</li>
-        <li>{zh ? '低分只表示受支持的元数据线索较少，不保证图片适合分享。' : 'A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.'}</li>
-        <li>{zh ? '元数据可以被修改、伪造、留旧或删除，因此不能证明谁创建了图片或图片来自哪里。' : 'Metadata can be edited, forged, stale, or removed, so it cannot prove who created an image or where it came from.'}</li>
+        <li>{t('Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.', '不会分析画面里可见的人脸、文字、屏幕、倒影、车牌、制服和地标。', 'Gesichter, Texte, Bildschirme, Spiegelungen, Kennzeichen, Uniformen und Wahrzeichen in sichtbaren Pixeln werden nicht analysiert.')}</li>
+        <li>{t('A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.', '低分只表示受支持的元数据线索较少，不保证图片适合分享。', 'Ein niedriger Wert bedeutet nur weniger unterstützte Metadatenspuren. Er garantiert nicht, dass sich das Bild sicher teilen lässt.')}</li>
+        <li>{t('Metadata can be edited, forged, stale, or removed, so it cannot prove who created an image or where it came from.', '元数据可以被修改、伪造、留旧或删除，因此不能证明谁创建了图片或图片来自哪里。', 'Metadaten können verändert, gefälscht, veraltet oder entfernt sein. Sie beweisen daher weder Urheber noch Herkunft eines Bildes.')}</li>
       </ul>
     </details>
   </div>

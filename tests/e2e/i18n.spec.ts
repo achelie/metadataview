@@ -6,57 +6,70 @@ const toolPaths = [
   '/document-metadata-remover/', '/c2pa-viewer/',
 ];
 
-test('Chinese home and every translated route are generated with reciprocal SEO links', async ({ page }) => {
-  for (const path of ['/', ...toolPaths, '/about/', '/privacy/']) {
-    const zhPath = path === '/' ? '/zh-cn/' : `/zh-cn${path}`;
-    const response = await page.goto(zhPath);
-    expect(response?.ok(), zhPath).toBe(true);
-    await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${zhPath}`);
-    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', `https://www.viewexif.com${path}`);
-    await expect(page.locator('link[rel="alternate"][hreflang="zh-CN"]')).toHaveAttribute('href', `https://www.viewexif.com${zhPath}`);
+const locales = [
+  { prefix: '/zh-cn', lang: 'zh-CN' },
+  { prefix: '/de', lang: 'de' },
+] as const;
+
+test('German and Chinese routes are generated with three-way reciprocal SEO links', async ({ page }) => {
+  for (const locale of locales) {
+    for (const path of ['/', ...toolPaths, '/about/', '/privacy/']) {
+      const localizedPath = path === '/' ? `${locale.prefix}/` : `${locale.prefix}${path}`;
+      const response = await page.goto(localizedPath);
+      expect(response?.ok(), localizedPath).toBe(true);
+      await expect(page.locator('html')).toHaveAttribute('lang', locale.lang);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${localizedPath}`);
+      await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', `https://www.viewexif.com${path}`);
+      await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveAttribute('href', `https://www.viewexif.com${path === '/' ? '/de/' : `/de${path}`}`);
+      await expect(page.locator('link[rel="alternate"][hreflang="zh-CN"]')).toHaveAttribute('href', `https://www.viewexif.com${path === '/' ? '/zh-cn/' : `/zh-cn${path}`}`);
+    }
   }
 });
 
-test('language ticket switches the same page both ways and English blog switches to Chinese home', async ({ page }) => {
+test('desktop language dropdown switches the same page and sends localized blog choices home', async ({ page }) => {
   await page.goto('/image-metadata-viewer/');
-  const toChinese = page.locator('.language-ticket');
-  await expect(toChinese).toHaveAttribute('href', '/zh-cn/image-metadata-viewer/');
-  await toChinese.click();
-  await expect(page).toHaveURL(/\/zh-cn\/image-metadata-viewer\/$/);
-  await expect(page.locator('.language-ticket')).toHaveAttribute('href', '/image-metadata-viewer/');
+  const dropdown = page.locator('.header-inner > .language-dropdown');
+  await dropdown.getByRole('button').click();
+  await expect(dropdown.getByRole('link', { name: /Deutsch/ })).toHaveAttribute('href', '/de/image-metadata-viewer/');
+  await expect(dropdown.getByRole('link', { name: /中文/ })).toHaveAttribute('href', '/zh-cn/image-metadata-viewer/');
+  await dropdown.getByRole('link', { name: /Deutsch/ }).click();
+  await expect(page).toHaveURL(/\/de\/image-metadata-viewer\/$/);
 
   await page.goto('/blog/');
   await expect(page.locator('link[rel="alternate"]')).toHaveCount(0);
-  await expect(page.locator('.language-ticket')).toHaveAttribute('href', '/zh-cn/');
+  await page.locator('.header-inner > .language-dropdown').getByRole('button').click();
+  await expect(page.locator('.header-inner > .language-dropdown').getByRole('link', { name: /Deutsch/ })).toHaveAttribute('href', '/de/');
+  await expect(page.locator('.header-inner > .language-dropdown').getByRole('link', { name: /中文/ })).toHaveAttribute('href', '/zh-cn/');
 });
 
-test('Chinese links retain their prefix while Blog remains the English URL', async ({ page }) => {
-  await page.goto('/zh-cn/');
+test('localized links retain their prefix while Blog remains English', async ({ page }) => {
+  await page.goto('/de/');
   const nav = page.locator('.desktop-nav');
-  await expect(nav.getByRole('link', { name: '检查隐私' })).toHaveAttribute('href', '/zh-cn/image-privacy-checker/');
-  await expect(nav.getByRole('link', { name: '验证 C2PA' })).toHaveAttribute('href', '/zh-cn/c2pa-viewer/');
-  await expect(nav.getByRole('link', { name: '博客' })).toHaveAttribute('href', '/blog/');
+  await expect(nav.getByRole('link', { name: 'Datenschutz prüfen' })).toHaveAttribute('href', '/de/image-privacy-checker/');
+  await expect(nav.getByRole('link', { name: 'C2PA prüfen' })).toHaveAttribute('href', '/de/c2pa-viewer/');
+  await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
 });
 
-test('mobile language choices expose current state and remain usable at 239px', async ({ page }) => {
+test('mobile language dropdown exposes all states and remains usable at 239px', async ({ page }) => {
   await page.setViewportSize({ width: 239, height: 844 });
-  await page.goto('/zh-cn/image-privacy-checker/');
-  await page.getByRole('button', { name: '打开导航' }).click();
-  const switcher = page.locator('.mobile-language-switch');
-  await expect(switcher.getByRole('link', { name: '中文' })).toHaveAttribute('aria-current', 'true');
-  await expect(switcher.getByRole('link', { name: 'EN' })).toHaveAttribute('href', '/image-privacy-checker/');
+  await page.goto('/de/image-privacy-checker/');
+  await page.getByRole('button', { name: 'Navigation öffnen' }).click();
+  const dropdown = page.locator('.mobile-language-dropdown');
+  await dropdown.getByRole('button').click();
+  await expect(dropdown.getByRole('link', { name: /Deutsch/ })).toHaveAttribute('aria-current', 'page');
+  await expect(dropdown.getByRole('link', { name: /English/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(dropdown.getByRole('link', { name: /中文/ })).toHaveAttribute('href', '/zh-cn/image-privacy-checker/');
   const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
   expect(width.scroll).toBeLessThanOrEqual(width.client + 1);
 });
 
-test('Chinese workbenches expose localized file controls', async ({ page }) => {
+test('German workbenches expose localized file controls', async ({ page }) => {
   for (const [path, label] of [
-    ['/zh-cn/metadata-viewer/', '选择文件'],
-    ['/zh-cn/image-privacy-checker/', '选择图片'],
-    ['/zh-cn/metadata-remover/', '选择文件'],
-    ['/zh-cn/c2pa-viewer/', '选择文件'],
+    ['/de/metadata-viewer/', 'Datei auswählen'],
+    ['/de/image-privacy-checker/', 'Bild auswählen'],
+    ['/de/metadata-remover/', 'Datei auswählen'],
+    ['/de/c2pa-viewer/', 'Datei auswählen'],
   ] as const) {
     await page.goto(path);
     await expect(page.getByRole('button', { name: label }).first()).toBeVisible();
