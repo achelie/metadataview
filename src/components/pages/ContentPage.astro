@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localizePath, type Locale } from '../../i18n/core';
+
+interface Props { locale?: Locale; kind: 'about' | 'privacy' }
+const { locale = 'en', kind } = Astro.props;
+const zh = locale === 'zh-CN';
+const path = localizePath(`/${kind}/`, locale);
+const about = {
+  title: zh ? '关于 MetadataView — 本地元数据隐私工具箱' : 'About MetadataView — A Local Metadata Privacy Toolkit',
+  description: zh ? '了解 MetadataView 为什么存在、这些只在浏览器运行的工具能做什么，以及它坦白承认的能力边界。' : 'Why MetadataView exists, what its browser-only tools do, and where this open MVP draws the line.',
+};
+const privacy = {
+  title: zh ? '隐私说明 — 文件不会离开你的设备' : 'Privacy – Your Files Never Leave Your Device',
+  description: zh ? 'MetadataView 通过浏览器本地处理、短期内存、不设上传接口，也不分析文件内容，尽量把文件检查留在你的设备上。' : 'How MetadataView keeps file inspection private with local browser processing, short-lived memory, no upload endpoint, and no file-content analytics.',
+};
+const meta = kind === 'about' ? about : privacy;
+---
+<BaseLayout title={meta.title} description={meta.description} path={path} locale={locale} translated>
+  {kind === 'about' ? <article class="content-page">
+    <header><span class="eyebrow">{zh ? '关于这套工具' : 'About the toolkit'}</span><h1>{zh ? '文件会说话。这里负责翻译。' : 'Files talk. This site translates.'}</h1><p>{zh ? '照片可能带着 GPS，文档可能写着作者，音频也会留下署名和编码历史。MetadataView 在你分享文件前，把这些藏起来的细节摆到桌面上。' : 'A photo can carry GPS. A document can name its author. An audio file can reveal credits and encoding history. MetadataView makes those details visible before you share the file.'}</p></header>
+    <div class="manifesto">
+      <div><span>01</span><h2>{zh ? '本地优先' : 'Local first'}</h2><p>{zh ? '现代浏览器能安全完成的事，就没必要让文件绕路去别人家的服务器。' : 'If a modern browser can do the job safely, the file should not take a detour through somebody else’s server.'}</p></div>
+      <div><span>02</span><h2>{zh ? '把结论说明白' : 'Explain the verdict'}</h2><p>{zh ? '不讲原因的隐私分数只是情绪。每项风险都要指向具体字段，再告诉你下一步能做什么。' : 'A privacy score without reasons is just a mood. Every risk points to fields and a next action.'}</p></div>
+      <div><span>03</span><h2>{zh ? '边界也摆出来' : 'Admit the edge'}</h2><p>{zh ? '元数据能改，凭证也有适用范围，画面本身更可能泄密。这里不会装作看不见。' : 'Metadata is editable. Credentials have scope. Pixels can leak details. The copy says that out loud.'}</p></div>
+    </div>
+    <section class="about-tools"><span class="section-index">{zh ? '工具箱' : 'THE TOOLKIT'}</span><h2>{zh ? '四条能走通的完整流程，不是四张效果图' : 'Four complete paths, not four mockups'}</h2><p>{zh ? '通用查看器支持图片、文档、视频和音频共 28 种格式；图片隐私规则会给隐藏风险打分；五个清理入口会生成副本并再次验证；C2PA 页面则按需加载官方浏览器验证器。' : 'The universal viewer handles 28 file formats across images, documents, video, and audio. Image privacy rules score hidden exposure. Five matching remover routes create and verify content-preserving copies. The C2PA page dynamically loads the official browser verifier.'}</p><div class="button-row"><a class="button button-primary" href={localizePath('/metadata-viewer/', locale)}>{zh ? '检查一个文件' : 'Inspect a file'}</a><a class="button button-secondary" href={localizePath('/metadata-remover/', locale)}>{zh ? '清理一个副本' : 'Clean a copy'}</a></div></section>
+  </article> : <article class="content-page">
+    <header><span class="eyebrow">{zh ? '说人话的隐私说明' : 'Plain-English privacy'}</span><h1>{zh ? '服务器根本见不到你的文件。' : 'The server never meets your file.'}</h1><p>{zh ? 'MetadataView 是静态浏览器工具。你选择文件，当前标签页里的 JavaScript 负责读取。没有账号、上传接口、云存储桶，也没有文件历史。' : 'MetadataView is a static browser tool. You select a file; JavaScript in this tab reads it. There is no account, upload route, cloud bucket, or file history.'}</p></header>
+    <div class="content-grid"><nav><a href="#processing">{zh ? '处理方式' : 'Processing'}</a><a href="#memory">{zh ? '内存' : 'Memory'}</a><a href="#analytics">{zh ? '流量统计' : 'Analytics'}</a><a href="#cookies">Cookies</a><a href="#limits">{zh ? '能力边界' : 'Limits'}</a></nav><div>
+      <section id="processing"><span class="section-index">01</span><h2>{zh ? '文件怎么处理' : 'How files are processed'}</h2><p>{zh ? '支持的文件从浏览器内存读取，合适时会交给 Web Worker 解析。图片清理使用浏览器解码和 Canvas 重新编码；C2PA 只在对应工具页按需加载官方 WebAssembly 库。' : 'Supported files are read from browser memory. Parsing runs in a Web Worker when practical. Image cleanup uses browser image decoding and Canvas re-encoding. C2PA verification loads the official WebAssembly library only on its tool page.'}</p><p>{zh ? '你选择的文件和提取出的元数据都不会发送到 MetadataView 服务器。' : 'No selected file or extracted metadata is sent to a MetadataView server.'}</p></section>
+      <section id="memory"><span class="section-index">02</span><h2>{zh ? '内存里会留下什么' : 'What stays in memory'}</h2><p>{zh ? '文件和结果只存在于当前页面会话。我们不会把它们放进 localStorage、URL、IndexedDB 或 Cookie。刷新或关闭标签页，状态就没了。' : 'The selected file and result live only in the current page session. We do not put them in localStorage, a URL, IndexedDB, or a cookie. Refresh or close the tab and that state disappears.'}</p><p>{zh ? '下载用的临时 Object URL 会在使用后撤销。任务完成或页面卸载时，Worker 也会终止。' : 'Temporary Object URLs created for downloads are revoked after use. Workers terminate when a task finishes or the page unmounts.'}</p></section>
+      <section id="analytics"><span class="section-index">03</span><h2>{zh ? '流量统计' : 'Analytics'}</h2><p>{zh ? '我们使用 Ahrefs Web Analytics 了解汇总后的页面流量。统计脚本不会收到文件、文件字节、元数据值、文件名或本地路径。' : 'We use Ahrefs Web Analytics to understand aggregate page traffic. The analytics script does not receive uploaded files, file bytes, metadata values, prompts, filenames, or local paths.'}</p></section>
+      <section id="cookies"><span class="section-index">04</span><h2>{zh ? 'Cookie 与未来的广告' : 'Cookies and future ads'}</h2><p>{zh ? '当前版本不需要账号或第一方会话 Cookie。未来的第三方广告可能依据自己的政策使用 Cookie，但浏览器隔离不会让广告脚本碰到文件输入框或解析结果。' : 'The MVP does not require an account or first-party session cookie. Future third-party advertising may use its own cookies under its own policy, but browser isolation does not grant an ad script access to the file input or parsed result.'}</p></section>
+      <section id="limits"><span class="section-index">05</span><h2>{zh ? '老实说，边界在这里' : 'The honest limit'}</h2><p>{zh ? '本地处理保护的是传输路径。它不会自动匿名化画面、证明元数据为真，也不能识别恶意文件。别因为解析器在本地，就随手打开不可信的文件。' : 'Local processing protects the transfer path. It does not make the visible content anonymous, prove metadata is true, or detect malicious files. Do not open files you do not trust merely because the parser is local.'}</p></section>
+    </div></div>
+  </article>}
+</BaseLayout>

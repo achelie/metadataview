@@ -103,7 +103,7 @@ test('article renders the byline, concise contents, practical take, FAQ, and too
 
 test('article metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(ARTICLE_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${ARTICLE_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${ARTICLE_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
@@ -146,7 +146,7 @@ test('WhatsApp guide answers real date, filename, and recovery questions without
 
 test('WhatsApp guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(WHATSAPP_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${WHATSAPP_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${WHATSAPP_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
@@ -190,7 +190,7 @@ test('Instagram guide answers separate privacy, recovery, ranking, and reused-co
 
 test('Instagram guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(INSTAGRAM_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${INSTAGRAM_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${INSTAGRAM_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
@@ -236,7 +236,7 @@ test('Discord guide covers photos, old videos, PNG data, location clues, and arc
 
 test('Discord guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(DISCORD_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${DISCORD_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${DISCORD_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
@@ -282,7 +282,7 @@ test('Telegram guide separates photo, file, HD, Secret Chat, forwarding, and vis
 
 test('Telegram guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(TELEGRAM_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${TELEGRAM_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${TELEGRAM_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
@@ -328,7 +328,7 @@ test('Reddit guide separates hosted copies, linked originals, platform access, a
 
 test('Reddit guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(REDDIT_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${REDDIT_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${REDDIT_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
@@ -375,7 +375,7 @@ test('Gmail guide separates attachments, inline images, local dates, forwarding,
 
 test('Gmail guide metadata and visible FAQ share the same source data', async ({ page }) => {
   await page.goto(GMAIL_PATH);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${GMAIL_PATH}`);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${GMAIL_PATH}`);
   await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));

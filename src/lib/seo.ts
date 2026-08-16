@@ -1,4 +1,4 @@
-export const SITE_ORIGIN = 'https://www.viewexif.com';
+export const SITE_ORIGIN = 'https://www.screentesthub.com';
 
 export function canonicalUrl(path: string, site: URL | string = SITE_ORIGIN): string {
   const url = new URL(path, site);

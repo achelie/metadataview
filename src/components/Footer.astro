@@ -1,7 +1,16 @@
+---
+import { localizePath, type Locale } from '../i18n/core';
+import { getMessages } from '../i18n/messages';
+
+interface Props { locale?: Locale }
+const { locale = 'en' } = Astro.props;
+const copy = getMessages(locale);
+const hrefFor = (href: string) => localizePath(href, locale);
+---
 <footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-note"><span class="brand-mark"><i></i><i></i><i></i></span><div><strong>MetadataView</strong><p>A browser-only evidence desk for the details your files carry around.</p></div></div>
-    <div class="footer-links"><div><strong>Inspect</strong><a href="/">All files</a><a href="/image-metadata-viewer/">Images</a><a href="/document-metadata-viewer/">Documents</a><a href="/video-metadata-viewer/">Video</a><a href="/audio-metadata-viewer/">Audio</a></div><div><strong>Remove</strong><a href="/metadata-remover/">All formats</a><a href="/image-metadata-remover/">Images</a><a href="/video-metadata-remover/">Video</a><a href="/audio-metadata-remover/">Audio</a><a href="/document-metadata-remover/">Documents</a></div><div><strong>Protect</strong><a href="/image-privacy-checker/">Privacy checker</a><a href="/c2pa-viewer/">C2PA viewer</a><a href="/blog/">Blog</a><a href="/privacy/">Privacy</a><a href="/about/">About</a></div></div>
+    <div class="footer-note"><span class="brand-mark"><i></i><i></i><i></i></span><div><strong>MetadataView</strong><p>{copy.footerNote}</p></div></div>
+    <div class="footer-links"><div><strong>{copy.inspect}</strong><a href={hrefFor('/')}>{copy.allFiles}</a><a href={hrefFor('/image-metadata-viewer/')}>{copy.images}</a><a href={hrefFor('/document-metadata-viewer/')}>{copy.documents}</a><a href={hrefFor('/video-metadata-viewer/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-viewer/')}>{copy.audio}</a></div><div><strong>{copy.remove}</strong><a href={hrefFor('/metadata-remover/')}>{copy.allFormats}</a><a href={hrefFor('/image-metadata-remover/')}>{copy.images}</a><a href={hrefFor('/video-metadata-remover/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-remover/')}>{copy.audio}</a><a href={hrefFor('/document-metadata-remover/')}>{copy.documents}</a></div><div><strong>{copy.protect}</strong><a href={hrefFor('/image-privacy-checker/')}>{copy.privacyChecker}</a><a href={hrefFor('/c2pa-viewer/')}>{copy.c2paViewer}</a><a href="/blog/">{copy.blog}</a><a href={hrefFor('/privacy/')}>{copy.privacy}</a><a href={hrefFor('/about/')}>{copy.about}</a></div></div>
   </div>
-  <div class="footer-floor"><span>Built for local processing. No account. No upload.</span><span>© {new Date().getFullYear()} MetadataView</span></div>
+  <div class="footer-floor"><span>{copy.footerFloor}</span><span>© {new Date().getFullYear()} MetadataView</span></div>
 </footer>

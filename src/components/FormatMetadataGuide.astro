@@ -1,13 +1,16 @@
 ---
 import { IconGlyph } from './IconGlyph';
 import type { FormatGuide } from '../content/tools';
+import type { Locale } from '../i18n/core';
 
 interface Props {
   guide: FormatGuide;
   limitations: string[];
+  locale?: Locale;
 }
 
-const { guide, limitations } = Astro.props;
+const { guide, limitations, locale = 'en' } = Astro.props;
+const zh = locale === 'zh-CN';
 ---
 
 <section class="home-benefits format-guide-benefits" aria-labelledby="format-guide-title">
@@ -28,7 +31,7 @@ const { guide, limitations } = Astro.props;
 
 <section class="home-process format-guide-process" aria-labelledby="format-process-title">
   <header>
-    <span class="section-index">LOCAL, STEP BY STEP</span>
+    <span class="section-index">{zh ? '本机处理，一步一步来' : 'LOCAL, STEP BY STEP'}</span>
     <h2 id="format-process-title">{guide.processTitle}</h2>
     <p>{guide.processDescription}</p>
   </header>
@@ -38,7 +41,7 @@ const { guide, limitations } = Astro.props;
     </ol>
     <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>What this report cannot prove</summary>
+      <summary>{zh ? '这份报告不能证明什么' : 'What this report cannot prove'}</summary>
       <ul>{limitations.map((item) => <li>{item}</li>)}</ul>
     </details>
   </div>

@@ -12,8 +12,9 @@ import arrow from '@iconify-icons/lucide/arrow-up-right';
 import chevronDown from '@iconify-icons/lucide/chevron-down';
 import menu from '@iconify-icons/lucide/menu';
 import close from '@iconify-icons/lucide/x';
+import languages from '@iconify-icons/lucide/languages';
 
-const icons = { scan, shield, eraser, badge, fileImage, fileText, film, audio, lock, arrow, chevronDown, menu, close };
+const icons = { scan, shield, eraser, badge, fileImage, fileText, film, audio, lock, arrow, chevronDown, menu, close, languages };
 type IconName = keyof typeof icons;
 interface Props { name: IconName; size?: number; }
 const { name, size = 24 } = Astro.props;

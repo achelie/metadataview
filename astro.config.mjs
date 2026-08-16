@@ -3,9 +3,14 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://www.viewexif.com',
+  site: 'https://www.screentesthub.com',
   output: 'static',
   trailingSlash: 'always',
+  i18n: {
+    locales: ['en', { path: 'zh-cn', codes: ['zh-CN'] }],
+    defaultLocale: 'en',
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

@@ -1,51 +1,62 @@
 ---
 import StaticIcon from './StaticIcon.astro';
+import { localizePath, stripLocale, type Locale } from '../i18n/core';
+import { getMessages } from '../i18n/messages';
 
 const pathname = Astro.url.pathname;
+interface Props { locale?: Locale; translated?: boolean }
+const { locale = 'en', translated = false } = Astro.props;
+const copy = getMessages(locale);
+const basePath = stripLocale(pathname);
+const hrefFor = (href: string) => localizePath(href, locale);
 const viewItems = [
-  { href: '/', label: 'All Formats' },
-  { href: '/image-metadata-viewer/', label: 'Images' },
-  { href: '/video-metadata-viewer/', label: 'Videos' },
-  { href: '/audio-metadata-viewer/', label: 'Audio' },
-  { href: '/document-metadata-viewer/', label: 'Documents' },
+  { href: '/', label: copy.allFormats },
+  { href: '/image-metadata-viewer/', label: copy.images },
+  { href: '/video-metadata-viewer/', label: copy.videos },
+  { href: '/audio-metadata-viewer/', label: copy.audio },
+  { href: '/document-metadata-viewer/', label: copy.documents },
 ];
 const removeItems: Array<{ href: string; label: string }> = [
-  { href: '/metadata-remover/', label: 'All Formats' },
-  { href: '/image-metadata-remover/', label: 'Images' },
-  { href: '/video-metadata-remover/', label: 'Videos' },
-  { href: '/audio-metadata-remover/', label: 'Audio' },
-  { href: '/document-metadata-remover/', label: 'Documents' },
+  { href: '/metadata-remover/', label: copy.allFormats },
+  { href: '/image-metadata-remover/', label: copy.images },
+  { href: '/video-metadata-remover/', label: copy.videos },
+  { href: '/audio-metadata-remover/', label: copy.audio },
+  { href: '/document-metadata-remover/', label: copy.documents },
 ];
-const isCurrent = (href: string) => pathname === href;
-const viewCurrent = pathname === '/' || pathname === '/metadata-viewer/' || pathname === '/image-metadata-viewer/' || pathname === '/video-metadata-viewer/' || pathname === '/audio-metadata-viewer/' || pathname === '/document-metadata-viewer/';
-const removeCurrent = removeItems.some((item) => pathname === item.href);
-const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === 'All Formats' && pathname === '/';
+const isCurrent = (href: string) => basePath === href;
+const viewCurrent = basePath === '/' || basePath === '/metadata-viewer/' || basePath === '/image-metadata-viewer/' || basePath === '/video-metadata-viewer/' || basePath === '/audio-metadata-viewer/' || basePath === '/document-metadata-viewer/';
+const removeCurrent = removeItems.some((item) => basePath === item.href);
+const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.href === '/' && basePath === '/';
+const targetLocale: Locale = locale === 'en' ? 'zh-CN' : 'en';
+const languageTarget = translated ? localizePath(basePath, targetLocale) : localizePath('/', targetLocale);
+const targetLanguageName = targetLocale === 'zh-CN' ? '中文' : 'English';
 ---
 <header class="site-header">
   <div class="header-inner">
-    <a class="brand" href="/" aria-label="Metadata Privacy Toolkit home">
+    <a class="brand" href={hrefFor('/')} aria-label={`MetadataView ${copy.home}`}>
       <span class="brand-mark"><i></i><i></i><i></i></span>
       <span>Metadata<span>View</span></span>
     </a>
-    <nav class="desktop-nav" aria-label="Main navigation">
+    <nav class="desktop-nav" aria-label={copy.mainNavigation}>
       <div class="nav-dropdown" data-nav-dropdown data-open="false">
-        <button class:list={['nav-dropdown-trigger', { 'is-current': viewCurrent }]} type="button" aria-expanded="false">View metadata <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
-        <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label="View metadata by format" aria-hidden="true" inert>
-          {viewItems.map((item) => <a href={item.href} aria-current={isViewItemCurrent(item) ? 'page' : undefined}>{item.label}</a>)}
+        <button class:list={['nav-dropdown-trigger', { 'is-current': viewCurrent }]} type="button" aria-expanded="false">{copy.viewMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
+        <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label={copy.viewMetadata} aria-hidden="true" inert>
+          {viewItems.map((item) => <a href={hrefFor(item.href)} aria-current={isViewItemCurrent(item) ? 'page' : undefined}>{item.label}</a>)}
         </div>
       </div>
-      <a href="/image-privacy-checker/" aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>Check privacy</a>
+      <a href={hrefFor('/image-privacy-checker/')} aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>{copy.checkPrivacy}</a>
       <div class="nav-dropdown" data-nav-dropdown data-open="false">
-        <button class:list={['nav-dropdown-trigger', { 'is-current': removeCurrent }]} type="button" aria-expanded="false">Remove metadata <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
-        <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label="Remove metadata by format" aria-hidden="true" inert>
-          {removeItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}
+        <button class:list={['nav-dropdown-trigger', { 'is-current': removeCurrent }]} type="button" aria-expanded="false">{copy.removeMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
+        <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label={copy.removeMetadata} aria-hidden="true" inert>
+          {removeItems.map((item) => <a href={hrefFor(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}
         </div>
       </div>
-      <a href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
-      <a href="/blog/" aria-current={pathname.startsWith('/blog/') ? 'page' : undefined}>Blog</a>
+      <a href={hrefFor('/c2pa-viewer/')} aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>{copy.verifyC2pa}</a>
+      <a href="/blog/" aria-current={basePath.startsWith('/blog/') ? 'page' : undefined}>{copy.blog}</a>
     </nav>
-    <a class="header-cta" href="/" aria-current={isCurrent('/') ? 'page' : undefined}>View metadata <StaticIcon name="arrow" size={16} /></a>
-    <button class="mobile-menu-trigger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-navigation-drawer" data-mobile-menu-trigger>
+    <a class="language-ticket" href={languageTarget} hreflang={targetLocale} lang={targetLocale} aria-label={`${copy.switchTo} ${targetLanguageName}`}><StaticIcon name="languages" size={15} /><span>{targetLocale === 'zh-CN' ? '中文' : 'EN'}</span></a>
+    <a class="header-cta" href={hrefFor('/')} aria-current={isCurrent('/') ? 'page' : undefined}>{copy.viewMetadata} <StaticIcon name="arrow" size={16} /></a>
+    <button class="mobile-menu-trigger" type="button" aria-label={copy.openNavigation} aria-expanded="false" aria-controls="mobile-navigation-drawer" data-mobile-menu-trigger data-open-label={copy.openNavigation} data-close-label={copy.closeNavigation}>
       <span class="t-icon-swap" data-state="a" aria-hidden="true">
         <span class="t-icon" data-icon="a"><StaticIcon name="menu" size={25} /></span>
         <span class="t-icon" data-icon="b"><StaticIcon name="close" size={25} /></span>
@@ -55,22 +66,26 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
 </header>
 
 <div class="mobile-menu-layer" data-mobile-menu-layer data-open="false" aria-hidden="true" inert>
-  <button class="mobile-menu-backdrop" type="button" tabindex="-1" aria-label="Close navigation" data-mobile-menu-backdrop></button>
+  <button class="mobile-menu-backdrop" type="button" tabindex="-1" aria-label={copy.closeNavigation} data-mobile-menu-backdrop></button>
   <div class="mobile-menu-rail">
-    <nav id="mobile-navigation-drawer" class="mobile-menu-drawer t-panel-slide" data-open="false" aria-label="Mobile navigation">
-      <h2>Navigation</h2>
+    <nav id="mobile-navigation-drawer" class="mobile-menu-drawer t-panel-slide" data-open="false" aria-label={copy.mobileNavigation}>
+      <h2>{copy.navigation}</h2>
+      <div class="mobile-language-switch" aria-label={copy.language}>
+        <a href={translated ? localizePath(basePath, 'en') : '/'} hreflang="en" lang="en" aria-current={locale === 'en' ? 'true' : undefined}>EN</a>
+        <a href={translated ? localizePath(basePath, 'zh-CN') : '/zh-cn/'} hreflang="zh-CN" lang="zh-CN" aria-current={locale === 'zh-CN' ? 'true' : undefined}>中文</a>
+      </div>
       <div class="mobile-nav-list">
         <div class="mobile-nav-group t-acc" data-mobile-accordion data-open="false">
-          <button class="t-acc-head" type="button" aria-expanded="false">View metadata <span class="t-acc-chevron"><StaticIcon name="chevronDown" size={17} /></span></button>
-          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{viewItems.map((item) => <a href={item.href} aria-current={isViewItemCurrent(item) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
+          <button class="t-acc-head" type="button" aria-expanded="false">{copy.viewMetadata} <span class="t-acc-chevron"><StaticIcon name="chevronDown" size={17} /></span></button>
+          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{viewItems.map((item) => <a href={hrefFor(item.href)} aria-current={isViewItemCurrent(item) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
         </div>
-        <a class="mobile-nav-link" href="/image-privacy-checker/" aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>Check privacy</a>
+        <a class="mobile-nav-link" href={hrefFor('/image-privacy-checker/')} aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>{copy.checkPrivacy}</a>
         <div class="mobile-nav-group t-acc" data-mobile-accordion data-open="false">
-          <button class="t-acc-head" type="button" aria-expanded="false">Remove metadata <span class="t-acc-chevron"><StaticIcon name="chevronDown" size={17} /></span></button>
-          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{removeItems.map((item) => <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
+          <button class="t-acc-head" type="button" aria-expanded="false">{copy.removeMetadata} <span class="t-acc-chevron"><StaticIcon name="chevronDown" size={17} /></span></button>
+          <div class="t-acc-panel" aria-hidden="true" inert><div class="t-acc-panel-inner"><div>{removeItems.map((item) => <a href={hrefFor(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}</div></div></div>
         </div>
-        <a class="mobile-nav-link" href="/c2pa-viewer/" aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>Verify C2PA</a>
-        <a class="mobile-nav-link" href="/blog/" aria-current={pathname.startsWith('/blog/') ? 'page' : undefined}>Blog</a>
+        <a class="mobile-nav-link" href={hrefFor('/c2pa-viewer/')} aria-current={isCurrent('/c2pa-viewer/') ? 'page' : undefined}>{copy.verifyC2pa}</a>
+        <a class="mobile-nav-link" href="/blog/" aria-current={basePath.startsWith('/blog/') ? 'page' : undefined}>{copy.blog}</a>
       </div>
     </nav>
   </div>
@@ -124,7 +139,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.label === '
     mobileLayer.setAttribute('aria-hidden', String(!open));
     mobileLayer.inert = !open;
     mobileTrigger.setAttribute('aria-expanded', String(open));
-    mobileTrigger.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    mobileTrigger.setAttribute('aria-label', open ? mobileTrigger.dataset.closeLabel || 'Close navigation' : mobileTrigger.dataset.openLabel || 'Open navigation');
     mobileTrigger.querySelector<HTMLElement>('.t-icon-swap')?.setAttribute('data-state', open ? 'b' : 'a');
     document.body.classList.toggle('nav-drawer-open', open);
     if (open) window.setTimeout(() => mobileAccordions[0]?.querySelector<HTMLButtonElement>('.t-acc-head')?.focus(), 50);
