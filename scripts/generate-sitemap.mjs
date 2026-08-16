@@ -2,7 +2,7 @@ import { readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const distDir = path.resolve('dist');
-const productionOrigin = 'https://www.screentesthub.com';
+const productionOrigin = 'https://www.viewexif.com';
 const legacySitemaps = ['sitemap-index.xml', 'sitemap-0.xml'];
 
 async function filesUnder(directory) {

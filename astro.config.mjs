@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://www.screentesthub.com',
+  site: 'https://www.viewexif.com',
   output: 'static',
   trailingSlash: 'always',
   i18n: {

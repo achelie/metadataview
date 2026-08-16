@@ -2,8 +2,8 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const distDir = path.resolve('dist');
-const productionOrigin = 'https://www.screentesthub.com';
-const legacyOrigin = 'https://www.viewexif.com';
+const productionOrigin = 'https://www.viewexif.com';
+const legacyOrigin = 'https://www.screentesthub.com';
 const retiredOrigin = 'https://achelie-metadataview.pages.dev';
 const legacySitemaps = ['sitemap-index.xml', 'sitemap-0.xml'];
 

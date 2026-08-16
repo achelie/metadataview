@@ -13,9 +13,9 @@ test('Chinese home and every translated route are generated with reciprocal SEO 
     expect(response?.ok(), zhPath).toBe(true);
     await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
     await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.screentesthub.com${zhPath}`);
-    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', `https://www.screentesthub.com${path}`);
-    await expect(page.locator('link[rel="alternate"][hreflang="zh-CN"]')).toHaveAttribute('href', `https://www.screentesthub.com${zhPath}`);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${zhPath}`);
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', `https://www.viewexif.com${path}`);
+    await expect(page.locator('link[rel="alternate"][hreflang="zh-CN"]')).toHaveAttribute('href', `https://www.viewexif.com${zhPath}`);
   }
 });
 

@@ -4,7 +4,7 @@ Inspect, understand, and remove file metadata without sending the file to an ana
 
 ## Try it online
 
-**[Open MetadataView at www.screentesthub.com](https://www.screentesthub.com/)**
+**[Open MetadataView at www.viewexif.com](https://www.viewexif.com/)**
 
 MetadataView is a static, browser-based toolkit for images, video, audio, and documents. It checks the real file signature, reads available metadata in a local Worker, and builds a searchable report in the current tab. There is no account, upload endpoint, cloud file history, or server-side parser.
 
@@ -12,7 +12,7 @@ MetadataView is a static, browser-based toolkit for images, video, audio, and do
 
 ### View metadata
 
-The universal [Metadata Viewer](https://www.screentesthub.com/) supports 28 common file formats. It shows a readable summary and the complete native field list without hiding unfamiliar tags.
+The universal [Metadata Viewer](https://www.viewexif.com/) supports 28 common file formats. It shows a readable summary and the complete native field list without hiding unfamiliar tags.
 
 - Search and filter readable and native metadata fields
 - Review EXIF, GPS, XMP, IPTC, ICC, media tags, document properties, and container data
@@ -20,11 +20,11 @@ The universal [Metadata Viewer](https://www.screentesthub.com/) supports 28 comm
 - Copy individual fields or export safe JSON and PDF reports
 - Load ExifTool WebAssembly only after a file is selected
 
-Format-specific viewers are available for [images](https://www.screentesthub.com/image-metadata-viewer/), [video](https://www.screentesthub.com/video-metadata-viewer/), [audio](https://www.screentesthub.com/audio-metadata-viewer/), and [documents](https://www.screentesthub.com/document-metadata-viewer/).
+Format-specific viewers are available for [images](https://www.viewexif.com/image-metadata-viewer/), [video](https://www.viewexif.com/video-metadata-viewer/), [audio](https://www.viewexif.com/audio-metadata-viewer/), and [documents](https://www.viewexif.com/document-metadata-viewer/).
 
 ### Check image privacy
 
-The [Image Privacy Checker](https://www.screentesthub.com/image-privacy-checker/) turns hidden JPEG, PNG, and WebP fields into an explainable 0 to 100 risk score.
+The [Image Privacy Checker](https://www.viewexif.com/image-privacy-checker/) turns hidden JPEG, PNG, and WebP fields into an explainable 0 to 100 risk score.
 
 - Checks GPS, names, contact details, device identifiers, edit history, persistent IDs, thumbnails, and previews
 - Separates file metadata from operating-system and ExifTool runtime fields
@@ -34,7 +34,7 @@ The [Image Privacy Checker](https://www.screentesthub.com/image-privacy-checker/
 
 ### Remove metadata
 
-The [Metadata Remover](https://www.screentesthub.com/metadata-remover/) supports the same image, video, audio, and document families as the universal viewer.
+The [Metadata Remover](https://www.viewexif.com/metadata-remover/) supports the same image, video, audio, and document families as the universal viewer.
 
 - Chooses a cleanup engine from the verified file signature, not just the extension
 - Removes writable identity, location, software, date, and custom fields without deliberately transcoding the content
@@ -42,11 +42,11 @@ The [Metadata Remover](https://www.screentesthub.com/metadata-remover/) supports
 - Reports removed, preserved, and residual metadata separately
 - Produces a safe JSON cleanup receipt and keeps the original file unchanged
 
-Dedicated removers are available for [images](https://www.screentesthub.com/image-metadata-remover/), [video](https://www.screentesthub.com/video-metadata-remover/), [audio](https://www.screentesthub.com/audio-metadata-remover/), and [documents](https://www.screentesthub.com/document-metadata-remover/).
+Dedicated removers are available for [images](https://www.viewexif.com/image-metadata-remover/), [video](https://www.viewexif.com/video-metadata-remover/), [audio](https://www.viewexif.com/audio-metadata-remover/), and [documents](https://www.viewexif.com/document-metadata-remover/).
 
 ### Verify C2PA Content Credentials
 
-The [C2PA Viewer](https://www.screentesthub.com/c2pa-viewer/) uses the official `@contentauth/c2pa-web` verifier in a local Worker.
+The [C2PA Viewer](https://www.viewexif.com/c2pa-viewer/) uses the official `@contentauth/c2pa-web` verifier in a local Worker.
 
 - Validates the manifest structure, signature, and file binding
 - Keeps `Valid` separate from publisher trust instead of collapsing both into one badge
@@ -58,7 +58,7 @@ A valid C2PA signature proves that the signed credential still matches the curre
 
 ### Read practical guides
 
-The [MetadataView Blog](https://www.screentesthub.com/blog/) answers common file privacy questions in plain English and links each problem to the relevant local tool.
+The [MetadataView Blog](https://www.viewexif.com/blog/) answers common file privacy questions in plain English and links each problem to the relevant local tool.
 
 ## Supported formats
 
@@ -158,7 +158,7 @@ pnpm build
 
 ## Deploy
 
-The production site runs on Cloudflare Pages at **[www.screentesthub.com](https://www.screentesthub.com/)**.
+The production site runs on Cloudflare Pages at **[www.viewexif.com](https://www.viewexif.com/)**.
 
 ```text
 Build command: pnpm build
@@ -189,4 +189,4 @@ No server runtime or application secrets are required.
 
 ## Website
 
-Use the complete hosted toolkit at **[https://www.screentesthub.com/](https://www.screentesthub.com/)**.
+Use the complete hosted toolkit at **[https://www.viewexif.com/](https://www.viewexif.com/)**.
