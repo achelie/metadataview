@@ -10,14 +10,14 @@ const posts = sortBlogPosts(await getCollection('blog'));
 validateBlogRelationships(posts);
 const { featured, pages, pageCount } = paginateBlogPosts(posts);
 const latest = pages[0] ?? [];
-const title = 'Metadata Privacy Guides | MetadataView Blog';
+const title = 'Metadata Privacy Guides | ViewExif';
 const description = 'Plain-English guides to image metadata, EXIF privacy, file provenance, and making cleaner copies before you share.';
 const pageUrl = new URL('/blog/', Astro.site).toString();
 const schemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'MetadataView Blog',
+    name: 'ViewExif',
     description,
     url: pageUrl,
     mainEntity: {

@@ -92,8 +92,8 @@ test('mobile navigation exposes the current Blog route', async ({ page }) => {
 test('article renders the byline, concise contents, practical take, FAQ, and tool links', async ({ page }) => {
   await page.goto(ARTICLE_PATH);
   await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
-  await expect(page.getByText('MetadataView Editorial Team', { exact: true })).toBeVisible();
-  await expect(page.getByText('MetadataView product engineering', { exact: true })).toBeVisible();
+  await expect(page.getByText('ViewExif Editorial Team', { exact: true })).toBeVisible();
+  await expect(page.getByText('ViewExif Product Engineering', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-09/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /hand using a smartphone/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -126,7 +126,7 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   const breadcrumb = schemas.find((schema) => schema['@type'] === 'BreadcrumbList');
   expect(posting.headline).toBe(ARTICLE_TITLE);
-  expect(posting.author.name).toBe('MetadataView Editorial Team');
+  expect(posting.author.name).toBe('ViewExif Editorial Team');
   expect(faq.mainEntity).toHaveLength(5);
   expect(breadcrumb.itemListElement).toHaveLength(3);
   const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();

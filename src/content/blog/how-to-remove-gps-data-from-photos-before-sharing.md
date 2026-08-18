@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-17
 updatedAt: 2026-08-17
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/how-to-remove-gps-data-from-photos-before-sharing.webp"
 coverAlt: "Hands holding a smartphone over a paper city map before removing GPS data from a photo"
 practicalTake:

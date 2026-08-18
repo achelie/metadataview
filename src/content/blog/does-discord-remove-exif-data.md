@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-12
 updatedAt: 2026-08-12
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/does-discord-remove-exif-data.webp"
 coverAlt: "Person holding a smartphone beside a computer while using a chat app"
 practicalTake:

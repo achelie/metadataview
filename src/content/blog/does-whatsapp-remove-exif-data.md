@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-10
 updatedAt: 2026-08-10
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/does-whatsapp-remove-exif-data.webp"
 coverAlt: "A smartphone screen showing the WhatsApp and Signal messaging app icons"
 practicalTake:

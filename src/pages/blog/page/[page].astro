@@ -18,13 +18,13 @@ export async function getStaticPaths() {
 
 const { posts, page, pageCount } = Astro.props;
 const path = `/blog/page/${page}/`;
-const description = `MetadataView guides about metadata privacy and file provenance, page ${page}.`;
+const description = `ViewExif guides about metadata privacy and file provenance, page ${page}.`;
 const pageUrl = new URL(path, Astro.site).toString();
 const schemas = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `MetadataView Blog, page ${page}`,
+    name: `ViewExif, page ${page}`,
     description,
     url: pageUrl,
     mainEntity: {
@@ -48,9 +48,9 @@ const schemas = [
   },
 ];
 ---
-<BaseLayout title={`Metadata Privacy Guides — Page ${page} | MetadataView`} description={description} path={path} schemas={schemas}>
+<BaseLayout title={`Metadata Privacy Guides — Page ${page} | ViewExif`} description={description} path={path} schemas={schemas}>
   <div class="blog-index blog-index--paged page-shell">
-    <header class="blog-index__header"><div><span class="blog-kicker">MetadataView field notes</span><h1>Latest metadata guides.</h1></div><p>Page {page} of {pageCount}. Practical explanations, no mystery-meat security claims.</p></header>
+    <header class="blog-index__header"><div><span class="blog-kicker">ViewExif field notes</span><h1>Latest metadata guides.</h1></div><p>Page {page} of {pageCount}. Practical explanations, no mystery-meat security claims.</p></header>
     <section class="blog-latest" aria-labelledby="latest-posts-title">
       <div class="blog-section-heading"><h2 id="latest-posts-title">Latest posts</h2><a href="/blog/">Back to featured guide</a></div>
       <div class="blog-latest__grid">{posts.map((post) => <BlogPostCard post={post} />)}</div>
