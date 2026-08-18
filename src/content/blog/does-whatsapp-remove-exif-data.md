@@ -32,8 +32,8 @@ faqs:
     answer: "No. It records when a message was sent or received, not when the camera made the photo. An older image can be shared in a new message at any time."
 related:
   - does-instagram-remove-exif-data
+  - does-telegram-remove-exif-data
   - does-discord-remove-exif-data
-  - do-screenshots-have-metadata
 ---
 
 Does WhatsApp remove EXIF data? Usually, when you send the image as a normal photo. It arrives as a new chat image, commonly without the original camera tags or GPS coordinates.

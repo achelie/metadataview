@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MetadataReportWorkbench from '../MetadataReportWorkbench';
+import { IconGlyph } from '../IconGlyph';
+import { canonicalUrl } from '../../lib/seo';
+import { localizePath, type Locale } from '../../i18n/core';
+import { homeCopy } from '../../i18n/home';
+
+interface Props { locale?: Locale }
+const { locale = 'en' } = Astro.props;
+const copy = homeCopy[locale];
+const hrefFor = (href: string) => localizePath(href, locale);
+const homePath = hrefFor('/');
+const homeUrl = canonicalUrl(homePath, Astro.site);
+const schemas = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description: copy.description, inLanguage: locale },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: locale === 'zh-CN' ? '元数据查看器' : locale === 'de' ? 'Metadaten-Viewer' : 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: locale === 'zh-CN' ? ['读取 28 种常见文件格式', '搜索原生元数据字段', '导出 JSON 与 PDF 报告', '只在浏览器本地处理文件'] : locale === 'de' ? ['28 gängige Dateiformate lesen', 'Native Metadatenfelder durchsuchen', 'JSON- und PDF-Berichte exportieren', 'Dateien lokal im Browser verarbeiten'] : ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: copy.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
+];
+const formatHrefs = ['/image-metadata-viewer/', '/video-metadata-viewer/', '/document-metadata-viewer/', '/audio-metadata-viewer/'];
+const benefitHrefs = ['/image-privacy-checker/', '/c2pa-viewer/', '/metadata-remover/'];
+const benefitIcons = ['shield', 'badge', 'eraser'] as const;
+---
+<BaseLayout title={copy.title} description={copy.description} path={homePath} schemas={schemas} locale={locale} translated>
+  <div class="home-shell home-tool-first">
+    <section class="home-tool-intro" aria-labelledby="home-title">
+      <div class="home-intro-rail"><span>{copy.rail}</span><i></i></div>
+      <div><span class="eyebrow">{copy.eyebrow}</span><h1 id="home-title">{copy.heading}</h1><p>{copy.intro}</p></div>
+      <aside><strong>100 MB</strong><span>{copy.limit}</span></aside>
+    </section>
+
+    <MetadataReportWorkbench client:load placement="home" scope="all" locale={locale} formats={locale === 'zh-CN' ? '图片 · 视频 · 文档 · 音频' : locale === 'de' ? 'Bilder · Videos · Dokumente · Audio' : 'Images · Videos · Documents · Audio'} accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
+
+    <nav class="home-format-links" aria-label={locale === 'zh-CN' ? '按文件格式选择元数据查看器' : locale === 'de' ? 'Metadaten-Viewer nach Dateiformat' : 'Metadata viewers by file format'}>
+      <span class="section-index">{copy.formatsLabel}</span>
+      {copy.formats.map((item, index) => <a href={hrefFor(formatHrefs[index] ?? '/')}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
+    </nav>
+
+    <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
+      <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><div><h2 id="home-exif-title">{copy.exifTitle}</h2><p>{copy.exifIntro}</p></div></header>
+    </section>
+
+    <section class="home-benefits" aria-labelledby="home-benefits-title">
+      <header class="home-section-heading"><span class="section-index">{copy.benefitsLabel}</span><div><h2 id="home-benefits-title">{copy.benefitsTitle}</h2><p>{copy.benefitsIntro}</p></div></header>
+      <div class="home-benefit-grid">{copy.benefits.map((item, index) => <a href={hrefFor(benefitHrefs[index] ?? '/')}><span class="home-benefit-icon"><IconGlyph name={benefitIcons[index] ?? 'scan'} size={25} /></span><small>{item.eyebrow}</small><h3>{item.label}</h3><p>{item.note}</p><strong>{copy.openTool} <IconGlyph name="arrow" size={15} /></strong></a>)}</div>
+    </section>
+
+    <section class="home-process" aria-labelledby="home-process-title">
+      <header><span class="section-index">{copy.processLabel}</span><h2 id="home-process-title">{copy.processTitle}</h2><p>{copy.processIntro}</p></header>
+      <div class="home-process-body"><ol class="home-process-list">{copy.process.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}</ol><p class="home-process-cta"><span>{copy.ready}</span><a href="#metadata-workbench-home">{copy.chooseAbove} <IconGlyph name="arrow" size={15} /></a></p></div>
+    </section>
+
+    <section class="home-faq expanded-faq" aria-labelledby="home-faq-title"><div class="expanded-faq-inner"><h2 id="home-faq-title">{copy.faqTitle}</h2><div class="expanded-faq-list">{copy.faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section>
+  </div>
+</BaseLayout>

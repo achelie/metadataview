@@ -17,6 +17,7 @@ import { JsonViewer } from './JsonViewer';
 import { MetadataSections } from './MetadataSections';
 import { PrivacyRiskList } from './PrivacyRiskList';
 import { PrivacyScore } from './PrivacyScore';
+import type { Locale } from '../i18n/core';
 
 export type ToolMode = 'metadata' | 'privacy' | 'remover';
 
@@ -25,6 +26,7 @@ interface Props {
   formats: string;
   accept: string;
   allowedTypes?: DetectedFileType[];
+  locale?: Locale;
 }
 
 interface PrivacyWorkerResult { metadata: ParsedMetadata; report: PrivacyReport }

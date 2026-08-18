@@ -1,13 +1,17 @@
 import { CopyButton } from '../CopyButton';
 import type { PrivacyRisk } from '../../lib/privacy/types';
+import type { Locale } from '../../i18n/core';
+import { localizePrivacyRisk, privacyCategoryLabels, privacySeverityLabels } from '../../i18n/privacy';
 
-const categoryLabels: Record<PrivacyRisk['category'], string> = { location: 'Location', device: 'Device', identity: 'Identity', time: 'Time', editing: 'Editing', thumbnail: 'Thumbnail', 'document-history': 'Document history', other: 'Other' };
-
-export function PrivacyRiskCard({ risk }: { risk: PrivacyRisk }) {
+export function PrivacyRiskCard({ risk, locale = 'en' }: { risk: PrivacyRisk; locale?: Locale }) {
+  const zh = locale === 'zh-CN';
+  const de = locale === 'de';
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const copy = localizePrivacyRisk(risk, locale);
   return <article className={`privacy-risk-card severity-${risk.severity}`} id={`risk-${risk.id}`}>
-    <header><div><span>{risk.severity} · {categoryLabels[risk.category]}</span><h3>{risk.title}</h3></div><strong>+{risk.score}</strong></header>
-    <div className="privacy-risk-copy"><div><span>Why this matters</span><p>{risk.description}</p></div><div><span>Recommended action</span><p>{risk.recommendation}</p></div></div>
-    <details><summary>Review {risk.fields.length} detected {risk.fields.length === 1 ? 'field' : 'fields'}</summary><div className="privacy-detected-fields">{risk.fields.map((field, index) => <div key={`${field.path}-${index}`}><div><strong>{field.label}</strong><small>{field.groupPath ?? field.category}{field.tagId !== undefined ? ` · tag ${field.tagId}` : ''}</small><small title={field.path}>{field.path}</small></div><code>{field.displayValue}</code><div><CopyButton value={field.displayValue} label={`Copy ${field.masked ? 'masked ' : ''}value`} /><small>{field.source ?? field.origin}</small></div></div>)}</div></details>
-    <footer><span>{risk.combination ? 'Combined signal' : 'Metadata evidence'}</span><b>{risk.removable ? 'Cleanup candidate' : 'Review manually'}</b></footer>
+    <header><div><span>{privacySeverityLabels[locale][risk.severity]} · {privacyCategoryLabels[locale][risk.category]}</span><h3>{copy.title}</h3></div><strong>+{risk.score}</strong></header>
+    <div className="privacy-risk-copy"><div><span>{t('Why this matters', '为什么需要注意', 'Warum das wichtig ist')}</span><p>{copy.description}</p></div><div><span>{t('Recommended action', '建议怎么做', 'Empfohlene Maßnahme')}</span><p>{copy.recommendation}</p></div></div>
+    <details><summary>{t(`Review ${risk.fields.length} detected ${risk.fields.length === 1 ? 'field' : 'fields'}`, `查看检出的 ${risk.fields.length} 个字段`, `${risk.fields.length.toLocaleString(locale)} erkannte ${risk.fields.length === 1 ? 'Feld' : 'Felder'} prüfen`)}</summary><div className="privacy-detected-fields">{risk.fields.map((field, index) => <div key={`${field.path}-${index}`}><div><strong>{field.label}</strong><small>{field.groupPath ?? field.category}{field.tagId !== undefined ? ` · tag ${field.tagId}` : ''}</small><small title={field.path}>{field.path}</small></div><code>{field.displayValue}</code><div><CopyButton value={field.displayValue} label={t(`Copy ${field.masked ? 'masked ' : ''}value`, `复制${field.masked ? '已遮罩' : ''}数值`, `${field.masked ? 'Maskierten ' : ''}Wert kopieren`)} /><small>{field.source ?? field.origin}</small></div></div>)}</div></details>
+    <footer><span>{risk.combination ? t('Combined signal', '组合信号', 'Kombiniertes Signal') : t('Metadata evidence', '元数据证据', 'Metadaten-Nachweis')}</span><b>{risk.removable ? t('Cleanup candidate', '可清理', 'Bereinigungskandidat') : t('Review manually', '需手动检查', 'Manuell prüfen')}</b></footer>
   </article>;
 }

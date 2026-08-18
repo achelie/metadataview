@@ -1,0 +1,17 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ContentPage from '../../components/pages/ContentPage.astro';
+import { getTool, toolSlugs, type ToolKey } from '../../content/tools-i18n';
+
+type PageProps = { kind: 'tool'; key: ToolKey } | { kind: 'content'; key: 'about' | 'privacy' };
+
+export function getStaticPaths() {
+  const toolPaths = Object.entries(toolSlugs).map(([slug, key]) => ({ params: { slug }, props: { kind: 'tool', key } satisfies PageProps }));
+  const contentPaths = ['about', 'privacy'].map((key) => ({ params: { slug: key }, props: { kind: 'content', key } as PageProps }));
+  return [...toolPaths, ...contentPaths];
+}
+
+const page = Astro.props as PageProps;
+const tool = page.kind === 'tool' ? getTool(page.key, 'zh-CN') : undefined;
+---
+{page.kind === 'tool' && tool ? <ToolLayout {...tool} locale="zh-CN" /> : page.kind === 'content' ? <ContentPage kind={page.key} locale="zh-CN" /> : null}

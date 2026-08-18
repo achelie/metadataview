@@ -6,6 +6,11 @@ export default defineConfig({
   site: 'https://www.viewexif.com',
   output: 'static',
   trailingSlash: 'always',
+  i18n: {
+    locales: ['en', { path: 'de', codes: ['de'] }, { path: 'zh-cn', codes: ['zh-CN'] }],
+    defaultLocale: 'en',
+    routing: { prefixDefaultLocale: false },
+  },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

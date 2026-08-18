@@ -173,6 +173,8 @@ pnpm build
 pnpm deploy:pages
 ```
 
+For a production release, push the intentional commit to GitHub first, then run `pnpm release` from that checkout. The release command rebuilds the static site, rechecks sitemap and indexability, and uploads `dist/` to the production Pages branch.
+
 No server runtime or application secrets are required.
 
 ## Important limits

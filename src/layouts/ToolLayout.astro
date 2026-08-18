@@ -14,6 +14,7 @@ import { canonicalUrl } from '../lib/seo';
 import type { FormatGuide } from '../content/tools';
 import type { DetectedFileType } from '../lib/metadata/types';
 import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
+import { localizePath, type Locale } from '../i18n/core';
 
 interface Faq { question: string; answer: string }
 interface Related { href: string; title: string; note: string }
@@ -29,30 +30,35 @@ interface Props {
   formatGuide?: FormatGuide;
   faqDisplay?: 'accordion' | 'expanded';
   limitations: string[]; faqs: Faq[]; related: Related[];
+  locale?: Locale;
 }
 const props = Astro.props;
+const locale = props.locale ?? 'en';
+const zh = locale === 'zh-CN';
+const de = locale === 'de';
+const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
 const canonical = canonicalUrl(props.path, Astro.site);
 const faqDisplay = props.faqDisplay ?? 'accordion';
 const visibleFaqs = props.faqs.slice(0, props.productionC2paViewer ? 6 : faqDisplay === 'expanded' ? 5 : 4);
 const schemas = [
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Any modern browser', url: canonical, description: props.description, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
-  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: visibleFaqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
-  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', canonical).toString() }, { '@type': 'ListItem', position: 2, name: props.title, item: canonical }] },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: t('Any modern browser', '现代浏览器', 'Jeder moderne Browser'), url: canonical, description: props.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: visibleFaqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: t('Home', '首页', 'Startseite'), item: new URL(localizePath('/', locale), canonical).toString() }, { '@type': 'ListItem', position: 2, name: props.title, item: canonical }] },
 ];
 ---
-<BaseLayout title={props.metaTitle} description={props.description} path={props.path} schemas={schemas}>
+<BaseLayout title={props.metaTitle} description={props.description} path={props.path} schemas={schemas} locale={locale} translated>
   <div class="page-shell">
-    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>{props.title}</span></nav>
+    <nav class="breadcrumbs" aria-label={t('Breadcrumb', '面包屑导航', 'Brotkrümelnavigation')}><a href={localizePath('/', locale)}>{t('Home', '首页', 'Startseite')}</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} />
-    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
-    {props.productionC2paViewer ? <C2paEducation faqs={visibleFaqs} /> : <>
-      {props.formatGuide ? <FormatMetadataGuide guide={props.formatGuide} limitations={props.limitations} /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
-        <header><span class="section-index">WHAT IT CHECKS</span><h2 id="tool-notes-title">Useful details, without the lecture.</h2></header>
+    {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" locale={locale} scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load locale={locale} /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load locale={locale} scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load locale={locale} formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load locale={locale} mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    {props.productionC2paViewer ? <C2paEducation locale={locale} faqs={visibleFaqs} /> : <>
+      {props.formatGuide ? <FormatMetadataGuide locale={locale} guide={props.formatGuide} limitations={props.limitations} /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo locale={locale} /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
+        <header><span class="section-index">{t('WHAT IT CHECKS', '检查内容', 'WAS ES PRÜFT')}</span><h2 id="tool-notes-title">{t('Useful details, without the lecture.', '有用的细节，不上课。', 'Nützliche Details, ohne Vorlesung.')}</h2></header>
         <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
-        <details class="tool-limitations"><summary>What this result cannot prove</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
+        <details class="tool-limitations"><summary>{t('What this result cannot prove', '这个结果不能证明什么', 'Was dieses Ergebnis nicht beweist')}</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
       </section>}
-      {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">Frequently asked questions</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>Quick answers</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>}
-      {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">KEEP GOING</span><h2>Related tools</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
+      {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen')}</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>{t('Quick answers', '快速回答', 'Kurze Antworten')}</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>}
+      {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">{t('KEEP GOING', '继续看看', 'WEITERGEHEN')}</span><h2>{t('Related tools', '相关工具', 'Verwandte Tools')}</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
     </>}
   </div>
 </BaseLayout>

@@ -1,41 +1,45 @@
 ---
 import { C2PA_FORMAT_GROUPS } from '../lib/c2pa/formats';
+import type { Locale } from '../i18n/core';
 
 interface Faq { question: string; answer: string }
-interface Props { faqs: Faq[] }
-const { faqs } = Astro.props;
+interface Props { faqs: Faq[]; locale?: Locale }
+const { faqs, locale = 'en' } = Astro.props;
+const zh = locale === 'zh-CN';
+const de = locale === 'de';
+const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
 ---
 
 <section class="c2pa-education" aria-labelledby="c2pa-about-title">
   <div class="c2pa-education-inner">
     <article class="c2pa-chapter">
-      <span class="c2pa-chapter-index">01 / OPEN STANDARD</span>
-      <h2 id="c2pa-about-title">What is C2PA?</h2>
+      <span class="c2pa-chapter-index">01 / {t('OPEN STANDARD', '开放标准', 'OFFENER STANDARD')}</span>
+      <h2 id="c2pa-about-title">{t('What is C2PA?', 'C2PA 是什么？', 'Was ist C2PA?')}</h2>
       <div class="c2pa-chapter-copy">
-        <p><a href="https://c2pa.org/" rel="noreferrer">C2PA</a> is an open technical standard for recording where digital content came from and how it changed. A credential can name the tool that created a file, the edits that followed, and the source material used along the way.</p>
-        <p>The history lives in a signed manifest embedded in, or associated with, the asset. This page reads embedded credentials only. It does not contact a remote manifest service, trust list, or certificate revocation service.</p>
-        <p>Plenty of genuine files have no C2PA data. “Nothing found” means exactly that—not “fake,” “AI,” or “untrustworthy.”</p>
+        <p>{zh ? <><a href="https://c2pa.org/" rel="noreferrer">C2PA</a> 是记录数字内容来源和修改过程的开放技术标准。凭证可以说明创建文件的工具、之后的编辑操作，以及途中使用的素材。</> : de ? <><a href="https://c2pa.org/" rel="noreferrer">C2PA</a> ist ein offener technischer Standard, der Herkunft und Änderungen digitaler Inhalte festhält. Ein Credential kann das Erstellungswerkzeug, spätere Bearbeitungen und verwendete Ausgangsmaterialien nennen.</> : <><a href="https://c2pa.org/" rel="noreferrer">C2PA</a> is an open technical standard for recording where digital content came from and how it changed. A credential can name the tool that created a file, the edits that followed, and the source material used along the way.</>}</p>
+        <p>{t('The history lives in a signed manifest embedded in, or associated with, the asset. This page reads embedded credentials only. It does not contact a remote manifest service, trust list, or certificate revocation service.', '这段历史存在嵌入资源或与资源关联的签名清单中。本页只读取内嵌凭证，不会联系远程清单服务、信任列表或证书吊销服务。', 'Dieser Verlauf steckt in einem signierten Manifest, das in die Datei eingebettet oder mit ihr verknüpft ist. Diese Seite liest nur eingebettete Credentials und kontaktiert weder Manifestdienst noch Trust List oder Sperrservice.')}</p>
+        <p>{t('Plenty of genuine files have no C2PA data. “Nothing found” means exactly that—not “fake,” “AI,” or “untrustworthy.”', '很多真实文件没有 C2PA 数据。“什么都没找到”就只是没找到，不等于“造假”“AI”或“不可信”。', 'Viele echte Dateien enthalten keine C2PA-Daten. „Nichts gefunden“ bedeutet genau das – nicht „gefälscht“, „KI“ oder „nicht vertrauenswürdig“.')}</p>
       </div>
     </article>
 
     <article class="c2pa-chapter">
       <span class="c2pa-chapter-index">02 / CONTENT CREDENTIALS</span>
-      <h2>Content Credentials and C2PA</h2>
+      <h2>{t('Content Credentials and C2PA', '内容凭证与 C2PA', 'Content Credentials und C2PA')}</h2>
       <div class="c2pa-chapter-copy">
-        <p>Content Credentials are the public-facing name for C2PA provenance—think of them as a nutrition label for a digital file. They can list creation and editing actions, ingredients, software, dates, and the signer responsible for the claim.</p>
-        <p>Unlike ordinary EXIF or XMP labels, the claim is cryptographically signed and bound to a specific asset. Change protected bytes or the credential and validation should fail. Remove the credential and this local verifier can no longer inspect it.</p>
-        <p>A valid result proves that the credential still binds to this file. It does not prove that every statement, sound, or visible scene is true.</p>
+        <p>{t('Content Credentials are the public-facing name for C2PA provenance—think of them as a nutrition label for a digital file. They can list creation and editing actions, ingredients, software, dates, and the signer responsible for the claim.', 'Content Credentials 是 C2PA 来源信息面向普通用户的名字，可以把它理解成数字文件的“成分表”。它能列出创建与编辑操作、素材、软件、日期和声明签名者。', 'Content Credentials sind der öffentliche Name für C2PA-Herkunftsdaten – eine Art Zutatenliste für digitale Dateien. Sie können Erstellung, Bearbeitungen, verwendete Materialien, Software, Daten und den Unterzeichner nennen.')}</p>
+        <p>{t('Unlike ordinary EXIF or XMP labels, the claim is cryptographically signed and bound to a specific asset. Change protected bytes or the credential and validation should fail. Remove the credential and this local verifier can no longer inspect it.', '与普通 EXIF 或 XMP 标签不同，声明经过加密签名并绑定到特定资源。修改受保护字节或凭证后，验证理应失败；删除凭证后，本地验证器也就无从检查。', 'Anders als gewöhnliche EXIF- oder XMP-Tags ist die Aussage kryptografisch signiert und an eine bestimmte Datei gebunden. Werden geschützte Bytes oder das Credential verändert, muss die Prüfung scheitern. Wird es entfernt, kann dieser lokale Verifier nichts mehr prüfen.')}</p>
+        <p>{t('A valid result proves that the credential still binds to this file. It does not prove that every statement, sound, or visible scene is true.', '有效结果证明凭证仍然绑定到当前文件，但不能证明每段话、声音或可见场景都是真的。', 'Ein gültiges Ergebnis beweist, dass das Credential noch zu dieser Datei gehört. Es beweist nicht, dass jede Aussage, jeder Ton oder jede sichtbare Szene wahr ist.')}</p>
       </div>
     </article>
 
     <section class="c2pa-supported" aria-labelledby="c2pa-supported-title">
-      <header><span class="c2pa-chapter-index">03 / INPUTS</span><h2 id="c2pa-supported-title">Supported files</h2><p>Real file signatures are checked before the official browser verifier starts.</p></header>
-      <dl>{C2PA_FORMAT_GROUPS.map((group) => <div><dt>{group.label}</dt><dd>{group.formats}</dd></div>)}</dl>
-      <aside><strong>50 MB</strong> for images and camera RAW files. <strong>100 MB</strong> for video, audio, and PDF.</aside>
+      <header><span class="c2pa-chapter-index">03 / {t('INPUTS', '输入文件', 'DATEIEN')}</span><h2 id="c2pa-supported-title">{t('Supported files', '支持的文件', 'Unterstützte Dateien')}</h2><p>{t('Real file signatures are checked before the official browser verifier starts.', '官方浏览器验证器启动前，会先检查真实文件签名。', 'Vor dem offiziellen Browser-Verifier wird die echte Dateisignatur geprüft.')}</p></header>
+      <dl>{C2PA_FORMAT_GROUPS.map((group) => <div><dt>{zh ? ({ Images: '图片', Video: '视频', Audio: '音频', Document: '文档' }[group.label] ?? group.label) : de ? ({ Images: 'Bilder', Video: 'Video', Audio: 'Audio', Document: 'Dokumente' }[group.label] ?? group.label) : group.label}</dt><dd>{group.formats}</dd></div>)}</dl>
+      <aside><strong>50 MB</strong> {t('for images and camera RAW files.', '用于图片与相机 RAW 文件；', 'für Bilder und Kamera-RAW-Dateien;')} <strong>100 MB</strong> {t('for video, audio, and PDF.', '用于视频、音频和 PDF。', 'für Video, Audio und PDF.')}</aside>
     </section>
 
     <section class="c2pa-plain-faq" aria-labelledby="c2pa-faq-title">
-      <header><span class="c2pa-chapter-index">KEEP THE CAVEAT</span><h2 id="c2pa-faq-title">Frequently asked questions</h2></header>
+      <header><span class="c2pa-chapter-index">{t('KEEP THE CAVEAT', '别丢掉边界', 'GRENZEN BEHALTEN')}</span><h2 id="c2pa-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen')}</h2></header>
       <div>{faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div>
     </section>
   </div>
