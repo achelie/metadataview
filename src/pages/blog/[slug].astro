@@ -63,7 +63,7 @@ const schemas = [
 ];
 ---
 <BaseLayout
-  title={`${post.data.title} | ViewExif`}
+  title={post.data.seoTitle ?? `${post.data.title} | ViewExif`}
   description={post.data.description}
   path={path}
   schemas={schemas}

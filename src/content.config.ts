@@ -5,7 +5,8 @@ import { z } from 'astro/zod';
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdoc}' }),
   schema: ({ image }) => z.object({
-    title: z.string().min(20),
+    title: z.string().min(10),
+    seoTitle: z.string().min(20).max(120).optional(),
     description: z.string().min(80).max(180),
     excerpt: z.string().min(80).max(260),
     category: z.string().min(2),
