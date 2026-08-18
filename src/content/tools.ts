@@ -37,6 +37,11 @@ const inspectRelated = [
   { href: '/metadata-remover/', title: 'Metadata Remover', note: 'Remove writable tags without re-encoding the file.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from metadata.' },
 ];
+const imageRelated = [
+  { href: '/image-privacy-checker/', title: 'Image Privacy Checker', note: 'Check a photo for GPS, device, identity, date, and editing clues before sharing.' },
+  { href: '/image-metadata-remover/', title: 'Image Metadata Remover', note: 'Create a cleaner image copy, then rescan it to confirm what changed.' },
+  { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Inspect signed Content Credentials separately from editable image metadata.' },
+];
 const protectRelated = [
   { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect the complete file record first.' },
   { href: '/image-privacy-checker/', title: 'Privacy Checker', note: 'See which fields deserve attention.' },
@@ -45,7 +50,7 @@ const protectRelated = [
 
 const imageGuide: FormatGuide = {
   valueEyebrow: 'WHY IT MATTERS',
-  valueTitle: 'Why inspect images?',
+  valueTitle: 'Why check image metadata?',
   valueDescription: 'Image metadata can reveal GPS, camera IDs, authors, edits, and color details hidden behind the pixels.',
   benefits: [
     { href: '/image-privacy-checker/', icon: 'shield', kicker: 'Privacy check', title: 'Catch location leaks', description: 'Find GPS coordinates, owner names, serial numbers, and embedded previews before an image leaves your device.', action: 'Check image privacy' },
@@ -190,19 +195,21 @@ export const tools: Record<string, ToolConfig> = {
   image: {
     productionMetadataReport: true, metadataReportScope: 'image',
     faqDisplay: 'expanded', formatGuide: imageGuide,
-    title: 'Image Metadata Viewer', metaTitle: 'Image Metadata Viewer – View PNG, JPEG, WebP, HEIC, TIFF and GIF Metadata', path: '/image-metadata-viewer/', eyebrow: 'Multi-format image evidence reader', icon: 'fileImage', mode: 'metadata',
-    description: 'View EXIF, GPS, XMP, IPTC, ICC, comments, animation flags, and native fields in PNG, JPEG, WebP, HEIC, TIFF, and GIF images. Everything stays in your browser.',
-    shortDescription: 'Read camera, GPS, color, author, software, animation, and container data from one image.',
+    title: 'Image Metadata Viewer', metaTitle: 'Image Metadata Viewer – View EXIF, GPS & Photo Metadata | ViewExif', path: '/image-metadata-viewer/', eyebrow: 'Image & Photo Metadata Viewer', icon: 'fileImage', mode: 'metadata',
+    description: 'View image metadata including EXIF data, GPS location, camera settings, XMP, IPTC, color profiles and other hidden photo metadata directly in your browser.',
+    shortDescription: 'View image metadata including EXIF data, GPS location, camera settings, XMP, IPTC, color profiles and other hidden photo metadata directly in your browser.',
     highlights: ['Checks the real PNG, JPEG, WebP, HEIC, TIFF, or GIF signature.', 'Shows dimensions, animation, camera, GPS, color, authorship, and dates.', 'Keeps native ExifTool paths and unknown readable tags.', 'Falls back to a format badge when the browser cannot preview HEIC or TIFF pixels.'],
     formats: 'PNG · JPG / JPEG · WebP · HEIC · TIFF · GIF', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,image/png,image/jpeg,image/webp,image/heic,image/heif,image/tiff,image/gif', allowedTypes: ['png','jpeg','webp','heic','tiff','gif'],
     limitations: ['Some browsers cannot preview HEIC or TIFF pixels; metadata inspection still works.', 'Image Metadata Remover supports all six image families; Privacy Checker remains focused on JPEG, PNG, and WebP.', 'Visible faces and text are pixels, not metadata, and are not analyzed.'],
     faqs: [
+      { question: 'What is an image metadata viewer?', answer: 'It is a browser tool that reads descriptive and technical data stored inside an image, such as camera details, GPS coordinates, dates, XMP, IPTC, and color profiles.' },
+      { question: 'How do I view metadata from a photo?', answer: 'Choose or drop the photo above. The browser checks its real format, reads the available metadata locally, and builds a searchable report without uploading the image.' },
       { question: 'Does this upload my image?', answer: 'No. Browser parsers and ExifTool WebAssembly read the image in this tab. The file, filename, hashes, and metadata are not posted to a server or saved to a history.' },
       { question: 'Which image formats and metadata are supported?', answer: 'The viewer supports PNG, JPG/JPEG, WebP, HEIC, TIFF, and GIF up to 50 MB. It reads available EXIF, GPS, XMP, IPTC, ICC, comments, animation flags, container fields, embedded previews, and unknown readable tags.' },
       { question: 'Can this show where a photo was taken?', answer: 'Yes, when valid latitude and longitude remain in EXIF GPS. If those tags are missing or invalid, the report cannot reconstruct the location from the pixels.' },
       { question: 'Why is there no HEIC or TIFF preview?', answer: 'Chrome and some other browsers cannot decode every HEIC or TIFF pixel stream. The report can still read the file signature, dimensions, container structure, and metadata locally.' },
       { question: 'Can image metadata prove a photo is original?', answer: 'No. Camera names, dates, authors, and coordinates are editable labels. Use them as context, and check signed C2PA credentials separately when provenance matters.' },
-    ], related: inspectRelated,
+    ], related: imageRelated,
   },
   document: {
     productionMetadataReport: true, metadataReportScope: 'all',

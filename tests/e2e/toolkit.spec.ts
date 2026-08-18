@@ -568,14 +568,14 @@ test('navigation motion uses the transition hooks and honors reduced motion', as
 });
 
 test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
-  const cases: Array<[string, string, string, string]> = [
-    ['/image-metadata-viewer/', 'Why inspect images?', 'How the image scan works', 'Which image formats and metadata are supported?'],
-    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?'],
-    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?'],
-    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?'],
+  const cases: Array<[string, string, string, string, number]> = [
+    ['/image-metadata-viewer/', 'Why check image metadata?', 'How the image scan works', 'Which image formats and metadata are supported?', 7],
+    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?', 5],
+    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?', 5],
+    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?', 5],
   ];
 
-  for (const [path, valueTitle, processTitle, formatQuestion] of cases) {
+  for (const [path, valueTitle, processTitle, formatQuestion, faqCount] of cases) {
     await page.goto(path);
     const valueHeading = page.getByRole('heading', { name: valueTitle });
     await expect(valueHeading).toBeVisible();
@@ -585,7 +585,7 @@ test('format viewers share the homepage editorial structure with format-specific
     await expect(page.getByRole('heading', { name: processTitle })).toBeVisible();
     await expect(page.locator('.format-guide-benefits .home-benefit-grid a')).toHaveCount(3);
     await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(5);
-    await expect(page.locator('.expanded-faq-list article')).toHaveCount(5);
+    await expect(page.locator('.expanded-faq-list article')).toHaveCount(faqCount);
     await expect(page.getByRole('heading', { name: formatQuestion })).toBeVisible();
     await expect(page.locator('.tool-notes,.specialized-notes')).toHaveCount(0);
 
@@ -593,6 +593,27 @@ test('format viewers share the homepage editorial structure with format-specific
     const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
     expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
   }
+});
+
+test('image metadata viewer keeps its URL signals while adding photo-focused guidance', async ({ page }) => {
+  await page.goto('/image-metadata-viewer/');
+
+  await expect(page).toHaveTitle('Image Metadata Viewer – View EXIF, GPS & Photo Metadata | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'View image metadata including EXIF data, GPS location, camera settings, XMP, IPTC, color profiles and other hidden photo metadata directly in your browser.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/image-metadata-viewer/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Image Metadata Viewer');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('Image & Photo Metadata Viewer');
+  await expect(page.getByRole('heading', { name: 'What image metadata can you view?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Common image metadata fields' })).toBeVisible();
+  await expect(page.locator('.image-metadata-fields tbody tr')).toHaveCount(10);
+  await expect(page.locator('.image-metadata-fields')).toContainText('GPSLatitude / GPSLongitude');
+  await expect(page.getByRole('heading', { name: 'Related image tools' })).toBeVisible();
+  const relatedTools = page.locator('.related-tools');
+  await expect(relatedTools.getByRole('link', { name: 'Image Privacy Checker' })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(relatedTools.getByRole('link', { name: 'Image Metadata Remover' })).toHaveAttribute('href', '/image-metadata-remover/');
+  await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
+  await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
 });
 
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
