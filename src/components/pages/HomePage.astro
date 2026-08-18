@@ -36,6 +36,10 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
       {copy.formats.map((item, index) => <a href={hrefFor(formatHrefs[index] ?? '/')}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
     </nav>
 
+    <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
+      <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><div><h2 id="home-exif-title">{copy.exifTitle}</h2><p>{copy.exifIntro}</p></div></header>
+    </section>
+
     <section class="home-benefits" aria-labelledby="home-benefits-title">
       <header class="home-section-heading"><span class="section-index">{copy.benefitsLabel}</span><div><h2 id="home-benefits-title">{copy.benefitsTitle}</h2><p>{copy.benefitsIntro}</p></div></header>
       <div class="home-benefit-grid">{copy.benefits.map((item, index) => <a href={hrefFor(benefitHrefs[index] ?? '/')}><span class="home-benefit-icon"><IconGlyph name={benefitIcons[index] ?? 'scan'} size={25} /></span><small>{item.eyebrow}</small><h3>{item.label}</h3><p>{item.note}</p><strong>{copy.openTool} <IconGlyph name="arrow" size={15} /></strong></a>)}</div>

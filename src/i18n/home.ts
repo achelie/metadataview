@@ -4,6 +4,7 @@ export interface HomeCopy {
   title: string; description: string; rail: string; eyebrow: string; heading: string; intro: string; limit: string;
   formatsLabel: string;
   formats: Array<{ label: string; detail: string }>;
+  exifTitle: string; exifIntro: string;
   benefitsLabel: string; benefitsTitle: string; benefitsIntro: string; openTool: string;
   benefits: Array<{ eyebrow: string; label: string; note: string }>;
   processLabel: string; processTitle: string; processIntro: string; ready: string; chooseAbove: string;
@@ -15,15 +16,17 @@ export interface HomeCopy {
 const en: HomeCopy = {
   title: 'Free Online EXIF & Metadata Viewer | ViewExif',
   description: 'Free online EXIF and metadata viewer. View EXIF, XMP, IPTC, GPS, camera and file metadata from images, videos, documents and audio. No upload required.',
-  rail: 'LOCAL / NO UPLOAD', eyebrow: 'Free metadata viewer', heading: 'Free Online EXIF & Metadata Viewer',
-  intro: 'View EXIF, XMP, IPTC, GPS, camera and other file metadata directly in your browser. Your files never leave your device.', limit: 'one-file limit',
+  rail: 'LOCAL / NO UPLOAD', eyebrow: 'Free EXIF & metadata viewer', heading: 'Free Online EXIF & Metadata Viewer',
+  intro: 'View EXIF data, GPS location, camera settings, XMP, IPTC and other photo or file metadata directly in your browser. Your files never leave your device.', limit: 'one-file limit',
   formatsLabel: 'BROWSE BY FORMAT',
   formats: [
-    { label: 'Images', detail: 'Camera, GPS, color, comments, animation, authorship, and editing traces' },
+    { label: 'Images', detail: 'EXIF, GPS, XMP, IPTC, camera settings, color, comments, and editing traces' },
     { label: 'Videos', detail: 'Duration, dimensions, codecs, frame rate, tracks, brands, and dates' },
     { label: 'Documents', detail: 'Authors, dates, applications, revisions, statistics, and custom properties' },
     { label: 'Audio', detail: 'Track tags, codec, duration, bitrate, channels, bit depth, and artwork summaries' },
   ],
+  exifTitle: 'What can this EXIF viewer show?',
+  exifIntro: 'This EXIF viewer reads the information a photo can carry beyond its pixels. When those fields are present, you can check the camera model, lens, shutter speed, aperture, ISO, date taken, GPS coordinates, orientation, software, and related capture notes. It also surfaces nearby XMP and IPTC records, helping you understand how an image was captured, edited, exported, or prepared for sharing—all locally in your browser.',
   benefitsLabel: 'WHY IT MATTERS', benefitsTitle: 'Why view file metadata?', benefitsIntro: 'Metadata can expose private details, explain how a file was made, and save time when you need technical facts.', openTool: 'Open tool',
   benefits: [
     { eyebrow: 'Privacy check', label: 'Protect private details', note: 'Spot GPS coordinates, author names, device IDs, embedded thumbnails, and editing traces before sharing.' },
@@ -41,7 +44,7 @@ const en: HomeCopy = {
   faqTitle: 'Frequently asked questions',
   faqs: [
     { question: 'Is this metadata viewer safe to use?', answer: 'The file is processed inside this browser tab. MetadataView has no upload endpoint, account, or server-side parser for your selected file.' },
-    { question: 'Does this work for EXIF data?', answer: 'Yes. It reads EXIF plus available XMP, IPTC, ICC, media-container, document, and native ExifTool fields.' },
+    { question: 'What EXIF data can this viewer read?', answer: 'When those fields are present, it can read camera model, lens, ISO, aperture, shutter speed, timestamps, GPS coordinates, orientation, XMP, IPTC, and other available EXIF and file metadata.' },
     { question: 'Can this reveal where a photo was taken?', answer: 'If the image contains usable GPS coordinates, the report shows them. Many files contain no location, and metadata can be removed or changed.' },
     { question: 'Can metadata be wrong?', answer: 'Yes. Dates, locations, camera labels, authors, and every other editable field can be stale, missing, or deliberately changed.' },
     { question: 'Can metadata restore blurred or redacted parts of an image?', answer: 'No. Metadata inspection does not reconstruct pixels. It can only reveal stored fields or an embedded preview that is already inside the file.' },
@@ -60,6 +63,8 @@ const zh: HomeCopy = {
     { label: '文档', detail: '作者、日期、应用程序、修订、统计和自定义属性' },
     { label: '音频', detail: '曲目信息、编码、时长、码率、声道、位深和封面摘要' },
   ],
+  exifTitle: '这个 EXIF 查看器能显示什么？',
+  exifIntro: '这个 EXIF 查看器可以读取照片像素之外保存的信息。字段存在时，你能查看相机型号、镜头、快门速度、光圈、ISO、拍摄日期、GPS 坐标、方向、软件和相关拍摄记录。它也会显示附近的 XMP 与 IPTC 数据，帮助你了解图片如何拍摄、编辑、导出或准备分享，而且所有处理都在浏览器本地完成。',
   benefitsLabel: '为什么值得看', benefitsTitle: '为什么要查看文件元数据？', benefitsIntro: '元数据可能暴露隐私，也能说明文件怎么来的。需要技术参数时，它还能少让你猜半天。', openTool: '打开工具',
   benefits: [
     { eyebrow: '隐私检查', label: '先把私密信息揪出来', note: '分享前找出 GPS、作者姓名、设备 ID、内嵌缩略图和编辑痕迹。' },
@@ -96,6 +101,8 @@ const de: HomeCopy = {
     { label: 'Dokumente', detail: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken und eigene Eigenschaften' },
     { label: 'Audio', detail: 'Tags, Codec, Dauer, Bitrate, Kanäle, Bittiefe und Cover-Zusammenfassungen' },
   ],
+  exifTitle: 'Was kann dieser EXIF-Viewer anzeigen?',
+  exifIntro: 'Dieser EXIF-Viewer liest Informationen, die ein Foto zusätzlich zu seinen Pixeln speichern kann. Wenn die Felder vorhanden sind, siehst du Kameramodell, Objektiv, Verschlusszeit, Blende, ISO, Aufnahmedatum, GPS-Koordinaten, Ausrichtung, Software und weitere Aufnahmedaten. Auch XMP- und IPTC-Einträge werden sichtbar, damit du den Weg eines Bildes von der Aufnahme bis zum Export besser verstehst – lokal in deinem Browser.',
   benefitsLabel: 'WARUM DAS ZÄHLT', benefitsTitle: 'Warum Dateimetadaten ansehen?', benefitsIntro: 'Metadaten können Privates verraten, die Entstehung einer Datei erklären und technische Fragen ohne Rätselraten beantworten.', openTool: 'Tool öffnen',
   benefits: [
     { eyebrow: 'Datenschutz-Check', label: 'Private Details entdecken', note: 'Finde GPS-Koordinaten, Namen, Geräte-IDs, eingebettete Vorschaubilder und Bearbeitungsspuren vor dem Teilen.' },
