@@ -4,8 +4,8 @@ export const metadataViewerFaqs = [
     answer: 'Yes. The selected file stays in this browser tab. It is never uploaded or added to a file history, and the page forgets it when you clear, replace, or refresh.',
   },
   {
-    question: 'Does this work for EXIF data?',
-    answer: 'Yes. If an image contains EXIF camera, GPS, timestamp, lens, or device fields, the report shows them alongside other readable metadata.',
+    question: 'What EXIF data can this viewer read?',
+    answer: 'When those fields are present, it can read camera model, lens, ISO, aperture, shutter speed, timestamps, GPS coordinates, orientation, XMP, IPTC, and other available EXIF and file metadata.',
   },
   {
     question: 'Can this reveal where a photo was taken?',

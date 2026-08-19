@@ -42,6 +42,16 @@ const imageRelated = [
   { href: '/image-metadata-remover/', title: 'Image Metadata Remover', note: 'Create a cleaner image copy, then rescan it to confirm what changed.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Inspect signed Content Credentials separately from editable image metadata.' },
 ];
+const videoRelated = [
+  { href: '/video-metadata-remover/', title: 'Video Metadata Remover', note: 'Create a clean copy after reviewing tracks, dates, GPS, and container tags.' },
+  { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect a broader mix of image, document, audio, and video metadata.' },
+  { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from editable video metadata.' },
+];
+const videoRemoverRelated = [
+  { href: '/video-metadata-viewer/', title: 'View video metadata before removing it', note: 'Review GPS, dates, codecs, and track fields before creating a clean copy.' },
+  { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect the complete file record before choosing a cleanup policy.' },
+  { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from editable container labels.' },
+];
 const protectRelated = [
   { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect the complete file record first.' },
   { href: '/image-privacy-checker/', title: 'Privacy Checker', note: 'See which fields deserve attention.' },
@@ -187,12 +197,13 @@ function makeRemovalTool(input: {
   scope: MetadataRemovalScope; title: string; metaTitle: string; path: string; eyebrow: string; icon: IconName;
   description: string; shortDescription: string; formats: string; accept: string; allowedTypes: DetectedFileType[];
   guide: FormatGuide; highlights: string[]; limitations: string[]; faqs: { question: string; answer: string }[];
+  related?: { href: string; title: string; note: string }[];
 }): ToolConfig {
   return {
     productionMetadataRemover: true, metadataRemovalScope: input.scope, faqDisplay: 'expanded', formatGuide: input.guide,
     title: input.title, metaTitle: input.metaTitle, path: input.path, eyebrow: input.eyebrow, icon: input.icon, mode: 'remover',
     description: input.description, shortDescription: input.shortDescription, formats: input.formats, accept: input.accept, allowedTypes: input.allowedTypes,
-    highlights: input.highlights, limitations: input.limitations, faqs: input.faqs, related: protectRelated,
+    highlights: input.highlights, limitations: input.limitations, faqs: input.faqs, related: input.related ?? protectRelated,
   };
 }
 
@@ -247,9 +258,9 @@ export const tools: Record<string, ToolConfig> = {
   video: {
     productionMetadataReport: true, metadataReportScope: 'all',
     faqDisplay: 'expanded', formatGuide: videoGuide,
-    title: 'Video Metadata Viewer', metaTitle: 'Video Metadata Viewer – View MP4, MOV, MKV, WebM, AVI and FLV Metadata', path: '/video-metadata-viewer/', eyebrow: 'Multi-format video container reader', icon: 'film', mode: 'metadata',
-    description: 'Inspect metadata from MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2 videos locally in your browser.',
-    shortDescription: 'Read duration, dimensions, codecs, tracks, brands, dates, and authoring details from one video.',
+    title: 'Video Metadata Viewer', metaTitle: 'Video Metadata Viewer – View MP4, MOV, GPS & Codec Info | ViewExif', path: '/video-metadata-viewer/', eyebrow: 'Multi-format video container reader', icon: 'film', mode: 'metadata',
+    description: 'View video metadata including creation date, GPS location, codec, bitrate, resolution, frame rate, encoder and track information directly in your browser. Your video never leaves your device.',
+    shortDescription: 'View video metadata including creation date, GPS location, codec, bitrate, resolution, frame rate, encoder and track information directly in your browser. Your video never leaves your device.',
     highlights: ['Checks ISO BMFF, EBML, RIFF, and FLV container signatures.', 'Summarizes duration, dimensions, codecs, frame rate, and tracks.', 'Keeps native ExifTool paths and format-specific fields.', 'Never plays, transcribes, or analyzes video frames.'],
     formats: 'MP4 · M4V · MOV · MKV · WebM · AVI · FLV · 3GP · 3G2', accept: '.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,video/mp4,video/x-m4v,video/quicktime,video/x-matroska,video/webm,video/x-msvideo,video/x-flv,video/3gpp,video/3gpp2', allowedTypes: ['mp4','mov','mkv','webm','avi','flv','3gp','3g2'],
     limitations: ['M4V is reported as its underlying MP4 container family.', 'Video frames, speech, faces, subtitles, and visible text are never analyzed.', 'Video playback, transcoding, repair, and metadata removal are not included.'],
@@ -259,7 +270,13 @@ export const tools: Record<string, ToolConfig> = {
       { question: 'Does the tool watch, transcribe, or fingerprint the video?', answer: 'No. It reads container boxes and stored metadata without decoding frames, recognizing faces, listening to speech, or creating a media fingerprint.' },
       { question: 'Why can a duration, codec, or stored date look wrong?', answer: 'Damaged indexes, unusual codecs, and editing software can leave stale or conflicting labels. Dates also use different time bases across containers. Treat the report as stored evidence, not a fresh media decode.' },
       { question: 'Can video metadata prove a clip is original?', answer: 'No. Container labels, dates, and encoder names are editable. A signed C2PA credential can provide stronger file-binding evidence when present, but it still has a specific scope.' },
-    ], related: inspectRelated,
+      { question: 'What is a video metadata viewer?', answer: 'A video metadata viewer reads descriptive and technical fields stored inside a video container without playing the frames. ViewExif presents those fields as a searchable local report.' },
+      { question: 'What metadata can an MP4 file contain?', answer: 'An MP4 can contain creation dates, duration, resolution, codecs, bitrate, tracks, GPS or location tags, device labels, encoder names, and custom container boxes.' },
+      { question: 'Can videos contain GPS location data?', answer: 'Some cameras and recording apps write GPS coordinates or location strings into a video. ViewExif shows valid stored coordinates and does not guess a location when they are missing.' },
+      { question: 'How can I see when a video was recorded?', answer: 'Choose the video above and look for its creation or recording date in the report. The date comes from the container and may be absent, stale, or expressed in a different time zone.' },
+      { question: 'Can metadata show which device recorded a video?', answer: 'Sometimes. A camera model, phone name, handler, encoder, or software label may identify the recording device, but these fields can be edited or omitted.' },
+      { question: 'Is my video uploaded?', answer: 'No. The video stays in this browser tab while local parsers read it. The file, filename, hashes, metadata, and report are not posted to a server or saved to a history.' },
+    ], related: videoRelated,
   },
   audio: {
     productionMetadataReport: true, metadataReportScope: 'all',
@@ -329,7 +346,7 @@ export const tools: Record<string, ToolConfig> = {
     ],
   }),
   videoRemover: makeRemovalTool({
-    scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover — Clean MP4, MOV, MKV, WebM, AVI and FLV Tags', path: '/video-metadata-remover/', eyebrow: 'Container tag scrubber', icon: 'film', guide: videoRemovalGuide,
+    scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover — Clean MP4, MOV, MKV, WebM, AVI and FLV Tags', path: '/video-metadata-remover/', eyebrow: 'Container tag scrubber', icon: 'film', guide: videoRemovalGuide, related: videoRemoverRelated,
     description: 'Remove writable descriptive metadata from MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2 files without transcoding the video.',
     shortDescription: 'Keep tracks, codecs, chapters, subtitles, and frames while stripping writable container labels.',
     formats: 'MP4 / M4V · MOV · MKV · WebM · AVI · FLV · 3GP · 3G2', accept: '.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,video/mp4,video/x-m4v,video/quicktime,video/x-matroska,video/webm,video/x-msvideo,video/x-flv,video/3gpp,video/3gpp2', allowedTypes: ['mp4','mov','mkv','webm','avi','flv','3gp','3g2'],

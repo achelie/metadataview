@@ -571,7 +571,7 @@ test('format viewers share the homepage editorial structure with format-specific
   const cases: Array<[string, string, string, string, number]> = [
     ['/image-metadata-viewer/', 'Why check image metadata?', 'How the image scan works', 'Which image formats and metadata are supported?', 7],
     ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?', 5],
-    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?', 5],
+    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?', 11],
     ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?', 5],
   ];
 
@@ -614,6 +614,58 @@ test('image metadata viewer keeps its URL signals while adding photo-focused gui
   await expect(relatedTools.getByRole('link', { name: 'Image Metadata Remover' })).toHaveAttribute('href', '/image-metadata-remover/');
   await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
   await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
+});
+
+test('video metadata viewer keeps URL signals while adding video-focused guidance', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/video-metadata-viewer/');
+
+  await expect(page).toHaveTitle('Video Metadata Viewer – View MP4, MOV, GPS & Codec Info | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'View video metadata including creation date, GPS location, codec, bitrate, resolution, frame rate, encoder and track information directly in your browser. Your video never leaves your device.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/video-metadata-viewer/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Video Metadata Viewer');
+  await expect(page.getByRole('heading', { name: 'What video metadata can you view?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Common video metadata fields' })).toBeVisible();
+  await expect(page.locator('.video-metadata-fields tbody tr')).toHaveCount(9);
+  await expect(page.locator('.video-metadata-fields')).toContainText('GPSLatitude / GPSLongitude');
+  await expect(page.getByRole('heading', { name: 'MP4 metadata' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'MOV / QuickTime metadata' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to view video metadata' })).toBeVisible();
+  await expect(page.locator('.video-metadata-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a video metadata viewer?', 'What metadata can an MP4 file contain?', 'Can videos contain GPS location data?', 'How can I see when a video was recorded?', 'Can metadata show which device recorded a video?', 'Is my video uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Related video tools' })).toBeVisible();
+  for (const [name, href] of [['Video Metadata Remover', '/video-metadata-remover/'], ['Metadata Viewer', '/metadata-viewer/'], ['C2PA Viewer', '/c2pa-viewer/']] as const) {
+    await expect(relatedTools.getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+
+  const overviewHeading = page.locator('.video-metadata-overview h2');
+  const overviewLedger = page.locator('.video-capability-ledger');
+  const overviewHeadingBox = await overviewHeading.boundingBox();
+  const overviewLedgerBox = await overviewLedger.boundingBox();
+  expect(overviewHeadingBox).not.toBeNull();
+  expect(overviewLedgerBox).not.toBeNull();
+  expect(Math.abs(overviewLedgerBox!.x - overviewHeadingBox!.x)).toBeLessThanOrEqual(24);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  await expect(page.locator('.video-capability-ledger > div')).toHaveCount(6);
+  const mobileRows = await page.locator('.video-capability-ledger > div').evaluateAll((rows) => rows.map((row) => {
+    const rect = row.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(new Set(mobileRows.map((row) => row.x)).size).toBe(1);
+  expect(mobileRows[1]!.y).toBeGreaterThan(mobileRows[0]!.y);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(11);
+});
+
+test('video metadata remover links to the viewer before cleanup', async ({ page }) => {
+  await page.goto('/video-metadata-remover/');
+  await expect(page.getByRole('link', { name: 'View video metadata before removing it' })).toHaveAttribute('href', '/video-metadata-viewer/');
 });
 
 test('metadata remover exposes file cleanup scope, verification steps, and type links', async ({ page }) => {
@@ -680,7 +732,7 @@ test('metadata remover exposes file cleanup scope, verification steps, and type 
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
   const questions = [
     'Is this metadata viewer safe to use?',
-    'Does this work for EXIF data?',
+    'What EXIF data can this viewer read?',
     'Can this reveal where a photo was taken?',
     'Can metadata be wrong?',
     'Can metadata restore blurred or redacted parts of an image?',

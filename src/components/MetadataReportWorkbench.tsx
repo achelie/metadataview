@@ -512,7 +512,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t('Parser warnings', '解析器提醒', 'Parser-Hinweise')}><Icon icon={warningIcon} width="22" /> <div><strong>{zh ? `${report.warnings.length} 条解析器提醒` : de ? `${report.warnings.length} Parser-Hinweis${report.warnings.length === 1 ? '' : 'e'}` : `${report.warnings.length} parser ${report.warnings.length === 1 ? 'note' : 'notes'}`}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
 
       {gps ? <aside className="map-action report-map-action" aria-label={t('GPS metadata location', 'GPS 元数据位置', 'GPS-Metadatenstandort')}>
-        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t('GPS location found', '发现 GPS 位置', 'GPS-Standort gefunden')}</strong><small>{t('Coordinates stored in this image', '图片中保存的坐标', 'Im Bild gespeicherte Koordinaten')}</small><code>{gps.text}</code></span></div>
+        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t('GPS location found', '发现 GPS 位置', 'GPS-Standort gefunden')}</strong><small>{t('Coordinates stored in this file', '文件中保存的坐标', 'In dieser Datei gespeicherte Koordinaten')}</small><code>{gps.text}</code></span></div>
         <a href={gps.mapUrl} target="_blank" rel="noreferrer">{t('Open map', '打开地图', 'Karte öffnen')}</a>
       </aside> : null}
 
