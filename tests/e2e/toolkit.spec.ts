@@ -617,6 +617,7 @@ test('image metadata viewer keeps its URL signals while adding photo-focused gui
 });
 
 test('metadata remover exposes file cleanup scope, verification steps, and type links', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto('/metadata-remover/');
 
   await expect(page).toHaveTitle('Metadata Remover – Remove File Metadata Online | ViewExif');
@@ -630,6 +631,38 @@ test('metadata remover exposes file cleanup scope, verification steps, and type 
   await expect(page.getByRole('heading', { name: 'Supported file types' })).toBeVisible();
   await expect(page.locator('.metadata-remover-format-list')).toContainText('PDF · DOCX · PPTX · XLSX');
   await expect(page.locator('.metadata-remover-format-list')).toContainText('MP3 · FLAC · OGG · OPUS · OGA · M4A · AAC · WAV · WMA');
+  const scopeHeadingBox = await page.locator('.metadata-remover-seo-heading').boundingBox();
+  const scopeGroupsBox = await page.locator('.metadata-remover-groups').boundingBox();
+  expect(scopeHeadingBox).not.toBeNull();
+  expect(scopeGroupsBox).not.toBeNull();
+  expect(Math.abs(scopeHeadingBox!.x - scopeGroupsBox!.x)).toBeLessThanOrEqual(1);
+
+  const formatSection = page.locator('.metadata-remover-formats');
+  const formatBorders = await formatSection.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth].map(Number.parseFloat);
+  });
+  expect(formatBorders.every((width) => width > 0)).toBe(true);
+  const formatHeaderBox = await formatSection.locator(':scope > header').boundingBox();
+  const formatListBox = await page.locator('.metadata-remover-format-list').boundingBox();
+  expect(formatHeaderBox).not.toBeNull();
+  expect(formatListBox).not.toBeNull();
+  expect(Math.abs(formatHeaderBox!.x + formatHeaderBox!.width - formatListBox!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatHeaderBox!.y - formatListBox!.y)).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  const mobileGroups = await page.locator('.metadata-remover-groups article').evaluateAll((articles) => articles.map((article) => {
+    const rect = article.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(Math.abs(mobileGroups[0]!.x - mobileGroups[1]!.x)).toBeLessThanOrEqual(1);
+  expect(mobileGroups[1]!.y).toBeGreaterThan(mobileGroups[0]!.y);
+  const mobileFormatHeaderBox = await formatSection.locator(':scope > header').boundingBox();
+  const mobileFormatListBox = await page.locator('.metadata-remover-format-list').boundingBox();
+  expect(mobileFormatHeaderBox).not.toBeNull();
+  expect(mobileFormatListBox).not.toBeNull();
+  expect(Math.abs(mobileFormatHeaderBox!.y + mobileFormatHeaderBox!.height - mobileFormatListBox!.y)).toBeLessThanOrEqual(1);
   await expect(page.getByRole('heading', { name: 'How to remove metadata from a file' })).toBeVisible();
   await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
   for (const question of ['What is a metadata remover?', 'How do I remove metadata from a file?', 'What metadata can be removed?', 'Does removing metadata affect file quality?', 'Can all metadata be completely removed?', 'Are files uploaded?']) {

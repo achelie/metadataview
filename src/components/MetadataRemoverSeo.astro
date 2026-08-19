@@ -15,16 +15,16 @@ const fileTypes = [
 ---
 
 <section class="metadata-remover-seo" aria-labelledby="metadata-remover-scope-title">
-  <header class="metadata-remover-seo-heading">
-    <span class="section-index">CLEANUP SCOPE</span>
-    <div>
+  <span class="section-index metadata-remover-seo-index">CLEANUP SCOPE</span>
+  <div class="metadata-remover-seo-body">
+    <header class="metadata-remover-seo-heading">
       <h2 id="metadata-remover-scope-title">What metadata can this remover clean?</h2>
       <p>Inspect the original, remove writable labels, then verify the generated copy. The file stays in your browser while ViewExif checks what changed and what the format needs to keep.</p>
       <p class="remover-flow-line"><strong>Inspect</strong><span aria-hidden="true">→</span><strong>Remove</strong><span aria-hidden="true">→</span><strong>Verify</strong></p>
+    </header>
+    <div class="metadata-remover-groups">
+      {metadataGroups.map(([name, description]) => <article><h3>{name}</h3><p>{description}</p></article>)}
     </div>
-  </header>
-  <div class="metadata-remover-groups">
-    {metadataGroups.map(([name, description]) => <article><h3>{name}</h3><p>{description}</p></article>)}
   </div>
 </section>
 
