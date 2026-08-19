@@ -1,0 +1,42 @@
+---
+const cleanupGroups = [
+  ['GPS / location', 'Writable GPS coordinates and location strings when the video container exposes them.'],
+  ['Dates', 'Creation and modification dates that are descriptive rather than required for playback.'],
+  ['Camera / device', 'Camera, phone, recorder, owner, and device labels when they are stored as writable fields.'],
+  ['Encoder / editing software', 'Encoder names, handler labels, authoring applications, and editing software tags.'],
+  ['Titles / comments', 'Writable title, comment, description, copyright, and custom descriptive fields.'],
+  ['Container metadata', 'Supported MP4, QuickTime, Matroska, WebM, AVI, FLV, 3GP, and 3G2 container labels.'],
+];
+---
+
+<section class="video-remover-seo metadata-remover-seo" aria-labelledby="video-remover-scope-title">
+  <span class="section-index metadata-remover-seo-index">VIDEO CLEANUP</span>
+  <div class="metadata-remover-seo-body">
+    <header class="metadata-remover-seo-heading">
+      <h2 id="video-remover-scope-title">What video metadata can be removed?</h2>
+      <p>ViewExif targets supported writable fields, then reopens and rescans the generated copy. Required container facts, media tracks, and anything the format cannot safely rewrite are listed as preserved or residual.</p>
+      <p class="remover-flow-line"><strong>Inspect</strong><span aria-hidden="true">→</span><strong>Remove</strong><span aria-hidden="true">→</span><strong>Verify</strong></p>
+    </header>
+    <div class="video-remover-groups">
+      {cleanupGroups.map(([name, description]) => <article><h3>{name}</h3><p>{description}</p></article>)}
+    </div>
+  </div>
+</section>
+
+<section class="video-remover-format-notes" aria-labelledby="video-remover-format-title">
+  <header>
+    <span class="section-index">CONTAINER NOTES</span>
+    <h2 id="video-remover-format-title">Clean the labels around the video</h2>
+    <p>MP4 and QuickTime files can carry descriptive boxes beside their encoded streams. The cleaner removes only fields its format-specific engine can safely rewrite.</p>
+  </header>
+  <div class="video-remover-format-grid">
+    <article>
+      <h2>Remove metadata from MP4 files</h2>
+      <p>Clean supported ISO Base Media File Format titles, comments, dates, location labels, device details, encoder names, and custom descriptive boxes without re-encoding the tracks.</p>
+    </article>
+    <article>
+      <h2>Remove metadata from MOV files</h2>
+      <p>Clean writable QuickTime dates, location strings, camera or device descriptions, handler labels, comments, and authoring software while preserving the video and audio streams.</p>
+    </article>
+  </div>
+</section>

@@ -49,7 +49,7 @@ const videoRelated = [
 ];
 const videoRemoverRelated = [
   { href: '/video-metadata-viewer/', title: 'View video metadata before removing it', note: 'Review GPS, dates, codecs, and track fields before creating a clean copy.' },
-  { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect the complete file record before choosing a cleanup policy.' },
+  { href: '/metadata-remover/', title: 'Metadata Remover', note: 'Use the general file cleaner when the video is part of a larger mixed-format cleanup.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from editable container labels.' },
 ];
 const protectRelated = [
@@ -178,7 +178,17 @@ function removalGuide(kind: string, formats: string, detail: string): FormatGuid
 }
 
 const imageRemovalGuide = removalGuide('image', 'PNG, JPEG, WebP, HEIC, TIFF, and GIF', 'Photos can carry GPS, owner names, serial numbers, edit history, and stale previews long after the pixels look harmless.');
-const videoRemovalGuide = removalGuide('video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2', 'Video containers can name the authoring app, device, owner, location, and edit dates without showing any of it in playback.');
+const videoRemovalGuide: FormatGuide = {
+  ...removalGuide('video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2', 'Video containers can name the authoring app, device, owner, location, and edit dates without showing any of it in playback.'),
+  processTitle: 'How to remove metadata from a video',
+  processDescription: 'Inspect the original, remove supported writable metadata in this browser tab, then ViewExif reopens and rescans the generated copy before download.',
+  steps: [
+    { title: 'Choose video', description: 'Select one supported MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, or 3G2 file. Its bytes remain in this browser tab.' },
+    { title: 'Review metadata', description: 'Check the original report for GPS, dates, device labels, encoder details, titles, comments, and technical fields.' },
+    { title: 'Remove supported metadata', description: 'A container-specific engine removes writable descriptive fields without re-encoding the video or audio tracks.' },
+    { title: 'Verify and download', description: 'The copy is reopened, compared, and rescanned. Removed, preserved, and residual fields are shown before download is enabled.' },
+  ],
+};
 const audioRemovalGuide = removalGuide('audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, and WMA', 'Audio tags can expose names, comments, software, dates, library labels, and broadcast notes around an otherwise ordinary recording.');
 const documentRemovalGuide = removalGuide('document', 'PDF, DOCX, PPTX, and XLSX', 'Documents can retain authors, companies, templates, software, edit dates, revision labels, and custom properties after the visible page looks finished.');
 const allRemovalGuide: FormatGuide = {
@@ -194,14 +204,14 @@ const allRemovalGuide: FormatGuide = {
 };
 
 function makeRemovalTool(input: {
-  scope: MetadataRemovalScope; title: string; metaTitle: string; path: string; eyebrow: string; icon: IconName;
+  scope: MetadataRemovalScope; title: string; metaTitle: string; path: string; eyebrow: string; heroProof?: string; icon: IconName;
   description: string; shortDescription: string; formats: string; accept: string; allowedTypes: DetectedFileType[];
   guide: FormatGuide; highlights: string[]; limitations: string[]; faqs: { question: string; answer: string }[];
   related?: { href: string; title: string; note: string }[];
 }): ToolConfig {
   return {
     productionMetadataRemover: true, metadataRemovalScope: input.scope, faqDisplay: 'expanded', formatGuide: input.guide,
-    title: input.title, metaTitle: input.metaTitle, path: input.path, eyebrow: input.eyebrow, icon: input.icon, mode: 'remover',
+    title: input.title, metaTitle: input.metaTitle, path: input.path, eyebrow: input.eyebrow, heroProof: input.heroProof, icon: input.icon, mode: 'remover',
     description: input.description, shortDescription: input.shortDescription, formats: input.formats, accept: input.accept, allowedTypes: input.allowedTypes,
     highlights: input.highlights, limitations: input.limitations, faqs: input.faqs, related: input.related ?? protectRelated,
   };
@@ -346,9 +356,9 @@ export const tools: Record<string, ToolConfig> = {
     ],
   }),
   videoRemover: makeRemovalTool({
-    scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover — Clean MP4, MOV, MKV, WebM, AVI and FLV Tags', path: '/video-metadata-remover/', eyebrow: 'Container tag scrubber', icon: 'film', guide: videoRemovalGuide, related: videoRemoverRelated,
-    description: 'Remove writable descriptive metadata from MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2 files without transcoding the video.',
-    shortDescription: 'Keep tracks, codecs, chapters, subtitles, and frames while stripping writable container labels.',
+    scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif', path: '/video-metadata-remover/', eyebrow: 'Local processing · no upload', heroProof: 'No re-encoding · Preserve video quality · Inspect → Remove → Verify', icon: 'film', guide: videoRemovalGuide, related: videoRemoverRelated,
+    description: 'Remove metadata from MP4, MOV and other video files directly in your browser. Clean GPS location, creation dates, device details, encoder information, titles, comments and other supported metadata without uploading your video.',
+    shortDescription: 'Remove metadata from MP4, MOV and other video files directly in your browser. Clean GPS location, creation dates, device details, encoder information, titles, comments and other supported metadata without uploading your video.',
     formats: 'MP4 / M4V · MOV · MKV · WebM · AVI · FLV · 3GP · 3G2', accept: '.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,video/mp4,video/x-m4v,video/quicktime,video/x-matroska,video/webm,video/x-msvideo,video/x-flv,video/3gpp,video/3gpp2', allowedTypes: ['mp4','mov','mkv','webm','avi','flv','3gp','3g2'],
     highlights: ['Never transcodes video or audio tracks.', 'Uses ExifTool, TagLib, RIFF, or FLV cleanup by real container.', 'Retains chapters, subtitles, cover art, and attachments.', 'Blocks output when structure or technical facts change.'],
     limitations: ['Mandatory track dates or handler labels may remain in some containers.', 'Subtitles, chapters, attachments, and visible frames are preserved.', 'Cleaning metadata does not remove faces, speech, logos, captions, or visible locations.'],
@@ -358,6 +368,12 @@ export const tools: Record<string, ToolConfig> = {
       { question: 'Are chapters and subtitles deleted?', answer: 'No. The selected metadata-only policy preserves chapters, subtitle tracks, attachments, cover art, and other user-visible content.' },
       { question: 'Why can MP4 or MOV fields remain?', answer: 'Some ISO BMFF values are required to address tracks or decode media. The rescan lists these as structural or residual instead of calling them removed.' },
       { question: 'Does this make the visible video private?', answer: 'No. Frames and audio can still reveal faces, voices, signs, locations, screens, captions, or account details.' },
+      { question: 'What is a video metadata remover?', answer: 'It is a browser tool that creates a new video copy by removing supported writable descriptive fields while preserving the encoded media and required container structure.' },
+      { question: 'How do I remove metadata from an MP4?', answer: 'Choose the MP4 above, review its original metadata, create a clean copy, then wait while ViewExif reopens and rescans the output before download.' },
+      { question: 'Can MP4 videos contain GPS data?', answer: 'Yes. Some cameras and recording apps write GPS coordinates or location strings into MP4 containers. ViewExif removes supported writable location fields and reports anything that remains.' },
+      { question: 'Does removing metadata reduce video quality?', answer: 'No. This cleaner does not re-encode video or audio. It compares duration, codecs, dimensions, tracks, and other technical facts; a mismatch blocks the download.' },
+      { question: 'Can all video metadata be removed?', answer: 'Not always. Required track, timing, codec, or container fields may need to stay. The result separates removed, preserved, and residual metadata instead of claiming everything was erased.' },
+      { question: 'Is my video uploaded?', answer: 'No. The original, generated copy, and verification scan stay inside this browser tab. ViewExif does not post the video, filename, or metadata to a server.' },
     ],
   }),
   audioRemover: makeRemovalTool({

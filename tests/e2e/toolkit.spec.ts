@@ -663,9 +663,43 @@ test('video metadata viewer keeps URL signals while adding video-focused guidanc
   expect(faqSchema.mainEntity).toHaveLength(11);
 });
 
-test('video metadata remover links to the viewer before cleanup', async ({ page }) => {
+test('video metadata remover keeps URL signals and explains supported cleanup', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto('/video-metadata-remover/');
+
+  await expect(page).toHaveTitle('Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Remove metadata from MP4, MOV and other video files directly in your browser. Clean GPS location, creation dates, device details, encoder information, titles, comments and other supported metadata without uploading your video.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/video-metadata-remover/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Video Metadata Remover');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('Local processing · no upload');
+  await expect(page.locator('.tool-hero-proof')).toContainText('No re-encoding');
+  await expect(page.locator('.tool-hero-proof')).toContainText('Inspect → Remove → Verify');
+  await expect(page.getByRole('heading', { name: 'What video metadata can be removed?' })).toBeVisible();
+  await expect(page.locator('.video-remover-groups article')).toHaveCount(6);
+  await expect(page.getByRole('heading', { name: 'Remove metadata from MP4 files' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Remove metadata from MOV files' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to remove metadata from a video' })).toBeVisible();
+  await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a video metadata remover?', 'How do I remove metadata from an MP4?', 'Can MP4 videos contain GPS data?', 'Does removing metadata reduce video quality?', 'Can all video metadata be removed?', 'Is my video uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Related video tools' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View video metadata before removing it' })).toHaveAttribute('href', '/video-metadata-viewer/');
+  await expect(relatedTools.getByRole('link', { name: 'Metadata Remover' })).toHaveAttribute('href', '/metadata-remover/');
+  await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  const mobileGroups = await page.locator('.video-remover-groups article').evaluateAll((articles) => articles.map((article) => {
+    const rect = article.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(new Set(mobileGroups.map((group) => group.x)).size).toBe(1);
+  expect(mobileGroups[1]!.y).toBeGreaterThan(mobileGroups[0]!.y);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(11);
 });
 
 test('metadata remover exposes file cleanup scope, verification steps, and type links', async ({ page }) => {
