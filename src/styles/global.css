@@ -1619,6 +1619,26 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .format-guide-limitations summary { padding: .9rem 0; cursor: pointer; color: var(--rust); font-size: .82rem; font-weight: 900; }
 .format-guide-limitations ul { margin: 0; padding: 0 0 1.1rem 1.15rem; color: var(--ink-soft); }
 .format-guide-limitations li + li { margin-top: .45rem; }
+.tool-hero-proof { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1rem; padding: .48rem .7rem; border-left: 4px solid var(--acid); background: rgba(217,255,67,.18); color: var(--ink); font-size: .76rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+
+.metadata-remover-seo,.metadata-remover-formats { padding: clamp(3.5rem,7vw,5.8rem) 0; border-top: 1px solid var(--ink); }
+.metadata-remover-seo-heading { display: grid; grid-template-columns: minmax(220px,.55fr) minmax(0,1.45fr); gap: clamp(2rem,6vw,6rem); }
+.metadata-remover-seo h2,.metadata-remover-formats h2 { margin: .55rem 0 .8rem; max-width: 720px; font-size: clamp(1.85rem,3.5vw,3.2rem); line-height: 1.03; text-wrap: balance; }
+.metadata-remover-seo-heading p,.metadata-remover-formats header p { max-width: 720px; color: var(--ink-soft); }
+.remover-flow-line { display: inline-flex; align-items: center; gap: .55rem; margin: 1.2rem 0 0; padding: .5rem .7rem; border: 1px solid var(--ink); background: var(--paper-deep); color: var(--ink); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+.remover-flow-line span { color: var(--rust); font-size: 1.1rem; }
+.metadata-remover-groups { width: min(900px,82%); margin: clamp(2rem,4vw,3.2rem) 0 0 auto; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--ink); }
+.metadata-remover-groups article { padding: 1.25rem 1rem 1.4rem .2rem; border-bottom: 1px solid var(--line); }
+.metadata-remover-groups article:nth-child(odd) { border-right: 1px solid var(--line); padding-right: clamp(1rem,4vw,3rem); }
+.metadata-remover-groups article:nth-child(even) { padding-left: clamp(1rem,4vw,3rem); }
+.metadata-remover-groups h3 { margin: 0 0 .35rem; font-size: 1.02rem; }
+.metadata-remover-groups p { margin: 0; color: var(--ink-soft); line-height: 1.5; }
+.metadata-remover-formats { display: grid; grid-template-columns: minmax(220px,.65fr) minmax(0,1.35fr); gap: clamp(2rem,6vw,6rem); background-color: var(--paper-deep); background-image: linear-gradient(118deg,rgba(255,250,240,.92),rgba(228,221,207,.6)),repeating-linear-gradient(125deg,transparent 0 27px,rgba(23,24,21,.025) 27px 28px); }
+.metadata-remover-format-list { margin: 0; border-top: 1px solid var(--ink); }
+.metadata-remover-format-list > div { display: grid; grid-template-columns: minmax(100px,.32fr) minmax(0,1.68fr); gap: 1rem; padding: .9rem .2rem; border-bottom: 1px solid var(--line); }
+.metadata-remover-format-list dt { font-weight: 900; }
+.metadata-remover-format-list dd { margin: 0; color: var(--ink-soft); line-height: 1.45; }
+.metadata-remover-format-list code { color: var(--ink); font-size: .82rem; white-space: normal; overflow-wrap: anywhere; }
 
 .image-metadata-overview { padding: clamp(4rem,8vw,7rem) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .image-metadata-overview .home-section-heading { margin-bottom: clamp(2rem,4vw,3.4rem); }
@@ -1679,6 +1699,9 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .home-process-list li:nth-child(even) { transform: translateX(12px); }
   .home-process-cta { margin-right: 12px; }
   .format-guide-limitations { margin-right: 12px; }
+  .metadata-remover-seo-heading,.metadata-remover-formats { grid-template-columns: 1fr; gap: 2rem; }
+  .metadata-remover-groups { width: 92%; }
+  .metadata-remover-format-list > div { grid-template-columns: minmax(90px,.42fr) minmax(0,1.58fr); }
   .image-capability-ledger { width: 88%; }
   .image-metadata-fields { grid-template-columns: minmax(190px,.72fr) minmax(0,1.28fr); gap: clamp(1.5rem,4vw,3rem); }
 }
@@ -1689,6 +1712,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .tool-hero-icon { width: 39px; height: 39px; box-shadow: 3px 3px 0 var(--ink); }
   .tool-hero h1 { margin-top: .2rem; font-size: clamp(2.35rem,11vw,3.25rem); }
   .tool-hero-copy > p { font-size: .9rem; }
+  .tool-hero-proof { margin-top: .7rem; font-size: .65rem; line-height: 1.35; }
   .tool-hero .format-strip { font-size: .72rem; }
   .workbench { margin-bottom: 3.2rem; }
   .workbench-topline { min-height: 58px; padding: .55rem .7rem; }

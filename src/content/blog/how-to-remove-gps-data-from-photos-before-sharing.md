@@ -91,6 +91,8 @@ Work on a copied folder, use a batch-capable metadata tool, and inspect a sample
 
 Bulk cleanup is where manual menus become unreliable. One missed file can contain the coordinates that every other file lost. ExifTool can remove metadata from a folder, while desktop photo tools may provide a batch export without location data.
 
+If the files you need to clean include documents, video, or audio as well as photos, the [Metadata Remover](/metadata-remover/) gives you one local inspect, remove, and verify flow.
+
 Do not run a destructive command on the only copy of a shoot. Copy ten files first, clean them, open a few, and confirm that their dimensions and orientation still look right. Then scan the batch for `GPSLatitude`, `GPSLongitude`, `GPSPosition`, and location names.
 
 This came up in an [r/privacy discussion about clearing metadata on Windows](https://www.reddit.com/r/privacy/comments/1r7qv5h/best_way_to_clearobfuscatespoof_file_datametadata/). Users compared built-in property removal with batch tools because repeating a right-click workflow across many files is both slow and easy to mess up.

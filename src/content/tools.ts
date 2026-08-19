@@ -6,7 +6,7 @@ import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
 import { C2PA_ACCEPT, C2PA_FORMAT_SUMMARY } from '../lib/c2pa/formats';
 
 export interface ToolConfig {
-  title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName;
+  title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName; heroProof?: string;
   mode: ToolMode; formats: string; accept: string; allowedTypes?: DetectedFileType[]; shortDescription: string; highlights: string[];
   productionMetadataReport?: boolean;
   metadataReportScope?: 'all' | 'image';
@@ -46,6 +46,12 @@ const protectRelated = [
   { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect the complete file record first.' },
   { href: '/image-privacy-checker/', title: 'Privacy Checker', note: 'See which fields deserve attention.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Check signed provenance separately from EXIF.' },
+];
+const removerRelated = [
+  { href: '/image-metadata-remover/', title: 'Image Metadata Remover', note: 'Clean EXIF, GPS, and other writable image metadata, then verify the copy.' },
+  { href: '/audio-metadata-remover/', title: 'Audio Metadata Remover', note: 'Remove ID3, artist, album, and comment tags without re-encoding the sound.' },
+  { href: '/document-metadata-remover/', title: 'Document Metadata Remover', note: 'Clean author, creator, producer, company, and date properties from documents.' },
+  { href: '/video-metadata-remover/', title: 'Video Metadata Remover', note: 'Strip writable video container labels while preserving tracks and frames.' },
 ];
 
 const imageGuide: FormatGuide = {
@@ -165,7 +171,17 @@ const imageRemovalGuide = removalGuide('image', 'PNG, JPEG, WebP, HEIC, TIFF, an
 const videoRemovalGuide = removalGuide('video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2', 'Video containers can name the authoring app, device, owner, location, and edit dates without showing any of it in playback.');
 const audioRemovalGuide = removalGuide('audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, and WMA', 'Audio tags can expose names, comments, software, dates, library labels, and broadcast notes around an otherwise ordinary recording.');
 const documentRemovalGuide = removalGuide('document', 'PDF, DOCX, PPTX, and XLSX', 'Documents can retain authors, companies, templates, software, edit dates, revision labels, and custom properties after the visible page looks finished.');
-const allRemovalGuide = removalGuide('file', 'Image, video, audio, and document', 'Choose the file you actually plan to share. The cleaner picks a format-specific engine and proves what changed.');
+const allRemovalGuide: FormatGuide = {
+  ...removalGuide('file', 'Image, video, audio, and document', 'Choose the file you actually plan to share. The cleaner picks a format-specific engine and proves what changed.'),
+  processTitle: 'How to remove metadata from a file',
+  processDescription: 'Inspect the original, remove writable metadata in this browser tab, then reopen and rescan the generated copy before download.',
+  steps: [
+    { title: 'Choose file', description: 'Select one supported image, video, audio file, or document. The bytes stay in this browser tab.' },
+    { title: 'Review metadata', description: 'Check the original report, including writable fields, technical fields, and any signature warnings.' },
+    { title: 'Remove metadata', description: 'A format-specific engine creates a new copy and leaves the original file unchanged.' },
+    { title: 'Verify and download', description: 'ViewExif reopens the output, compares its structure, rescans remaining metadata, and enables download only after verification.' },
+  ],
+};
 
 function makeRemovalTool(input: {
   scope: MetadataRemovalScope; title: string; metaTitle: string; path: string; eyebrow: string; icon: IconName;
@@ -279,19 +295,23 @@ export const tools: Record<string, ToolConfig> = {
   },
   remover: {
     productionMetadataRemover: true, metadataRemovalScope: 'all', faqDisplay: 'expanded', formatGuide: allRemovalGuide,
-    title: 'Metadata Remover', metaTitle: 'Metadata Remover — Clean Image, Video, Audio and Document Tags', path: '/metadata-remover/', eyebrow: 'All-format metadata cleaner', icon: 'eraser', mode: 'remover',
-    description: 'Remove writable metadata from 28 image, video, audio, and document formats locally, then verify the generated copy before download.',
-    shortDescription: 'Drop one supported file. Remove descriptive tags without re-encoding its content, then rescan the copy.',
-    highlights: ['Selects a real format-specific cleanup engine.', 'Keeps media and document content intact.', 'Rescans the generated copy before download.', 'Separates removed, preserved, and residual fields.'],
+    title: 'Metadata Remover', metaTitle: 'Metadata Remover – Remove File Metadata Online | ViewExif', path: '/metadata-remover/', eyebrow: '100% local processing · no upload', heroProof: '100% local processing · No upload · Inspect → Remove → Verify', icon: 'eraser', mode: 'remover',
+    description: 'Remove metadata from images, videos, audio files and documents directly in your browser. Clean EXIF, GPS, author, timestamps and other hidden file metadata without uploading your files.',
+    shortDescription: 'Remove metadata from images, videos, audio files and documents directly in your browser. Clean EXIF, GPS, author, timestamps and other hidden file metadata without uploading your files.',
+    highlights: ['100% local processing: your file stays in this browser tab and is never uploaded.', 'Inspect → Remove → Verify: review the original, clean a new copy, then rescan its remaining metadata.', 'Keeps media and document content intact while separating removed, preserved, and residual fields.', 'The original file remains unchanged; download the verified output and a safe receipt.'],
     formats: 'Images · Videos · Audio · Documents', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma', allowedTypes: ['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma'] as DetectedFileType[],
     limitations: ['Required technical fields remain because deleting them would break the file.', 'Cover art, chapters, subtitles, attachments, comments, revisions, and visible content are preserved.', 'A verified cleanup does not hide people, text, locations, or other details visible in the content.'],
     faqs: [
-      { question: 'Does this upload or replace my original file?', answer: 'No. Cleanup and verification run inside this browser tab. The original remains unchanged, and only a new downloadable copy is created.' },
+      { question: 'Are files uploaded?', answer: 'No. Cleanup, verification, and the output scan run inside this browser tab. The original remains unchanged, and only a new downloadable copy is created.' },
+      { question: 'What is a metadata remover?', answer: 'It is a local browser tool that creates a clean copy of a file by removing writable descriptive fields while preserving the content needed to open it.' },
+      { question: 'How do I remove metadata from a file?', answer: 'Choose a supported file, review the original report, create the clean copy, then wait for ViewExif to reopen and rescan the output before downloading it.' },
+      { question: 'What metadata can be removed?', answer: 'Writable EXIF, GPS, XMP, IPTC, author, device, date, software, comments, ID3, document properties, and other format-specific descriptive fields are targeted when the format allows it.' },
+      { question: 'Does removing metadata affect file quality?', answer: 'The remover does not intentionally re-encode media. It compares dimensions, duration, codecs, pages, tracks, and other technical facts; a mismatch blocks the download.' },
       { question: 'Which formats can be cleaned?', answer: 'The cleaner supports six image formats, nine video formats, nine audio formats, and PDF, DOCX, PPTX, and XLSX. It checks the real signature before selecting an engine.' },
       { question: 'Will audio or video be re-encoded?', answer: 'No. Metadata-only cleanup keeps encoded media packets, tracks, chapters, subtitles, cover art, and attachments. A structural mismatch blocks the download.' },
-      { question: 'Why can some metadata remain?', answer: 'Some fields are required for decoding, color, dimensions, duration, pages, or container integrity. Preserved and format-limited residual fields are listed instead of hidden.' },
+      { question: 'Can all metadata be completely removed?', answer: 'Not always. Some fields are required for decoding, color, dimensions, duration, pages, or container integrity. Preserved and residual fields are listed instead of hidden.' },
       { question: 'What happens to signed files?', answer: 'Any metadata change can invalidate C2PA or document signatures. The cleaner detects likely signatures and requires a separate confirmation first.' },
-    ], related: protectRelated,
+    ], related: removerRelated,
   },
   imageRemover: makeRemovalTool({
     scope: 'image', title: 'Image Metadata Remover', metaTitle: 'Image Metadata Remover — Clean PNG, JPEG, WebP, HEIC, TIFF and GIF', path: '/image-metadata-remover/', eyebrow: 'Image tag scrubber', icon: 'eraser', guide: imageRemovalGuide,

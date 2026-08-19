@@ -309,6 +309,9 @@ function localizedRelated(config: ToolConfig) {
   const titles: Record<string, [string, string]> = {
     '/image-privacy-checker/': ['图片隐私检查器', '把隐藏元数据换成说得清的风险分数。'],
     '/image-metadata-remover/': ['图片元数据清除器', '生成更干净的图片副本，并复检确认具体变化。'],
+    '/audio-metadata-remover/': ['音频元数据清除器', '清除 ID3、署名、专辑和评论标签，不重新编码声音。'],
+    '/document-metadata-remover/': ['文档元数据清除器', '清理作者、创建者、制作程序、公司和日期属性。'],
+    '/video-metadata-remover/': ['视频元数据清除器', '清除可写的视频容器标签，同时保留轨道和画面。'],
     '/metadata-remover/': ['元数据清除器', '清除可写标签，不重新编码文件内容。'],
     '/metadata-viewer/': ['元数据查看器', '先把完整文件记录看清楚。'],
     '/c2pa-viewer/': ['C2PA 查看器', '把签名来源和普通元数据分开检查。'],
@@ -355,6 +358,9 @@ function localizedRelatedDe(config: ToolConfig) {
   const titles: Record<string, [string, string]> = {
     '/image-privacy-checker/': ['Bild-Datenschutz-Check', 'Übersetzt versteckte Metadaten in einen nachvollziehbaren Risikowert.'],
     '/image-metadata-remover/': ['Bild-Metadaten-Entferner', 'Erstellt eine bereinigte Bildkopie und prüft anschließend, was sich geändert hat.'],
+    '/audio-metadata-remover/': ['Audio-Metadaten-Entferner', 'Entfernt ID3-, Künstler-, Album- und Kommentar-Tags ohne Neucodierung des Tons.'],
+    '/document-metadata-remover/': ['Dokument-Metadaten-Entferner', 'Bereinigt Autor-, Ersteller-, Produzenten-, Firmen- und Datumsangaben.'],
+    '/video-metadata-remover/': ['Video-Metadaten-Entferner', 'Entfernt beschreibbare Container-Tags und erhält Spuren und Bilder.'],
     '/metadata-remover/': ['Metadaten-Entferner', 'Entfernt beschreibbare Tags, ohne den Dateiinhalt neu zu codieren.'],
     '/metadata-viewer/': ['Metadaten-Viewer', 'Lies zuerst den vollständigen Dateibericht.'],
     '/c2pa-viewer/': ['C2PA-Viewer', 'Prüft signierte Herkunft getrennt von gewöhnlichen Metadaten.'],

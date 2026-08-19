@@ -616,6 +616,34 @@ test('image metadata viewer keeps its URL signals while adding photo-focused gui
   await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
 });
 
+test('metadata remover exposes file cleanup scope, verification steps, and type links', async ({ page }) => {
+  await page.goto('/metadata-remover/');
+
+  await expect(page).toHaveTitle('Metadata Remover – Remove File Metadata Online | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Remove metadata from images, videos, audio files and documents directly in your browser. Clean EXIF, GPS, author, timestamps and other hidden file metadata without uploading your files.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/metadata-remover/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Metadata Remover');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('100% local processing · no upload');
+  await expect(page.locator('.tool-hero-proof')).toContainText('Inspect → Remove → Verify');
+  await expect(page.getByRole('heading', { name: 'What metadata can this remover clean?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Supported file types' })).toBeVisible();
+  await expect(page.locator('.metadata-remover-format-list')).toContainText('PDF · DOCX · PPTX · XLSX');
+  await expect(page.locator('.metadata-remover-format-list')).toContainText('MP3 · FLAC · OGG · OPUS · OGA · M4A · AAC · WAV · WMA');
+  await expect(page.getByRole('heading', { name: 'How to remove metadata from a file' })).toBeVisible();
+  await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a metadata remover?', 'How do I remove metadata from a file?', 'What metadata can be removed?', 'Does removing metadata affect file quality?', 'Can all metadata be completely removed?', 'Are files uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Metadata removal by file type' })).toBeVisible();
+  for (const [name, href] of [['Image Metadata Remover', '/image-metadata-remover/'], ['Audio Metadata Remover', '/audio-metadata-remover/'], ['Document Metadata Remover', '/document-metadata-remover/'], ['Video Metadata Remover', '/video-metadata-remover/']] as const) {
+    await expect(relatedTools.getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(9);
+});
+
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
   const questions = [
     'Is this metadata viewer safe to use?',
