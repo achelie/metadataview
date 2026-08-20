@@ -38,6 +38,14 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
 
     <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
       <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><div><h2 id="home-exif-title">{copy.exifTitle}</h2><p>{copy.exifIntro}</p></div></header>
+      {locale === 'en' && <nav class="home-exif-checks" aria-label="Popular EXIF checks">
+        <span>Popular EXIF checks</span>
+        <a href="/image-metadata-viewer/"><strong>Find photo GPS location</strong><small>Read stored coordinates and open the map only when you choose.</small></a>
+        <a href="/image-metadata-viewer/"><strong>Check camera &amp; lens</strong><small>See the recorded camera model, lens, and capture settings.</small></a>
+        <a href="/image-metadata-viewer/"><strong>Find date taken</strong><small>Look for DateTimeOriginal and related photo timestamps.</small></a>
+        <a href="/image-privacy-checker/"><strong>Check photo privacy</strong><small>Review GPS, identity, device, and hidden preview risks.</small></a>
+        <a href="/image-metadata-remover/"><strong>Remove EXIF metadata</strong><small>Create a cleaner copy and verify what remains.</small></a>
+      </nav>}
     </section>
 
     <section class="home-benefits" aria-labelledby="home-benefits-title">

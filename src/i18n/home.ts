@@ -20,7 +20,7 @@ const en: HomeCopy = {
   intro: 'View EXIF data, GPS location, camera settings, XMP, IPTC and other photo or file metadata directly in your browser. Your files never leave your device.', limit: 'one-file limit',
   formatsLabel: 'BROWSE BY FORMAT',
   formats: [
-    { label: 'Images', detail: 'EXIF, GPS, XMP, IPTC, camera settings, color, comments, and editing traces' },
+    { label: 'Images', detail: 'EXIF, GPS, camera settings, timestamps, XMP and IPTC, plus color and editing traces' },
     { label: 'Videos', detail: 'Duration, dimensions, codecs, frame rate, tracks, brands, and dates' },
     { label: 'Documents', detail: 'Authors, dates, applications, revisions, statistics, and custom properties' },
     { label: 'Audio', detail: 'Track tags, codec, duration, bitrate, channels, bit depth, and artwork summaries' },

@@ -25,11 +25,12 @@ function chunk(type: string, data = Buffer.alloc(0)): Buffer {
   return Buffer.concat([length, typeBytes, data, crc]);
 }
 
-function png(text?: [string, string]): Buffer {
+function png(text?: [string, string] | Array<[string, string]>): Buffer {
   const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(1, 0); ihdr.writeUInt32BE(1, 4); ihdr.set([8, 6, 0, 0, 0], 8);
   const scanline = Buffer.from([0, 239, 106, 56, 255]);
   const parts = [pngSignature, chunk('IHDR', ihdr)];
-  if (text) parts.push(chunk('tEXt', Buffer.from(`${text[0]}\0${text[1]}`, 'latin1')));
+  const entries: Array<[string, string]> = !text ? [] : typeof text[0] === 'string' ? [text as [string, string]] : text as Array<[string, string]>;
+  entries.forEach(([key, value]) => parts.push(chunk('tEXt', Buffer.from(`${key}\0${value}`, 'latin1'))));
   parts.push(chunk('IDAT', Buffer.from(deflate(scanline))), chunk('IEND'));
   return Buffer.concat(parts);
 }
@@ -77,14 +78,23 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
 
 test('home page opens with the universal viewer, three useful next steps, and the local scan process', async ({ page }) => {
   await page.goto('/');
+  await expect(page).toHaveTitle('Free Online EXIF & Metadata Viewer | ViewExif');
   await expect(page.getByRole('heading', { name: 'Free Online EXIF & Metadata Viewer' })).toBeVisible();
+  await expect(page.locator('main h1')).toHaveCount(1);
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
   await expect(page.locator('.report-drop-copy p')).toContainText(/Images.*Videos.*Documents.*Audio/);
+  await expect(page.locator('.home-exif-upload-guide')).toContainText('View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.');
+  await expect(page.locator('.home-exif-upload-guide li')).toHaveText(['Camera & Lens', 'GPS Location', 'Date Taken', 'Full Metadata']);
   await expect(page.locator('.home-format-links a strong')).toHaveText(['Images', 'Videos', 'Documents', 'Audio']);
+  await expect(page.locator('.home-format-links a').first()).toContainText('EXIF, GPS, camera settings, timestamps, XMP and IPTC');
   await expect(page.locator('.home-format-links')).not.toContainText('JPEG · PNG · WebP');
   await expect(page.getByText('Use the right tool next.')).toHaveCount(0);
   await expect(page.getByText('The file never takes a network trip.')).toHaveCount(0);
   await expect(page.locator('.home-benefit-grid a')).toHaveCount(3);
+  await expect(page.locator('.home-exif-checks a')).toHaveCount(5);
+  await expect(page.getByRole('link', { name: /Find photo GPS location/ })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: /Check photo privacy/ })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: /Remove EXIF metadata/ })).toHaveAttribute('href', '/image-metadata-remover/');
   await expect(page.getByRole('link', { name: /Protect private details/ })).toHaveAttribute('href', '/image-privacy-checker/');
   await expect(page.getByRole('link', { name: /Check file provenance/ })).toHaveAttribute('href', '/c2pa-viewer/');
   await expect(page.getByRole('link', { name: /Share a cleaner copy/ })).toHaveAttribute('href', '/metadata-remover/');
@@ -614,6 +624,32 @@ test('image metadata viewer keeps its URL signals while adding photo-focused gui
   await expect(relatedTools.getByRole('link', { name: 'Image Metadata Remover' })).toHaveAttribute('href', '/image-metadata-remover/');
   await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
   await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
+});
+
+test('home image report puts an EXIF Summary before the full metadata ledger', async ({ page }) => {
+  await page.goto('/');
+  await upload(page, 'photo.png', png([
+    ['Make', 'Pocket Camera'], ['Model', 'DeskCam 42'], ['LensModel', '35mm Test Lens'],
+    ['DateTimeOriginal', '2024:03:12 14:05:06'], ['GPSLatitude', '37.775'], ['GPSLongitude', '-122.419444'],
+    ['ISOSpeedRatings', '200'], ['FNumber', '2.8'], ['ExposureTime', '1/125'], ['FocalLength', '35'], ['Orientation', '6'],
+  ]));
+  await expect(page.getByRole('heading', { name: 'photo.png metadata report' })).toBeVisible({ timeout: 20_000 });
+  const summary = page.locator('.home-exif-summary');
+  await expect(summary.getByRole('heading', { name: 'EXIF Summary' })).toBeVisible();
+  await expect(summary.locator('[data-exif-summary="camera"]')).toContainText('Pocket Camera · DeskCam 42');
+  await expect(summary.locator('[data-exif-summary="lens"]')).toContainText('35mm Test Lens');
+  await expect(summary.locator('[data-exif-summary="date"]')).toContainText('2024:03:12 14:05:06');
+  await expect(summary.locator('[data-exif-summary="gps"]')).toContainText('37.775000, -122.419444');
+  await expect(summary.locator('[data-exif-summary="iso"]')).toContainText('ISO 200');
+  await expect(summary.locator('[data-exif-summary="aperture"]')).toContainText('f/2.8');
+  await expect(summary.locator('[data-exif-summary="shutter"]')).toContainText('1/125');
+  await expect(summary.locator('[data-exif-summary="focal"]')).toContainText('35 mm');
+  await expect(summary.locator('[data-exif-summary="orientation"]')).toContainText('6');
+  await expect(summary.getByRole('link', { name: /EXIF · XMP · IPTC · ICC · File Information · Raw Metadata/ })).toHaveAttribute('href', '#metadata-results-heading');
+  const summaryBox = await summary.boundingBox();
+  const ledgerBox = await page.locator('.report-ledger').boundingBox();
+  expect(summaryBox).not.toBeNull(); expect(ledgerBox).not.toBeNull();
+  expect(summaryBox!.y).toBeLessThan(ledgerBox!.y);
 });
 
 test('video metadata viewer keeps URL signals while adding video-focused guidance', async ({ page }) => {

@@ -104,6 +104,43 @@ function metadataNumber(value: unknown): number | undefined {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function reportValue(report: MetadataReport, keys: string[]): string | undefined {
+  const wanted = keys.map((key) => key.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  for (const [key, value] of Object.entries(report.normalized)) {
+    if (!wanted.includes(key.toLowerCase().replace(/[^a-z0-9]/g, ''))) continue;
+    const shown = displayScalar(value).trim();
+    if (shown && shown !== 'false') return shown;
+  }
+  const fields = [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields);
+  const field = fields.find((item) => wanted.includes(item.key.toLowerCase().replace(/[^a-z0-9]/g, '')) && item.displayValue.trim());
+  return field?.displayValue.trim();
+}
+
+function formatExifValue(kind: 'iso' | 'aperture' | 'focal' | 'plain', value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  if (kind === 'iso') return /^iso\b/i.test(value) ? value : `ISO ${value}`;
+  if (kind === 'aperture') return /^(?:f\/|ƒ\/)/i.test(value) ? value : `f/${value}`;
+  if (kind === 'focal') return /\bmm\b/i.test(value) ? value : `${value} mm`;
+  return value;
+}
+
+function exifSummaryFromReport(report: MetadataReport, gps: { text: string; mapUrl: string } | null) {
+  const make = reportValue(report, ['Make']);
+  const model = reportValue(report, ['CameraModelName', 'UniqueCameraModel', 'Model']);
+  const camera = model ? (make && !model.toLowerCase().includes(make.toLowerCase()) ? `${make} · ${model}` : model) : make;
+  return [
+    { id: 'camera', label: 'Camera', value: camera },
+    { id: 'lens', label: 'Lens', value: reportValue(report, ['LensModel', 'Lens', 'LensID', 'LensMake']) },
+    { id: 'date', label: 'Date Taken', value: reportValue(report, ['SubSecDateTimeOriginal', 'DateTimeOriginal', 'CreateDate']) },
+    { id: 'gps', label: 'GPS', value: gps?.text, href: gps?.mapUrl },
+    { id: 'iso', label: 'ISO', value: formatExifValue('iso', reportValue(report, ['ISO', 'ISOSpeedRatings', 'PhotographicSensitivity'])) },
+    { id: 'aperture', label: 'Aperture', value: formatExifValue('aperture', reportValue(report, ['FNumber', 'Aperture', 'ApertureValue'])) },
+    { id: 'shutter', label: 'Shutter Speed', value: reportValue(report, ['ExposureTime', 'ShutterSpeed', 'ShutterSpeedValue']) },
+    { id: 'focal', label: 'Focal Length', value: formatExifValue('focal', reportValue(report, ['FocalLength', 'FocalLengthIn35mmFormat'])) },
+    { id: 'orientation', label: 'Orientation', value: reportValue(report, ['OrientationMeaning', 'Orientation']) },
+  ];
+}
+
 function gpsFromReport(report: MetadataReport | null): { text: string; mapUrl: string } | null {
   if (!report || report.category !== 'image') return null;
   const fields = [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields);
@@ -420,6 +457,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const renderedCount = renderedSections.reduce((count, section) => count + section.fields.length, 0);
   const allFields = useMemo(() => report ? [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields) : [], [report]);
   const gps = useMemo(() => gpsFromReport(report), [report]);
+  const exifSummary = useMemo(() => report?.category === 'image' ? exifSummaryFromReport(report, gps) : [], [report, gps]);
   const sensitiveFields = report?.readableSections.flatMap((section) => section.fields).filter((field) => field.sensitive) ?? [];
   const exifEngine = report?.engines.find((engine) => engine.id === 'exiftool');
   const fullImageScan = report?.category === 'image';
@@ -470,14 +508,17 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     </div>
     <input ref={input} className="sr-only" type="file" accept={accept} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => pickFiles(event.target.files)} />
 
-    {!file ? <div ref={chooseButton} className={`report-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label={chooseLabel} aria-describedby={`report-drop-help-${placement}`}
+    {!file ? <><div ref={chooseButton} className={`report-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label={chooseLabel} aria-describedby={`report-drop-help-${placement}`}
       onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }}
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pickFiles(event.dataTransfer.files); }}>
       <span className="report-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="33" /></span>
       <div className="report-drop-copy"><span className="eyebrow">{t('One file · processed locally', '一个文件 · 本地处理', 'Eine Datei · lokal verarbeitet')}</span><strong>{zh ? `把${scope === 'image' ? '图片' : '文件'}拖到这里` : de ? (scope === 'image' ? 'Bild hier ablegen' : 'Datei hier ablegen') : `Drop ${scope === 'image' ? 'an image' : 'a file'} here`}</strong><p id={`report-drop-help-${placement}`}>{formats} · {t('up to', '最大', 'bis')} {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">{chooseLabel}</span></div>
       <span className="report-drop-note">{t('ExifTool loads after you choose a file.', '选好文件后才加载 ExifTool。', 'ExifTool wird erst nach der Dateiauswahl geladen.')}<small>{t('Nothing is uploaded.', '不会上传任何内容。', 'Nichts wird hochgeladen.')}</small></span>
-    </div> : null}
+    </div>{placement === 'home' ? <aside className="home-exif-upload-guide" aria-label={t('Photo metadata highlights', '照片元数据重点', 'Foto-Metadaten im Überblick')}>
+      <p>{t('View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.', '直接在浏览器里查看 EXIF、GPS 位置、相机设置、拍摄日期和文件元数据。', 'EXIF-Daten, GPS-Standort, Kameraeinstellungen, Aufnahmedatum und Dateimetadaten direkt im Browser ansehen.')}</p>
+      <ul><li>{t('Camera & Lens', '相机与镜头', 'Kamera & Objektiv')}</li><li>{t('GPS Location', 'GPS 位置', 'GPS-Standort')}</li><li>{t('Date Taken', '拍摄日期', 'Aufnahmedatum')}</li><li>{t('Full Metadata', '完整元数据', 'Vollständige Metadaten')}</li></ul>
+    </aside> : null}</> : null}
 
     {file && !report ? <div className="report-pending">
       <span className="report-file-mark"><Icon icon={file.type.startsWith('image/') ? imageIcon : fileIcon} width="28" /></span>
@@ -490,6 +531,12 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <div><span className="eyebrow">{t('Report ready · bytes stayed local', '报告已就绪 · 文件字节留在本机', 'Bericht fertig · Dateibytes blieben lokal')}</span><h2 ref={resultHeading} tabIndex={-1}>{zh ? `${report.file.name} 元数据报告` : de ? `Metadatenbericht für ${report.file.name}` : `${report.file.name} metadata report`}</h2><p>{t('A practical reading first, then the exact ExifTool paths when you need receipts.', '先看实用摘要，需要核对时再看精确的 ExifTool 路径。', 'Zuerst die praktische Zusammenfassung, bei Bedarf danach die exakten ExifTool-Pfade.')}</p></div>
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />{t('Replace', '替换', 'Ersetzen')}</button><button className="button button-ghost" type="button" onClick={clear}><Icon icon={trashIcon} width="16" />{t('Clear', '清除', 'Leeren')}</button></div>
       </header>
+
+      {placement === 'home' && report.category === 'image' ? <section className="home-exif-summary" aria-labelledby="home-exif-summary-title">
+        <header><span className="eyebrow">{t('Photo quick read', '照片快速摘要', 'Foto-Schnellübersicht')}</span><div><h3 id="home-exif-summary-title">EXIF Summary</h3><p>{t('The photo details people check first. Missing means this file did not expose a usable value.', '先看最常用的照片信息；“未找到”表示文件没有提供可用值。', 'Die wichtigsten Fotodaten zuerst. „Nicht gefunden“ bedeutet, dass die Datei keinen nutzbaren Wert enthält.')}</p></div></header>
+        <dl>{exifSummary.map((item) => <div key={item.id} data-exif-summary={item.id}><dt>{item.label}</dt><dd>{item.value ? item.href ? <a href={item.href} target="_blank" rel="noreferrer">{item.value}<small>{t('Open map', '打开地图', 'Karte öffnen')}</small></a> : item.value : <span>{t('Not found', '未找到', 'Nicht gefunden')}</span>}</dd></div>)}</dl>
+        <footer><span>{t('Full metadata continues below', '下方继续显示完整元数据', 'Vollständige Metadaten folgen unten')}</span><a href="#metadata-results-heading">EXIF · XMP · IPTC · ICC · File Information · Raw Metadata ↓</a></footer>
+      </section> : null}
 
       <section className="report-summary" aria-labelledby="report-summary-title">
         <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={zh ? `${report.file.name} 的本地预览` : de ? `Lokale Vorschau von ${report.file.name}` : `Local preview of ${report.file.name}`} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
