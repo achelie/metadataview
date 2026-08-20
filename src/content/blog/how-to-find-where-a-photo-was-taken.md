@@ -82,20 +82,6 @@ On Android, open the picture in **Google Photos**, then swipe up or tap **More**
 
 For either phone, inspect the exported file in a metadata viewer when the distinction matters. The library screen and the attachment you send can hold different information.
 
-## How do you check GPS metadata on Windows and Mac?
-
-Use the file properties on Windows or Preview's location inspector on Mac, then use a full viewer if you need the raw fields.
-
-On Windows:
-
-1. Save the photo as a local file.
-2. Right-click it and choose **Properties**.
-3. Open **Details** and look for the GPS section.
-
-Windows may show latitude and longitude when the file contains fields it recognizes. An empty GPS section means that copy did not expose readable coordinates there.
-
-On Mac, open the photo in **Preview**, then choose **Tools > Show Location Info**. Apple notes that the command is unavailable when the image has no location information. You can also open a photo's Info panel in Photos, but Preview is useful when you want to check one standalone file.
-
 ## Why does a photo have no GPS coordinates?
 
 GPS is usually absent because the camera never wrote it or a later step removed it.

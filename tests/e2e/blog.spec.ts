@@ -585,12 +585,11 @@ test('photo location guide gives direct EXIF GPS steps without pretending to geo
   expect(coverRatio).toBeGreaterThan(1.88);
   expect(coverRatio).toBeLessThan(1.92);
   await expect(page.locator('.practical-take li')).toHaveCount(3);
-  await expect(page.locator('.blog-toc nav a')).toHaveCount(10);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
   await expect(page.locator('.blog-prose > p').first()).toContainText('To find where a photo was taken, check the original image for GPS metadata first');
   await expect(page.getByRole('heading', { level: 2, name: 'How do you find a photo location from EXIF?' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'What do GPSLatitude and GPSLongitude mean?' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'How do you check photo GPS on iPhone and Android?' })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 2, name: 'How do you check GPS metadata on Windows and Mac?' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'Why does a photo have no GPS coordinates?' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'Can a photo app show a place that is not in EXIF?' })).toBeVisible();
   await expect(page.getByRole('heading', { level: 2, name: 'What can EXIF tell you when GPS is missing?' })).toBeVisible();
@@ -606,7 +605,7 @@ test('photo location guide gives direct EXIF GPS steps without pretending to geo
   await expect(page.getByRole('link', { name: /how to remove GPS data from photos before sharing/ })).toHaveAttribute('href', GPS_REMOVAL_PATH);
   await expect(page.locator('.blog-prose')).toContainText('this guide does not treat an AI location guess as an EXIF result');
   const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
-  expect(sectionAnswers).toHaveLength(9);
+  expect(sectionAnswers).toHaveLength(8);
   expect(sectionAnswers.every((answer) => answer.trim().length > 10 && answer.trim().length < 180)).toBe(true);
 });
 
