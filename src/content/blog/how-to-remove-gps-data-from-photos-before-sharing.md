@@ -31,9 +31,9 @@ faqs:
   - question: "Can GPS metadata come back after I remove it?"
     answer: "Not from the cleaned file alone, but another original or cloud copy may still contain it. Keep track of which copy you are sharing."
 related:
-  - do-screenshots-have-metadata
-  - does-whatsapp-remove-exif-data
-  - does-gmail-remove-exif-data
+  - how-to-find-where-a-photo-was-taken
+  - how-to-view-exif-data-on-iphone
+  - what-is-exif-data
 ---
 
 The safest way to remove GPS data from photos before sharing is to make a separate cleaned copy, inspect that copy, and send only that file. Do not rely on a social app to fix the problem after upload.

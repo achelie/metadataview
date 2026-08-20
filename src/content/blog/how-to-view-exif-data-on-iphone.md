@@ -30,9 +30,9 @@ faqs:
   - question: "Can I remove EXIF data on iPhone?"
     answer: "Yes. Photos can remove a saved location or omit Location from a share. For a reusable copy without broader EXIF fields, use a metadata remover and verify the result."
 related:
+  - how-to-find-where-a-photo-was-taken
   - what-is-exif-data
   - how-to-remove-gps-data-from-photos-before-sharing
-  - do-screenshots-have-metadata
 ---
 
 To view EXIF data on iPhone, open Photos, choose a picture, then swipe up or tap the circled **i** button. The Info panel can show the date and time, filename, dimensions, iPhone or camera model, lens, ISO, aperture, shutter speed, and a map when location data is present.
