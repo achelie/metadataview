@@ -1,0 +1,84 @@
+---
+const fields = [
+  ['Resolution', 'The stored frame width and height, such as 3840 × 2160.'],
+  ['Duration', 'The container duration and the time base used to report it.'],
+  ['FrameRate', 'The recorded or declared video frame rate when available.'],
+  ['Bitrate', 'Video, audio, or overall bitrate clues saved by the container.'],
+  ['VideoCodec / AudioCodec', 'The codecs used by each media stream and their track details.'],
+  ['GPSLatitude / GPSLongitude', 'Coordinates written by a camera, phone, or recording app.'],
+  ['CreateDate / ModifyDate', 'Creation and modification timestamps stored in the file.'],
+  ['Encoder / Software', 'The encoder, camera app, or editing software that wrote the file.'],
+  ['Tracks', 'Video, audio, subtitle, timecode, and other track records.'],
+];
+
+const capabilities = [
+  ['Video', 'Resolution, duration, frame rate, bitrate, and dimensions for the visual stream.'],
+  ['Audio', 'Video codec, audio codec, channels, sample details, and track records.'],
+  ['Date & time', 'Creation date and modification date when the container records them.'],
+  ['Location', 'GPS coordinates when a camera or app wrote a valid location pair.'],
+  ['Device', 'Camera, phone, recorder, or device details when they are embedded.'],
+  ['Software / encoder', 'Encoder, editing software, handler names, and authoring labels.'],
+];
+---
+
+<section class="video-metadata-overview" aria-labelledby="video-metadata-overview-title">
+  <header class="home-section-heading">
+    <span class="section-index">VIDEO DETAILS</span>
+    <div>
+      <h2 id="video-metadata-overview-title">What video metadata can you view?</h2>
+      <p>A video file can carry production clues that playback hides. ViewExif puts useful container, track, timing, location, and software fields into one readable report while keeping the original paths available.</p>
+    </div>
+  </header>
+  <dl class="video-capability-ledger">
+    {capabilities.map(([name, description]) => <div><dt>{name}</dt><dd>{description}</dd></div>)}
+  </dl>
+</section>
+
+<section class="video-metadata-fields" aria-labelledby="video-metadata-fields-title">
+  <header>
+    <span class="section-index">FIELD GUIDE</span>
+    <h2 id="video-metadata-fields-title">Common video metadata fields</h2>
+    <p>Field names differ between containers, but these labels are a useful starting point for MP4, MOV, and other supported video files.</p>
+  </header>
+  <div class="video-field-table-wrap">
+    <table>
+      <caption class="sr-only">Common video metadata field names and what they can show</caption>
+      <thead><tr><th scope="col">Field</th><th scope="col">What it can show</th></tr></thead>
+      <tbody>{fields.map(([field, meaning]) => <tr><th scope="row"><code>{field}</code></th><td>{meaning}</td></tr>)}</tbody>
+    </table>
+  </div>
+</section>
+
+<section class="video-format-notes" aria-labelledby="video-format-notes-title">
+  <header>
+    <span class="section-index">FORMAT NOTES</span>
+    <h2 id="video-format-notes-title">Container details worth checking</h2>
+    <p>MP4 and QuickTime files often keep useful records beside the encoded streams. The viewer reads what is actually present; it does not invent missing fields.</p>
+  </header>
+  <div class="video-format-note-grid">
+    <article>
+      <h2>MP4 metadata</h2>
+      <p>MP4 containers may include creation dates, duration, dimensions, track and codec records, bitrate clues, GPS/location tags, device labels, encoder names, and custom ISO Base Media File Format boxes.</p>
+    </article>
+    <article>
+      <h2>MOV / QuickTime metadata</h2>
+      <p>MOV files can retain QuickTime creation and modification dates, camera or device descriptions, location strings, handler and encoder details, chapters, and separate video, audio, or timecode tracks.</p>
+    </article>
+  </div>
+</section>
+
+<section class="video-metadata-process home-process" aria-labelledby="video-metadata-process-title">
+  <header>
+    <span class="section-index">QUICK START</span>
+    <h2 id="video-metadata-process-title">How to view video metadata</h2>
+    <p>Choose a clip, let the local parser read its container, then review the report without sending the video anywhere.</p>
+  </header>
+  <div class="home-process-body">
+    <ol class="home-process-list">
+      <li><b>01</b><div><h3>Choose a video</h3><p>Select an MP4, MOV, MKV, WebM, AVI, FLV, or another supported video.</p></div></li>
+      <li><b>02</b><div><h3>Review the report</h3><p>Scan duration, resolution, codecs, bitrate, tracks, dates, device details, and software labels.</p></div></li>
+      <li><b>03</b><div><h3>Check location when present</h3><p>If GPS coordinates are stored, ViewExif puts them near the top of the result with an optional map link.</p></div></li>
+      <li><b>04</b><div><h3>Keep the file private</h3><p>The video stays in your browser tab. ViewExif does not upload, play, transcribe, or analyze its frames.</p></div></li>
+    </ol>
+  </div>
+</section>

@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-17
 updatedAt: 2026-08-17
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/how-to-remove-gps-data-from-photos-before-sharing.webp"
 coverAlt: "Hands holding a smartphone over a paper city map before removing GPS data from a photo"
 practicalTake:
@@ -90,6 +90,8 @@ An [r/privacy poster trying to report a workplace incident anonymously](https://
 Work on a copied folder, use a batch-capable metadata tool, and inspect a sample before sharing the rest.
 
 Bulk cleanup is where manual menus become unreliable. One missed file can contain the coordinates that every other file lost. ExifTool can remove metadata from a folder, while desktop photo tools may provide a batch export without location data.
+
+If the files you need to clean include documents, video, or audio as well as photos, the [Metadata Remover](/metadata-remover/) gives you one local inspect, remove, and verify flow.
 
 Do not run a destructive command on the only copy of a shoot. Copy ten files first, clean them, open a few, and confirm that their dimensions and orientation still look right. Then scan the batch for `GPSLatitude`, `GPSLongitude`, `GPSPosition`, and location names.
 

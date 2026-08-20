@@ -1,13 +1,45 @@
-<section class="specialized-notes" aria-labelledby="image-notes-title">
-  <header><span class="section-index">AFTER THE REPORT</span><h2 id="image-notes-title">What image metadata can tell you</h2><p>The report is the useful part. These two notes explain its boundaries.</p></header>
-  <div class="specialized-note-list">
-    <details>
-      <summary>What the viewer reads</summary>
-      <div><p>PNG, JPEG, WebP, HEIC, TIFF, and GIF can carry camera settings, GPS, author details, software names, color profiles, thumbnails, XMP, IPTC, comments, and animation flags.</p><p>Each format's container is checked alongside EXIF. Unknown readable tags stay available in the complete field view, even when the browser cannot preview HEIC or TIFF pixels.</p></div>
-    </details>
-    <details>
-      <summary>What metadata cannot prove</summary>
-      <div><p>Fields can be edited, removed, or wrong. A missing location does not prove that a photo never had one, and a camera name is not cryptographic evidence.</p><p>Faces, signs, reflections, landmarks, and license plates are pixels. This viewer does not inspect them.</p></div>
-    </details>
+---
+const fields = [
+  ['Make / Model', 'The camera manufacturer and model recorded when the image was created.'],
+  ['DateTimeOriginal', 'The stored date and time when the photo was taken.'],
+  ['GPSLatitude / GPSLongitude', 'The embedded coordinates, when location tagging was enabled.'],
+  ['ISO', 'The camera sensitivity used for the exposure.'],
+  ['FNumber', 'The aperture value, such as f/2.8 or f/8.'],
+  ['ExposureTime', 'The shutter speed recorded for the shot.'],
+  ['FocalLength', 'The lens focal length stored in the EXIF record.'],
+  ['Orientation', 'How software should rotate or mirror the image for display.'],
+  ['Software', 'The camera firmware, editor, or export tool that wrote the file.'],
+  ['Artist / Copyright', 'Saved creator, credit, ownership, or rights labels.'],
+];
+---
+
+<section class="image-metadata-overview" aria-labelledby="image-metadata-overview-title">
+  <header class="home-section-heading">
+    <span class="section-index">PHOTO DETAILS</span>
+    <div>
+      <h2 id="image-metadata-overview-title">What image metadata can you view?</h2>
+      <p>A photo can carry much more than pixels. This viewer brings the useful fields into one readable report while keeping the original tag paths available for closer inspection.</p>
+    </div>
+  </header>
+  <dl class="image-capability-ledger">
+    <div><dt>Camera &amp; lens</dt><dd>Camera model, lens, ISO, aperture, shutter speed, focal length, and orientation.</dd></div>
+    <div><dt>Location &amp; time</dt><dd>GPS location and the stored date taken, when the photo contains those records.</dd></div>
+    <div><dt>Credits &amp; descriptions</dt><dd>XMP, IPTC, author, copyright, captions, and other descriptive photo metadata.</dd></div>
+    <div><dt>Color &amp; editing</dt><dd>ICC color profile details plus software, export, and editing information saved in the file.</dd></div>
+  </dl>
+</section>
+
+<section class="image-metadata-fields" aria-labelledby="image-metadata-fields-title">
+  <header>
+    <span class="section-index">FIELD GUIDE</span>
+    <h2 id="image-metadata-fields-title">Common image metadata fields</h2>
+    <p>Field names vary by camera and format, but these EXIF labels are a useful place to start.</p>
+  </header>
+  <div class="image-field-table-wrap">
+    <table>
+      <caption class="sr-only">Common image metadata field names and what they can show</caption>
+      <thead><tr><th scope="col">Field</th><th scope="col">What it can show</th></tr></thead>
+      <tbody>{fields.map(([field, meaning]) => <tr><th scope="row"><code>{field}</code></th><td>{meaning}</td></tr>)}</tbody>
+    </table>
   </div>
 </section>

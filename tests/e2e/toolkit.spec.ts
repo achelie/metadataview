@@ -568,14 +568,14 @@ test('navigation motion uses the transition hooks and honors reduced motion', as
 });
 
 test('format viewers share the homepage editorial structure with format-specific copy and FAQ schema', async ({ page }) => {
-  const cases: Array<[string, string, string, string]> = [
-    ['/image-metadata-viewer/', 'Why inspect images?', 'How the image scan works', 'Which image formats and metadata are supported?'],
-    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?'],
-    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?'],
-    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?'],
+  const cases: Array<[string, string, string, string, number]> = [
+    ['/image-metadata-viewer/', 'Why check image metadata?', 'How the image scan works', 'Which image formats and metadata are supported?', 7],
+    ['/document-metadata-viewer/', 'Why inspect documents?', 'How the document scan works', 'Which document formats and properties are supported?', 5],
+    ['/video-metadata-viewer/', 'Why inspect video?', 'How the video scan works', 'Which video formats and fields are supported?', 11],
+    ['/audio-metadata-viewer/', 'Why inspect audio?', 'How the audio scan works', 'Which audio formats and tags are supported?', 5],
   ];
 
-  for (const [path, valueTitle, processTitle, formatQuestion] of cases) {
+  for (const [path, valueTitle, processTitle, formatQuestion, faqCount] of cases) {
     await page.goto(path);
     const valueHeading = page.getByRole('heading', { name: valueTitle });
     await expect(valueHeading).toBeVisible();
@@ -585,7 +585,7 @@ test('format viewers share the homepage editorial structure with format-specific
     await expect(page.getByRole('heading', { name: processTitle })).toBeVisible();
     await expect(page.locator('.format-guide-benefits .home-benefit-grid a')).toHaveCount(3);
     await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(5);
-    await expect(page.locator('.expanded-faq-list article')).toHaveCount(5);
+    await expect(page.locator('.expanded-faq-list article')).toHaveCount(faqCount);
     await expect(page.getByRole('heading', { name: formatQuestion })).toBeVisible();
     await expect(page.locator('.tool-notes,.specialized-notes')).toHaveCount(0);
 
@@ -595,10 +595,178 @@ test('format viewers share the homepage editorial structure with format-specific
   }
 });
 
+test('image metadata viewer keeps its URL signals while adding photo-focused guidance', async ({ page }) => {
+  await page.goto('/image-metadata-viewer/');
+
+  await expect(page).toHaveTitle('Image Metadata Viewer – View EXIF, GPS & Photo Metadata | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'View image metadata including EXIF data, GPS location, camera settings, XMP, IPTC, color profiles and other hidden photo metadata directly in your browser.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/image-metadata-viewer/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Image Metadata Viewer');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('Image & Photo Metadata Viewer');
+  await expect(page.getByRole('heading', { name: 'What image metadata can you view?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Common image metadata fields' })).toBeVisible();
+  await expect(page.locator('.image-metadata-fields tbody tr')).toHaveCount(10);
+  await expect(page.locator('.image-metadata-fields')).toContainText('GPSLatitude / GPSLongitude');
+  await expect(page.getByRole('heading', { name: 'Related image tools' })).toBeVisible();
+  const relatedTools = page.locator('.related-tools');
+  await expect(relatedTools.getByRole('link', { name: 'Image Privacy Checker' })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(relatedTools.getByRole('link', { name: 'Image Metadata Remover' })).toHaveAttribute('href', '/image-metadata-remover/');
+  await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
+  await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
+});
+
+test('video metadata viewer keeps URL signals while adding video-focused guidance', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/video-metadata-viewer/');
+
+  await expect(page).toHaveTitle('Video Metadata Viewer – View MP4, MOV, GPS & Codec Info | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'View video metadata including creation date, GPS location, codec, bitrate, resolution, frame rate, encoder and track information directly in your browser. Your video never leaves your device.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/video-metadata-viewer/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Video Metadata Viewer');
+  await expect(page.getByRole('heading', { name: 'What video metadata can you view?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Common video metadata fields' })).toBeVisible();
+  await expect(page.locator('.video-metadata-fields tbody tr')).toHaveCount(9);
+  await expect(page.locator('.video-metadata-fields')).toContainText('GPSLatitude / GPSLongitude');
+  await expect(page.getByRole('heading', { name: 'MP4 metadata' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'MOV / QuickTime metadata' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to view video metadata' })).toBeVisible();
+  await expect(page.locator('.video-metadata-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a video metadata viewer?', 'What metadata can an MP4 file contain?', 'Can videos contain GPS location data?', 'How can I see when a video was recorded?', 'Can metadata show which device recorded a video?', 'Is my video uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Related video tools' })).toBeVisible();
+  for (const [name, href] of [['Video Metadata Remover', '/video-metadata-remover/'], ['Metadata Viewer', '/metadata-viewer/'], ['C2PA Viewer', '/c2pa-viewer/']] as const) {
+    await expect(relatedTools.getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+
+  const overviewHeading = page.locator('.video-metadata-overview h2');
+  const overviewLedger = page.locator('.video-capability-ledger');
+  const overviewHeadingBox = await overviewHeading.boundingBox();
+  const overviewLedgerBox = await overviewLedger.boundingBox();
+  expect(overviewHeadingBox).not.toBeNull();
+  expect(overviewLedgerBox).not.toBeNull();
+  expect(Math.abs(overviewLedgerBox!.x - overviewHeadingBox!.x)).toBeLessThanOrEqual(24);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  await expect(page.locator('.video-capability-ledger > div')).toHaveCount(6);
+  const mobileRows = await page.locator('.video-capability-ledger > div').evaluateAll((rows) => rows.map((row) => {
+    const rect = row.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(new Set(mobileRows.map((row) => row.x)).size).toBe(1);
+  expect(mobileRows[1]!.y).toBeGreaterThan(mobileRows[0]!.y);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(11);
+});
+
+test('video metadata remover keeps URL signals and explains supported cleanup', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/video-metadata-remover/');
+
+  await expect(page).toHaveTitle('Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Remove metadata from MP4, MOV and other video files directly in your browser. Clean GPS location, creation dates, device details, encoder information, titles, comments and other supported metadata without uploading your video.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/video-metadata-remover/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Video Metadata Remover');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('Local processing · no upload');
+  await expect(page.locator('.tool-hero-proof')).toContainText('No re-encoding');
+  await expect(page.locator('.tool-hero-proof')).toContainText('Inspect → Remove → Verify');
+  await expect(page.getByRole('heading', { name: 'What video metadata can be removed?' })).toBeVisible();
+  await expect(page.locator('.video-remover-groups article')).toHaveCount(6);
+  await expect(page.getByRole('heading', { name: 'Remove metadata from MP4 files' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Remove metadata from MOV files' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to remove metadata from a video' })).toBeVisible();
+  await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a video metadata remover?', 'How do I remove metadata from an MP4?', 'Can MP4 videos contain GPS data?', 'Does removing metadata reduce video quality?', 'Can all video metadata be removed?', 'Is my video uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Related video tools' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'View video metadata before removing it' })).toHaveAttribute('href', '/video-metadata-viewer/');
+  await expect(relatedTools.getByRole('link', { name: 'Metadata Remover' })).toHaveAttribute('href', '/metadata-remover/');
+  await expect(relatedTools.getByRole('link', { name: 'C2PA Viewer' })).toHaveAttribute('href', '/c2pa-viewer/');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  const mobileGroups = await page.locator('.video-remover-groups article').evaluateAll((articles) => articles.map((article) => {
+    const rect = article.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(new Set(mobileGroups.map((group) => group.x)).size).toBe(1);
+  expect(mobileGroups[1]!.y).toBeGreaterThan(mobileGroups[0]!.y);
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(11);
+});
+
+test('metadata remover exposes file cleanup scope, verification steps, and type links', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/metadata-remover/');
+
+  await expect(page).toHaveTitle('Metadata Remover – Remove File Metadata Online | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Remove metadata from images, videos, audio files and documents directly in your browser. Clean EXIF, GPS, author, timestamps and other hidden file metadata without uploading your files.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/metadata-remover/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Metadata Remover');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('100% local processing · no upload');
+  await expect(page.locator('.tool-hero-proof')).toContainText('Inspect → Remove → Verify');
+  await expect(page.getByRole('heading', { name: 'What metadata can this remover clean?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Supported file types' })).toBeVisible();
+  await expect(page.locator('.metadata-remover-format-list')).toContainText('PDF · DOCX · PPTX · XLSX');
+  await expect(page.locator('.metadata-remover-format-list')).toContainText('MP3 · FLAC · OGG · OPUS · OGA · M4A · AAC · WAV · WMA');
+  const scopeHeadingBox = await page.locator('.metadata-remover-seo-heading').boundingBox();
+  const scopeGroupsBox = await page.locator('.metadata-remover-groups').boundingBox();
+  expect(scopeHeadingBox).not.toBeNull();
+  expect(scopeGroupsBox).not.toBeNull();
+  expect(Math.abs(scopeHeadingBox!.x - scopeGroupsBox!.x)).toBeLessThanOrEqual(1);
+
+  const formatSection = page.locator('.metadata-remover-formats');
+  const formatBorders = await formatSection.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth].map(Number.parseFloat);
+  });
+  expect(formatBorders.every((width) => width > 0)).toBe(true);
+  const formatHeaderBox = await formatSection.locator(':scope > header').boundingBox();
+  const formatListBox = await page.locator('.metadata-remover-format-list').boundingBox();
+  expect(formatHeaderBox).not.toBeNull();
+  expect(formatListBox).not.toBeNull();
+  expect(Math.abs(formatHeaderBox!.x + formatHeaderBox!.width - formatListBox!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatHeaderBox!.y - formatListBox!.y)).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  const mobileGroups = await page.locator('.metadata-remover-groups article').evaluateAll((articles) => articles.map((article) => {
+    const rect = article.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(Math.abs(mobileGroups[0]!.x - mobileGroups[1]!.x)).toBeLessThanOrEqual(1);
+  expect(mobileGroups[1]!.y).toBeGreaterThan(mobileGroups[0]!.y);
+  const mobileFormatHeaderBox = await formatSection.locator(':scope > header').boundingBox();
+  const mobileFormatListBox = await page.locator('.metadata-remover-format-list').boundingBox();
+  expect(mobileFormatHeaderBox).not.toBeNull();
+  expect(mobileFormatListBox).not.toBeNull();
+  expect(Math.abs(mobileFormatHeaderBox!.y + mobileFormatHeaderBox!.height - mobileFormatListBox!.y)).toBeLessThanOrEqual(1);
+  await expect(page.getByRole('heading', { name: 'How to remove metadata from a file' })).toBeVisible();
+  await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['What is a metadata remover?', 'How do I remove metadata from a file?', 'What metadata can be removed?', 'Does removing metadata affect file quality?', 'Can all metadata be completely removed?', 'Are files uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Metadata removal by file type' })).toBeVisible();
+  for (const [name, href] of [['Image Metadata Remover', '/image-metadata-remover/'], ['Audio Metadata Remover', '/audio-metadata-remover/'], ['Document Metadata Remover', '/document-metadata-remover/'], ['Video Metadata Remover', '/video-metadata-remover/']] as const) {
+    await expect(relatedTools.getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(9);
+});
+
 test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
   const questions = [
     'Is this metadata viewer safe to use?',
-    'Does this work for EXIF data?',
+    'What EXIF data can this viewer read?',
     'Can this reveal where a photo was taken?',
     'Can metadata be wrong?',
     'Can metadata restore blurred or redacted parts of an image?',

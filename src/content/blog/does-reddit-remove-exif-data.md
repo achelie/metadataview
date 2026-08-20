@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-14
 updatedAt: 2026-08-14
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/does-reddit-remove-exif-data.webp"
 coverAlt: "Close-up of a person using a smartphone with the screen turned away against a soft blue background"
 practicalTake:

@@ -66,7 +66,7 @@ function coreFieldCount(metadata: NormalizedImageMetadata): number {
 function enginesFor(metadata: NormalizedImageMetadata, inspection?: ExifToolInspection): PrivacyReportEngine[] {
   const engines: PrivacyReportEngine[] = [{
     id: 'core',
-    label: 'MetadataView quick parser',
+    label: 'ViewExif quick parser',
     status: 'complete',
     mode: 'quick',
     fieldCount: coreFieldCount(metadata),

@@ -43,7 +43,7 @@ const en: HomeCopy = {
   ],
   faqTitle: 'Frequently asked questions',
   faqs: [
-    { question: 'Is this metadata viewer safe to use?', answer: 'The file is processed inside this browser tab. MetadataView has no upload endpoint, account, or server-side parser for your selected file.' },
+    { question: 'Is this metadata viewer safe to use?', answer: 'The file is processed inside this browser tab. ViewExif has no upload endpoint, account, or server-side parser for your selected file.' },
     { question: 'What EXIF data can this viewer read?', answer: 'When those fields are present, it can read camera model, lens, ISO, aperture, shutter speed, timestamps, GPS coordinates, orientation, XMP, IPTC, and other available EXIF and file metadata.' },
     { question: 'Can this reveal where a photo was taken?', answer: 'If the image contains usable GPS coordinates, the report shows them. Many files contain no location, and metadata can be removed or changed.' },
     { question: 'Can metadata be wrong?', answer: 'Yes. Dates, locations, camera labels, authors, and every other editable field can be stale, missing, or deliberately changed.' },
@@ -81,7 +81,7 @@ const zh: HomeCopy = {
   ],
   faqTitle: '常见问题',
   faqs: [
-    { question: '这个元数据查看器安全吗？', answer: '文件只在当前浏览器标签页处理。MetadataView 没有文件上传接口、账号系统，也不会把你选择的文件交给服务器解析。' },
+    { question: '这个元数据查看器安全吗？', answer: '文件只在当前浏览器标签页处理。ViewExif 没有文件上传接口、账号系统，也不会把你选择的文件交给服务器解析。' },
     { question: '它能查看 EXIF 吗？', answer: '可以。除了 EXIF，还会读取文件中已有的 XMP、IPTC、ICC、媒体容器、文档属性和 ExifTool 原生字段。' },
     { question: '它能看出照片在哪里拍的吗？', answer: '如果图片里保存了可用的 GPS 坐标，报告会显示。很多文件没有位置数据，而且元数据可以被删除或修改。' },
     { question: '元数据可能是错的吗？', answer: '当然。日期、位置、相机型号、作者和其他可编辑字段都可能过期、缺失，甚至被故意改过。' },
@@ -119,7 +119,7 @@ const de: HomeCopy = {
   ],
   faqTitle: 'Häufige Fragen',
   faqs: [
-    { question: 'Ist dieser Metadaten-Viewer sicher?', answer: 'Die Datei wird in diesem Browser-Tab verarbeitet. MetadataView besitzt keinen Upload-Endpunkt, kein Konto und keinen serverseitigen Parser für deine ausgewählte Datei.' },
+    { question: 'Ist dieser Metadaten-Viewer sicher?', answer: 'Die Datei wird in diesem Browser-Tab verarbeitet. ViewExif besitzt keinen Upload-Endpunkt, kein Konto und keinen serverseitigen Parser für deine ausgewählte Datei.' },
     { question: 'Funktioniert das auch mit EXIF-Daten?', answer: 'Ja. Neben EXIF liest das Tool verfügbare XMP-, IPTC-, ICC-, Mediencontainer-, Dokument- und native ExifTool-Felder.' },
     { question: 'Kann ich sehen, wo ein Foto aufgenommen wurde?', answer: 'Enthält das Bild brauchbare GPS-Koordinaten, zeigt der Bericht sie an. Viele Dateien enthalten keinen Standort; außerdem lassen sich Metadaten entfernen oder verändern.' },
     { question: 'Können Metadaten falsch sein?', answer: 'Ja. Daten, Orte, Kameranamen, Autoren und alle anderen editierbaren Felder können veraltet, leer oder absichtlich verändert sein.' },

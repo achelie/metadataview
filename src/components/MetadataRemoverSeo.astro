@@ -1,0 +1,40 @@
+---
+const metadataGroups = [
+  ['Images', 'EXIF, GPS, XMP, IPTC, camera and device details.'],
+  ['Videos', 'GPS, creation dates, encoder labels, and comments.'],
+  ['Audio', 'ID3, artist, album, and comment tags.'],
+  ['Documents', 'Author, creator, producer, company, and date properties.'],
+];
+
+const fileTypes = [
+  ['Images', 'PNG · JPG / JPEG · WebP · HEIC / HEIF · TIF / TIFF · GIF'],
+  ['Videos', 'MP4 · M4V · MOV · MKV · WebM · AVI · FLV · 3GP · 3G2'],
+  ['Audio', 'MP3 · FLAC · OGG · OPUS · OGA · M4A · AAC · WAV · WMA'],
+  ['Documents', 'PDF · DOCX · PPTX · XLSX'],
+];
+---
+
+<section class="metadata-remover-seo" aria-labelledby="metadata-remover-scope-title">
+  <span class="section-index metadata-remover-seo-index">CLEANUP SCOPE</span>
+  <div class="metadata-remover-seo-body">
+    <header class="metadata-remover-seo-heading">
+      <h2 id="metadata-remover-scope-title">What metadata can this remover clean?</h2>
+      <p>Inspect the original, remove writable labels, then verify the generated copy. The file stays in your browser while ViewExif checks what changed and what the format needs to keep.</p>
+      <p class="remover-flow-line"><strong>Inspect</strong><span aria-hidden="true">→</span><strong>Remove</strong><span aria-hidden="true">→</span><strong>Verify</strong></p>
+    </header>
+    <div class="metadata-remover-groups">
+      {metadataGroups.map(([name, description]) => <article><h3>{name}</h3><p>{description}</p></article>)}
+    </div>
+  </div>
+</section>
+
+<section class="metadata-remover-formats" aria-labelledby="metadata-remover-formats-title">
+  <header>
+    <span class="section-index">FORMAT CHECK</span>
+    <h2 id="metadata-remover-formats-title">Supported file types</h2>
+    <p>Choose the file you actually need to clean. The real signature is checked before the matching removal engine runs.</p>
+  </header>
+  <dl class="metadata-remover-format-list">
+    {fileTypes.map(([name, formats]) => <div><dt>{name}</dt><dd><code>{formats}</code></dd></div>)}
+  </dl>
+</section>

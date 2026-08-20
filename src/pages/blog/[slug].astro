@@ -38,7 +38,7 @@ const schemas = [
     dateModified: updatedIso,
     mainEntityOfPage: canonical,
     author: { '@type': 'Organization', name: post.data.author, url: new URL('/about/', Astro.site).toString() },
-    publisher: { '@type': 'Organization', name: 'MetadataView', url: new URL('/', Astro.site).toString() },
+    publisher: { '@type': 'Organization', name: 'ViewExif', url: 'https://www.viewexif.com/' },
     articleSection: post.data.category,
     keywords: post.data.tags.join(', '),
   },
@@ -63,7 +63,7 @@ const schemas = [
 ];
 ---
 <BaseLayout
-  title={`${post.data.title} | MetadataView`}
+  title={post.data.seoTitle ?? `${post.data.title} | ViewExif`}
   description={post.data.description}
   path={path}
   schemas={schemas}

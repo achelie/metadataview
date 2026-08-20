@@ -11,8 +11,8 @@ tags:
 publishedAt: 2026-08-13
 updatedAt: 2026-08-13
 featured: false
-author: "MetadataView Editorial Team"
-reviewedBy: "MetadataView product engineering"
+author: "ViewExif Editorial Team"
+reviewedBy: "ViewExif Product Engineering"
 cover: "../../assets/blog/does-telegram-remove-exif-data.webp"
 coverAlt: "A smartphone displaying a photo gallery beside printed pictures on a wooden desk"
 practicalTake:

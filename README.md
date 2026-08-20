@@ -1,12 +1,12 @@
-# MetadataView
+# ViewExif
 
 Inspect, understand, and remove file metadata without sending the file to an analysis server.
 
 ## Try it online
 
-**[Open MetadataView at www.viewexif.com](https://www.viewexif.com/)**
+**[Open ViewExif at www.viewexif.com](https://www.viewexif.com/)**
 
-MetadataView is a static, browser-based toolkit for images, video, audio, and documents. It checks the real file signature, reads available metadata in a local Worker, and builds a searchable report in the current tab. There is no account, upload endpoint, cloud file history, or server-side parser.
+ViewExif is a static, browser-based toolkit for images, video, audio, and documents. It checks the real file signature, reads available metadata in a local Worker, and builds a searchable report in the current tab. There is no account, upload endpoint, cloud file history, or server-side parser.
 
 ## Main features
 
@@ -58,7 +58,7 @@ A valid C2PA signature proves that the signed credential still matches the curre
 
 ### Read practical guides
 
-The [MetadataView Blog](https://www.viewexif.com/blog/) answers common file privacy questions in plain English and links each problem to the relevant local tool.
+The [ViewExif Blog](https://www.viewexif.com/blog/) answers common file privacy questions in plain English and links each problem to the relevant local tool.
 
 ## Supported formats
 

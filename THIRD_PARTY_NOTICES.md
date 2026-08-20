@@ -1,6 +1,6 @@
 # Third-party notices
 
-MetadataView includes open-source software that runs locally in the visitor's browser.
+ViewExif includes open-source software that runs locally in the visitor's browser.
 
 ## C2PA WebAssembly verifier
 
@@ -9,7 +9,7 @@ MetadataView includes open-source software that runs locally in the visitor's br
 - JavaScript wrapper license: MIT
 - Bundled TagLib WebAssembly license: LGPL-2.1-or-later
 
-The package provides the official browser SDK and WebAssembly bindings used to read and validate C2PA Content Credentials. MetadataView loads it only after the visitor selects a file, terminates the SDK Worker after each run, and exports only a bounded safe report rather than file or resource bytes.
+The package provides the official browser SDK and WebAssembly bindings used to read and validate C2PA Content Credentials. ViewExif loads it only after the visitor selects a file, terminates the SDK Worker after each run, and exports only a bounded safe report rather than file or resource bytes.
 
 ## ExifTool WebAssembly
 
@@ -17,7 +17,7 @@ The package provides the official browser SDK and WebAssembly bindings used to r
 - Source: https://github.com/colorhythm/exiftool-wasm
 - License: Apache License 2.0
 
-This package bundles Phil Harvey's ExifTool and the ZeroPerl WebAssembly runtime. ExifTool is distributed under the same terms as Perl. The package repository contains the applicable source, attribution, and license information. MetadataView uses the package for local metadata inspection and for creating a structurally cleaned copy when the visitor chooses preserve-encoding cleanup. It does not send files to the package author or another service.
+This package bundles Phil Harvey's ExifTool and the ZeroPerl WebAssembly runtime. ExifTool is distributed under the same terms as Perl. The package repository contains the applicable source, attribution, and license information. ViewExif uses the package for local metadata inspection and for creating a structurally cleaned copy when the visitor chooses preserve-encoding cleanup. It does not send files to the package author or another service.
 
 ## ExifReader
 
@@ -33,7 +33,7 @@ ExifReader supplies the fast first-pass image report and remains the fallback wh
 - Source: https://github.com/gildas-lormeau/zip.js
 - License: BSD 3-Clause
 
-zip.js opens OOXML packages from the selected browser `Blob`. MetadataView extracts only a small allowlist of document-property XML entries and does not read document body, worksheet, slide, note, attachment, or embedded-media content.
+zip.js opens OOXML packages from the selected browser `Blob`. ViewExif extracts only a small allowlist of document-property XML entries and does not read document body, worksheet, slide, note, attachment, or embedded-media content.
 
 ## fast-xml-parser
 
@@ -41,7 +41,7 @@ zip.js opens OOXML packages from the selected browser `Blob`. MetadataView extra
 - Source: https://github.com/NaturalIntelligence/fast-xml-parser
 - License: MIT
 
-fast-xml-parser reads bounded OOXML property documents after MetadataView rejects DTD and entity declarations. Entity expansion is disabled.
+fast-xml-parser reads bounded OOXML property documents after ViewExif rejects DTD and entity declarations. Entity expansion is disabled.
 
 ## TagLib-Wasm
 
@@ -49,7 +49,7 @@ fast-xml-parser reads bounded OOXML property documents after MetadataView reject
 - Source: https://github.com/CharlesWiltgen/TagLib-Wasm
 - License: MIT
 
-TagLib-Wasm supplies the browser WebAssembly interface used to remove writable audio tags and Matroska/WebM tags without transcoding media. The package repository includes the TagLib source and documented relinking instructions required by its LGPL terms. MetadataView snapshots and restores supported cover art and chapters according to its metadata-only policy, then rescans the generated file.
+TagLib-Wasm supplies the browser WebAssembly interface used to remove writable audio tags and Matroska/WebM tags without transcoding media. The package repository includes the TagLib source and documented relinking instructions required by its LGPL terms. ViewExif snapshots and restores supported cover art and chapters according to its metadata-only policy, then rescans the generated file.
 
 ## qpdf WebAssembly
 
@@ -67,4 +67,4 @@ The cleanup verification flow was informed by the public behavior and documentat
 - ExifCleaner: https://github.com/szTheory/exifcleaner
 - MAT2: https://github.com/tpet/mat2
 
-MetadataView does not copy or bundle code from either project. Their names are included to acknowledge the cleanup-then-verify pattern and the principle that “not detected” is not a safety guarantee.
+ViewExif does not copy or bundle code from either project. Their names are included to acknowledge the cleanup-then-verify pattern and the principle that “not detected” is not a safety guarantee.

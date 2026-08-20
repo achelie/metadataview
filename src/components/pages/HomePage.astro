@@ -13,7 +13,7 @@ const hrefFor = (href: string) => localizePath(href, locale);
 const homePath = hrefFor('/');
 const homeUrl = canonicalUrl(homePath, Astro.site);
 const schemas = [
-  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'MetadataView', url: homeUrl, description: copy.description, inLanguage: locale },
+  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'ViewExif', url: 'https://www.viewexif.com/', description: copy.description, inLanguage: locale },
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: locale === 'zh-CN' ? '元数据查看器' : locale === 'de' ? 'Metadaten-Viewer' : 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: locale === 'zh-CN' ? ['读取 28 种常见文件格式', '搜索原生元数据字段', '导出 JSON 与 PDF 报告', '只在浏览器本地处理文件'] : locale === 'de' ? ['28 gängige Dateiformate lesen', 'Native Metadatenfelder durchsuchen', 'JSON- und PDF-Berichte exportieren', 'Dateien lokal im Browser verarbeiten'] : ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
   { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: copy.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];

@@ -16,6 +16,12 @@ const GMAIL_PATH = '/blog/does-gmail-remove-exif-data/';
 const GMAIL_TITLE = 'Does Gmail Remove EXIF Data? What Photo Attachments Keep';
 const GPS_REMOVAL_PATH = '/blog/how-to-remove-gps-data-from-photos-before-sharing/';
 const GPS_REMOVAL_TITLE = 'How to Remove GPS Data from Photos Before Sharing';
+const EXIF_DATA_PATH = '/blog/what-is-exif-data/';
+const EXIF_DATA_TITLE = 'What Is EXIF Data?';
+const EXIF_DATA_SEO_TITLE = 'What Is EXIF Data? GPS, Camera Info & Photo Metadata Explained | ViewExif';
+const IPHONE_EXIF_PATH = '/blog/how-to-view-exif-data-on-iphone/';
+const IPHONE_EXIF_TITLE = 'How to View EXIF Data on iPhone';
+const IPHONE_EXIF_SEO_TITLE = 'How to View EXIF Data on iPhone: Photos, GPS & Camera Info | ViewExif';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -35,10 +41,8 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.blog-latest')).toHaveCount(1);
   await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveCount(1);
-  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
-  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(1);
-  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
   await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveCount(1);
@@ -47,9 +51,13 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: GMAIL_TITLE, exact: true })).toHaveAttribute('href', GMAIL_PATH);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', GPS_REMOVAL_PATH);
+  await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveAttribute('href', EXIF_DATA_PATH);
+  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveAttribute('href', IPHONE_EXIF_PATH);
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
   await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(6);
-  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /how-to-remove-gps-data-from-photos-before-sharing/);
+  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /how-to-view-exif-data-on-iphone/);
   await expect(page.getByText('Page 1 of 2', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-pagination')).toBeVisible();
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('1');
@@ -61,18 +69,22 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
-  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
 });
 
-test('the seventh regular guide moves to the second blog page without duplication', async ({ page }) => {
+test('regular guides continue on the second blog page without duplication', async ({ page }) => {
   await page.goto('/blog/page/2/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/blog/page/2/');
   await expect(page.getByRole('heading', { level: 1, name: 'Latest metadata guides.' })).toBeVisible();
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 2 of 2.');
-  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(1);
+  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
+  await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE]);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveCount(0);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('2');
   await expect(page.locator('.blog-pagination a[href="/blog/"]')).toHaveText('1');
   await assertNoHorizontalOverflow(page);
@@ -92,8 +104,8 @@ test('mobile navigation exposes the current Blog route', async ({ page }) => {
 test('article renders the byline, concise contents, practical take, FAQ, and tool links', async ({ page }) => {
   await page.goto(ARTICLE_PATH);
   await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
-  await expect(page.getByText('MetadataView Editorial Team', { exact: true })).toBeVisible();
-  await expect(page.getByText('MetadataView product engineering', { exact: true })).toBeVisible();
+  await expect(page.getByText('ViewExif Editorial Team', { exact: true })).toBeVisible();
+  await expect(page.getByText('ViewExif Product Engineering', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-09/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /hand using a smartphone/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -126,7 +138,7 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   const breadcrumb = schemas.find((schema) => schema['@type'] === 'BreadcrumbList');
   expect(posting.headline).toBe(ARTICLE_TITLE);
-  expect(posting.author.name).toBe('MetadataView Editorial Team');
+  expect(posting.author.name).toBe('ViewExif Editorial Team');
   expect(faq.mainEntity).toHaveLength(5);
   expect(breadcrumb.itemListElement).toHaveLength(3);
   const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
@@ -448,6 +460,115 @@ test('GPS removal guide metadata and visible FAQ share the same source data', as
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
+test('EXIF pillar explains fields, privacy, viewing, and removal in direct language', async ({ page }) => {
+  await page.goto(EXIF_DATA_PATH);
+  await expect(page).toHaveTitle(EXIF_DATA_SEO_TITLE);
+  await expect(page.getByRole('heading', { level: 1, name: EXIF_DATA_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-18/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[67] min read/);
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /SD card.*camera.*laptop.*EXIF data/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.locator('.blog-prose > p').first()).toContainText('EXIF data is information stored inside many digital photo files.');
+  await expect(page.getByRole('heading', { level: 2, name: 'Is EXIF the same as photo metadata?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'What information can EXIF data contain?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Does EXIF data include GPS location?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Can EXIF data be changed or deleted?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How can you view photo EXIF data?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you remove EXIF before sharing a photo?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(9);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(2);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Image Metadata Viewer', exact: true })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: 'Image Privacy Checker', exact: true })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: 'Image Metadata Remover', exact: true })).toHaveAttribute('href', '/image-metadata-remover/');
+  await expect(page.getByRole('link', { name: /removing GPS data before sharing/ })).toHaveAttribute('href', GPS_REMOVAL_PATH);
+  await expect(page.getByRole('link', { name: /screenshot metadata guide/ })).toHaveAttribute('href', ARTICLE_PATH);
+  await expect(page.getByRole('link', { name: /Gmail EXIF guide/ })).toHaveAttribute('href', GMAIL_PATH);
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10 && answer.trim().length < 180)).toBe(true);
+});
+
+test('EXIF pillar exposes canonical, article metadata, and matching FAQ schema', async ({ page }) => {
+  await page.goto(EXIF_DATA_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${EXIF_DATA_PATH}`);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /what EXIF data stores inside a photo/i);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', EXIF_DATA_SEO_TITLE);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(EXIF_DATA_TITLE);
+  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting.keywords).toContain('EXIF data');
+  expect(posting.keywords).toContain('photo metadata');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
+test('iPhone EXIF guide gives direct Photos, camera, GPS, missing metadata, and cleanup steps', async ({ page }) => {
+  await page.goto(IPHONE_EXIF_PATH);
+  await expect(page).toHaveTitle(IPHONE_EXIF_SEO_TITLE);
+  await expect(page.getByRole('heading', { level: 1, name: IPHONE_EXIF_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-19/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[4-7] min read/);
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /smartphone.*gallery.*EXIF data/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.locator('.blog-prose > p').first()).toContainText('To view EXIF data on iPhone, open Photos');
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you view photo information in iPhone Photos?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'What EXIF data can iPhone Photos show?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you view the full EXIF, XMP, IPTC, and GPS report?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Why is EXIF data missing from an iPhone photo?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Can iPhone photo metadata reveal your location?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you remove EXIF and GPS before sharing?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(9);
+  await expect(page.locator('.blog-faq article')).toHaveCount(4);
+  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(2);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Image Metadata Viewer', exact: true })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: 'Image Privacy Checker', exact: true })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: 'Image Metadata Remover', exact: true })).toHaveAttribute('href', '/image-metadata-remover/');
+  await expect(page.getByRole('link', { name: /removing GPS data from photos before sharing/ })).toHaveAttribute('href', GPS_REMOVAL_PATH);
+  await expect(page.getByRole('link', { name: /screenshot creates a new image/ })).toHaveAttribute('href', ARTICLE_PATH);
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10 && answer.trim().length < 180)).toBe(true);
+});
+
+test('iPhone EXIF guide exposes canonical, article metadata, and matching FAQ schema', async ({ page }) => {
+  await page.goto(IPHONE_EXIF_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${IPHONE_EXIF_PATH}`);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /view EXIF data on iPhone/i);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', IPHONE_EXIF_SEO_TITLE);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(IPHONE_EXIF_TITLE);
+  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting.keywords).toContain('iPhone EXIF');
+  expect(posting.keywords).toContain('iPhone photo metadata');
+  expect(faq.mainEntity).toHaveLength(4);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
 const relatedGuides = [
   { path: ARTICLE_PATH, expected: [WHATSAPP_PATH, INSTAGRAM_PATH, DISCORD_PATH] },
   { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, TELEGRAM_PATH, DISCORD_PATH] },
@@ -457,6 +578,8 @@ const relatedGuides = [
   { path: REDDIT_PATH, expected: [INSTAGRAM_PATH, DISCORD_PATH, TELEGRAM_PATH] },
   { path: GMAIL_PATH, expected: [TELEGRAM_PATH, WHATSAPP_PATH, DISCORD_PATH] },
   { path: GPS_REMOVAL_PATH, expected: [ARTICLE_PATH, WHATSAPP_PATH, GMAIL_PATH] },
+  { path: EXIF_DATA_PATH, expected: [ARTICLE_PATH, GPS_REMOVAL_PATH, GMAIL_PATH] },
+  { path: IPHONE_EXIF_PATH, expected: [EXIF_DATA_PATH, GPS_REMOVAL_PATH, ARTICLE_PATH] },
 ];
 
 for (const guide of relatedGuides) {
@@ -478,6 +601,8 @@ for (const article of [
   { path: REDDIT_PATH, title: REDDIT_TITLE, label: 'Reddit' },
   { path: GMAIL_PATH, title: GMAIL_TITLE, label: 'Gmail' },
   { path: GPS_REMOVAL_PATH, title: GPS_REMOVAL_TITLE, label: 'GPS removal' },
+  { path: EXIF_DATA_PATH, title: EXIF_DATA_TITLE, label: 'EXIF data' },
+  { path: IPHONE_EXIF_PATH, title: IPHONE_EXIF_TITLE, label: 'iPhone EXIF' },
 ]) {
   for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
     test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {

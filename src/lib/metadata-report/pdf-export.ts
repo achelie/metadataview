@@ -105,7 +105,7 @@ export async function createMetadataReportPdfBytes(report: MetadataReport): Prom
   pages.forEach((pdfPage, index) => pdfPage.drawText(`${index + 1} / ${pages.length}`, { x: 540, y: 24, size: 8, font: regular, color: rgb(.38, .38, .34) }));
   document.setTitle(`${ascii(report.file.name)} metadata report`);
   document.setSubject('Local metadata inspection report');
-  document.setCreator('MetadataView');
+  document.setCreator('ViewExif');
   return document.save();
 }
 

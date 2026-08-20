@@ -14,6 +14,7 @@ import fileIcon from '@iconify-icons/lucide/file';
 import xIcon from '@iconify-icons/lucide/x';
 import cpuIcon from '@iconify-icons/lucide/cpu';
 import scanIcon from '@iconify-icons/lucide/scan-search';
+import mapIcon from '@iconify-icons/lucide/map-pin';
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ExifToolCancellationError, ExifToolWorkerClient } from '../lib/exiftool-worker-client';
 import { IMAGE_LIMITS } from '../lib/metadata/limits';
@@ -94,6 +95,38 @@ function displayScalar(value: unknown): string {
   if (typeof value === 'string') return value;
   try { return JSON.stringify(value); }
   catch { return String(value); }
+}
+
+function metadataNumber(value: unknown): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value !== 'string' || !/^\s*-?\d+(?:\.\d+)?\s*$/.test(value)) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function gpsFromReport(report: MetadataReport | null): { text: string; mapUrl: string } | null {
+  if (!report || report.category !== 'image') return null;
+  const fields = [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields);
+  const byKey = (key: string) => fields.find((field) => field.key.toLowerCase().replace(/[^a-z0-9]/g, '') === key.toLowerCase());
+  const valueFor = (key: string) => {
+    const field = byKey(key);
+    return metadataNumber(field?.numericValue) ?? metadataNumber(field?.value) ?? metadataNumber(field?.displayValue);
+  };
+  let latitude = metadataNumber(report.normalized.GPSLatitude) ?? valueFor('gpslatitude');
+  let longitude = metadataNumber(report.normalized.GPSLongitude) ?? valueFor('gpslongitude');
+  if (latitude === undefined || longitude === undefined) return null;
+
+  const latitudeRef = String(byKey('gpslatituderef')?.value ?? '').toUpperCase();
+  const longitudeRef = String(byKey('gpslongituderef')?.value ?? '').toUpperCase();
+  if (latitudeRef.includes('S')) latitude = -Math.abs(latitude);
+  if (longitudeRef.includes('W')) longitude = -Math.abs(longitude);
+  if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180 || (latitude === 0 && longitude === 0)) return null;
+
+  const text = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+  return {
+    text,
+    mapUrl: `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=15/${latitude}/${longitude}`,
+  };
 }
 
 function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
@@ -386,6 +419,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const renderedSections = useMemo(() => limitSections(filtered, renderLimit), [filtered, renderLimit]);
   const renderedCount = renderedSections.reduce((count, section) => count + section.fields.length, 0);
   const allFields = useMemo(() => report ? [...report.readableSections, ...report.nativeSections].flatMap((section) => section.fields) : [], [report]);
+  const gps = useMemo(() => gpsFromReport(report), [report]);
   const sensitiveFields = report?.readableSections.flatMap((section) => section.fields).filter((field) => field.sensitive) ?? [];
   const exifEngine = report?.engines.find((engine) => engine.id === 'exiftool');
   const fullImageScan = report?.category === 'image';
@@ -476,6 +510,11 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       </section>
 
       {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t('Parser warnings', '解析器提醒', 'Parser-Hinweise')}><Icon icon={warningIcon} width="22" /> <div><strong>{zh ? `${report.warnings.length} 条解析器提醒` : de ? `${report.warnings.length} Parser-Hinweis${report.warnings.length === 1 ? '' : 'e'}` : `${report.warnings.length} parser ${report.warnings.length === 1 ? 'note' : 'notes'}`}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
+
+      {gps ? <aside className="map-action report-map-action" aria-label={t('GPS metadata location', 'GPS 元数据位置', 'GPS-Metadatenstandort')}>
+        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t('GPS location found', '发现 GPS 位置', 'GPS-Standort gefunden')}</strong><small>{t('Coordinates stored in this file', '文件中保存的坐标', 'In dieser Datei gespeicherte Koordinaten')}</small><code>{gps.text}</code></span></div>
+        <a href={gps.mapUrl} target="_blank" rel="noreferrer">{t('Open map', '打开地图', 'Karte öffnen')}</a>
+      </aside> : null}
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">{t('Privacy pass', '隐私快速检查', 'Datenschutz-Schnellcheck')}</span><strong>{sensitiveFields.length ? (zh ? `发现 ${sensitiveFields.length} 个可能敏感的字段` : de ? `${sensitiveFields.length} möglicherweise sensible${sensitiveFields.length === 1 ? 's Feld' : ' Felder'} gefunden` : `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found`) : t('No common sensitive fields in the readable set', '易读字段中未发现常见敏感项', 'Keine üblichen sensiblen Felder in der lesbaren Ansicht')}</strong><p>{t('Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.', '元数据可以修改，画面本身仍可能暴露人物、标志、地址和地标。', 'Metadaten lassen sich ändern. Bildpixel können trotzdem Personen, Schilder, Adressen und markante Orte verraten.')}</p></div>
