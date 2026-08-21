@@ -31,9 +31,9 @@ faqs:
   - question: "Does cropping a screenshot remove its metadata?"
     answer: "Not reliably. Some editors create a fresh file, while others keep or add fields. Cropping also does not hide private details that remain visible."
 related:
+  - exif-vs-metadata
   - does-whatsapp-remove-exif-data
   - does-instagram-remove-exif-data
-  - does-discord-remove-exif-data
 ---
 
 Yes, screenshots have metadata. They just tend to have less of it than camera photos.

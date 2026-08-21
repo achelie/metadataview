@@ -30,9 +30,9 @@ faqs:
   - question: "Can photo GPS metadata be removed?"
     answer: "Yes. You can remove GPS fields from a separate copy before sharing. Check the cleaned copy afterward because the original file, cloud library, or an earlier upload may still retain location information."
 related:
+  - exif-vs-metadata
   - how-to-remove-gps-data-from-photos-before-sharing
   - how-to-view-exif-data-on-iphone
-  - what-is-exif-data
 ---
 
 To find where a photo was taken, check the original image for GPS metadata first. The useful EXIF fields are `GPSLatitude` and `GPSLongitude`, usually paired with north, south, east, or west references. Put the coordinates into a map and you can see the position recorded by the camera.
