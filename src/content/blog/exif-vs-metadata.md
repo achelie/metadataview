@@ -32,9 +32,9 @@ faqs:
   - question: "Does removing EXIF remove all metadata?"
     answer: "Not always. XMP, IPTC, comments, color profiles, and container fields may remain. Scan the cleaned copy instead of checking only whether its EXIF block disappeared."
 related:
+  - how-to-view-pdf-metadata
   - what-is-exif-data
   - do-screenshots-have-metadata
-  - how-to-find-where-a-photo-was-taken
 ---
 
 EXIF is one type of metadata, while metadata is the wider name for information about a file. EXIF usually holds camera details such as the model, lens, exposure settings, capture time, orientation, and sometimes GPS. Other metadata can include captions, copyright, editing history, color profiles, file dates, and details stored by a photo app rather than inside the image.
