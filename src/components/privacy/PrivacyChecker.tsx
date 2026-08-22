@@ -48,7 +48,29 @@ function PrivacyCheckerContent() {
   const locale = useLocale();
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const fr = locale === 'fr';
+  const frCopy: Record<string, string> = {
+    'Waiting for a JPEG, PNG, or WebP': 'En attente d’un JPEG, PNG ou WebP',
+    'Scanning every metadata field locally': 'Analyse locale de tous les champs de métadonnées',
+    'Canceled by user.': 'Annulé par l’utilisateur.',
+    'Full scan incomplete · the browser-only result remains usable': 'Analyse complète inachevée · le résultat initial reste utilisable',
+    'Stopped safely': 'Arrêté sans risque', 'That image is over the 50 MB local inspection limit.': 'Cette image dépasse la limite locale de 50 Mo.',
+    'Reading image structure in a local Worker': 'Lecture de la structure dans un Worker local',
+    'Initial result ready · starting the full image scan': 'Premier résultat prêt · démarrage de l’analyse complète',
+    'Re-encoding pixels': 'Réencodage des pixels', 'Loading engine': 'Chargement du moteur',
+    'Your files never leave your device.': 'Vos fichiers ne quittent jamais votre appareil.',
+    'Choose an image': 'Choisir une image', 'Before you post it': 'Avant de la publier', 'Drop an image here': 'Déposez une image ici', 'up to 50 MB': '50 Mo maximum',
+    'Checks GPS, names, device IDs, editing history, thumbnails, and nested image records.': 'Vérifie GPS, noms, identifiants d’appareil, historique de retouche, miniatures et images imbriquées.',
+    'The initial result appears fast, then one automatic full scan finishes the job.': 'Le premier résultat arrive vite, puis une analyse complète automatique termine le travail.',
+    'Reading the image structure': 'Lecture de la structure de l’image', 'The first usable result appears before the automatic full scan finishes.': 'Un premier résultat utilisable apparaît avant la fin de l’analyse complète.',
+    'Cancel': 'Annuler', 'We stopped without keeping a report.': 'L’opération s’est arrêtée sans conserver de rapport.', 'Choose another image': 'Choisir une autre image',
+    'Local privacy receipt': 'Reçu local de confidentialité', 'No report was created': 'Aucun rapport créé', 'Replace image': 'Remplacer l’image', 'Clear': 'Effacer',
+    'Checked image summary': 'Résumé de l’image vérifiée', 'Local preview of the selected image': 'Aperçu local de l’image sélectionnée', 'Local preview · never uploaded': 'Aperçu local · jamais envoyé',
+    'File': 'Fichier', 'Actual format': 'Format réel', 'Size': 'Taille', 'Dimensions': 'Dimensions', 'Animation': 'Animation', 'Animated': 'Animée', 'Static': 'Statique', 'Browser fields': 'Champs du navigateur',
+    'This tool checks embedded metadata only. It does not analyze visible image content.': 'Cet outil vérifie uniquement les métadonnées intégrées. Il n’analyse pas le contenu visible.',
+    'Faces, text, addresses, license plates, reflections, screens, uniforms, and landmarks in the image pixels can still reveal personal information.': 'Visages, textes, adresses, plaques, reflets, écrans, uniformes et monuments visibles peuvent encore révéler des informations personnelles.',
+  };
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : fr ? (frCopy[en] ?? en) : en;
   const quickClient = useRef<ImageWorkerClient | null>(null);
   const exifClient = useRef<ExifToolWorkerClient | null>(null);
   const request = useRef(0);
@@ -145,7 +167,7 @@ function PrivacyCheckerContent() {
       const inspection = await exifClient.current!.inspectPrivacy(file, parsed, previous, IMAGE_FULL_SCAN_MODE, setDeepStage, IMAGE_FULL_SCAN_TIMEOUT_MS);
       if (request.current !== current) return;
       setReport(inspection.report);
-      setStatus(t(`Full scan complete · ${inspection.report.risks.length} supported risks`, `完整扫描完成 · ${inspection.report.risks.length} 项支持的风险`, `Vollscan abgeschlossen · ${inspection.report.risks.length.toLocaleString(locale)} unterstützte Risiken`));
+      setStatus(fr ? `Analyse complète terminée · ${inspection.report.risks.length.toLocaleString(locale)} risque(s) pris en charge` : t(`Full scan complete · ${inspection.report.risks.length} supported risks`, `完整扫描完成 · ${inspection.report.risks.length} 项支持的风险`, `Vollscan abgeschlossen · ${inspection.report.risks.length.toLocaleString(locale)} unterstützte Risiken`));
     } catch (caught) {
       if (request.current !== current) return;
       const message = caught instanceof ExifToolCancellationError ? t('Canceled by user.', '用户已取消。', 'Vom Benutzer abgebrochen.') : errorMessage(caught);
@@ -177,7 +199,7 @@ function PrivacyCheckerContent() {
     setCleanupResult(null);
     setCleanupError(null);
     setError(null);
-    setNotice(selected.length > 1 ? t(`You chose ${selected.length} files. This checker reads one at a time, so only ${file.name} was checked.`, `你选择了 ${selected.length} 个文件。检查器一次只读一个，因此只检查了 ${file.name}。`, `Du hast ${selected.length.toLocaleString(locale)} Dateien gewählt. Der Check liest jeweils nur eine, daher wurde nur ${file.name} geprüft.`) : null);
+    setNotice(selected.length > 1 ? (fr ? `Vous avez choisi ${selected.length.toLocaleString(locale)} fichiers. Le vérificateur n’en lit qu’un à la fois : seul ${file.name} a été analysé.` : t(`You chose ${selected.length} files. This checker reads one at a time, so only ${file.name} was checked.`, `你选择了 ${selected.length} 个文件。检查器一次只读一个，因此只检查了 ${file.name}。`, `Du hast ${selected.length.toLocaleString(locale)} Dateien gewählt. Der Check liest jeweils nur eine, daher wurde nur ${file.name} geprüft.`)) : null);
 
     if (file.size > IMAGE_LIMITS.fileBytes) {
       setQuickBusy(false);
@@ -255,7 +277,7 @@ function PrivacyCheckerContent() {
     {notice && <p className="image-notice" role="status">{notice}</p>}
     {error && <div className="image-error" role="alert"><Icon icon={alertIcon} width="26" /><div><span>{error.code}</span><strong>{t('We stopped without keeping a report.', '已经停止，没有保留报告。', 'Der Vorgang wurde ohne Bericht gestoppt.')}</strong><p>{error.message}</p><button className="button button-secondary" type="button" onClick={clearState}>{t('Choose another image', '换一张图片', 'Anderes Bild auswählen')}</button></div></div>}
 
-    {selection && !quickBusy && <div className="privacy-result-actions"><div><span className="eyebrow">{t('Local privacy receipt', '本地隐私收据', 'Lokaler Datenschutzbeleg')}</span><h2 ref={resultHeading} tabIndex={-1}>{report ? t(`${report.file.name} privacy report`, `${report.file.name} 隐私报告`, `Datenschutzbericht für ${report.file.name}`) : t('No report was created', '没有生成报告', 'Kein Bericht erstellt')}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }}><Icon icon={rotateIcon} width="16" />{t('Replace image', '替换图片', 'Bild ersetzen')}</button><button className="button button-ghost" type="button" onClick={clearState}>{t('Clear', '清除', 'Löschen')}</button></div></div>}
+    {selection && !quickBusy && <div className="privacy-result-actions"><div><span className="eyebrow">{t('Local privacy receipt', '本地隐私收据', 'Lokaler Datenschutzbeleg')}</span><h2 ref={resultHeading} tabIndex={-1}>{report ? (fr ? `Rapport de confidentialité pour ${report.file.name}` : t(`${report.file.name} privacy report`, `${report.file.name} 隐私报告`, `Datenschutzbericht für ${report.file.name}`)) : t('No report was created', '没有生成报告', 'Kein Bericht erstellt')}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }}><Icon icon={rotateIcon} width="16" />{t('Replace image', '替换图片', 'Bild ersetzen')}</button><button className="button button-ghost" type="button" onClick={clearState}>{t('Clear', '清除', 'Löschen')}</button></div></div>}
 
     {report && metadata && source && <div className="privacy-result-shell">
       <section className="privacy-file-overview" aria-label={t('Checked image summary', '已检查图片摘要', 'Zusammenfassung des geprüften Bildes')}>{preview && <figure><img src={preview} alt={t('Local preview of the selected image', '所选图片的本地预览', 'Lokale Vorschau des ausgewählten Bildes')} /><figcaption>{t('Local preview · never uploaded', '本地预览 · 从未上传', 'Lokale Vorschau · nie hochgeladen')}</figcaption></figure>}<div className="privacy-file-strip"><div><span>{t('File', '文件', 'Datei')}</span><strong title={metadata.file.name}>{metadata.file.name}</strong></div><div><span>{t('Actual format', '真实格式', 'Echtes Format')}</span><strong>{metadata.file.actualFormat.toUpperCase()}</strong></div><div><span>{t('Size', '大小', 'Größe')}</span><strong>{formatBytes(metadata.file.size)}</strong></div><div><span>{t('Dimensions', '尺寸', 'Abmessungen')}</span><strong>{metadata.file.width} × {metadata.file.height}</strong></div><div><span>{t('Animation', '动画', 'Animation')}</span><strong>{metadata.file.animated ? t('Animated', '动态', 'Animiert') : t('Static', '静态', 'Statisch')}</strong></div><div><span>{t('Browser fields', '浏览器字段', 'Browser-Felder')}</span><strong>{metadata.file.metadataFieldCount}</strong></div></div></section>
@@ -267,7 +289,7 @@ function PrivacyCheckerContent() {
       <PrivacyRiskList locale={locale} report={report} />
       <DetectedData locale={locale} report={report} />
       <PrivacyReportActions locale={locale} report={report} deepPending={deepPending} />
-      <aside className="privacy-honest-limit"><Icon icon={alertIcon} width="22" /><div><strong>{t('This tool checks embedded metadata only. It does not analyze visible image content.', '这个工具只检查内嵌元数据，不分析可见画面。', 'Dieses Tool prüft nur eingebettete Metadaten und analysiert keine sichtbaren Bildinhalte.')}</strong><p>{t('Faces, text, addresses, license plates, reflections, screens, uniforms, and landmarks in the image pixels can still reveal personal information.', '图片像素里的人脸、文字、地址、车牌、倒影、屏幕、制服和地标仍可能暴露个人信息。', 'Gesichter, Texte, Adressen, Kennzeichen, Spiegelungen, Bildschirme, Uniformen und Wahrzeichen in den Pixeln können weiterhin persönliche Informationen verraten.')}</p></div></aside><p className="privacy-disclaimer">{t(report.disclaimer, '这个分数只覆盖受支持的隐藏元数据，不代表画面本身匿名，也不证明元数据真实。', 'Dieser Wert deckt nur unterstützte versteckte Metadaten ab. Er bedeutet weder, dass das Bild anonym ist, noch dass die Metadaten wahr sind.')}</p>
+      <aside className="privacy-honest-limit"><Icon icon={alertIcon} width="22" /><div><strong>{t('This tool checks embedded metadata only. It does not analyze visible image content.', '这个工具只检查内嵌元数据，不分析可见画面。', 'Dieses Tool prüft nur eingebettete Metadaten und analysiert keine sichtbaren Bildinhalte.')}</strong><p>{t('Faces, text, addresses, license plates, reflections, screens, uniforms, and landmarks in the image pixels can still reveal personal information.', '图片像素里的人脸、文字、地址、车牌、倒影、屏幕、制服和地标仍可能暴露个人信息。', 'Gesichter, Texte, Adressen, Kennzeichen, Spiegelungen, Bildschirme, Uniformen und Wahrzeichen in den Pixeln können weiterhin persönliche Informationen verraten.')}</p></div></aside><p className="privacy-disclaimer">{fr ? 'Ce score couvre uniquement les métadonnées cachées prises en charge. Il ne garantit pas que l’image soit anonyme ni que les métadonnées soient vraies.' : t(report.disclaimer, '这个分数只覆盖受支持的隐藏元数据，不代表画面本身匿名，也不证明元数据真实。', 'Dieser Wert deckt nur unterstützte versteckte Metadaten ab. Er bedeutet weder, dass das Bild anonym ist, noch dass die Metadaten wahr sind.')}</p>
     </div>}
   </section>;
 }

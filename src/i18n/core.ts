@@ -1,13 +1,15 @@
-export const locales = ['en', 'de', 'zh-CN'] as const;
+export const locales = ['en', 'de', 'fr', 'zh-CN'] as const;
 
 export type Locale = (typeof locales)[number];
 
 export const DEFAULT_LOCALE: Locale = 'en';
 export const CHINESE_PREFIX = '/zh-cn';
 export const GERMAN_PREFIX = '/de';
+export const FRENCH_PREFIX = '/fr';
 
 const localePrefixes: Record<Exclude<Locale, 'en'>, string> = {
   de: GERMAN_PREFIX,
+  fr: FRENCH_PREFIX,
   'zh-CN': CHINESE_PREFIX,
 };
 
@@ -15,6 +17,7 @@ export function getLocaleFromPath(pathname: string): Locale {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
   if (path === CHINESE_PREFIX || path.startsWith(`${CHINESE_PREFIX}/`)) return 'zh-CN';
   if (path === GERMAN_PREFIX || path.startsWith(`${GERMAN_PREFIX}/`)) return 'de';
+  if (path === FRENCH_PREFIX || path.startsWith(`${FRENCH_PREFIX}/`)) return 'fr';
   return 'en';
 }
 
@@ -47,21 +50,23 @@ export function localizePath(pathname: string, locale: Locale): string {
 export interface AlternatePaths {
   en: string;
   de: string;
+  fr: string;
   'zh-CN': string;
   'x-default': string;
 }
 
 export function getAlternatePaths(pathname: string): AlternatePaths {
   const en = localizePath(pathname, 'en');
-  return { en, de: localizePath(pathname, 'de'), 'zh-CN': localizePath(pathname, 'zh-CN'), 'x-default': en };
+  return { en, de: localizePath(pathname, 'de'), fr: localizePath(pathname, 'fr'), 'zh-CN': localizePath(pathname, 'zh-CN'), 'x-default': en };
 }
 
 export function localeNumber(locale: Locale, value: number): string {
   return new Intl.NumberFormat(locale).format(value);
 }
 
-export function pick<T>(locale: Locale, en: T, zh: T, de: T = en): T {
+export function pick<T>(locale: Locale, en: T, zh: T, de: T = en, fr: T = en): T {
   if (locale === 'zh-CN') return zh;
   if (locale === 'de') return de;
+  if (locale === 'fr') return fr;
   return en;
 }

@@ -48,6 +48,22 @@ const removerFaqsDe = (kind: string, formats: string, preserved: string) => [
   { question: 'Bin ich danach vollständig anonym?', answer: 'Nein. Bild, Ton, Text und Ausgabedateiname können weiterhin Personen, Orte oder Konten verraten. Dieses Tool bearbeitet nur Metadaten.' },
 ];
 
+const viewerFaqsFr = (name: string, formats: string, reads: string) => [
+  { question: 'Mon fichier est-il envoyé sur un serveur ?', answer: `Non. ${name} fonctionne dans cet onglet. Le fichier, son nom, ses empreintes, ses métadonnées et le rapport ne sont envoyés à aucun service.` },
+  { question: 'Quels formats et champs sont pris en charge ?', answer: `Formats pris en charge : ${formats}. L’outil lit les ${reads} présents et conserve les champs natifs qu’il peut afficher sans risque.` },
+  { question: 'Pourquoi certains champs manquent-ils ou se contredisent-ils ?', answer: 'Les appareils et logiciels n’écrivent pas tous les mêmes champs. Des index abîmés, d’anciennes balises ou des différences de format peuvent aussi créer des trous et des contradictions. Le rapport montre ce que le fichier contient maintenant.' },
+  { question: 'Ces métadonnées prouvent-elles que le fichier est authentique ?', answer: 'Non. L’auteur, la date, le lieu, l’appareil et le logiciel peuvent être modifiés. Considérez-les comme des indices ; pour une provenance signée, vérifiez séparément les informations C2PA.' },
+  { question: 'Que se passe-t-il si j’efface le résultat ou recharge la page ?', answer: 'L’opération en cours s’arrête et les aperçus ainsi que les rapports temporaires sont libérés. Le site ne conserve aucun historique de fichiers entre les pages.' },
+];
+
+const removerFaqsFr = (kind: string, formats: string, preserved: string) => [
+  { question: 'Le fichier original est-il envoyé ou remplacé ?', answer: 'Non. Le nettoyage et la vérification se déroulent dans cet onglet. L’original reste intact ; l’outil crée seulement une nouvelle copie à télécharger.' },
+  { question: `Quels formats de ${kind} puis-je nettoyer ?`, answer: `Formats pris en charge : ${formats}. L’outil vérifie d’abord la vraie signature du fichier, puis choisit le moteur adapté.` },
+  { question: 'Le contenu est-il réencodé ?', answer: `Pas volontairement. Le nettoyage conserve ${preserved} et ne traite que les métadonnées descriptives modifiables. Le téléchargement est bloqué si la structure ne passe pas la vérification.` },
+  { question: 'Pourquoi certains champs restent-ils après le nettoyage ?', answer: 'Les dimensions, la couleur, la durée, le nombre de pages ou certains repères du conteneur sont nécessaires au fichier. La vérification distingue clairement ce qui a été conservé de ce qui subsiste.' },
+  { question: 'Suis-je totalement anonyme après le nettoyage ?', answer: 'Non. L’image, le son, le texte et le nom du fichier de sortie peuvent encore révéler des personnes, des lieux ou des comptes. Cet outil ne traite que les métadonnées.' },
+];
+
 const zhCopy: Record<ToolKey, ZhToolCopy> = {
   metadata: {
     title: '元数据查看器', metaTitle: '元数据查看器 — 在线查看文件里的隐藏信息', eyebrow: '通用文件检查台',
@@ -270,6 +286,118 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
   },
 };
 
+const frCopy: Record<ToolKey, ZhToolCopy> = {
+  metadata: {
+    title: 'Lecteur de métadonnées', metaTitle: 'Lecteur de métadonnées — voir les informations cachées d’un fichier', eyebrow: 'Le comptoir de contrôle universel',
+    description: 'Consultez les métadonnées de 28 formats d’image, de document, de vidéo et d’audio. Recherchez un champ, copiez une valeur ou exportez le résultat, sans téléverser le fichier.',
+    shortDescription: 'Déposez un fichier pris en charge pour rechercher, copier ou exporter tous ses champs lisibles.',
+    highlights: ['Vérifie la vraie signature du fichier au lieu de croire son extension.', 'Produit un résumé lisible et un registre complet des champs natifs.', 'Lit le fichier une seule fois et calcule SHA-256 ainsi que MD5.', 'Exporte un JSON sûr et un rapport PDF compact.'],
+    limitations: ['La limite de 100 Mo évite qu’un fichier endommagé ne bloque l’onglet.', 'Les PDF chiffrés sont signalés, jamais forcés.', 'Les métadonnées décrivent un fichier sans garantir que chaque valeur soit exacte.'],
+    faqs: viewerFaqsFr('Le lecteur de métadonnées', '28 formats courants d’image, de vidéo, d’audio et de document', 'champs EXIF, XMP, IPTC, GPS, de conteneur, de document et techniques'),
+  },
+  image: {
+    title: 'Lecteur de métadonnées d’image', metaTitle: 'Métadonnées d’image — lire PNG, JPEG, WebP, HEIC, TIFF et GIF', eyebrow: 'Les preuves cachées dans l’image',
+    description: 'Consultez localement les données EXIF, GPS, XMP, IPTC, ICC, les commentaires, l’animation et les champs natifs de PNG, JPEG, WebP, HEIC, TIFF et GIF.',
+    shortDescription: 'Lisez les données d’appareil, de GPS, de couleur, d’auteur, de logiciel, d’animation et de conteneur.',
+    highlights: ['Vérifie la vraie signature PNG, JPEG, WebP, HEIC, TIFF ou GIF.', 'Affiche dimensions, animation, appareil, GPS, couleur, auteur et dates.', 'Conserve les chemins ExifTool natifs et les balises inconnues mais lisibles.', 'Lit les métadonnées même si le navigateur ne peut pas prévisualiser HEIC ou TIFF.'],
+    limitations: ['Certains navigateurs ne prévisualisent pas les pixels HEIC ou TIFF ; la lecture des métadonnées continue.', 'Le vérificateur de confidentialité accepte actuellement JPEG, PNG et WebP.', 'Les visages et textes visibles sont des pixels : cet outil ne les analyse pas.'],
+    faqs: viewerFaqsFr('Le lecteur de métadonnées d’image', 'PNG, JPG/JPEG, WebP, HEIC, TIFF et GIF jusqu’à 50 Mo', 'données EXIF, GPS, XMP, IPTC, ICC, commentaires, animation, conteneur et aperçus intégrés'),
+  },
+  document: {
+    title: 'Lecteur de métadonnées de document', metaTitle: 'Métadonnées de document — lire PDF, DOCX, PPTX et XLSX', eyebrow: 'Le lecteur des propriétés de document',
+    description: 'Inspectez localement les auteurs, dates, applications, révisions, statistiques, propriétés personnalisées et champs natifs de PDF, DOCX, PPTX et XLSX.',
+    shortDescription: 'Ouvrez un PDF ou un document Office et lisez les propriétés qui entourent son contenu.',
+    highlights: ['Lit les dictionnaires PDF et les propriétés OOXML principales, applicatives et personnalisées.', 'Affiche les statistiques disponibles : pages, mots, diapositives et feuilles.', 'Vérifie le vrai type de paquet au lieu de se fier à l’extension.', 'N’inclut dans le rapport ni texte, ni cellule, ni diapositive, ni pièce jointe, ni octet média.'],
+    limitations: ['Ne déchiffre ni ne contourne les PDF et documents Office protégés par mot de passe.', 'Les anciens formats DOC, PPT, XLS et les fichiers avec macros ne sont pas pris en charge.', 'Auteurs, dates, révisions et statistiques peuvent manquer, être anciens ou avoir été modifiés.'],
+    faqs: viewerFaqsFr('Le lecteur de métadonnées de document', 'PDF, DOCX, PPTX et XLSX jusqu’à 100 Mo', 'titres, auteurs, sujets, dates, applications, révisions, propriétés personnalisées et statistiques'),
+  },
+  video: {
+    title: 'Lecteur de métadonnées vidéo', metaTitle: 'Métadonnées vidéo — lire MP4, MOV, MKV, WebM, AVI et FLV', eyebrow: 'Le lecteur des conteneurs vidéo',
+    description: 'Inspectez localement les métadonnées de MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP et 3G2.',
+    shortDescription: 'Lisez durée, dimensions, codecs, pistes, marques, dates et informations de production.',
+    highlights: ['Vérifie les signatures des conteneurs ISO BMFF, EBML, RIFF et FLV.', 'Résume durée, dimensions, codecs, fréquence d’images et pistes.', 'Conserve les chemins ExifTool natifs et les champs propres au format.', 'Ne lit, ne transcrit et n’analyse aucune image de la vidéo.'],
+    limitations: ['M4V est signalé comme membre de la famille de conteneurs MP4.', 'Images, voix, visages, sous-titres et texte visible ne sont pas analysés.', 'Lecture, transcodage et réparation ne font pas partie de cet outil.'],
+    faqs: viewerFaqsFr('Le lecteur de métadonnées vidéo', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP et 3G2 jusqu’à 100 Mo', 'durée, dimensions, codecs, fréquence, débit, pistes, dates, logiciels et champs de conteneur'),
+  },
+  audio: {
+    title: 'Lecteur de métadonnées audio', metaTitle: 'Métadonnées audio — lire les balises MP3, FLAC, OGG, M4A, WAV et WMA', eyebrow: 'Le lecteur des étiquettes audio',
+    description: 'Lisez localement les balises et données techniques de MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV et WMA.',
+    shortDescription: 'Inspectez titres, crédits, codec, durée, débit, fréquence, canaux, profondeur et pochettes intégrées.',
+    highlights: ['Lit les métadonnées ID3, Vorbis, Opus, iTunes, RIFF et ASF.', 'Vérifie le vrai conteneur avant de regarder l’extension.', 'Résume les pochettes intégrées sans exporter leurs octets.', 'Ne lit, ne transcrit et ne produit aucune empreinte acoustique.'],
+    limitations: ['OGA est une extension Ogg orientée audio ; le rapport identifie le codec réel quand il le peut.', 'Pochettes et autres charges binaires sont résumées, jamais rendues ni exportées.', 'L’outil n’écoute, ne lit, ne transcrit et ne calcule aucune empreinte acoustique.'],
+    faqs: viewerFaqsFr('Le lecteur de métadonnées audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV et WMA jusqu’à 100 Mo', 'balises ID3, Vorbis, Opus, iTunes, RIFF, ASF et champs techniques du codec'),
+  },
+  privacy: {
+    title: 'Vérificateur de confidentialité des images', metaTitle: 'Confidentialité des images — détecter EXIF, GPS et métadonnées cachées', eyebrow: 'Un score de risque qui s’explique',
+    description: 'Repérez GPS, identifiants d’appareil, dates, informations d’auteur et métadonnées cachées sans téléverser l’image.',
+    shortDescription: 'Cherchez dans une image les traces de lieu, d’identité, d’appareil, de retouche et d’aperçu.',
+    highlights: ['Affiche un premier résultat rapide, puis termine automatiquement l’analyse complète.', 'Chaque point du score renvoie aux champs qui l’expliquent.', 'Inspecte les balises standard, aperçus intégrés et images imbriquées.', 'Crée une copie nettoyée, la rescane entièrement et la compare à l’original.'],
+    limitations: ['Un score faible ne garantit pas qu’une image soit sans risque.', 'Visages, textes, reflets et monuments visibles ne sont pas inspectés.', 'Les règles expliquent des risques courants sans connaître votre situation précise.'],
+    faqs: [
+      { question: 'L’image est-elle envoyée ou conservée ?', answer: 'Non. Elle reste dans cet onglet et un Worker local l’analyse. Fichier, nom, coordonnées, empreintes et rapport ne sont ni envoyés ni ajoutés à un historique.' },
+      { question: 'Que recherche le vérificateur ?', answer: 'GPS, noms, coordonnées personnelles, identifiants d’appareil et d’objectif, nom d’origine, dates, historique de retouche, identifiants persistants, miniatures, aperçus et images imbriquées.' },
+      { question: 'Que signifie le score de 0 à 100 ?', answer: 'Il vient de règles publiques et plafonnées. Des coordonnées précises pèsent plus qu’un modèle d’appareil ; plusieurs copies du même fait ne comptent pas plusieurs fois.' },
+      { question: 'Peut-il montrer le lieu exact de la photo ?', answer: 'Seulement si le fichier contient des coordonnées GPS valides. Sans balise exploitable, il ne devine rien et ne contacte aucune carte en ligne.' },
+      { question: 'Un score nul veut-il dire que je peux partager sans réfléchir ?', answer: 'Non. Zéro signifie seulement que les règles prises en charge n’ont trouvé aucun indice noté. Visages, adresses, plaques, écrans et monuments peuvent encore révéler des informations.' },
+    ],
+  },
+  remover: {
+    title: 'Suppresseur de métadonnées', metaTitle: 'Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents', eyebrow: 'Le comptoir de nettoyage tous formats',
+    description: 'Supprimez localement les métadonnées modifiables de 28 formats d’image, vidéo, audio et document, puis vérifiez la copie avant de la télécharger.',
+    shortDescription: 'Déposez un fichier, retirez ses balises descriptives sans réencoder volontairement son contenu, puis rescanez la copie.',
+    highlights: ['Choisit le bon moteur d’après le format réel.', 'Conserve le contenu média ou documentaire.', 'Rescanne la copie produite avant le téléchargement.', 'Sépare les champs supprimés, conservés et encore présents.'],
+    limitations: ['Les champs techniques indispensables restent en place : les supprimer casserait le fichier.', 'Pochettes, chapitres, sous-titres, pièces jointes, commentaires, révisions et contenu visible restent présents.', 'Même vérifiée, la copie ne cache pas les personnes, textes ou lieux visibles.'],
+    faqs: removerFaqsFr('fichier', 'six formats d’image, neuf de vidéo, neuf d’audio, ainsi que PDF, DOCX, PPTX et XLSX', 'les pistes, le contenu du document, les chapitres, sous-titres, pochettes et pièces jointes'),
+  },
+  imageRemover: {
+    title: 'Suppresseur de métadonnées d’image', metaTitle: 'Nettoyer les métadonnées PNG, JPEG, WebP, HEIC, TIFF et GIF', eyebrow: 'Le comptoir de nettoyage des images',
+    description: 'Supprimez les données EXIF, GPS, XMP, IPTC, MakerNote, commentaires et aperçus modifiables de PNG, JPEG, WebP, HEIC, TIFF et GIF, sans réencoder les pixels.',
+    shortDescription: 'Nettoyez six formats tout en conservant couleur ICC, orientation, dimensions et animation.',
+    highlights: ['Retire les champs modifiables d’identité et de lieu.', 'Conserve pixels compressés et animations.', 'Garde la couleur et l’orientation nécessaires à un affichage correct.', 'Effectue une analyse aussi profonde avant qu’après le nettoyage.'],
+    limitations: ['TIFF conserve les champs IFD structurels nécessaires au rendu des pixels.', 'La couleur ICC et Orientation sont volontairement conservées.', 'Nettoyer les métadonnées ne masque ni visage, ni texte, ni plaque, ni monument visible.'],
+    faqs: removerFaqsFr('image', 'PNG, JPEG, WebP, HEIC, TIFF et GIF', 'les pixels compressés, dimensions, orientation, couleur et animation'),
+  },
+  videoRemover: {
+    title: 'Suppresseur de métadonnées vidéo', metaTitle: 'Nettoyer les métadonnées MP4, MOV, MKV, WebM, AVI et FLV', eyebrow: 'Le nettoyage des conteneurs vidéo',
+    description: 'Supprimez les métadonnées descriptives modifiables de MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP et 3G2 sans transcoder la vidéo.',
+    shortDescription: 'Conservez pistes, codecs, chapitres, sous-titres et images ; retirez seulement les balises du conteneur.',
+    highlights: ['Ne transcode aucune piste vidéo ou audio.', 'Choisit le moteur d’après le vrai conteneur.', 'Conserve chapitres, sous-titres, pochettes et pièces jointes.', 'Bloque la sortie si la structure ou les valeurs techniques changent.'],
+    limitations: ['Certains conteneurs doivent garder des dates de piste ou des balises de gestion.', 'Sous-titres, chapitres, pièces jointes et images visibles restent présents.', 'Le nettoyage ne supprime ni visage, ni voix, ni logo, ni sous-titre, ni lieu visible.'],
+    faqs: removerFaqsFr('vidéo', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP et 3G2', 'les pistes encodées, images, chapitres, sous-titres, pochettes et pièces jointes'),
+  },
+  audioRemover: {
+    title: 'Suppresseur de métadonnées audio', metaTitle: 'Nettoyer les métadonnées MP3, FLAC, OGG, M4A, WAV et WMA', eyebrow: 'Le nettoyage des étiquettes audio',
+    description: 'Supprimez les descriptions ID3, Vorbis, Opus, iTunes, RIFF, BEXT, iXML et ASF de neuf formats audio sans réencoder le son.',
+    shortDescription: 'Retirez les balises audio modifiables en conservant son, pochette, chapitres, codec et paramètres d’échantillonnage.',
+    highlights: ['Exécute TagLib WASM localement dans un Worker dédié.', 'Conserve pochettes et chapitres selon une règle claire.', 'Retire notes de diffusion et descriptions personnalisées.', 'Vérifie format, durée, fréquence, canaux et codec.'],
+    limitations: ['Pochettes et chapitres sont volontairement conservés.', 'Les en-têtes du codec et propriétés audio indispensables restent présents.', 'Le son n’est ni édité, ni normalisé, ni transcrit, ni reconnu, ni écouté.'],
+    faqs: removerFaqsFr('fichier audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV et WMA', 'les flux audio encodés, pochettes, chapitres, codecs et paramètres d’échantillonnage'),
+  },
+  documentRemover: {
+    title: 'Suppresseur de métadonnées de document', metaTitle: 'Nettoyer les propriétés PDF, DOCX, PPTX et XLSX', eyebrow: 'Le nettoyage des propriétés de document',
+    description: 'Supprimez localement les propriétés modifiables des PDF et documents Office tout en conservant pages, texte, cellules, diapositives, commentaires, révisions, médias et pièces jointes.',
+    shortDescription: 'Nettoyez les propriétés PDF, DOCX, PPTX et XLSX, puis rouvrez et vérifiez le document produit.',
+    highlights: ['Ne lit pas le corps du texte et ne réécrit que les XML de propriétés Office.', 'Réécrit entièrement les PDF avec qpdf en omettant Info et XMP de premier niveau.', 'Conserve le contenu et les objets intégrés.', 'Avertit clairement avant d’invalider une signature numérique.'],
+    limitations: ['Le contenu des pages PDF et les fichiers intégrés peuvent avoir leurs propres métadonnées ; ils ne sont pas réécrits.', 'Commentaires Office, révisions, feuilles masquées, macros et objets intégrés restent présents.', 'Toute modification d’octets invalide les signatures PDF ou OOXML existantes.'],
+    faqs: removerFaqsFr('document', 'PDF, DOCX, PPTX et XLSX', 'les pages, textes, cellules, diapositives, commentaires, révisions, médias et pièces jointes'),
+  },
+  c2pa: {
+    title: 'Lecteur C2PA', metaTitle: 'Lecteur C2PA — vérifier Content Credentials et la provenance d’un fichier', eyebrow: 'Le contrôle cryptographique de provenance',
+    description: 'Vérifiez les Content Credentials C2PA de 20 formats courants. Inspectez signatures, liaison au fichier, actions, ingrédients et assertions, sans téléversement.',
+    shortDescription: 'Déposez une image, une vidéo, un son ou un PDF et obtenez un verdict clair accompagné de ses preuves.',
+    highlights: ['Utilise le vérificateur officiel @contentauth dans un Web Worker isolé.', 'Contrôle 20 formats C2PA d’après leur vraie signature.', 'Distingue une signature valide de la confiance accordée à l’émetteur.', 'Calcule SHA-256 et exporte un reçu sûr sans les octets du fichier source.'],
+    limitations: ['L’absence de Content Credentials ne prouve pas qu’un fichier soit faux.', 'Une signature valide prouve la liaison au fichier et l’intégrité de l’assertion, pas la vérité de chaque contenu.', 'Pour protéger la vie privée, aucun service externe de confiance ou OCSP n’est interrogé ; confiance et révocation peuvent donc rester non vérifiées.'],
+    faqs: [
+      { question: 'Que signifie « valide » ?', answer: 'La structure du manifeste est correcte, la signature est vérifiée et la liaison signée correspond exactement au fichier actuel. La confiance accordée à l’émetteur est une conclusion séparée.' },
+      { question: 'Pourquoi la confiance de l’émetteur est-elle « non vérifiée » ?', answer: 'Cette page ne contacte ni liste de confiance externe, ni manifeste distant, ni service OCSP. Pour une conclusion en ligne à jour, utilisez aussi un autre vérificateur conforme.' },
+      { question: 'Que signifie « aucune Content Credential » ?', answer: 'Aucun manifeste C2PA intégré n’a été trouvé. Beaucoup de fichiers authentiques n’en ont pas ; cette absence ne prouve aucune falsification.' },
+      { question: 'Quels formats sont pris en charge ?', answer: 'JPEG, PNG, WebP, GIF, TIFF, HEIC, HEIF, AVIF, JXL, DNG, ARW, NEF, SVG, MP4, MOV, AVI, MP3, M4A, WAV et PDF. La vraie signature est vérifiée en premier.' },
+      { question: 'Le fichier est-il envoyé ?', answer: 'Non. Le vérificateur officiel tourne dans un Worker du navigateur. Fichier source, nom, empreinte et valeurs du manifeste ne sont ni envoyés ni stockés dans un historique.' },
+      { question: 'C2PA prouve-t-il qu’un contenu est vrai ?', answer: 'Non. Un résultat valide prouve que les informations signées sont toujours liées à ce fichier, pas que chaque déclaration, son ou scène visible soit vrai.' },
+    ],
+  },
+};
+
 const guideNames: Record<ToolKey, string> = {
   metadata: '文件', image: '图片', document: '文档', video: '视频', audio: '音频', privacy: '图片', remover: '文件', imageRemover: '图片', videoRemover: '视频', audioRemover: '音频', documentRemover: '文档', c2pa: '文件',
 };
@@ -368,16 +496,65 @@ function localizedRelatedDe(config: ToolConfig) {
   return config.related.map((item) => ({ href: localizePath(item.href, 'de'), title: titles[item.href]?.[0] ?? item.title, note: titles[item.href]?.[1] ?? item.note }));
 }
 
+const guideNamesFr: Record<ToolKey, string> = {
+  metadata: 'fichiers', image: 'images', document: 'documents', video: 'vidéos', audio: 'fichiers audio', privacy: 'images', remover: 'fichiers', imageRemover: 'images', videoRemover: 'vidéos', audioRemover: 'fichiers audio', documentRemover: 'documents', c2pa: 'fichiers',
+};
+
+function localizedGuideFr(key: ToolKey, base?: FormatGuide): FormatGuide | undefined {
+  if (!base) return undefined;
+  const name = guideNamesFr[key];
+  const cleaning = key.endsWith('Remover') || key === 'remover';
+  const benefits = cleaning ? [
+    { kicker: 'Métadonnées seulement', title: 'Retirez les balises, gardez le contenu', description: `Supprimez les champs modifiables d’identité, de lieu, de logiciel, de date et personnalisés sans réencoder volontairement vos ${name}.`, action: 'Nettoyer un fichier' },
+    { kicker: 'Vérifié après coup', title: 'Fiez-vous au second passage', description: 'La copie produite est relue aussi profondément. Les champs retirés, conservés et restants sont séparés.', action: 'Voir la vérification' },
+    { kicker: 'Original intact', title: 'Repartez avec la copie et son reçu', description: 'Le fichier source ne change pas. Téléchargez la copie nettoyée et un reçu JSON sans son contenu.', action: 'Voir d’abord les métadonnées' },
+  ] : [
+    { kicker: 'Indices privés', title: 'Repérez ce qui ne doit pas voyager', description: `Avant de partager vos ${name}, trouvez les traces cachées de lieu, d’identité, d’appareil, de date et de production.`, action: `Inspecter les ${name}` },
+    { kicker: 'Faits techniques', title: 'Comprenez la structure du fichier', description: `Consultez format, valeurs techniques, chemins natifs, empreintes et preuves d’analyse de vos ${name}.`, action: 'Lire les champs locaux' },
+    { kicker: 'Partage plus propre', title: 'Nettoyez une copie si nécessaire', description: 'Les métadonnées sont modifiables et parfois indiscrètes. Passez ensuite au nettoyeur adapté et rescanez la copie.', action: 'Ouvrir l’outil adapté' },
+  ];
+  return {
+    valueEyebrow: cleaning ? 'POURQUOI NETTOYER' : 'POURQUOI INSPECTER',
+    valueTitle: cleaning ? `Pourquoi retirer les métadonnées de vos ${name} ?` : `Pourquoi inspecter vos ${name} ?`,
+    valueDescription: cleaning ? `Au-delà du contenu visible, vos ${name} peuvent conserver identité, lieu, logiciel, dates et historique de production.` : `Les métadonnées ajoutent du contexte technique, mais peuvent aussi révéler des détails privés sans prévenir.`,
+    benefits: base.benefits.map((item, index) => ({ ...item, href: localizePath(item.href, 'fr'), ...(benefits[index] ?? benefits[0]!) })),
+    processTitle: cleaning ? `Comment les ${name} sont nettoyés` : `Comment les ${name} sont analysés`,
+    processDescription: cleaning ? `Le nettoyage se déroule dans cet onglet. Ni l’original ni la copie ne sont téléversés.` : `Le navigateur lit vos ${name} dans cet onglet, sans les envoyer à un serveur d’analyse.`,
+    steps: [
+      { title: `Choisissez un fichier`, description: 'Choisissez un format pris en charge. Ses octets restent dans cet onglet.' },
+      { title: 'Vérification du vrai format', description: 'La signature, les marqueurs du conteneur et la taille sont contrôlés, pas seulement l’extension.' },
+      { title: cleaning ? 'Suppression locale des métadonnées' : 'Lecture locale des métadonnées', description: cleaning ? 'Un moteur adapté au format traite les balises descriptives en conservant le contenu.' : 'Les analyseurs locaux et ExifTool WASM, chargé au besoin, lisent les champs disponibles.' },
+      { title: cleaning ? 'Vérification de la copie' : 'Création d’un rapport consultable', description: cleaning ? 'La copie est rouverte, comparée et rescannée. Le téléchargement n’est permis qu’après validation.' : 'Les champs sont regroupés, recherchables et copiables, avec leurs chemins natifs.' },
+      { title: 'Libération après usage', description: 'Effacer, remplacer ou recharger arrête les Workers et libère les objets temporaires de cet onglet.' },
+    ],
+    ctaLead: `Vos ${name} sont prêts ?`, ctaLabel: 'Choisissez un fichier ci-dessus',
+  };
+}
+
+function localizedRelatedFr(config: ToolConfig) {
+  const titles: Record<string, [string, string]> = {
+    '/image-privacy-checker/': ['Confidentialité des images', 'Transforme les métadonnées cachées en un score de risque compréhensible.'],
+    '/image-metadata-remover/': ['Suppresseur de métadonnées d’image', 'Crée une copie plus propre et vérifie précisément ce qui a changé.'],
+    '/audio-metadata-remover/': ['Suppresseur de métadonnées audio', 'Retire ID3, artiste, album et commentaires sans réencoder le son.'],
+    '/document-metadata-remover/': ['Suppresseur de métadonnées de document', 'Nettoie auteur, créateur, logiciel, société et dates.'],
+    '/video-metadata-remover/': ['Suppresseur de métadonnées vidéo', 'Retire les balises modifiables du conteneur en gardant pistes et images.'],
+    '/metadata-remover/': ['Suppresseur de métadonnées', 'Retire les balises modifiables sans réencoder le contenu.'],
+    '/metadata-viewer/': ['Lecteur de métadonnées', 'Commencez par lire le registre complet du fichier.'],
+    '/c2pa-viewer/': ['Lecteur C2PA', 'Vérifie la provenance signée séparément des métadonnées ordinaires.'],
+  };
+  return config.related.map((item) => ({ href: localizePath(item.href, 'fr'), title: titles[item.href]?.[0] ?? item.title, note: titles[item.href]?.[1] ?? item.note }));
+}
+
 export function getTool(key: ToolKey, locale: Locale = 'en'): ToolConfig {
   const base = tools[key];
   if (!base) throw new Error(`Unknown tool key: ${key}`);
   if (locale === 'en') return base;
-  const copy = locale === 'zh-CN' ? zhCopy[key] : deCopy[key];
+  const copy = locale === 'zh-CN' ? zhCopy[key] : locale === 'de' ? deCopy[key] : frCopy[key];
   return {
     ...base, ...copy,
     path: localizePath(base.path, locale),
-    formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : localizedGuideDe(key, base.formatGuide),
-    related: locale === 'zh-CN' ? localizedRelated(base) : localizedRelatedDe(base),
-    formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : 'Bilder · Video · Audio · Dokumente') : base.formats,
+    formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : locale === 'de' ? localizedGuideDe(key, base.formatGuide) : localizedGuideFr(key, base.formatGuide),
+    related: locale === 'zh-CN' ? localizedRelated(base) : locale === 'de' ? localizedRelatedDe(base) : localizedRelatedFr(base),
+    formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : locale === 'de' ? 'Bilder · Video · Audio · Dokumente' : 'Images · Vidéo · Audio · Documents') : base.formats,
   };
 }

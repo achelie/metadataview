@@ -46,6 +46,33 @@ const UNIVERSAL_LIMIT = 100 * 1024 * 1024;
 const DISPLAY_LIMIT = 1_200;
 const FIELD_BATCH = 250;
 
+const frUi: Record<string, string> = {
+  'Sensitive': 'Sensible', 'Binary payload': 'Charge binaire', 'binary': 'binaire', 'Raw value': 'Valeur brute', 'Show less': 'Afficher moins',
+  'File header hexadecimal dump': 'Vue hexadécimale de l’en-tête', 'Offset': 'Décalage', 'Hex': 'Hex',
+  'Choose an image': 'Choisir une image', 'Choose a file': 'Choisir un fichier', 'Waiting for a file': 'En attente d’un fichier',
+  'File bytes stay in this browser tab.': 'Les octets restent dans cet onglet.', 'Private by default': 'Privé par défaut', 'Drop a file here': 'Déposez un fichier ici', 'Drop an image here': 'Déposez une image ici',
+  'or choose one from your device': 'ou choisissez-en un sur votre appareil', 'Local only · no upload': 'Local uniquement · aucun envoi', 'Supported formats': 'Formats pris en charge',
+  'Photo metadata highlights': 'Points clés des métadonnées photo', 'View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.': 'Consultez EXIF, position GPS, réglages de l’appareil, date de prise de vue et métadonnées du fichier directement dans votre navigateur.',
+  'Camera & Lens': 'Appareil et objectif', 'GPS Location': 'Position GPS', 'Date Taken': 'Date de prise de vue', 'Full Metadata': 'Métadonnées complètes',
+  'Local inspection': 'Inspection locale', 'Reading the bytes once.': 'Lecture unique des octets.', 'This file stopped at the door.': 'Ce fichier s’est arrêté à l’entrée.', 'Cancel': 'Annuler', 'Choose another file': 'Choisir un autre fichier',
+  'Report ready · bytes stayed local': 'Rapport prêt · octets restés en local', 'A practical reading first, then the exact ExifTool paths when you need receipts.': 'D’abord une lecture pratique, puis les chemins ExifTool exacts quand vous devez vérifier.',
+  'Replace': 'Remplacer', 'Clear': 'Effacer', 'Photo quick read': 'Résumé rapide de la photo', 'The photo details people check first. Missing means this file did not expose a usable value.': 'Les détails photo les plus consultés. « Introuvable » signifie que le fichier ne fournit pas de valeur exploitable.',
+  'Open map': 'Ouvrir la carte', 'Not found': 'Introuvable', 'Full metadata continues below': 'Les métadonnées complètes continuent ci-dessous', 'File summary': 'Résumé du fichier',
+  'SHA-256 · primary fingerprint': 'SHA-256 · empreinte principale', 'Copy SHA-256': 'Copier SHA-256', 'SHA-256 copied': 'SHA-256 copié', 'MD5 · compatibility checksum, not security proof': 'MD5 · somme de compatibilité, pas preuve de sécurité', 'Copy MD5': 'Copier MD5', 'MD5 copied': 'MD5 copié',
+  'ExifTool inspection status': 'État de l’inspection ExifTool', 'One-pass image inspection': 'Inspection de l’image en un passage', 'Deep field engine': 'Moteur de lecture approfondie', 'Scanning every metadata field…': 'Analyse de tous les champs…',
+  'Full scan complete': 'Analyse complète terminée', 'Full scan incomplete': 'Analyse complète inachevée', 'Full image scan': 'Analyse complète de l’image', 'ExifTool progress': 'Progression ExifTool',
+  'Load engine': 'Charger le moteur', 'Read tags': 'Lire les balises', 'Build report': 'Créer le rapport', 'Embedded scan': 'Analyse intégrée', 'Standard scan': 'Analyse standard', 'Counting…': 'Comptage…', 'fields': 'champs',
+  'Cancel full scan': 'Annuler l’analyse complète', 'Stop deep scan': 'Arrêter l’analyse approfondie', 'Scan embedded data': 'Analyser les données intégrées', 'Retry full scan': 'Relancer l’analyse complète', 'Retry ExifTool': 'Relancer ExifTool',
+  'Parser warnings': 'Notes de l’analyseur', 'GPS metadata location': 'Position GPS des métadonnées', 'GPS location found': 'Position GPS trouvée', 'Coordinates stored in this file': 'Coordonnées enregistrées dans ce fichier',
+  'Privacy pass': 'Contrôle rapide de confidentialité', 'No common sensitive fields in the readable set': 'Aucun champ sensible courant dans la vue lisible', 'Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.': 'Les métadonnées sont modifiables et les pixels peuvent encore révéler personnes, panneaux, adresses et monuments.',
+  'Open Privacy Checker': 'Ouvrir le vérificateur de confidentialité', 'Remove image metadata': 'Supprimer les métadonnées de l’image', 'Metadata results': 'Résultats des métadonnées', 'Read the useful part—or audit every tag.': 'Lisez l’essentiel, ou contrôlez chaque balise.',
+  'Metadata view': 'Vue des métadonnées', 'Readable': 'Lisible', 'All native fields / All fields': 'Tous les champs natifs', 'All fields': 'Tous les champs', 'Search metadata fields': 'Rechercher dans les métadonnées', 'Search value, field, path, or source': 'Rechercher valeur, champ, chemin ou source',
+  'Source': 'Source', 'Filter by source': 'Filtrer par source', 'All sources': 'Toutes les sources', 'Report chapters': 'Chapitres du rapport', 'Loaded chapters': 'Chapitres chargés', 'No matching fields.': 'Aucun champ correspondant.', 'Clear the search or switch the source filter.': 'Effacez la recherche ou changez le filtre de source.', 'Clear filters': 'Effacer les filtres',
+  'Load 250 more rows': 'Charger 250 lignes de plus', 'Offset, hexadecimal, and printable ASCII': 'Décalage, hexadécimal et ASCII imprimable', 'Raw safe JSON': 'JSON sûr brut', 'Binary values are summaries; size and depth caps remain active': 'Les valeurs binaires sont résumées ; les limites de taille et profondeur restent actives',
+  'Take the receipt': 'Emportez le reçu', 'Complete JSON, readable PDF, or a quick copy.': 'JSON complet, PDF lisible ou copie rapide.', 'PDF deliberately trims giant fields. JSON is the complete safe record and never includes file bytes or preview URLs.': 'PDF et JSON restent en anglais. Le PDF raccourcit les champs géants ; le JSON est le registre sûr complet, sans octets ni URL d’aperçu.',
+  'All readable and native fields copied': 'Tous les champs lisibles et natifs ont été copiés', 'Copy all': 'Tout copier', 'Copy visible': 'Copier les éléments visibles', 'Complete JSON': 'JSON complet', 'Building PDF…': 'Création du PDF…', 'Readable PDF': 'PDF lisible en anglais', 'Raw JSON': 'JSON brut',
+};
+
 function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
@@ -175,7 +202,8 @@ function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
 }) {
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const fr = locale === 'fr';
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : fr ? (frUi[en] ?? en) : en;
   const number = (value: number) => value.toLocaleString(locale);
   return <div className="report-field-list">
     {section.fields.map((field) => {
@@ -194,15 +222,15 @@ function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
           <code>{shown}</code>
           {showNumeric ? <small className="report-raw-number">{t('Raw value', '原始值', 'Rohwert')}: {numeric}</small> : null}
           {field.binarySummary ? <small className="report-binary-note">{field.binarySummary.note}</small> : null}
-          {long ? <button className="report-text-button" type="button" onClick={() => onExpand(field.id)}>{open ? t('Show less', '收起', 'Weniger anzeigen') : zh ? `显示全部 ${number(field.displayValue.length)} 个字符` : de ? `Alle ${number(field.displayValue.length)} Zeichen anzeigen` : `Show all ${number(field.displayValue.length)} characters`}</button> : null}
-          {field.alternates?.length ? <details className="report-alternates"><summary>{zh ? `${field.alternates.length} 个解析器备选值` : de ? `${field.alternates.length} Parser-Alternativwert${field.alternates.length === 1 ? '' : 'e'}` : `${field.alternates.length} parser ${field.alternates.length === 1 ? 'alternate' : 'alternates'}`}</summary>{field.alternates.map((alternate) => <div key={`${alternate.path}-${alternate.displayValue}`}><b>{alternate.source}</b><code>{alternate.displayValue}</code><small>{alternate.path}</small></div>)}</details> : null}
+          {long ? <button className="report-text-button" type="button" onClick={() => onExpand(field.id)}>{open ? t('Show less', '收起', 'Weniger anzeigen') : zh ? `显示全部 ${number(field.displayValue.length)} 个字符` : de ? `Alle ${number(field.displayValue.length)} Zeichen anzeigen` : fr ? `Afficher les ${number(field.displayValue.length)} caractères` : `Show all ${number(field.displayValue.length)} characters`}</button> : null}
+          {field.alternates?.length ? <details className="report-alternates"><summary>{zh ? `${field.alternates.length} 个解析器备选值` : de ? `${field.alternates.length} Parser-Alternativwert${field.alternates.length === 1 ? '' : 'e'}` : fr ? `${field.alternates.length} valeur(s) alternative(s) de l’analyseur` : `${field.alternates.length} parser ${field.alternates.length === 1 ? 'alternate' : 'alternates'}`}</summary>{field.alternates.map((alternate) => <div key={`${alternate.path}-${alternate.displayValue}`}><b>{alternate.source}</b><code>{alternate.displayValue}</code><small>{alternate.path}</small></div>)}</details> : null}
         </div>
         <div className="report-field-origin">
           <span>{field.source}</span>
           <small>{field.path}</small>
           <div className="report-field-meta"><i>{field.origin}</i>{field.tagId !== undefined ? <i>ID {field.tagId}</i> : null}{field.format ? <i>{field.format}</i> : null}</div>
         </div>
-        <button className="report-copy-icon" type="button" aria-label={zh ? `复制 ${field.label}` : de ? `${field.label} kopieren` : `Copy ${field.label}`} title={zh ? `复制 ${field.label}` : de ? `${field.label} kopieren` : `Copy ${field.label}`} onClick={() => onCopy(field)}><Icon icon={copyIcon} width="16" /></button>
+        <button className="report-copy-icon" type="button" aria-label={zh ? `复制 ${field.label}` : de ? `${field.label} kopieren` : fr ? `Copier ${field.label}` : `Copy ${field.label}`} title={zh ? `复制 ${field.label}` : de ? `${field.label} kopieren` : fr ? `Copier ${field.label}` : `Copy ${field.label}`} onClick={() => onCopy(field)}><Icon icon={copyIcon} width="16" /></button>
       </article>;
     })}
   </div>;
@@ -220,7 +248,8 @@ function HeaderHex({ bytes, locale }: { bytes: number[]; locale: Locale }) {
   });
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const fr = locale === 'fr';
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : fr ? (frUi[en] ?? en) : en;
   return <div className="report-hex-table" role="table" aria-label={t('File header hexadecimal dump', '文件头十六进制转储', 'Hexadezimalansicht des Dateikopfs')}>
     <div role="row" className="report-hex-head"><span role="columnheader">{t('Offset', '偏移', 'Offset')}</span><span role="columnheader">{t('Hex', '十六进制', 'Hex')}</span><span role="columnheader">ASCII</span></div>
     {rows.map((row) => <div role="row" key={row.offset}><code role="cell">{row.offset}</code><code role="cell">{row.hex}</code><code role="cell">{row.ascii}</code></div>)}
@@ -230,6 +259,7 @@ function HeaderHex({ bytes, locale }: { bytes: number[]; locale: Locale }) {
 function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, fullImageScan: boolean, locale: Locale): string {
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
+  const fr = locale === 'fr';
   if (fullImageScan) {
     if (zh) {
       if (status === 'loading' || status === 'extracting' || status === 'building') return '正在本地扫描所有元数据字段、内嵌预览和嵌套图片记录。';
@@ -244,6 +274,13 @@ function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, f
       if (status === 'failed') return 'Der vollständige Scan wurde gestoppt. Der Browser-Schnellbericht bleibt erhalten und kann exportiert oder erneut geprüft werden.';
       if (status === 'canceled') return 'Der vollständige Scan wurde abgebrochen. Der Browser-Schnellbericht bleibt nutzbar.';
       return 'Der Browser-Schnellbericht ist fertig. Der vollständige Bildscan wurde noch nicht gestartet.';
+    }
+    if (fr) {
+      if (status === 'loading' || status === 'extracting' || status === 'building') return 'Analyse locale de tous les champs, aperçus intégrés et images imbriquées.';
+      if (status === 'complete') return 'L’analyse complète est terminée. Tous les résultats ExifTool sûrs sont recherchables ci-dessous.';
+      if (status === 'failed') return 'L’analyse complète s’est arrêtée. Le rapport initial reste intact, exportable et peut être relancé.';
+      if (status === 'canceled') return 'L’analyse complète a été annulée. Le rapport initial reste utilisable.';
+      return 'Le rapport initial est prêt. L’analyse complète n’a pas encore commencé.';
     }
     if (status === 'loading' || status === 'extracting' || status === 'building') return 'Scanning every metadata field, embedded preview, and nested image record locally.';
     if (status === 'complete') return 'The full image scan is complete. Every safe ExifTool result is now searchable below.';
@@ -269,6 +306,15 @@ function engineMessage(status: ExifToolUiStatus, mode: MetadataInspectionMode, f
     if (status === 'canceled') return 'Die Tiefenprüfung wurde gestoppt. Der Browser-Schnellbericht bleibt nutzbar.';
     return 'Der Schnellbericht ist fertig. Die Tiefen-Engine wurde noch nicht gestartet.';
   }
+  if (fr) {
+    if (status === 'loading') return 'Chargement d’ExifTool depuis ce site. Rien du fichier ne quitte cet onglet.';
+    if (status === 'extracting') return mode === 'embedded' ? 'Lecture locale des balises et documents intégrés. C’est le passage le plus lent.' : 'Lecture locale de toutes les balises standard, y compris les instances inconnues et dupliquées.';
+    if (status === 'building') return 'Transformation des balises natives en lignes de rapport consultables.';
+    if (status === 'complete') return mode === 'embedded' ? 'Les balises standard et documents intégrés figurent dans le rapport.' : 'Tous les champs ExifTool standard figurent dans le rapport.';
+    if (status === 'failed') return 'Le rapport rapide reste intact. ExifTool peut être relancé sans sélectionner le fichier à nouveau.';
+    if (status === 'canceled') return 'L’inspection approfondie est arrêtée. Le rapport rapide reste utilisable.';
+    return 'Le rapport rapide est prêt. Le moteur approfondi n’a pas encore démarré.';
+  }
   if (status === 'loading') return 'Loading the ExifTool engine from this site. Nothing from the file leaves this tab.';
   if (status === 'extracting') return mode === 'embedded' ? 'Walking tags and embedded documents locally. This is the slow pass.' : 'Reading every standard tag locally, including unknown and duplicate instances.';
   if (status === 'building') return 'Turning native tags into searchable report rows.';
@@ -286,7 +332,8 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const locale = useLocale();
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const fr = locale === 'fr';
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : fr ? (frUi[en] ?? en) : en;
   const number = (value: number) => value.toLocaleString(locale);
   const chooseLabel = scope === 'image' ? t('Choose an image', '选择图片', 'Bild auswählen') : t('Choose a file', '选择文件', 'Datei auswählen');
   const input = useRef<HTMLInputElement>(null);
@@ -409,9 +456,9 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     if (selected.type.startsWith('image/')) showPreview(selected);
     const limit = fileLimit(scope);
     if (selected.size > limit) {
-      setBusy(false); setError(zh ? `这个文件有 ${(selected.size / 1024 / 1024).toFixed(1)} MB，${scope === 'image' ? '图片' : '通用'}查看器上限为 ${formatLimit(limit)}。` : de ? `Diese Datei ist ${(selected.size / 1024 / 1024).toFixed(1)} MB groß. Der ${scope === 'image' ? 'Bild' : 'Universal'}-Viewer akzeptiert höchstens ${formatLimit(limit)}.` : `This file is ${(selected.size / 1024 / 1024).toFixed(1)} MB. The ${scope === 'image' ? 'image' : 'universal'} viewer stops at ${formatLimit(limit)}.`); setNotice(t('Stopped before parsing', '解析开始前已停止', 'Vor der Analyse gestoppt')); return;
+      setBusy(false); setError(zh ? `这个文件有 ${(selected.size / 1024 / 1024).toFixed(1)} MB，${scope === 'image' ? '图片' : '通用'}查看器上限为 ${formatLimit(limit)}。` : de ? `Diese Datei ist ${(selected.size / 1024 / 1024).toFixed(1)} MB groß. Der ${scope === 'image' ? 'Bild' : 'Universal'}-Viewer akzeptiert höchstens ${formatLimit(limit)}.` : fr ? `Ce fichier pèse ${(selected.size / 1024 / 1024).toFixed(1)} Mo. Le lecteur ${scope === 'image' ? 'd’image' : 'universel'} s’arrête à ${formatLimit(limit)}.` : `This file is ${(selected.size / 1024 / 1024).toFixed(1)} MB. The ${scope === 'image' ? 'image' : 'universal'} viewer stops at ${formatLimit(limit)}.`); setNotice(fr ? 'Arrêt avant l’analyse' : t('Stopped before parsing', '解析开始前已停止', 'Vor der Analyse gestoppt')); return;
     }
-    setNotice(extraFiles ? (zh ? `只在本地检查第一个文件，另外 ${extraFiles} 个文件已忽略` : de ? `Die erste Datei wird lokal geprüft; ${extraFiles} weitere Datei${extraFiles === 1 ? '' : 'en'} ignoriert` : `Inspecting the first file locally; ${extraFiles} extra ${extraFiles === 1 ? 'file was' : 'files were'} ignored`) : t('Reading structure and computing two checksums locally', '正在本地读取结构并计算两种校验和', 'Struktur wird lokal gelesen und zwei Prüfsummen werden berechnet'));
+    setNotice(extraFiles ? (zh ? `只在本地检查第一个文件，另外 ${extraFiles} 个文件已忽略` : de ? `Die erste Datei wird lokal geprüft; ${extraFiles} weitere Datei${extraFiles === 1 ? '' : 'en'} ignoriert` : fr ? `Inspection locale du premier fichier ; ${extraFiles} fichier(s) supplémentaire(s) ignoré(s)` : `Inspecting the first file locally; ${extraFiles} extra ${extraFiles === 1 ? 'file was' : 'files were'} ignored`) : (fr ? 'Lecture de la structure et calcul local de deux sommes de contrôle' : t('Reading structure and computing two checksums locally', '正在本地读取结构并计算两种校验和', 'Struktur wird lokal gelesen und zwei Prüfsummen werden berechnet')));
     try {
       const current = runWorkerTask<MetadataReport>({ type: 'inspect-metadata', file: selected, allowedTypes } as never, 60_000);
       task.current = current;
@@ -422,14 +469,14 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       const ignored = extraFiles ? `; ${extraFiles} extra ${extraFiles === 1 ? 'file was' : 'files were'} ignored` : '';
       const imageReport = result.category === 'image';
       const nativeCount = number(result.nativeSections.flatMap((section) => section.fields).length);
-      setNotice(zh ? `初步报告已就绪 · ${nativeCount} 个原生字段；${imageReport ? '完整图片扫描' : 'ExifTool'}正在下方运行${extraFiles ? `；已忽略 ${extraFiles} 个额外文件` : ''}` : de ? `Erster Bericht fertig · ${nativeCount} native Felder; ${imageReport ? 'der vollständige Bildscan' : 'ExifTool'} läuft unten${extraFiles ? `; ${extraFiles} weitere Datei${extraFiles === 1 ? '' : 'en'} ignoriert` : ''}` : `Initial report ready · ${nativeCount} native fields; ${imageReport ? 'the full image scan' : 'ExifTool'} is running below${ignored}`);
+      setNotice(zh ? `初步报告已就绪 · ${nativeCount} 个原生字段；${imageReport ? '完整图片扫描' : 'ExifTool'}正在下方运行${extraFiles ? `；已忽略 ${extraFiles} 个额外文件` : ''}` : de ? `Erster Bericht fertig · ${nativeCount} native Felder; ${imageReport ? 'der vollständige Bildscan' : 'ExifTool'} läuft unten${extraFiles ? `; ${extraFiles} weitere Datei${extraFiles === 1 ? '' : 'en'} ignoriert` : ''}` : fr ? `Premier rapport prêt · ${nativeCount} champs natifs ; ${imageReport ? 'l’analyse complète' : 'ExifTool'} continue ci-dessous${extraFiles ? ` ; ${extraFiles} fichier(s) ignoré(s)` : ''}` : `Initial report ready · ${nativeCount} native fields; ${imageReport ? 'the full image scan' : 'ExifTool'} is running below${ignored}`);
       void inspectWithExifTool(selected, currentId, result, imageReport ? IMAGE_FULL_SCAN_MODE : 'standard');
     } catch (caught) {
       if (runId.current !== currentId) return;
       const fallback = t('The local parser could not read this file.', '本地解析器无法读取这个文件。', 'Der lokale Parser konnte diese Datei nicht lesen.');
       const raw = caught instanceof Error ? caught.message : fallback;
       const code = caught instanceof MetadataError ? caught.code : undefined;
-      const localizedErrors: Partial<Record<string, string>> = zh ? { UNSUPPORTED_FILE_TYPE: '这个工具不支持该文件格式。', FILE_TOO_LARGE: '文件超过了安全处理上限。', INVALID_FILE_SIGNATURE: '文件签名不属于受支持的格式。', ENCRYPTED_PDF: '这个 PDF 受密码保护，工具不会尝试绕过密码。', ENCRYPTED_OFFICE: '这个 Office 文件已加密，工具不会尝试绕过密码。', CORRUPTED_FILE: '文件已损坏或结构不完整，无法安全读取。', PARSE_TIMEOUT: '解析耗时过长，已经安全停止。' } : de ? { UNSUPPORTED_FILE_TYPE: 'Dieses Dateiformat wird von diesem Werkzeug nicht unterstützt.', FILE_TOO_LARGE: 'Die Datei überschreitet die sichere Verarbeitungsgrenze.', INVALID_FILE_SIGNATURE: 'Die Dateisignatur gehört zu keinem unterstützten Format.', ENCRYPTED_PDF: 'Dieses PDF ist passwortgeschützt. Das Werkzeug versucht nicht, den Schutz zu umgehen.', ENCRYPTED_OFFICE: 'Diese Office-Datei ist verschlüsselt. Das Werkzeug versucht nicht, die Verschlüsselung zu umgehen.', CORRUPTED_FILE: 'Die Datei ist beschädigt oder unvollständig und kann nicht sicher gelesen werden.', PARSE_TIMEOUT: 'Die Analyse dauerte zu lange und wurde sicher gestoppt.' } : {};
+      const localizedErrors: Partial<Record<string, string>> = zh ? { UNSUPPORTED_FILE_TYPE: '这个工具不支持该文件格式。', FILE_TOO_LARGE: '文件超过了安全处理上限。', INVALID_FILE_SIGNATURE: '文件签名不属于受支持的格式。', ENCRYPTED_PDF: '这个 PDF 受密码保护，工具不会尝试绕过密码。', ENCRYPTED_OFFICE: '这个 Office 文件已加密，工具不会尝试绕过密码。', CORRUPTED_FILE: '文件已损坏或结构不完整，无法安全读取。', PARSE_TIMEOUT: '解析耗时过长，已经安全停止。' } : de ? { UNSUPPORTED_FILE_TYPE: 'Dieses Dateiformat wird von diesem Werkzeug nicht unterstützt.', FILE_TOO_LARGE: 'Die Datei überschreitet die sichere Verarbeitungsgrenze.', INVALID_FILE_SIGNATURE: 'Die Dateisignatur gehört zu keinem unterstützten Format.', ENCRYPTED_PDF: 'Dieses PDF ist passwortgeschützt. Das Werkzeug versucht nicht, den Schutz zu umgehen.', ENCRYPTED_OFFICE: 'Diese Office-Datei ist verschlüsselt. Das Werkzeug versucht nicht, die Verschlüsselung zu umgehen.', CORRUPTED_FILE: 'Die Datei ist beschädigt oder unvollständig und kann nicht sicher gelesen werden.', PARSE_TIMEOUT: 'Die Analyse dauerte zu lange und wurde sicher gestoppt.' } : fr ? { UNSUPPORTED_FILE_TYPE: 'Ce format n’est pas pris en charge par cet outil.', FILE_TOO_LARGE: 'Le fichier dépasse la limite de traitement sûr.', INVALID_FILE_SIGNATURE: 'La signature du fichier ne correspond à aucun format pris en charge.', ENCRYPTED_PDF: 'Ce PDF est protégé par mot de passe. L’outil ne tente pas de contourner la protection.', ENCRYPTED_OFFICE: 'Ce document Office est chiffré. L’outil ne tente pas de le déchiffrer.', CORRUPTED_FILE: 'Le fichier est endommagé ou incomplet et ne peut pas être lu sans risque.', PARSE_TIMEOUT: 'L’analyse a pris trop de temps et s’est arrêtée sans risque.' } : {};
       setError(code && localizedErrors[code] ? localizedErrors[code]! : raw);
       setNotice(t('Stopped safely', '已安全停止', 'Sicher gestoppt'));
     } finally {
@@ -484,7 +531,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       setNotice(t('Readable PDF report downloaded; JSON remains the complete record', '英文 PDF 已下载；JSON 仍是完整记录', 'Englischer PDF-Bericht heruntergeladen; JSON bleibt der vollständige Datensatz'));
     } catch (error) {
       const reason = error instanceof Error ? error.message : t('Unknown browser error', '未知浏览器错误', 'Unbekannter Browserfehler');
-      setNotice(zh ? `PDF 无法生成（${reason}），JSON 报告仍可下载。` : de ? `Das PDF konnte nicht erstellt werden (${reason}). Der englische JSON-Bericht ist weiterhin verfügbar.` : `The PDF could not be built (${reason}). The JSON report is still available.`);
+      setNotice(zh ? `PDF 无法生成（${reason}），JSON 报告仍可下载。` : de ? `Das PDF konnte nicht erstellt werden (${reason}). Der englische JSON-Bericht ist weiterhin verfügbar.` : fr ? `Le PDF n’a pas pu être créé (${reason}). Le rapport JSON en anglais reste disponible.` : `The PDF could not be built (${reason}). The JSON report is still available.`);
     }
     finally { setExportingPdf(false); }
   };
@@ -498,7 +545,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     exifTool.current?.cancel();
     setReport((current) => current ? recordExifToolFailure(current, 'Canceled by user.', exifMode) : current);
     setExifStatus('canceled');
-    setNotice(zh ? `${fullImageScan ? '完整图片' : 'ExifTool'}扫描已取消，初步报告仍可使用` : de ? `${fullImageScan ? 'Vollständiger Bildscan' : 'ExifTool-Scan'} abgebrochen; der erste Bericht bleibt verfügbar` : `${fullImageScan ? 'Full image' : 'ExifTool'} scan canceled; the initial report remains available`);
+    setNotice(zh ? `${fullImageScan ? '完整图片' : 'ExifTool'}扫描已取消，初步报告仍可使用` : de ? `${fullImageScan ? 'Vollständiger Bildscan' : 'ExifTool-Scan'} abgebrochen; der erste Bericht bleibt verfügbar` : fr ? `${fullImageScan ? 'Analyse complète' : 'Analyse ExifTool'} annulée ; le premier rapport reste disponible` : `${fullImageScan ? 'Full image' : 'ExifTool'} scan canceled; the initial report remains available`);
   };
 
   return <section id={`metadata-workbench-${placement}`} className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
@@ -513,7 +560,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => event.preventDefault()}
       onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); pickFiles(event.dataTransfer.files); }}>
       <span className="report-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="33" /></span>
-      <div className="report-drop-copy"><span className="eyebrow">{t('One file · processed locally', '一个文件 · 本地处理', 'Eine Datei · lokal verarbeitet')}</span><strong>{zh ? `把${scope === 'image' ? '图片' : '文件'}拖到这里` : de ? (scope === 'image' ? 'Bild hier ablegen' : 'Datei hier ablegen') : `Drop ${scope === 'image' ? 'an image' : 'a file'} here`}</strong><p id={`report-drop-help-${placement}`}>{formats} · {t('up to', '最大', 'bis')} {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">{chooseLabel}</span></div>
+      <div className="report-drop-copy"><span className="eyebrow">{fr ? 'Un fichier · traité localement' : t('One file · processed locally', '一个文件 · 本地处理', 'Eine Datei · lokal verarbeitet')}</span><strong>{zh ? `把${scope === 'image' ? '图片' : '文件'}拖到这里` : de ? (scope === 'image' ? 'Bild hier ablegen' : 'Datei hier ablegen') : fr ? (scope === 'image' ? 'Déposez une image ici' : 'Déposez un fichier ici') : `Drop ${scope === 'image' ? 'an image' : 'a file'} here`}</strong><p id={`report-drop-help-${placement}`}>{formats} · {fr ? 'jusqu’à' : t('up to', '最大', 'bis')} {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">{chooseLabel}</span></div>
       <span className="report-drop-note">{t('ExifTool loads after you choose a file.', '选好文件后才加载 ExifTool。', 'ExifTool wird erst nach der Dateiauswahl geladen.')}<small>{t('Nothing is uploaded.', '不会上传任何内容。', 'Nichts wird hochgeladen.')}</small></span>
     </div>{placement === 'home' ? <aside className="home-exif-upload-guide" aria-label={t('Photo metadata highlights', '照片元数据重点', 'Foto-Metadaten im Überblick')}>
       <p>{t('View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.', '直接在浏览器里查看 EXIF、GPS 位置、相机设置、拍摄日期和文件元数据。', 'EXIF-Daten, GPS-Standort, Kameraeinstellungen, Aufnahmedatum und Dateimetadaten direkt im Browser ansehen.')}</p>
@@ -528,7 +575,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
 
     {report ? <div className="report-result">
       <header className="report-heading">
-        <div><span className="eyebrow">{t('Report ready · bytes stayed local', '报告已就绪 · 文件字节留在本机', 'Bericht fertig · Dateibytes blieben lokal')}</span><h2 ref={resultHeading} tabIndex={-1}>{zh ? `${report.file.name} 元数据报告` : de ? `Metadatenbericht für ${report.file.name}` : `${report.file.name} metadata report`}</h2><p>{t('A practical reading first, then the exact ExifTool paths when you need receipts.', '先看实用摘要，需要核对时再看精确的 ExifTool 路径。', 'Zuerst die praktische Zusammenfassung, bei Bedarf danach die exakten ExifTool-Pfade.')}</p></div>
+        <div><span className="eyebrow">{t('Report ready · bytes stayed local', '报告已就绪 · 文件字节留在本机', 'Bericht fertig · Dateibytes blieben lokal')}</span><h2 ref={resultHeading} tabIndex={-1}>{zh ? `${report.file.name} 元数据报告` : de ? `Metadatenbericht für ${report.file.name}` : fr ? `Rapport de métadonnées pour ${report.file.name}` : `${report.file.name} metadata report`}</h2><p>{t('A practical reading first, then the exact ExifTool paths when you need receipts.', '先看实用摘要，需要核对时再看精确的 ExifTool 路径。', 'Zuerst die praktische Zusammenfassung, bei Bedarf danach die exakten ExifTool-Pfade.')}</p></div>
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />{t('Replace', '替换', 'Ersetzen')}</button><button className="button button-ghost" type="button" onClick={clear}><Icon icon={trashIcon} width="16" />{t('Clear', '清除', 'Leeren')}</button></div>
       </header>
 
@@ -539,7 +586,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       </section> : null}
 
       <section className="report-summary" aria-labelledby="report-summary-title">
-        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={zh ? `${report.file.name} 的本地预览` : de ? `Lokale Vorschau von ${report.file.name}` : `Local preview of ${report.file.name}`} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
+        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={zh ? `${report.file.name} 的本地预览` : de ? `Lokale Vorschau von ${report.file.name}` : fr ? `Aperçu local de ${report.file.name}` : `Local preview of ${report.file.name}`} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
         <div className="report-file-title"><span id="report-summary-title">{t('File summary', '文件摘要', 'Dateiübersicht')}</span><strong>{report.file.name}</strong><small>{report.category} / {report.file.detectedType}</small></div>
         <dl className="report-facts">{report.facts.map((fact) => <div key={fact.id}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
         <div className="report-hashes">
@@ -556,7 +603,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <div className="report-engine-actions">{exifRunning ? <button className="button button-ghost" type="button" onClick={stopExifTool}><Icon icon={xIcon} width="16" />{fullImageScan ? t('Cancel full scan', '取消完整扫描', 'Vollständigen Scan abbrechen') : t('Stop deep scan', '停止深度扫描', 'Tiefenscan stoppen')}</button> : null}{!fullImageScan && exifStatus === 'complete' && exifMode === 'standard' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool('embedded')}><Icon icon={scanIcon} width="16" />{t('Scan embedded data', '扫描内嵌数据', 'Eingebettete Daten prüfen')}</button> : null}{exifStatus === 'failed' || exifStatus === 'canceled' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool(fullImageScan ? IMAGE_FULL_SCAN_MODE : exifMode)}><Icon icon={scanIcon} width="16" />{fullImageScan ? t('Retry full scan', '重试完整扫描', 'Vollständigen Scan wiederholen') : t('Retry ExifTool', '重试 ExifTool', 'ExifTool erneut starten')}</button> : null}</div>
       </section>
 
-      {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t('Parser warnings', '解析器提醒', 'Parser-Hinweise')}><Icon icon={warningIcon} width="22" /> <div><strong>{zh ? `${report.warnings.length} 条解析器提醒` : de ? `${report.warnings.length} Parser-Hinweis${report.warnings.length === 1 ? '' : 'e'}` : `${report.warnings.length} parser ${report.warnings.length === 1 ? 'note' : 'notes'}`}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
+      {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t('Parser warnings', '解析器提醒', 'Parser-Hinweise')}><Icon icon={warningIcon} width="22" /> <div><strong>{zh ? `${report.warnings.length} 条解析器提醒` : de ? `${report.warnings.length} Parser-Hinweis${report.warnings.length === 1 ? '' : 'e'}` : fr ? `${report.warnings.length} note(s) de l’analyseur` : `${report.warnings.length} parser ${report.warnings.length === 1 ? 'note' : 'notes'}`}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
 
       {gps ? <aside className="map-action report-map-action" aria-label={t('GPS metadata location', 'GPS 元数据位置', 'GPS-Metadatenstandort')}>
         <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t('GPS location found', '发现 GPS 位置', 'GPS-Standort gefunden')}</strong><small>{t('Coordinates stored in this file', '文件中保存的坐标', 'In dieser Datei gespeicherte Koordinaten')}</small><code>{gps.text}</code></span></div>
@@ -564,7 +611,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       </aside> : null}
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
-        <div><span className="eyebrow">{t('Privacy pass', '隐私快速检查', 'Datenschutz-Schnellcheck')}</span><strong>{sensitiveFields.length ? (zh ? `发现 ${sensitiveFields.length} 个可能敏感的字段` : de ? `${sensitiveFields.length} möglicherweise sensible${sensitiveFields.length === 1 ? 's Feld' : ' Felder'} gefunden` : `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found`) : t('No common sensitive fields in the readable set', '易读字段中未发现常见敏感项', 'Keine üblichen sensiblen Felder in der lesbaren Ansicht')}</strong><p>{t('Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.', '元数据可以修改，画面本身仍可能暴露人物、标志、地址和地标。', 'Metadaten lassen sich ändern. Bildpixel können trotzdem Personen, Schilder, Adressen und markante Orte verraten.')}</p></div>
+        <div><span className="eyebrow">{t('Privacy pass', '隐私快速检查', 'Datenschutz-Schnellcheck')}</span><strong>{sensitiveFields.length ? (zh ? `发现 ${sensitiveFields.length} 个可能敏感的字段` : de ? `${sensitiveFields.length} möglicherweise sensible${sensitiveFields.length === 1 ? 's Feld' : ' Felder'} gefunden` : fr ? `${sensitiveFields.length.toLocaleString(locale)} champ(s) potentiellement sensible(s) trouvé(s)` : `${sensitiveFields.length} potentially sensitive ${sensitiveFields.length === 1 ? 'field' : 'fields'} found`) : t('No common sensitive fields in the readable set', '易读字段中未发现常见敏感项', 'Keine üblichen sensiblen Felder in der lesbaren Ansicht')}</strong><p>{t('Metadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.', '元数据可以修改，画面本身仍可能暴露人物、标志、地址和地标。', 'Metadaten lassen sich ändern. Bildpixel können trotzdem Personen, Schilder, Adressen und markante Orte verraten.')}</p></div>
         <div className="button-row"><a className="button button-secondary" href={localizePath('/image-privacy-checker/', locale)}>{t('Open Privacy Checker', '打开隐私检查器', 'Datenschutz-Check öffnen')}</a><a className="button button-primary" href={localizePath('/image-metadata-remover/', locale)}>{t('Remove image metadata', '清除图片元数据', 'Bild-Metadaten entfernen')}</a></div>
       </section> : null}
 
@@ -576,24 +623,24 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <div className="report-controls">
           <label><Icon icon={searchIcon} width="17" /><span className="sr-only">{t('Search metadata fields', '搜索元数据字段', 'Metadatenfelder durchsuchen')}</span><input type="search" placeholder={t('Search value, field, path, or source', '搜索值、字段、路径或来源', 'Wert, Feld, Pfad oder Quelle suchen')} value={query} onChange={(event) => setQuery(event.target.value)} /></label>
           <label><span>{t('Source', '来源', 'Quelle')}</span><select aria-label={t('Filter by source', '按来源筛选', 'Nach Quelle filtern')} value={source} onChange={(event) => setSource(event.target.value)}><option value="all">{t('All sources', '全部来源', 'Alle Quellen')}</option>{sources.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-          <strong>{zh ? `找到 ${number(matchingFields.length)} 个` : de ? `${number(matchingFields.length)} gefunden` : `${number(matchingFields.length)} found`}</strong>
+          <strong>{zh ? `找到 ${number(matchingFields.length)} 个` : de ? `${number(matchingFields.length)} gefunden` : fr ? `${number(matchingFields.length)} trouvé(s)` : `${number(matchingFields.length)} found`}</strong>
         </div>
         <div className="report-ledger-body">
           <nav className="report-chapters" aria-label={t('Report chapters', '报告章节', 'Berichtskapitel')}><span>{t('Loaded chapters', '已加载章节', 'Geladene Kapitel')}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`}><i>{String(index + 1).padStart(2, '0')}</i>{section.title}<b>{section.fields.length}</b></a>)}</nav>
-          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || view === 'readable'}><summary><span><strong>{section.title}</strong><small>{section.note}</small></span><b>{section.fields.length}</b></summary><FieldRows locale={locale} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, zh ? `${field.label} 已复制` : de ? `${field.label} kopiert` : `${field.label} copied`)} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t('No matching fields.', '没有匹配字段。', 'Keine passenden Felder.')}</strong><p>{t('Clear the search or switch the source filter.', '清空搜索或更换来源筛选。', 'Suche leeren oder den Quellenfilter ändern.')}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t('Clear filters', '清除筛选', 'Filter löschen')}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t('Load 250 more rows', '再加载 250 行', '250 weitere Zeilen laden')}</b><span>{zh ? `当前已渲染 ${number(renderedCount)} / ${number(matchingFields.length)}` : de ? `${number(renderedCount)} von ${number(matchingFields.length)} derzeit angezeigt` : `${number(renderedCount)} of ${number(matchingFields.length)} currently rendered`}</span></button> : null}</div>
+          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || view === 'readable'}><summary><span><strong>{section.title}</strong><small>{section.note}</small></span><b>{section.fields.length}</b></summary><FieldRows locale={locale} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, zh ? `${field.label} 已复制` : de ? `${field.label} kopiert` : fr ? `${field.label} copié` : `${field.label} copied`)} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t('No matching fields.', '没有匹配字段。', 'Keine passenden Felder.')}</strong><p>{t('Clear the search or switch the source filter.', '清空搜索或更换来源筛选。', 'Suche leeren oder den Quellenfilter ändern.')}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t('Clear filters', '清除筛选', 'Filter löschen')}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t('Load 250 more rows', '再加载 250 行', '250 weitere Zeilen laden')}</b><span>{zh ? `当前已渲染 ${number(renderedCount)} / ${number(matchingFields.length)}` : de ? `${number(renderedCount)} von ${number(matchingFields.length)} derzeit angezeigt` : fr ? `${number(renderedCount)} sur ${number(matchingFields.length)} affichés` : `${number(renderedCount)} of ${number(matchingFields.length)} currently rendered`}</span></button> : null}</div>
         </div>
       </section>
 
       <section className="report-evidence">
-        <details><summary><span>{zh ? `文件头 · 前 ${report.evidence.headerBytes.length} 字节` : de ? `Dateikopf · erste ${report.evidence.headerBytes.length} Bytes` : `File header · first ${report.evidence.headerBytes.length} bytes`}</span><small>{t('Offset, hexadecimal, and printable ASCII', '偏移、十六进制和可打印 ASCII', 'Offset, Hexadezimalwerte und druckbares ASCII')}</small></summary><HeaderHex bytes={report.evidence.headerBytes} locale={locale} /></details>
+        <details><summary><span>{zh ? `文件头 · 前 ${report.evidence.headerBytes.length} 字节` : de ? `Dateikopf · erste ${report.evidence.headerBytes.length} Bytes` : fr ? `En-tête · ${report.evidence.headerBytes.length} premiers octets` : `File header · first ${report.evidence.headerBytes.length} bytes`}</span><small>{t('Offset, hexadecimal, and printable ASCII', '偏移、十六进制和可打印 ASCII', 'Offset, Hexadezimalwerte und druckbares ASCII')}</small></summary><HeaderHex bytes={report.evidence.headerBytes} locale={locale} /></details>
         <details open={openRaw} onToggle={(event) => setOpenRaw((event.currentTarget as HTMLDetailsElement).open)}><summary><span>{t('Raw safe JSON', '原始安全 JSON', 'Sicheres Roh-JSON')}</span><small>{t('Binary values are summaries; size and depth caps remain active', '二进制值只显示摘要，大小与深度限制仍然生效', 'Binärwerte werden zusammengefasst; Größen- und Tiefenlimits bleiben aktiv')}</small></summary><pre className="report-raw-json">{openRaw ? JSON.stringify(report.raw, null, 2) : ''}</pre></details>
       </section>
 
       <footer className="report-export">
-        <div><span className="eyebrow">{t('Take the receipt', '把收据带走', 'Beleg mitnehmen')}</span><h3>{t('Complete JSON, readable PDF, or a quick copy.', '完整 JSON、易读 PDF，或者快速复制。', 'Vollständiges JSON, lesbares PDF oder schnell kopieren.')}</h3><p>{exifRunning ? (zh ? `${fullImageScan ? '完整图片' : 'ExifTool'}扫描完成后才能导出，现在仍可复制可见字段。` : de ? `Der Export wird nach dem lokalen ${fullImageScan ? 'Bildscan' : 'ExifTool-Scan'} freigeschaltet. Sichtbare Felder lassen sich schon jetzt kopieren.` : `${fullImageScan ? 'Full image' : 'ExifTool'} exports unlock when the local scan finishes. Copy visible remains available now.`) : t('PDF deliberately trims giant fields. JSON is the complete safe record and never includes file bytes or preview URLs.', 'PDF 会主动缩短超长字段且保持英文；JSON 是完整安全记录，不包含文件字节或预览 URL。', 'PDF und JSON bleiben auf Englisch. Das PDF kürzt sehr lange Felder; JSON ist der vollständige sichere Datensatz ohne Dateibytes oder Vorschau-URLs.')}</p></div>
+        <div><span className="eyebrow">{t('Take the receipt', '把收据带走', 'Beleg mitnehmen')}</span><h3>{t('Complete JSON, readable PDF, or a quick copy.', '完整 JSON、易读 PDF，或者快速复制。', 'Vollständiges JSON, lesbares PDF oder schnell kopieren.')}</h3><p>{exifRunning ? (zh ? `${fullImageScan ? '完整图片' : 'ExifTool'}扫描完成后才能导出，现在仍可复制可见字段。` : de ? `Der Export wird nach dem lokalen ${fullImageScan ? 'Bildscan' : 'ExifTool-Scan'} freigeschaltet. Sichtbare Felder lassen sich schon jetzt kopieren.` : fr ? `Les exports seront disponibles après l’analyse locale ${fullImageScan ? 'complète' : 'ExifTool'}. La copie des champs visibles reste possible.` : `${fullImageScan ? 'Full image' : 'ExifTool'} exports unlock when the local scan finishes. Copy visible remains available now.`) : t('PDF deliberately trims giant fields. JSON is the complete safe record and never includes file bytes or preview URLs.', 'PDF 会主动缩短超长字段且保持英文；JSON 是完整安全记录，不包含文件字节或预览 URL。', 'PDF und JSON bleiben auf Englisch. Das PDF kürzt sehr lange Felder; JSON ist der vollständige sichere Datensatz ohne Dateibytes oder Vorschau-URLs.')}</p></div>
         <div className="report-export-buttons">
           <button className="button button-ghost" type="button" disabled={exifRunning} onClick={() => void copied(linesFor(allFields), t('All readable and native fields copied', '所有易读与原生字段已复制', 'Alle lesbaren und nativen Felder kopiert'))}><Icon icon={copyIcon} width="16" />{t('Copy all', '复制全部', 'Alle kopieren')}</button>
-          <button className="button button-ghost" type="button" disabled={!matchingFields.length} onClick={() => void copied(linesFor(matchingFields), zh ? `${matchingFields.length} 个可见字段已复制` : de ? `${matchingFields.length} sichtbare Felder kopiert` : `${matchingFields.length} visible fields copied`)}><Icon icon={copyIcon} width="16" />{t('Copy visible', '复制可见项', 'Sichtbare kopieren')}</button>
+          <button className="button button-ghost" type="button" disabled={!matchingFields.length} onClick={() => void copied(linesFor(matchingFields), zh ? `${matchingFields.length} 个可见字段已复制` : de ? `${matchingFields.length} sichtbare Felder kopiert` : fr ? `${matchingFields.length} champ(s) visible(s) copié(s)` : `${matchingFields.length} visible fields copied`)}><Icon icon={copyIcon} width="16" />{t('Copy visible', '复制可见项', 'Sichtbare kopieren')}</button>
           <button className="button button-secondary" type="button" disabled={exifRunning} onClick={() => downloadJson()}><Icon icon={jsonIcon} width="16" />{t('Complete JSON', '完整 JSON', 'Vollständiges JSON')}</button>
           <button className="button button-secondary" type="button" onClick={() => void downloadPdf()} disabled={exportingPdf || exifRunning}><Icon icon={pdfIcon} width="16" />{exportingPdf ? t('Building PDF…', '正在生成 PDF…', 'PDF wird erstellt…') : t('Readable PDF', '英文易读 PDF', 'Lesbares englisches PDF')}</button>
           <button className="button button-primary" type="button" disabled={exifRunning} onClick={() => downloadJson(true)}><Icon icon={downloadIcon} width="16" />{t('Raw JSON', '原始 JSON', 'Roh-JSON')}</button>

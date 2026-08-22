@@ -127,4 +127,42 @@ const de: HomeCopy = {
   ],
 };
 
-export const homeCopy: Record<Locale, HomeCopy> = { en, de, 'zh-CN': zh };
+const fr: HomeCopy = {
+  title: 'Visionneuse EXIF et métadonnées gratuite en ligne | ViewExif',
+  description: 'Consultez gratuitement les métadonnées EXIF, XMP, IPTC, GPS, appareil photo et fichier de vos images, vidéos, documents et fichiers audio. Aucun envoi requis.',
+  rail: 'LOCAL / AUCUN ENVOI', eyebrow: 'Visionneuse EXIF et métadonnées gratuite', heading: 'Visionneuse EXIF et métadonnées gratuite en ligne',
+  intro: 'Consultez les données EXIF, la position GPS, les réglages de l’appareil, XMP, IPTC et d’autres métadonnées directement dans votre navigateur. Vos fichiers restent sur votre appareil.', limit: 'par fichier',
+  formatsLabel: 'PAR FORMAT',
+  formats: [
+    { label: 'Images', detail: 'EXIF, GPS, appareil, dates, XMP et IPTC, plus les traces de couleur et de retouche' },
+    { label: 'Vidéos', detail: 'Durée, dimensions, codecs, fréquence d’images, pistes, marques et dates' },
+    { label: 'Documents', detail: 'Auteurs, dates, applications, révisions, statistiques et propriétés personnalisées' },
+    { label: 'Audio', detail: 'Tags, codec, durée, débit, canaux, profondeur de bits et résumé des pochettes' },
+  ],
+  exifTitle: 'Que peut afficher cette visionneuse EXIF ?',
+  exifIntro: 'Cette visionneuse EXIF lit les informations qu’une photo peut conserver en plus de ses pixels. Quand elles existent, vous pouvez vérifier le modèle de l’appareil, l’objectif, la vitesse d’obturation, l’ouverture, l’ISO, la date de prise de vue, les coordonnées GPS, l’orientation, le logiciel et d’autres notes de capture. Elle affiche aussi les enregistrements XMP et IPTC voisins pour mieux comprendre comment l’image a été prise, retouchée, exportée ou préparée au partage — le tout localement dans votre navigateur.',
+  benefitsLabel: 'POURQUOI C’EST UTILE', benefitsTitle: 'Pourquoi consulter les métadonnées ?', benefitsIntro: 'Les métadonnées peuvent révéler des informations privées, expliquer la création d’un fichier et éviter de deviner ses caractéristiques techniques.', openTool: 'Ouvrir l’outil',
+  benefits: [
+    { eyebrow: 'Confidentialité', label: 'Repérer les détails privés', note: 'Détectez coordonnées GPS, noms d’auteur, identifiants d’appareil, miniatures intégrées et traces de retouche avant de partager.' },
+    { eyebrow: 'Provenance', label: 'Examiner l’origine du fichier', note: 'Consultez dates, historique logiciel, empreintes et justificatifs C2PA signés sans prendre des métadonnées modifiables pour une preuve.' },
+    { eyebrow: 'Partage plus propre', label: 'Créer une copie allégée', note: 'Supprimez les tags modifiables d’une image, vidéo, piste audio ou document, rescanez la copie et gardez un reçu de vérification.' },
+  ],
+  processLabel: 'LOCAL, ÉTAPE PAR ÉTAPE', processTitle: 'Comment fonctionne l’analyse locale', processIntro: 'Le navigateur lit le fichier dans cet onglet. Aucun compte, aucun envoi, aucune copie serveur.', ready: 'Un fichier sous la main ?', chooseAbove: 'Choisir un fichier ci-dessus',
+  process: [
+    { title: 'Choisir un fichier', note: 'Déposez l’un des 28 formats image, vidéo, document ou audio pris en charge. Les octets restent dans cet onglet.' },
+    { title: 'Vérifier le format', note: 'Le navigateur contrôle la signature réelle et la taille avant de lancer un parseur.' },
+    { title: 'Lire les métadonnées disponibles', note: 'Un Worker local et ExifTool WASM lisent les champs disponibles pour ce format.' },
+    { title: 'Construire un rapport utile', note: 'Les champs sont regroupés, recherchables, copiables et exportables avec empreintes locales et preuve d’en-tête.' },
+    { title: 'Oublier la session', note: 'Effacer, remplacer ou actualiser arrête la tâche, libère les aperçus temporaires et ne laisse aucun historique de fichier.' },
+  ],
+  faqTitle: 'Questions fréquentes',
+  faqs: [
+    { question: 'Cette visionneuse de métadonnées est-elle sûre ?', answer: 'Le fichier est traité dans cet onglet. ViewExif ne possède ni point d’envoi, ni compte, ni parseur serveur pour le fichier sélectionné.' },
+    { question: 'Quelles données EXIF peut-elle lire ?', answer: 'Quand elles existent, elle lit le modèle de l’appareil, l’objectif, l’ISO, l’ouverture, la vitesse, les dates, les coordonnées GPS, l’orientation, XMP, IPTC et les autres métadonnées disponibles.' },
+    { question: 'Peut-elle révéler où une photo a été prise ?', answer: 'Si l’image contient des coordonnées GPS exploitables, le rapport les affiche. Beaucoup de fichiers n’en ont pas, et les métadonnées peuvent être supprimées ou modifiées.' },
+    { question: 'Les métadonnées peuvent-elles être fausses ?', answer: 'Oui. Dates, lieux, noms d’appareil, auteurs et autres champs modifiables peuvent être obsolètes, absents ou volontairement changés.' },
+    { question: 'Peuvent-elles restaurer une zone floutée ou masquée ?', answer: 'Non. L’analyse ne reconstruit pas les pixels. Elle montre uniquement les champs stockés ou un aperçu déjà intégré au fichier.' },
+  ],
+};
+
+export const homeCopy: Record<Locale, HomeCopy> = { en, de, fr, 'zh-CN': zh };

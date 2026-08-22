@@ -40,7 +40,7 @@ const socialImage = image ? new URL(image.src, Astro.site).toString() : undefine
 const copy = getMessages(locale);
 const alternatePaths = translated ? getAlternatePaths(path) : undefined;
 const alternateUrls = alternatePaths ? Object.fromEntries(Object.entries(alternatePaths).map(([key, value]) => [key, canonicalUrl(value, Astro.site)])) : undefined;
-const ogLocales: Record<Locale, string> = { en: 'en_US', de: 'de_DE', 'zh-CN': 'zh_CN' };
+const ogLocales: Record<Locale, string> = { en: 'en_US', de: 'de_DE', fr: 'fr_FR', 'zh-CN': 'zh_CN' };
 const ogLocale = ogLocales[locale];
 const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key]) => key !== locale).map(([, value]) => value) : [];
 ---
@@ -57,6 +57,7 @@ const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key])
     {alternateUrls && <>
       <link rel="alternate" hreflang="en" href={alternateUrls.en} />
       <link rel="alternate" hreflang="de" href={alternateUrls.de} />
+      <link rel="alternate" hreflang="fr" href={alternateUrls.fr} />
       <link rel="alternate" hreflang="zh-CN" href={alternateUrls['zh-CN']} />
       <link rel="alternate" hreflang="x-default" href={alternateUrls['x-default']} />
     </>}

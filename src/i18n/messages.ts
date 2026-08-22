@@ -62,7 +62,17 @@ const de: CommonMessages = {
   language: 'Sprache', switchTo: 'Sprache wechseln zu',
 };
 
-export const messages: Record<Locale, CommonMessages> = { en, de, 'zh-CN': zh };
+const fr: CommonMessages = {
+  skip: 'Aller au contenu', home: 'Accueil', navigation: 'Navigation', mainNavigation: 'Navigation principale', mobileNavigation: 'Navigation mobile',
+  openNavigation: 'Ouvrir la navigation', closeNavigation: 'Fermer la navigation', viewMetadata: 'Voir les métadonnées', checkPrivacy: 'Vérifier la confidentialité',
+  removeMetadata: 'Supprimer les métadonnées', verifyC2pa: 'Vérifier C2PA', blog: 'Blog', allFormats: 'Tous les formats', images: 'Images', videos: 'Vidéos',
+  audio: 'Audio', documents: 'Documents', inspect: 'Inspecter', remove: 'Supprimer', protect: 'Protéger', allFiles: 'Tous les fichiers',
+  privacyChecker: 'Analyse de confidentialité', c2paViewer: 'Visionneuse C2PA', privacy: 'Confidentialité', about: 'À propos',
+  footerNote: 'Un bureau d’analyse local pour voir ce que vos fichiers transportent avec eux.', footerFloor: 'Traitement local dans le navigateur. Sans compte. Sans envoi.',
+  language: 'Langue', switchTo: 'Changer la langue pour',
+};
+
+export const messages: Record<Locale, CommonMessages> = { en, de, fr, 'zh-CN': zh };
 
 export function getMessages(locale: Locale): CommonMessages {
   return messages[locale];

@@ -6,7 +6,8 @@ interface Props { locale?: Locale }
 const { locale = 'en' } = Astro.props;
 const zh = locale === 'zh-CN';
 const de = locale === 'de';
-const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+const fr = locale === 'fr';
+const t = (en: string, zhText: string, deText: string, frText: string) => zh ? zhText : de ? deText : fr ? frText : en;
 
 const privacyBenefits = zh ? [
   { href: '#privacy-checker-workbench', icon: 'shield' as const, eyebrow: '位置检查', title: '把精确位置揪出来', note: '一组 GPS 坐标可能直指门口、学校或住处。报告会显示坐标，以及提供它们的原始字段。', action: '检查一张图片' },
@@ -16,6 +17,10 @@ const privacyBenefits = zh ? [
   { href: '#privacy-checker-workbench', icon: 'shield' as const, eyebrow: 'Standort-Check', title: 'Exakten Standort erwischen', note: 'Ein GPS-Paar kann auf Haustür, Schule oder Wohnung zeigen. Der Bericht nennt Koordinaten und ihre ursprünglichen Felder.', action: 'Bild prüfen' },
   { href: '#privacy-scan-process', icon: 'scan' as const, eyebrow: 'Identitäts-Check', title: 'Der Spur zurück folgen', note: 'Namen, Seriennummern, alte Dateinamen, Zeiten und Bearbeitungs-IDs können ein Bild mit Person, Gerät oder Projekt verbinden.', action: 'Ablauf ansehen' },
   { href: localizePath('/image-metadata-remover/', locale), icon: 'eraser' as const, eyebrow: 'Sauberer teilen', title: 'Bereinigte Kopie erstellen', note: 'Unterstützte Metadaten entfernen, mit gleicher Tiefe nachprüfen und Kopie samt lokalem Prüfbeleg herunterladen.', action: 'Entferner öffnen' },
+] : fr ? [
+  { href: '#privacy-checker-workbench', icon: 'shield' as const, eyebrow: 'Contrôle du lieu', title: 'Repérez la position exacte', note: 'Une paire GPS peut pointer vers une porte, une école ou un domicile. Le rapport montre les coordonnées et leurs champs d’origine.', action: 'Inspecter une image' },
+  { href: '#privacy-scan-process', icon: 'scan' as const, eyebrow: 'Contrôle d’identité', title: 'Remontez la piste', note: 'Noms, numéros de série, anciens noms de fichier, dates et identifiants de retouche peuvent relier une image à une personne, un appareil ou un projet.', action: 'Voir le processus' },
+  { href: localizePath('/image-metadata-remover/', locale), icon: 'eraser' as const, eyebrow: 'Partage plus propre', title: 'Créez une copie nettoyée', note: 'Retirez les métadonnées prises en charge, rescanez avec la même profondeur et téléchargez la copie avec son reçu local.', action: 'Ouvrir le nettoyeur' },
 ] : [
   {
     href: '#privacy-checker-workbench',
@@ -55,6 +60,12 @@ const privacyProcess = zh ? [
   { title: 'Alle unterstützten Felder scannen', note: 'Ein erstes Ergebnis erscheint schnell. Danach prüft ExifTool WASM verschachtelte Datensätze, Vorschauen und eingebettete Metadaten.' },
   { title: 'Nachweise bewerten', note: 'GPS, Namen, Geräte-IDs, Kontaktdaten, Zeiten und Bearbeitungsspuren erhalten sichtbare Punkte, ohne dieselbe Tatsache doppelt zu zählen.' },
   { title: 'Bereinigen und erneut prüfen', note: 'Erstelle lokal eine Kopie, scanne sie gleich tief und vergleiche entfernte, verbliebene und neu gefundene Spuren vor dem Download.' },
+] : fr ? [
+  { title: 'Choisissez une image', note: 'Déposez un JPEG, PNG ou WebP de 50 Mo maximum. Les octets restent dans cet onglet.' },
+  { title: 'Vérification du vrai fichier', note: 'Signature, dimensions, animation et taille sont contrôlées avant de croire l’extension.' },
+  { title: 'Analyse de tous les champs pris en charge', note: 'Un premier résultat arrive vite, puis ExifTool WASM inspecte les données imbriquées, aperçus et métadonnées intégrées.' },
+  { title: 'Notation des preuves', note: 'GPS, noms, identifiants d’appareil, coordonnées personnelles, dates et traces de retouche reçoivent des points visibles, sans compter deux fois le même fait.' },
+  { title: 'Nettoyage puis nouvelle vérification', note: 'Créez une copie locale, rescanez-la aussi profondément et comparez les indices retirés, restants et nouvellement détectés avant le téléchargement.' },
 ] : [
   { title: 'Choose one image', note: 'Drop a JPEG, PNG, or WebP up to 50 MB. The bytes stay in this browser tab.' },
   { title: 'Verify the actual file', note: 'The browser checks the signature, dimensions, animation state, and size before trusting the extension.' },
@@ -66,10 +77,10 @@ const privacyProcess = zh ? [
 
 <section class="home-benefits privacy-benefits" aria-labelledby="privacy-benefits-title">
   <header class="home-section-heading">
-    <span class="section-index">{t('WHY CHECK IT', '为什么要检查', 'WARUM PRÜFEN')}</span>
+    <span class="section-index">{t('WHY CHECK IT', '为什么要检查', 'WARUM PRÜFEN', 'POURQUOI VÉRIFIER')}</span>
     <div>
-      <h2 id="privacy-benefits-title">{t('Why check image privacy?', '为什么要检查图片隐私？', 'Warum den Datenschutz eines Bildes prüfen?')}</h2>
-      <p>{t('One photo can carry an address, a name, and a device trail even when none of that appears in the pixels.', '一张照片可能同时带着地址、姓名和设备痕迹，即使画面里一个字都没写。', 'Ein Foto kann Adresse, Namen und Gerätespur mitbringen, obwohl davon kein Pixel etwas verrät.')}</p>
+      <h2 id="privacy-benefits-title">{t('Why check image privacy?', '为什么要检查图片隐私？', 'Warum den Datenschutz eines Bildes prüfen?', 'Pourquoi vérifier la confidentialité d’une image ?')}</h2>
+      <p>{t('One photo can carry an address, a name, and a device trail even when none of that appears in the pixels.', '一张照片可能同时带着地址、姓名和设备痕迹，即使画面里一个字都没写。', 'Ein Foto kann Adresse, Namen und Gerätespur mitbringen, obwohl davon kein Pixel etwas verrät.', 'Une photo peut transporter une adresse, un nom et la trace d’un appareil sans que rien de tout cela ne soit visible dans les pixels.')}</p>
     </div>
   </header>
   <div class="home-benefit-grid">
@@ -85,21 +96,21 @@ const privacyProcess = zh ? [
 
 <section id="privacy-scan-process" class="home-process privacy-process" aria-labelledby="privacy-process-title">
   <header>
-    <span class="section-index">{t('LOCAL, STEP BY STEP', '本机处理，一步一步来', 'LOKAL, SCHRITT FÜR SCHRITT')}</span>
-    <h2 id="privacy-process-title">{t('How the privacy check works', '隐私检查怎么工作', 'So funktioniert der Datenschutz-Check')}</h2>
-    <p>{t('One image. One automatic full scan. Every point links back to metadata evidence.', '一张图片，一次自动完整扫描。每一分都能追到元数据证据。', 'Ein Bild, ein automatischer Vollscan. Jeder Punkt führt zurück zu einem Metadaten-Nachweis.')}</p>
+    <span class="section-index">{t('LOCAL, STEP BY STEP', '本机处理，一步一步来', 'LOKAL, SCHRITT FÜR SCHRITT', 'LOCAL, ÉTAPE PAR ÉTAPE')}</span>
+    <h2 id="privacy-process-title">{t('How the privacy check works', '隐私检查怎么工作', 'So funktioniert der Datenschutz-Check', 'Comment fonctionne le contrôle de confidentialité')}</h2>
+    <p>{t('One image. One automatic full scan. Every point links back to metadata evidence.', '一张图片，一次自动完整扫描。每一分都能追到元数据证据。', 'Ein Bild, ein automatischer Vollscan. Jeder Punkt führt zurück zu einem Metadaten-Nachweis.', 'Une image. Une analyse complète automatique. Chaque point renvoie à sa preuve dans les métadonnées.')}</p>
   </header>
   <div class="home-process-body">
     <ol class="home-process-list">
       {privacyProcess.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}
     </ol>
-    <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?')}</span><a href="#privacy-checker-workbench">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen')} <IconGlyph name="arrow" size={15} /></a></p>
+    <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?', 'Une image sous la main ?')}</span><a href="#privacy-checker-workbench">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen', 'Inspectez-la ci-dessus')} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann')}</summary>
+      <summary>{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann', 'Ce que ce score ne peut pas voir')}</summary>
       <ul>
-        <li>{t('Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.', '不会分析画面里可见的人脸、文字、屏幕、倒影、车牌、制服和地标。', 'Gesichter, Texte, Bildschirme, Spiegelungen, Kennzeichen, Uniformen und Wahrzeichen in sichtbaren Pixeln werden nicht analysiert.')}</li>
-        <li>{t('A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.', '低分只表示受支持的元数据线索较少，不保证图片适合分享。', 'Ein niedriger Wert bedeutet nur weniger unterstützte Metadatenspuren. Er garantiert nicht, dass sich das Bild sicher teilen lässt.')}</li>
-        <li>{t('Metadata can be edited, forged, stale, or removed, so it cannot prove who created an image or where it came from.', '元数据可以被修改、伪造、留旧或删除，因此不能证明谁创建了图片或图片来自哪里。', 'Metadaten können verändert, gefälscht, veraltet oder entfernt sein. Sie beweisen daher weder Urheber noch Herkunft eines Bildes.')}</li>
+        <li>{t('Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.', '不会分析画面里可见的人脸、文字、屏幕、倒影、车牌、制服和地标。', 'Gesichter, Texte, Bildschirme, Spiegelungen, Kennzeichen, Uniformen und Wahrzeichen in sichtbaren Pixeln werden nicht analysiert.', 'Visages, textes, écrans, reflets, plaques, uniformes et monuments visibles ne sont pas analysés.')}</li>
+        <li>{t('A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.', '低分只表示受支持的元数据线索较少，不保证图片适合分享。', 'Ein niedriger Wert bedeutet nur weniger unterstützte Metadatenspuren. Er garantiert nicht, dass sich das Bild sicher teilen lässt.', 'Un score faible signifie moins d’indices de métadonnées pris en charge. Il ne garantit pas que le partage soit sans risque.')}</li>
+        <li>{t('Metadata can be edited, forged, stale, or removed, so it cannot prove who created an image or where it came from.', '元数据可以被修改、伪造、留旧或删除，因此不能证明谁创建了图片或图片来自哪里。', 'Metadaten können verändert, gefälscht, veraltet oder entfernt sein. Sie beweisen daher weder Urheber noch Herkunft eines Bildes.', 'Les métadonnées peuvent être modifiées, falsifiées, périmées ou supprimées ; elles ne prouvent donc ni l’auteur ni l’origine d’une image.')}</li>
       </ul>
     </details>
   </div>

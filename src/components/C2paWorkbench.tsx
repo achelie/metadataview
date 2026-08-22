@@ -86,6 +86,35 @@ const stateCopy: Record<C2paCheckState, string> = {
   unknown: 'Unknown',
 };
 
+const frUi: Record<string, string> = {
+  'Waiting for a file': 'En attente d’un fichier', 'Verification canceled': 'Vérification annulée',
+  'Verification was canceled. Retry this file or choose another one.': 'La vérification a été annulée. Relancez ce fichier ou choisissez-en un autre.',
+  'Verification stopped safely': 'Vérification arrêtée sans risque', 'The Content Credentials check could not finish.': 'La vérification des Content Credentials n’a pas pu se terminer.',
+  'Verification receipt copied': 'Reçu de vérification en anglais copié', 'Clipboard access was blocked by this browser': 'Le navigateur a bloqué l’accès au presse-papiers',
+  'File bytes stay in this tab.': 'Les octets du fichier restent dans cet onglet.', 'Choose a file': 'Choisir un fichier',
+  'Official verifier · local run': 'Vérificateur officiel · exécution locale', 'Drop a file with Content Credentials': 'Déposez un fichier avec des Content Credentials',
+  'images and RAW up to 50 MB · everything else up to 100 MB': 'images et RAW jusqu’à 50 Mo · autres formats jusqu’à 100 Mo',
+  'What gets checked?': 'Que vérifie-t-on ?', 'Signature, file binding, manifest structure, actions, ingredients, and assertions.': 'Signature, liaison au fichier, structure du manifeste, actions, ingrédients et assertions.',
+  'Local verification': 'Vérification locale', 'No receipt was produced.': 'Aucun reçu n’a été produit.', 'Cancel': 'Annuler', 'Retry': 'Réessayer', 'Replace': 'Remplacer', 'Clear': 'Effacer',
+  'checked with': 'vérifié avec', 'Inspected asset': 'Contenu inspecté', 'Signed by': 'Signé par', 'No signer stated': 'Aucun signataire indiqué', 'Issued': 'Émis le', 'Not stated': 'Non indiqué',
+  'Algorithm': 'Algorithme', 'Cert status': 'État du certificat', 'Trusted signer': 'Signataire de confiance', 'Invalid credential': 'Information invalide', 'Trust not checked': 'Confiance non vérifiée', 'Not applicable': 'Sans objet', 'Software': 'Logiciel',
+  'Create shareable report': 'Créer un rapport partageable en anglais', 'Downloads a local JSON receipt. Nothing is uploaded.': 'Télécharge un reçu JSON local en anglais. Rien n’est envoyé.',
+  'File binding': 'Liaison au fichier', 'Does the signed hash match these bytes?': 'L’empreinte signée correspond-elle à ces octets ?', 'Claim signature': 'Signature de la déclaration',
+  'Did the cryptographic signature validate?': 'La signature cryptographique est-elle valide ?', 'Publisher trust': 'Confiance dans l’émetteur', 'No external trust list is configured.': 'Aucune liste de confiance externe n’est configurée.',
+  'Revocation': 'Révocation', 'No online OCSP request is made.': 'Aucune requête OCSP en ligne n’est effectuée.', 'Inspected file receipt': 'Reçu du fichier inspecté',
+  'Detected format': 'Format détecté', 'Active manifest': 'Manifeste actif', 'None': 'Aucun', 'Not calculated': 'Non calculé', 'Copy SHA-256': 'Copier SHA-256',
+  'Search this credential report': 'Rechercher dans ce rapport', 'Search checks, actions, sources, or assertions': 'Rechercher contrôles, actions, sources ou assertions',
+  'Cryptographic checks': 'Contrôles cryptographiques', 'Validation results': 'Résultats de validation', 'No matching validation checks.': 'Aucun contrôle correspondant.', 'No validation checks were returned.': 'Aucun contrôle de validation n’a été renvoyé.',
+  'There is no C2PA manifest to validate in this file.': 'Ce fichier ne contient aucun manifeste C2PA à valider.', 'The safe receipt still records the verifier result.': 'Le reçu sûr conserve tout de même le résultat du vérificateur.',
+  'Signed history': 'Historique signé', 'Actions': 'Actions', 'No tool was stated.': 'Aucun outil indiqué.', 'No timestamp or source type stated.': 'Aucune date ni type de source indiqué.',
+  'Action details': 'Détails de l’action', 'Safe structured values': 'Valeurs structurées sûres', 'No matching actions.': 'Aucune action correspondante.', 'No actions were declared.': 'Aucune action déclarée.',
+  'A missing action list does not mean the file was never edited.': 'L’absence de liste d’actions ne signifie pas que le fichier n’a jamais été modifié.',
+  'Direct source links': 'Liens directs vers les sources', 'Provenance': 'Provenance', 'Current file only · no prior ingredients declared.': 'Fichier actuel uniquement · aucun ingrédient antérieur déclaré.',
+  'Assertions': 'Assertions', 'Manifests': 'Manifestes', 'Watermark declarations': 'Déclarations de filigrane', 'No matching assertions.': 'Aucune assertion correspondante.',
+  'No assertions were declared.': 'Aucune assertion déclarée.', 'No matching manifests.': 'Aucun manifeste correspondant.', 'No manifests were returned.': 'Aucun manifeste renvoyé.',
+  'Copy receipt': 'Copier le reçu en anglais', 'Download JSON': 'Télécharger le JSON en anglais', 'Open': 'Ouvrir', 'Close': 'Fermer',
+};
+
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -110,17 +139,18 @@ async function copyText(value: string): Promise<void> {
 function CheckFact({ label, value, note, locale }: { label: string; value: C2paCheckState; note: string; locale: Locale }) {
   const icon = value === 'passed' ? checkIcon : value === 'failed' ? failIcon : value === 'not-checked' ? infoIcon : helpIcon;
   const stateDe: Record<C2paCheckState, string> = { passed: 'Bestanden', failed: 'Fehlgeschlagen', 'not-checked': 'Nicht geprüft', 'not-applicable': 'Nicht zutreffend', unknown: 'Unbekannt' };
+  const stateFr: Record<C2paCheckState, string> = { passed: 'Réussi', failed: 'Échoué', 'not-checked': 'Non vérifié', 'not-applicable': 'Sans objet', unknown: 'Inconnu' };
   return <div className={`c2pa-check is-${value}`}>
     <Icon icon={icon} width="19" aria-hidden="true" />
     <span>{label}<small>{note}</small></span>
-    <strong>{locale === 'zh-CN' ? ({ passed: '通过', failed: '失败', 'not-checked': '未检查', 'not-applicable': '不适用', unknown: '未知' } as const)[value] : locale === 'de' ? stateDe[value] : stateCopy[value]}</strong>
+    <strong>{locale === 'zh-CN' ? ({ passed: '通过', failed: '失败', 'not-checked': '未检查', 'not-applicable': '不适用', unknown: '未知' } as const)[value] : locale === 'de' ? stateDe[value] : locale === 'fr' ? stateFr[value] : stateCopy[value]}</strong>
   </div>;
 }
 
 function SafeJsonDetails({ title, note, value, className = '', locale = 'en' }: { title: string; note: string; value: unknown; className?: string; locale?: Locale }) {
   const [open, setOpen] = useState(false);
   return <details className={`c2pa-json-details ${className}`} onToggle={(event) => setOpen(event.currentTarget.open)}>
-    <summary><span>{title}<small>{note}</small></span><b>{open ? (locale === 'zh-CN' ? '关闭' : locale === 'de' ? 'Schließen' : 'Close') : (locale === 'zh-CN' ? '打开' : locale === 'de' ? 'Öffnen' : 'Open')}</b></summary>
+    <summary><span>{title}<small>{note}</small></span><b>{open ? (locale === 'zh-CN' ? '关闭' : locale === 'de' ? 'Schließen' : locale === 'fr' ? 'Fermer' : 'Close') : (locale === 'zh-CN' ? '打开' : locale === 'de' ? 'Öffnen' : locale === 'fr' ? 'Ouvrir' : 'Open')}</b></summary>
     {open ? <pre>{JSON.stringify(value, null, 2)}</pre> : null}
   </details>;
 }
@@ -128,12 +158,13 @@ function SafeJsonDetails({ title, note, value, className = '', locale = 'en' }: 
 function ValidationRows({ entries, locale }: { entries: C2paValidationEntry[]; locale: Locale }) {
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
-  if (!entries.length) return <div className="c2pa-empty"><strong>{t('No entries in this bucket.', '这一组没有条目。', 'Keine Einträge in dieser Gruppe.')}</strong><p>{t('The SDK did not return a status code at this severity.', 'SDK 没有返回这个严重级别的状态码。', 'Das SDK hat für diesen Schweregrad keinen Statuscode zurückgegeben.')}</p></div>;
+  const fr = locale === 'fr';
+  const t = (en: string, zhText: string, deText: string, frText: string) => zh ? zhText : de ? deText : fr ? frText : en;
+  if (!entries.length) return <div className="c2pa-empty"><strong>{t('No entries in this bucket.', '这一组没有条目。', 'Keine Einträge in dieser Gruppe.', 'Aucune entrée dans ce groupe.')}</strong><p>{t('The SDK did not return a status code at this severity.', 'SDK 没有返回这个严重级别的状态码。', 'Das SDK hat für diesen Schweregrad keinen Statuscode zurückgegeben.', 'Le SDK n’a renvoyé aucun code pour ce niveau de gravité.')}</p></div>;
   return <div className="c2pa-validation-list">{entries.map((entry) => { const copy = localizeC2paValidation(entry, locale); return <article key={entry.id} className={`is-${entry.severity}`}>
-    <span className="c2pa-validation-mark" aria-label={entry.severity === 'success' ? t('Passed', '通过', 'Bestanden') : entry.severity === 'failure' ? t('Failed', '失败', 'Fehlgeschlagen') : t('Warning', '警告', 'Warnung')}><Icon icon={entry.severity === 'success' ? checkIcon : entry.severity === 'failure' ? failIcon : warningIcon} width="15" /></span>
+    <span className="c2pa-validation-mark" aria-label={entry.severity === 'success' ? t('Passed', '通过', 'Bestanden', 'Réussi') : entry.severity === 'failure' ? t('Failed', '失败', 'Fehlgeschlagen', 'Échoué') : t('Warning', '警告', 'Warnung', 'Avertissement')}><Icon icon={entry.severity === 'success' ? checkIcon : entry.severity === 'failure' ? failIcon : warningIcon} width="15" /></span>
     <div><h4>{copy.title}</h4><code>{entry.code}</code><p>{copy.explanation}</p><small>{entry.scope}{entry.url ? ` · ${entry.url}` : ''}</small></div>
-    <button type="button" aria-label={zh ? `复制验证码 ${entry.code}` : de ? `Prüfcode ${entry.code} kopieren` : `Copy validation code ${entry.code}`} onClick={() => void copyText(entry.code)}><Icon icon={copyIcon} width="15" /></button>
+    <button type="button" aria-label={zh ? `复制验证码 ${entry.code}` : de ? `Prüfcode ${entry.code} kopieren` : fr ? `Copier le code de validation ${entry.code}` : `Copy validation code ${entry.code}`} onClick={() => void copyText(entry.code)}><Icon icon={copyIcon} width="15" /></button>
   </article>;})}</div>;
 }
 
@@ -163,9 +194,11 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   const locale = useLocale();
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
-  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : en;
+  const fr = locale === 'fr';
+  const t = (en: string, zhText: string, deText: string) => zh ? zhText : de ? deText : fr ? (frUi[en] ?? en) : en;
   const progressDe: Record<C2paProgressStage, string> = { 'checking-file': 'Tatsächliche Dateisignatur wird geprüft', 'loading-engine': 'Offizieller Verifier wird geladen', 'reading-credential': 'Content Credentials werden gelesen', validating: 'Signaturen und Dateibindungen werden geprüft', 'building-report': 'Sicherer lokaler Beleg wird erstellt' };
-  const progress = (current: C2paProgressStage) => zh ? ({ 'checking-file': '正在检查真实文件签名', 'loading-engine': '正在加载官方验证器', 'reading-credential': '正在读取内容凭证', validating: '正在检查签名和文件绑定', 'building-report': '正在生成安全本地收据' } as const)[current] : de ? progressDe[current] : progressCopy[current];
+  const progressFr: Record<C2paProgressStage, string> = { 'checking-file': 'Vérification de la vraie signature du fichier', 'loading-engine': 'Chargement du vérificateur officiel', 'reading-credential': 'Lecture des Content Credentials', validating: 'Vérification des signatures et liaisons', 'building-report': 'Création d’un reçu local sûr' };
+  const progress = (current: C2paProgressStage) => zh ? ({ 'checking-file': '正在检查真实文件签名', 'loading-engine': '正在加载官方验证器', 'reading-credential': '正在读取内容凭证', validating: '正在检查签名和文件绑定', 'building-report': '正在生成安全本地收据' } as const)[current] : de ? progressDe[current] : fr ? progressFr[current] : progressCopy[current];
   const input = useRef<HTMLInputElement>(null);
   const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
@@ -248,7 +281,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
       });
       if (runId.current !== currentId) return;
       setReport(result);
-      setNotice(zh ? (result.status === 'not-found' ? '凭证检查完成 · 没有找到' : `凭证检查完成 · ${result.validationState}`) : de ? (result.status === 'not-found' ? 'Credential-Prüfung abgeschlossen · nichts gefunden' : `Credential-Prüfung abgeschlossen · ${result.validationState}`) : result.status === 'not-found' ? 'Credential check complete · none found' : `Credential check complete · ${result.validationState}`);
+      setNotice(zh ? (result.status === 'not-found' ? '凭证检查完成 · 没有找到' : `凭证检查完成 · ${result.validationState}`) : de ? (result.status === 'not-found' ? 'Credential-Prüfung abgeschlossen · nichts gefunden' : `Credential-Prüfung abgeschlossen · ${result.validationState}`) : fr ? (result.status === 'not-found' ? 'Vérification terminée · rien trouvé' : `Vérification terminée · ${result.validationState}`) : result.status === 'not-found' ? 'Credential check complete · none found' : `Credential check complete · ${result.validationState}`);
     } catch (caught) {
       if (runId.current !== currentId) return;
       if (caught instanceof C2paCancellationError) {
@@ -307,17 +340,24 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
     'not-found': { eyebrow: 'Kein eingebettetes Credential', title: 'Keine Content Credentials', body: 'Der offizielle Verifier hat in dieser Datei kein C2PA-Manifest gefunden. Das sagt allein nichts darüber aus, ob der Inhalt echt oder gefälscht ist.' },
     unsupported: { eyebrow: 'Formatgrenze', title: 'Hier nicht unterstützt', body: 'Die Dateisignatur ist lesbar, aber dieser produktive Verifier akzeptiert das Format auf dieser Seite nicht.' },
   } as const;
-  const verdict = report ? (zh ? verdictZh[report.status] : de ? verdictDe[report.status] : verdictCopy[report.status]) : null;
+  const verdictFr = {
+    trusted: { eyebrow: 'État C2PA de confiance', title: 'Information de confiance', body: 'L’information est valide et sa chaîne de signature mène, selon le vérificateur, à une racine de confiance configurée.' },
+    valid: { eyebrow: 'Résultat cryptographique', title: 'Information valide', body: 'La signature et la liaison au fichier sont valides. La confiance dans l’émetteur est séparée et n’a pas été contrôlée avec une liste externe.' },
+    invalid: { eyebrow: 'Ne pas faire confiance à ces déclarations', title: 'Information invalide', body: 'C2PA signale au moins un échec. Le fichier ou l’information a peut-être changé ; les détails ci-dessous servent uniquement au diagnostic.' },
+    'not-found': { eyebrow: 'Aucune information intégrée', title: 'Aucune Content Credential', body: 'Le vérificateur officiel n’a trouvé aucun manifeste C2PA. Cela ne dit rien, à lui seul, sur l’authenticité du contenu.' },
+    unsupported: { eyebrow: 'Limite de format', title: 'Non pris en charge ici', body: 'La signature du fichier est lisible, mais ce vérificateur de production n’accepte pas ce format sur cette page.' },
+  } as const;
+  const verdict = report ? (zh ? verdictZh[report.status] : de ? verdictDe[report.status] : fr ? verdictFr[report.status] : verdictCopy[report.status]) : null;
   const active = report?.activeManifest;
   const hasCredential = report ? ['trusted', 'valid', 'invalid'].includes(report.status) : false;
-  const honestTitle = zh ? (report?.status === 'invalid' ? '不要依赖无效清单里的声明。' : report?.status === 'not-found' ? '没有凭证不等于内容造假。' : report?.status === 'unsupported' ? '这里不支持，不代表别处验证会无效。' : '有效签名是证据，不是真相机器。') : de ? (report?.status === 'invalid' ? 'Verlass dich nicht auf Angaben aus einem ungültigen Manifest.' : report?.status === 'not-found' ? 'Kein Credential ist kein Beweis für eine Fälschung.' : report?.status === 'unsupported' ? 'Hier nicht unterstützt heißt nicht anderswo ungültig.' : 'Eine gültige Signatur ist ein Beleg, keine Wahrheitsmaschine.') : report?.status === 'invalid' ? 'Do not rely on invalid manifest claims.'
+  const honestTitle = zh ? (report?.status === 'invalid' ? '不要依赖无效清单里的声明。' : report?.status === 'not-found' ? '没有凭证不等于内容造假。' : report?.status === 'unsupported' ? '这里不支持，不代表别处验证会无效。' : '有效签名是证据，不是真相机器。') : de ? (report?.status === 'invalid' ? 'Verlass dich nicht auf Angaben aus einem ungültigen Manifest.' : report?.status === 'not-found' ? 'Kein Credential ist kein Beweis für eine Fälschung.' : report?.status === 'unsupported' ? 'Hier nicht unterstützt heißt nicht anderswo ungültig.' : 'Eine gültige Signatur ist ein Beleg, keine Wahrheitsmaschine.') : fr ? (report?.status === 'invalid' ? 'Ne vous fiez pas aux déclarations d’un manifeste invalide.' : report?.status === 'not-found' ? 'L’absence de Content Credential ne prouve pas une falsification.' : report?.status === 'unsupported' ? 'Non pris en charge ici ne signifie pas invalide ailleurs.' : 'Une signature valide est une preuve, pas une machine à vérité.') : report?.status === 'invalid' ? 'Do not rely on invalid manifest claims.'
     : report?.status === 'not-found' ? 'No credential is not a fake-content verdict.'
       : report?.status === 'unsupported' ? 'Unsupported here does not mean invalid elsewhere.'
         : 'A valid signature is evidence, not a truth machine.';
 
   const selectedIngredient = report?.ingredients.find((item) => item.id === selectedProvenance) ?? null;
   const previewableImage = report ? ['jpeg', 'png', 'webp', 'gif', 'svg', 'avif'].includes(report.file.detectedType) : false;
-  const credentialBadge = zh ? (report?.status === 'trusted' ? '可信' : report?.status === 'valid' ? '有效但有边界' : report?.status === 'invalid' ? '无效' : report?.status === 'not-found' ? '无凭证' : '不支持') : de ? (report?.status === 'trusted' ? 'Vertrauenswürdig' : report?.status === 'valid' ? 'Gültig mit Einschränkungen' : report?.status === 'invalid' ? 'Ungültig' : report?.status === 'not-found' ? 'Kein Credential' : 'Nicht unterstützt') : report?.status === 'trusted' ? 'Trusted'
+  const credentialBadge = zh ? (report?.status === 'trusted' ? '可信' : report?.status === 'valid' ? '有效但有边界' : report?.status === 'invalid' ? '无效' : report?.status === 'not-found' ? '无凭证' : '不支持') : de ? (report?.status === 'trusted' ? 'Vertrauenswürdig' : report?.status === 'valid' ? 'Gültig mit Einschränkungen' : report?.status === 'invalid' ? 'Ungültig' : report?.status === 'not-found' ? 'Kein Credential' : 'Nicht unterstützt') : fr ? (report?.status === 'trusted' ? 'De confiance' : report?.status === 'valid' ? 'Valide avec réserves' : report?.status === 'invalid' ? 'Invalide' : report?.status === 'not-found' ? 'Aucune information' : 'Non pris en charge') : report?.status === 'trusted' ? 'Trusted'
     : report?.status === 'valid' ? 'Valid with caveats'
       : report?.status === 'invalid' ? 'Invalid'
         : report?.status === 'not-found' ? 'No credential' : 'Unsupported';
@@ -345,14 +385,14 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
 
     {report && verdict ? <div className="c2pa-report">
       <header className="c2pa-report-heading">
-        <div><span className="eyebrow">{zh ? `本地验证收据 · schema ${report.schemaVersion}` : de ? `Lokaler Prüfbeleg · Schema ${report.schemaVersion}` : `Local verification receipt · schema ${report.schemaVersion}`}</span><h2 ref={resultHeading} tabIndex={-1}>{report.file.name}</h2><p>{report.file.detectedType.toUpperCase()} · {formatBytes(report.file.size)} · {t('checked with', '检查引擎', 'geprüft mit')} {report.engine.name} {report.engine.version}</p></div>
+        <div><span className="eyebrow">{zh ? `本地验证收据 · schema ${report.schemaVersion}` : de ? `Lokaler Prüfbeleg · Schema ${report.schemaVersion}` : fr ? `Reçu de vérification local · schéma ${report.schemaVersion}` : `Local verification receipt · schema ${report.schemaVersion}`}</span><h2 ref={resultHeading} tabIndex={-1}>{report.file.name}</h2><p>{report.file.detectedType.toUpperCase()} · {formatBytes(report.file.size)} · {t('checked with', '检查引擎', 'geprüft mit')} {report.engine.name} {report.engine.version}</p></div>
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />{t('Replace', '替换', 'Ersetzen')}</button><button className="button button-ghost" type="button" onClick={() => clear()}><Icon icon={trashIcon} width="16" />{t('Clear', '清除', 'Leeren')}</button></div>
       </header>
 
       <div className="c2pa-report-overview">
         <section className="c2pa-asset-card" aria-labelledby="c2pa-asset-title">
           <div className="c2pa-asset-preview">
-            {previewableImage && previewUrl && !previewFailed ? <img src={previewUrl} alt={zh ? `${report.file.name} 的预览` : de ? `Vorschau von ${report.file.name}` : `Preview of ${report.file.name}`} onError={() => setPreviewFailed(true)} onLoad={(event) => setPreviewFacts({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} /> : <span><Icon icon={imageIcon} width="38" /><b>{report.file.detectedType.toUpperCase()}</b></span>}
+            {previewableImage && previewUrl && !previewFailed ? <img src={previewUrl} alt={zh ? `${report.file.name} 的预览` : de ? `Vorschau von ${report.file.name}` : fr ? `Aperçu de ${report.file.name}` : `Preview of ${report.file.name}`} onError={() => setPreviewFailed(true)} onLoad={(event) => setPreviewFacts({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} /> : <span><Icon icon={imageIcon} width="38" /><b>{report.file.detectedType.toUpperCase()}</b></span>}
             <small className={`is-${report.status}`}>{credentialBadge}</small>
           </div>
           <div className="c2pa-asset-copy">
@@ -382,7 +422,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
 
       <section className="c2pa-file-receipt" aria-label={t('Inspected file receipt', '已检查文件收据', 'Beleg zur geprüften Datei')}>
         <div><span>{t('Detected format', '检测格式', 'Erkanntes Format')}</span><strong>{report.file.detectedType.toUpperCase()}</strong><small>{report.file.inspectedMime ?? report.file.mime}</small></div>
-        <div><span>{t('Active manifest', '活动清单', 'Aktives Manifest')}</span><strong>{report.activeManifestLabel ?? t('None', '无', 'Keins')}</strong><small>{zh ? `存储中有 ${report.manifests.length} 个清单` : de ? `${report.manifests.length} Manifest${report.manifests.length === 1 ? '' : 'e'} im Speicher` : `${report.manifests.length} manifest${report.manifests.length === 1 ? '' : 's'} in store`}</small></div>
+        <div><span>{t('Active manifest', '活动清单', 'Aktives Manifest')}</span><strong>{report.activeManifestLabel ?? t('None', '无', 'Keins')}</strong><small>{zh ? `存储中有 ${report.manifests.length} 个清单` : de ? `${report.manifests.length} Manifest${report.manifests.length === 1 ? '' : 'e'} im Speicher` : fr ? `${report.manifests.length} manifeste(s) en mémoire` : `${report.manifests.length} manifest${report.manifests.length === 1 ? '' : 's'} in store`}</small></div>
         <div className="c2pa-hash"><Icon icon={fingerprintIcon} width="19" /><span>SHA-256</span><code>{report.fingerprint?.value ?? t('Not calculated', '未计算', 'Nicht berechnet')}</code>{report.fingerprint ? <button type="button" aria-label={t('Copy SHA-256', '复制 SHA-256', 'SHA-256 kopieren')} onClick={() => void copyText(report.fingerprint!.value)}><Icon icon={copyIcon} width="15" /></button> : null}</div>
       </section>
 
@@ -392,17 +432,17 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
 
       <div className="c2pa-evidence-stack">
         <section className="c2pa-evidence-panel c2pa-validation-panel" aria-labelledby="c2pa-validation-title">
-          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Cryptographic checks', '加密检查', 'Kryptografische Prüfungen')}</span><h3 id="c2pa-validation-title">{t('Validation results', '验证结果', 'Prüfergebnisse')}</h3><p>{zh ? `${validationPresentation?.total ?? 0} 项检查 · ${validationPresentation?.passed ?? 0} 项通过 · ${validationPresentation?.warnings ?? 0} 条警告${validationPresentation?.failed ? ` · ${validationPresentation.failed} 项失败` : ''}` : de ? `${validationPresentation?.total ?? 0} Prüfungen · ${validationPresentation?.passed ?? 0} bestanden · ${validationPresentation?.warnings ?? 0} Warnungen${validationPresentation?.failed ? ` · ${validationPresentation.failed} fehlgeschlagen` : ''}` : `${validationPresentation?.total ?? 0} checks · ${validationPresentation?.passed ?? 0} passed · ${validationPresentation?.warnings ?? 0} warning${validationPresentation?.warnings === 1 ? '' : 's'}${validationPresentation?.failed ? ` · ${validationPresentation.failed} failed` : ''}`}</p></div><strong>{filteredValidationPresentation.entries.length}</strong></header>
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Cryptographic checks', '加密检查', 'Kryptografische Prüfungen')}</span><h3 id="c2pa-validation-title">{t('Validation results', '验证结果', 'Prüfergebnisse')}</h3><p>{zh ? `${validationPresentation?.total ?? 0} 项检查 · ${validationPresentation?.passed ?? 0} 项通过 · ${validationPresentation?.warnings ?? 0} 条警告${validationPresentation?.failed ? ` · ${validationPresentation.failed} 项失败` : ''}` : de ? `${validationPresentation?.total ?? 0} Prüfungen · ${validationPresentation?.passed ?? 0} bestanden · ${validationPresentation?.warnings ?? 0} Warnungen${validationPresentation?.failed ? ` · ${validationPresentation.failed} fehlgeschlagen` : ''}` : fr ? `${validationPresentation?.total ?? 0} contrôles · ${validationPresentation?.passed ?? 0} réussis · ${validationPresentation?.warnings ?? 0} avertissements${validationPresentation?.failed ? ` · ${validationPresentation.failed} échecs` : ''}` : `${validationPresentation?.total ?? 0} checks · ${validationPresentation?.passed ?? 0} passed · ${validationPresentation?.warnings ?? 0} warning${validationPresentation?.warnings === 1 ? '' : 's'}${validationPresentation?.failed ? ` · ${validationPresentation.failed} failed` : ''}`}</p></div><strong>{filteredValidationPresentation.entries.length}</strong></header>
           {filteredValidationPresentation.entries.length ? <ValidationRows locale={locale} entries={filteredValidationPresentation.entries} /> : <div className="c2pa-empty"><strong>{query ? t('No matching validation checks.', '没有匹配的验证检查。', 'Keine passenden Prüfungen.') : t('No validation checks were returned.', '验证器没有返回检查项。', 'Der Verifier hat keine Prüfeinträge zurückgegeben.')}</strong><p>{report.status === 'not-found' ? t('There is no C2PA manifest to validate in this file.', '这个文件里没有可验证的 C2PA 清单。', 'Diese Datei enthält kein prüfbares C2PA-Manifest.') : t('The safe receipt still records the verifier result.', '安全收据仍然记录了验证器结论。', 'Der sichere Beleg hält das Ergebnis des Verifiers trotzdem fest.')}</p></div>}
         </section>
 
         <section className="c2pa-evidence-panel c2pa-actions-panel" aria-labelledby="c2pa-actions-title">
-          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Signed history', '签名历史', 'Signierter Verlauf')}</span><h3 id="c2pa-actions-title">{t('Actions', '操作记录', 'Aktionen')}</h3><p>{zh ? `活动 C2PA 操作断言中有 ${report.actions.length} 条记录。` : de ? `${report.actions.length} Einträge aus der aktiven C2PA-Aktions-Assertion.` : `${report.actions.length} entr${report.actions.length === 1 ? 'y' : 'ies'} from the active C2PA actions assertion.`}</p></div><strong>{filteredActions.length}</strong></header>
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Signed history', '签名历史', 'Signierter Verlauf')}</span><h3 id="c2pa-actions-title">{t('Actions', '操作记录', 'Aktionen')}</h3><p>{zh ? `活动 C2PA 操作断言中有 ${report.actions.length} 条记录。` : de ? `${report.actions.length} Einträge aus der aktiven C2PA-Aktions-Assertion.` : fr ? `${report.actions.length} entrée(s) dans l’assertion d’actions C2PA active.` : `${report.actions.length} entr${report.actions.length === 1 ? 'y' : 'ies'} from the active C2PA actions assertion.`}</p></div><strong>{filteredActions.length}</strong></header>
           {filteredActions.length ? <div className="c2pa-action-list">{filteredActions.map((action, index) => <article key={action.id}><i>{index + 1}</i><div><strong>{action.label}</strong><code>{action.action}</code></div><div><p>{action.softwareAgent ?? action.description ?? t('No tool was stated.', '未声明工具。', 'Kein Werkzeug angegeben.')}</p><small>{[action.when, action.digitalSourceType].filter(Boolean).join(' · ') || t('No timestamp or source type stated.', '未声明时间或来源类型。', 'Kein Zeitstempel oder Quelltyp angegeben.')}</small>{action.details ? <SafeJsonDetails locale={locale} title={t('Action details', '操作详情', 'Aktionsdetails')} note={t('Safe structured values', '安全结构化值', 'Sichere strukturierte Werte')} value={action.details} /> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>{query ? t('No matching actions.', '没有匹配的操作。', 'Keine passenden Aktionen.') : t('No actions were declared.', '没有声明操作。', 'Es wurden keine Aktionen angegeben.')}</strong><p>{t('A missing action list does not mean the file was never edited.', '缺少操作列表，不代表文件从未被编辑。', 'Eine fehlende Aktionsliste bedeutet nicht, dass die Datei nie bearbeitet wurde.')}</p></div>}
         </section>
 
         <section className="c2pa-evidence-panel c2pa-provenance-panel" aria-labelledby="c2pa-provenance-title">
-          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Direct source links', '直接来源链接', 'Direkte Quellenverweise')}</span><h3 id="c2pa-provenance-title">{t('Provenance', '来源关系', 'Herkunft')}</h3><p>{report.ingredients.length ? (zh ? `${report.ingredients.length} 个直接素材链接到当前文件。` : de ? `${report.ingredients.length} direkte Quelle${report.ingredients.length === 1 ? '' : 'n'} mit dieser Datei verknüpft.` : `${report.ingredients.length} direct ingredient${report.ingredients.length === 1 ? '' : 's'} linked to this file.`) : t('Current file only · no prior ingredients declared.', '只有当前文件 · 未声明之前的素材', 'Nur aktuelle Datei · keine vorherigen Quellen angegeben.')}</p></div><Icon icon={routeIcon} width="25" /></header>
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Direct source links', '直接来源链接', 'Direkte Quellenverweise')}</span><h3 id="c2pa-provenance-title">{t('Provenance', '来源关系', 'Herkunft')}</h3><p>{report.ingredients.length ? (zh ? `${report.ingredients.length} 个直接素材链接到当前文件。` : de ? `${report.ingredients.length} direkte Quelle${report.ingredients.length === 1 ? '' : 'n'} mit dieser Datei verknüpft.` : fr ? `${report.ingredients.length} ingrédient(s) directement lié(s) à ce fichier.` : `${report.ingredients.length} direct ingredient${report.ingredients.length === 1 ? '' : 's'} linked to this file.`) : t('Current file only · no prior ingredients declared.', '只有当前文件 · 未声明之前的素材', 'Nur aktuelle Datei · keine vorherigen Quellen angegeben.')}</p></div><Icon icon={routeIcon} width="25" /></header>
           <div className={`c2pa-provenance-flow ${filteredIngredients.length ? 'has-sources' : ''}`}>
             {filteredIngredients.length ? <div className="c2pa-source-nodes">{filteredIngredients.map((ingredient) => <button key={ingredient.id} type="button" className={selectedProvenance === ingredient.id ? 'is-selected' : ''} aria-pressed={selectedProvenance === ingredient.id} onClick={() => setSelectedProvenance(ingredient.id)}><span>{t('Source asset', '源素材', 'Quelldatei')}</span><strong>{ingredient.title}</strong><small>{ingredient.format ?? ingredient.relationship ?? t('Format not stated', '未声明格式', 'Format nicht angegeben')}</small></button>)}</div> : null}
             <button type="button" className={`c2pa-current-node ${selectedProvenance === 'file' ? 'is-selected' : ''}`} aria-pressed={selectedProvenance === 'file'} onClick={() => setSelectedProvenance('file')}><span>{t('This file', '当前文件', 'Diese Datei')} · {credentialBadge}</span><strong>{report.file.name}</strong><small>{active?.signer ? (zh ? `由 ${active.signer} 签署` : de ? `Signiert von ${active.signer}` : `Signed by ${active.signer}`) : t('No signer stated', '未声明签名者', 'Kein Signierer angegeben')}</small></button>
