@@ -553,8 +553,9 @@ export function getTool(key: ToolKey, locale: Locale = 'en'): ToolConfig {
   return {
     ...base, ...copy,
     path: localizePath(base.path, locale),
+    heroProof: locale === 'fr' && key === 'remover' ? 'Traitement 100 % local · Aucun envoi · Inspecter → Supprimer → Vérifier' : locale === 'fr' && key === 'videoRemover' ? 'Aucun réencodage · Qualité vidéo préservée · Inspecter → Supprimer → Vérifier' : base.heroProof,
     formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : locale === 'de' ? localizedGuideDe(key, base.formatGuide) : localizedGuideFr(key, base.formatGuide),
     related: locale === 'zh-CN' ? localizedRelated(base) : locale === 'de' ? localizedRelatedDe(base) : localizedRelatedFr(base),
-    formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : locale === 'de' ? 'Bilder · Video · Audio · Dokumente' : 'Images · Vidéo · Audio · Documents') : base.formats,
+    formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : locale === 'de' ? 'Bilder · Video · Audio · Dokumente' : 'Images · Vidéo · Audio · Documents') : locale === 'fr' && key === 'metadata' ? 'Images · Vidéos · Audio · Documents' : locale === 'fr' && key === 'c2pa' ? 'Images · Vidéo · Audio · PDF' : base.formats,
   };
 }

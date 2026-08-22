@@ -50,6 +50,7 @@ const frUi: Record<string, string> = {
   'Sensitive': 'Sensible', 'Binary payload': 'Charge binaire', 'binary': 'binaire', 'Raw value': 'Valeur brute', 'Show less': 'Afficher moins',
   'File header hexadecimal dump': 'Vue hexadécimale de l’en-tête', 'Offset': 'Décalage', 'Hex': 'Hex',
   'Choose an image': 'Choisir une image', 'Choose a file': 'Choisir un fichier', 'Waiting for a file': 'En attente d’un fichier',
+  'Your file stays on this device.': 'Votre fichier reste sur cet appareil.', 'ExifTool loads after you choose a file.': 'ExifTool se charge seulement après le choix du fichier.', 'Nothing is uploaded.': 'Rien n’est envoyé.',
   'File bytes stay in this browser tab.': 'Les octets restent dans cet onglet.', 'Private by default': 'Privé par défaut', 'Drop a file here': 'Déposez un fichier ici', 'Drop an image here': 'Déposez une image ici',
   'or choose one from your device': 'ou choisissez-en un sur votre appareil', 'Local only · no upload': 'Local uniquement · aucun envoi', 'Supported formats': 'Formats pris en charge',
   'Photo metadata highlights': 'Points clés des métadonnées photo', 'View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.': 'Consultez EXIF, position GPS, réglages de l’appareil, date de prise de vue et métadonnées du fichier directement dans votre navigateur.',
