@@ -32,9 +32,9 @@ faqs:
   - question: "How can I view EXIF data?"
     answer: "Open the original photo in a metadata viewer, then look for EXIF camera, exposure, date, orientation, software, and GPS fields in the report."
 related:
+  - how-to-remove-metadata-from-a-photo
   - exif-vs-metadata
   - how-to-find-where-a-photo-was-taken
-  - how-to-view-exif-data-on-iphone
 ---
 
 EXIF data is information stored inside many digital photo files. It can record the camera model, lens, ISO, aperture, shutter speed, capture time, orientation, editing software, and sometimes GPS coordinates. You do not see these details in the pixels, but a photo app or metadata viewer can read them.
