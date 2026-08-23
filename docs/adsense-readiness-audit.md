@@ -9,8 +9,8 @@
 ## 结论
 
 - **站点侧结论：申请版已部署并通过生产验收。** 当前代码、生产内容、导航、隐私披露和网络行为没有 `Fail`；完整决策仍是 `Ready after external steps`，须关闭 Google CMP 与 Sites 后台两个证据缺口。
-- **Google 后台结论：尚不能称为 `Ready`。** `ADS-SITE-01` 只有在 AdSense Sites 后台完成添加、验证、审核并显示 `Ready` 后才能通过。
-- **CMP 结论：尚缺后台证据。** 仓库已记录 Google CMP 三按钮方案，但没有“已配置并发布”的后台截图或实测，因此 `ADS-PRIV-04` 保持 `Unknown`。
+- **Google 后台结论：尚不能称为 `Ready`。** 后台已存在 `viewexif.com`，所有权验证完成且 `ads.txt` 为“已授权”，但审批状态仍是“需要审核”，尚未提交“申请审核”。
+- **CMP 结论：已发现两个待修配置。** ViewExif 的 Google 欧洲法规消息已发布，包含 Consent / Do not consent / Manage options 三按钮及英、德、法、简中；但意见征求优化仍开启，隐私政策 URL 仍是错误的 `http://viewexif.com`，所以 `ADS-PRIV-04` 保持 `Unknown`。
 - **当前真实计数：`56 Pass / 0 Fail / 2 Unknown / 15 N/A`。** Google CMP 配置、发布并留证后预计为 `57 / 0 / 1 / 15`；Sites 状态再变为 `Ready` 后预计为 `58 / 0 / 0 / 15`。
 - Google 的最终批准不能由代码、自动化测试或本报告保证。后台若显示 `Needs attention`，必须按具体原因整改后重新执行全部 73 项。
 
@@ -18,6 +18,7 @@
 
 - 自动化证据：`pnpm test` 为 253/253；`pnpm build` 成功，生成 85 个唯一、可索引 canonical URL；完整 Playwright 为 184/184，法律页与 i18n 聚焦验收为 15/15。`dist` 中 86 个 HTML（含 404）均恰好有一个正确 account meta，且没有 AdSense/Funding Choices 运行时命中。
 - 生产证据：2026-08-23 对 `www.viewexif.com` 运行法律页 Playwright 为 7/7；四语 16 个 Trust URL 全部 HTTP 200、唯一 H1/canonical/account meta、Footer 可达，390px 与 239px 无溢出/控制台错误。生产 sitemap 为 85 URL，根域与 www 的 `ads.txt` 均返回同一精确 seller 行，浏览器未发出 Google 广告请求。
+- Google 后台证据：2026-08-23 在 Publisher `pub-7443237558968985` 的 Sites 列表确认 `viewexif.com` 为“需要审核”、`ads.txt` 为“已授权”；站点详情显示所有权验证完成并提供“申请审核”按钮。Privacy & messaging 中 ViewExif 欧洲法规消息为“已发布”，三按钮已开启，选择了英语及另外 31 种语言（含 de/fr/zh-CN），但优化开启且隐私 URL 错误。账号主页另显示地址 PIN 于 2026-08-11 寄出、地址验证仍待完成。
 - 代码证据：统一身份在 `src/config/site.ts`；四语 About、Contact、Privacy、Terms 在 `src/components/pages/ContentPage.astro`；全站 meta 在 `src/layouts/BaseLayout.astro`；seller 行在 `public/ads.txt`；长期控制在 `docs/adsense-operations.md`。
 - 用户已明确确认：申请者已满 18 岁、控制域名、没有重复 AdSense 账号、该 Publisher ID 属于本次账号、公开邮箱可收信，并承诺长期执行合规流量与 PII 防泄漏 SOP。相关行以“用户确认”作为证据，不把它伪装成 Google 后台或第三方独立验证。
 - 本表评估的是**已部署的申请版**。生产页面与网络证据已经复验；Google 账号/CMP 后台状态仍只能由后台截图与实际状态证明。
@@ -42,9 +43,9 @@
 | ADS-OWN-01 | Pass | 已有完整仓库和共享 `<head>` 修改权；`BaseLayout.astro` 已成功注入 account meta，构建验证通过。 | 保持 meta 由单一共享布局输出。 |
 | ADS-OWN-02 | Pass | 用户明确确认控制 `viewexif.com` 域名。 | 保存 DNS/Cloudflare 与 AdSense 验证截图。 |
 | ADS-OWN-03 | Pass | Astro 页面结构有效；本地完整 Playwright 184/184，生产法律页 Playwright 7/7，覆盖工具 hydration、法律页和 239/390px。 | 依赖或浏览器支持范围变化时复测。 |
-| ADS-SITE-01 | Unknown | 无 AdSense Sites 后台截图证明站点已添加、验证、完成审核并显示 `Ready`。代码部署不能证明此状态。 | 在后台添加并验证站点、提交审核；仅在显示 `Ready` 后改为 Pass。 |
-| ADS-SITE-02 | Pass | 生产首页与四语 Trust 页均恰好输出一个 `google-adsense-account=ca-pub-7443237558968985`，且 `ads.txt` 提供第二种可用验证材料。 | 在 AdSense 完成 Google 所选验证方式并保存结果。 |
-| ADS-TXT-01 | Pass | 根域与 www 的生产 `/ads.txt` 均为 200，并精确返回 `google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0`；用户确认 Publisher ID 属于申请账号。 | 保存 AdSense 后台 `Authorized` 证据。 |
+| ADS-SITE-01 | Unknown | AdSense Sites 已添加并验证 `viewexif.com`，但后台审批状态为“需要审核”，详情页仍提供“申请审核”按钮，尚未显示 `Ready`。 | 提交审核；仅在 Google 完成审核并显示 `Ready` 后改为 Pass。 |
+| ADS-SITE-02 | Pass | 生产首页与四语 Trust 页均恰好输出一个正确 account meta；AdSense 站点详情显示所有权验证已完成。 | 保持 meta 与账号一致，审核期间不要移除。 |
+| ADS-TXT-01 | Pass | 根域与 www 的生产 `/ads.txt` 均为 200 并精确返回 seller 行；AdSense Sites 后台已显示“已授权”。 | 账号或销售关系变化时同步更新并复查后台。 |
 | ADS-TXT-02 | Pass | 仓库已发布根路径 `ads.txt`，不是仅写在文档中的计划。 | 保持文件可抓取；账号或销售关系变化时同步更新。 |
 | ADS-CONTENT-01 | Pass | 站点提供可运行的本地元数据查看、清理、隐私检查和 C2PA 工具，并有 14 篇针对具体分享场景的原创指南。 | 定期复查技术结论，继续增加真实使用场景和实测证据。 |
 | ADS-CONTENT-02 | Pass | 核心价值来自自有浏览器工具、解析逻辑、测试和原创说明；文章虽有外部引用，但不是嵌入/聚合页或复制正文。 | 发布新文时保留原创分析与清晰来源。 |
@@ -101,7 +102,7 @@
 | ADS-PRIV-01 | Pass | 四语 Privacy 披露 Google 启用广告后可能进行的数据收集/共享/用途，明确 Cookie、local storage、web beacon、IP、设备标识、页面和广告互动，并从 Footer 可达。 | 实际启用任何 Google 广告能力前核对披露与配置一致。 |
 | ADS-PRIV-02 | Pass | 四语 Privacy 明确 Google 与广告技术合作伙伴可能放置/读取 Cookie，并通过 web beacon、IP 和其他标识收集信息。 | 合作伙伴或处理目的变化时先更新政策。 |
 | ADS-PRIV-03 | Pass | 解析、清理和导出由浏览器 worker/Object URL 完成；敏感文件名/路径/邮箱/GPS/哈希/元数据 E2E 未发现不安全出站，生产法律页测试也未发现 Google 广告请求；SOP 要求月度复测。 | 每月按 SOP 重做全流程 PII 网络留证。 |
-| ADS-PRIV-04 | Unknown | 文档选定 Google CMP + IAB TCF 与 Consent/Do not consent/Manage options 三按钮，但没有后台“已配置并发布”截图，也没有 EEA/UK/CH 实际同意、拒绝、管理和撤回测试。 | 在 Privacy & messaging 完成并发布配置；保存截图并在适用地区实测后改为 Pass。 |
+| ADS-PRIV-04 | Unknown | Google 欧洲法规消息已为 ViewExif 发布，三按钮已开启，英语及 31 种其他语言含 de/fr/zh-CN；但意见征求优化仍开启，隐私政策 URL 仍是错误的 `http://viewexif.com`，也尚无 EEA/UK/CH 撤回实测。 | 关闭优化，将 URL 改为 `https://www.viewexif.com/privacy/` 并发布；广告启用后再实测同意、拒绝、管理和撤回。 |
 | ADS-PRIV-05 | Pass | 网站不请求浏览器 geolocation；文件内 GPS 只在本地解析/显示，不由 ViewExif 收集或传给 Google，Privacy 明确披露此边界。 | 保持本地处理；若未来收集精确位置，先做即时告知、opt-in、加密与政策更新。 |
 | ADS-PRIV-06 | N/A | ViewExif 是通用文件隐私/元数据工具，不是面向 13 岁以下儿童的站点或专区。 | 受众或内容定位变化时评估 COPPA 标记和非个性化处理。 |
 | ADS-PRIV-07 | N/A | 申请版没有 Google 广告/CMP 自定义 cookie 代码，也没有代理 Google 域 cookie 的逻辑。 | 接入广告后检查所有自定义脚本，不得改动 Google 域 Cookie。 |
@@ -120,6 +121,6 @@
 
 ## 剩余 Google 后台门槛
 
-1. 完成并留存 Google CMP 后台配置证据，使 `ADS-PRIV-04` 从 Unknown 变为 Pass；申请版仍不加载 CMP/Funding Choices 标签。
-2. 在 AdSense 完成账号任务、站点验证与审核；确认 `ads.txt` 为 `Authorized`。仅在 Sites 显示 `Ready` 后使 `ADS-SITE-01` 从 Unknown 变为 Pass。
+1. 在 Google CMP 关闭意见征求优化，将隐私政策 URL 改为 `https://www.viewexif.com/privacy/`，发布并留证，使 `ADS-PRIV-04` 从 Unknown 变为 Pass；申请版仍不加载 CMP/Funding Choices 标签。
+2. 点击“申请审核”；仅在 Sites 显示 `Ready` 后使 `ADS-SITE-01` 从 Unknown 变为 Pass。地址 PIN 到达后由账号持有人完成地址验证。
 3. 保持本次申请版不启用广告。Ready 后启用广告仍需单独处理 CSP、Trust 页排除、CMP 运行时和 10 个条件性 N/A 项。
