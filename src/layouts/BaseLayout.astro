@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { siteIdentity } from '../config/site';
 import { canonicalUrl } from '../lib/seo';
 import { getAlternatePaths, type Locale } from '../i18n/core';
 import { getMessages } from '../i18n/messages';
@@ -51,6 +52,7 @@ const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key])
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#171815" />
+    <meta name="google-adsense-account" content={siteIdentity.adsenseAccountId} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

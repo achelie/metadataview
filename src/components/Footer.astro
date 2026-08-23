@@ -10,7 +10,12 @@ const hrefFor = (href: string) => localizePath(href, locale);
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-note"><span class="brand-mark"><i></i><i></i><i></i></span><div><strong>ViewExif</strong><p>{copy.footerNote}</p></div></div>
-    <div class="footer-links"><div><strong>{copy.inspect}</strong><a href={hrefFor('/')}>{copy.allFiles}</a><a href={hrefFor('/image-metadata-viewer/')}>{copy.images}</a><a href={hrefFor('/document-metadata-viewer/')}>{copy.documents}</a><a href={hrefFor('/video-metadata-viewer/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-viewer/')}>{copy.audio}</a></div><div><strong>{copy.remove}</strong><a href={hrefFor('/metadata-remover/')}>{copy.allFormats}</a><a href={hrefFor('/image-metadata-remover/')}>{copy.images}</a><a href={hrefFor('/video-metadata-remover/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-remover/')}>{copy.audio}</a><a href={hrefFor('/document-metadata-remover/')}>{copy.documents}</a></div><div><strong>{copy.protect}</strong><a href={hrefFor('/image-privacy-checker/')}>{copy.privacyChecker}</a><a href={hrefFor('/c2pa-viewer/')}>{copy.c2paViewer}</a><a href="/blog/">{copy.blog}</a><a href={hrefFor('/privacy/')}>{copy.privacy}</a><a href={hrefFor('/about/')}>{copy.about}</a></div></div>
+    <div class="footer-links">
+      <div><strong>{copy.inspect}</strong><a href={hrefFor('/')}>{copy.allFiles}</a><a href={hrefFor('/image-metadata-viewer/')}>{copy.images}</a><a href={hrefFor('/document-metadata-viewer/')}>{copy.documents}</a><a href={hrefFor('/video-metadata-viewer/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-viewer/')}>{copy.audio}</a></div>
+      <div><strong>{copy.remove}</strong><a href={hrefFor('/metadata-remover/')}>{copy.allFormats}</a><a href={hrefFor('/image-metadata-remover/')}>{copy.images}</a><a href={hrefFor('/video-metadata-remover/')}>{copy.videos}</a><a href={hrefFor('/audio-metadata-remover/')}>{copy.audio}</a><a href={hrefFor('/document-metadata-remover/')}>{copy.documents}</a></div>
+      <div><strong>{copy.protect}</strong><a href={hrefFor('/image-privacy-checker/')}>{copy.privacyChecker}</a><a href={hrefFor('/c2pa-viewer/')}>{copy.c2paViewer}</a><a href="/blog/">{copy.blog}</a></div>
+      <div><strong>{copy.trust}</strong><a href={hrefFor('/about/')}>{copy.about}</a><a href={hrefFor('/contact/')}>{copy.contact}</a><a href={hrefFor('/privacy/')}>{copy.privacy}</a><a href={hrefFor('/terms/')}>{copy.terms}</a></div>
+    </div>
   </div>
   <div class="footer-floor"><span>{copy.footerFloor}</span><span>© {new Date().getFullYear()} ViewExif</span></div>
 </footer>

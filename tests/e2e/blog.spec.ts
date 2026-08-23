@@ -138,8 +138,12 @@ test('mobile navigation exposes the current Blog route', async ({ page }) => {
 test('article renders the byline, concise contents, practical take, FAQ, and tool links', async ({ page }) => {
   await page.goto(ARTICLE_PATH);
   await expect(page.getByRole('heading', { level: 1, name: ARTICLE_TITLE })).toBeVisible();
-  await expect(page.getByText('ViewExif Editorial Team', { exact: true })).toBeVisible();
-  await expect(page.getByText('ViewExif Product Engineering', { exact: true })).toBeVisible();
+  await expect(page.locator('.blog-byline__person')).toHaveCount(1);
+  await expect(page.locator('.blog-byline__person small')).toHaveText('Written by');
+  await expect(page.locator('.blog-byline__person strong')).toHaveText('ViewExif');
+  await expect(page.getByText('Technical review', { exact: true })).toHaveCount(0);
+  await expect(page.locator('meta[name="author"]')).toHaveAttribute('content', 'ViewExif');
+  await expect(page.locator('meta[property="article:author"]')).toHaveAttribute('content', 'ViewExif');
   await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-09/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /hand using a smartphone/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -172,7 +176,13 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   const breadcrumb = schemas.find((schema) => schema['@type'] === 'BreadcrumbList');
   expect(posting.headline).toBe(ARTICLE_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author).toEqual({
+    '@type': 'Organization',
+    name: 'ViewExif',
+    url: 'https://www.viewexif.com/about/',
+  });
+  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting).not.toHaveProperty('reviewedBy');
   expect(faq.mainEntity).toHaveLength(5);
   expect(breadcrumb.itemListElement).toHaveLength(3);
   const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
@@ -540,7 +550,7 @@ test('EXIF pillar exposes canonical, article metadata, and matching FAQ schema',
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(EXIF_DATA_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('EXIF data');
   expect(posting.keywords).toContain('photo metadata');
@@ -594,7 +604,7 @@ test('iPhone EXIF guide exposes canonical, article metadata, and matching FAQ sc
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(IPHONE_EXIF_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('iPhone EXIF');
   expect(posting.keywords).toContain('iPhone photo metadata');
@@ -649,7 +659,7 @@ test('photo location guide exposes canonical, article metadata, and matching FAQ
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(PHOTO_LOCATION_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('how to find where a photo was taken');
   expect(posting.keywords).toContain('photo GPS metadata');
@@ -701,7 +711,7 @@ test('EXIF vs metadata guide exposes canonical, article metadata, and matching F
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(EXIF_VS_METADATA_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('EXIF vs Metadata');
   expect(posting.keywords).toContain('EXIF metadata');
@@ -752,7 +762,7 @@ test('PDF metadata guide exposes canonical, article metadata, and matching FAQ s
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(PDF_METADATA_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('How to View PDF Metadata');
   expect(posting.keywords).toContain('PDF metadata');
@@ -804,7 +814,7 @@ test('photo metadata removal guide exposes canonical, article metadata, and matc
   const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   expect(posting.headline).toBe(PHOTO_METADATA_REMOVAL_TITLE);
-  expect(posting.author.name).toBe('ViewExif Editorial Team');
+  expect(posting.author.name).toBe('ViewExif');
   expect(posting.publisher.name).toBe('ViewExif');
   expect(posting.keywords).toContain('How to remove metadata from a photo');
   expect(posting.keywords).toContain('remove photo metadata');

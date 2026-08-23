@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-18
 updatedAt: 2026-08-18
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/what-is-exif-data.webp"
 coverAlt: "A photographer holding an SD card beside a camera and laptop before inspecting photo EXIF data"
 practicalTake:

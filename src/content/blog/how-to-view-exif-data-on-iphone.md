@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-19
 updatedAt: 2026-08-19
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/how-to-view-exif-data-on-iphone.webp"
 coverAlt: "A person holding a smartphone and browsing a gallery of photos before checking the images for EXIF data"
 practicalTake:

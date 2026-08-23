@@ -11,8 +11,7 @@ tags:
 publishedAt: 2026-08-12
 updatedAt: 2026-08-12
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/does-discord-remove-exif-data.webp"
 coverAlt: "Person holding a smartphone beside a computer while using a chat app"
 practicalTake:

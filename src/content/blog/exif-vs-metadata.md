@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-21
 updatedAt: 2026-08-21
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/exif-vs-metadata.webp"
 coverAlt: "A digital camera beside a laptop in a photographer's workspace, representing EXIF and other photo metadata"
 practicalTake:

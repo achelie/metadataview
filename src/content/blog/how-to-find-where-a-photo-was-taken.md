@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-20
 updatedAt: 2026-08-20
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/how-to-find-where-a-photo-was-taken.webp"
 coverAlt: "A camera resting on a colorful world map to illustrate finding a photo location from embedded GPS metadata"
 practicalTake:

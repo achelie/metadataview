@@ -11,8 +11,7 @@ tags:
 publishedAt: 2026-08-15
 updatedAt: 2026-08-15
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/does-gmail-remove-exif-data.webp"
 coverAlt: "A black laptop and smartphone on a bright white desk prepared for sending an email attachment"
 practicalTake:

@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-22
 updatedAt: 2026-08-22
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/how-to-view-pdf-metadata.webp"
 coverAlt: "Glasses resting on printed documents beside a laptop while checking PDF metadata and file properties"
 practicalTake:

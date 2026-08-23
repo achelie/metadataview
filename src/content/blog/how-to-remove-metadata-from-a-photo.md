@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-23
 updatedAt: 2026-08-23
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/how-to-remove-metadata-from-a-photo.webp"
 coverAlt: "Photographer inserting an SD card into a laptop before removing metadata from a photo"
 practicalTake:

@@ -3,11 +3,12 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import ContentPage from '../../components/pages/ContentPage.astro';
 import { getTool, toolSlugs, type ToolKey } from '../../content/tools-i18n';
 
-type PageProps = { kind: 'tool'; key: ToolKey } | { kind: 'content'; key: 'about' | 'privacy' };
+type ContentKey = 'about' | 'privacy' | 'contact' | 'terms';
+type PageProps = { kind: 'tool'; key: ToolKey } | { kind: 'content'; key: ContentKey };
 
 export function getStaticPaths() {
   const toolPaths = Object.entries(toolSlugs).map(([slug, key]) => ({ params: { slug }, props: { kind: 'tool', key } satisfies PageProps }));
-  const contentPaths = ['about', 'privacy'].map((key) => ({ params: { slug: key }, props: { kind: 'content', key } as PageProps }));
+  const contentPaths = (['about', 'privacy', 'contact', 'terms'] satisfies ContentKey[]).map((key) => ({ params: { slug: key }, props: { kind: 'content', key } as PageProps }));
   return [...toolPaths, ...contentPaths];
 }
 

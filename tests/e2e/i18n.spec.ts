@@ -14,7 +14,7 @@ const locales = [
 
 test('German, French and Chinese routes have four-way reciprocal SEO links', async ({ page }) => {
   for (const locale of locales) {
-    for (const path of ['/', ...toolPaths, '/about/', '/privacy/']) {
+    for (const path of ['/', ...toolPaths, '/about/', '/privacy/', '/contact/', '/terms/']) {
       const localizedPath = path === '/' ? `${locale.prefix}/` : `${locale.prefix}${path}`;
       const response = await page.goto(localizedPath);
       expect(response?.ok(), localizedPath).toBe(true);
@@ -53,6 +53,20 @@ test('localized links retain their prefix while Blog remains English', async ({ 
   await expect(nav.getByRole('link', { name: 'Datenschutz prüfen' })).toHaveAttribute('href', '/de/image-privacy-checker/');
   await expect(nav.getByRole('link', { name: 'C2PA prüfen' })).toHaveAttribute('href', '/de/c2pa-viewer/');
   await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
+});
+
+test('localized footers expose reciprocal Contact and Terms links', async ({ page }) => {
+  for (const locale of [
+    { prefix: '', contact: 'Contact', terms: 'Terms' },
+    { prefix: '/de', contact: 'Kontakt', terms: 'Nutzungsbedingungen' },
+    { prefix: '/fr', contact: 'Contact', terms: 'Conditions d’utilisation' },
+    { prefix: '/zh-cn', contact: '联系我们', terms: '使用条款' },
+  ] as const) {
+    await page.goto(locale.prefix ? `${locale.prefix}/about/` : '/about/');
+    const footer = page.locator('footer');
+    await expect(footer.getByRole('link', { name: locale.contact, exact: true })).toHaveAttribute('href', `${locale.prefix}/contact/`);
+    await expect(footer.getByRole('link', { name: locale.terms, exact: true })).toHaveAttribute('href', `${locale.prefix}/terms/`);
+  }
 });
 
 test('French navigation retains its prefix while Blog remains English', async ({ page }) => {

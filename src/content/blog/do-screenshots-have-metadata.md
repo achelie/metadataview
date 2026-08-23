@@ -11,8 +11,7 @@ tags:
 publishedAt: 2026-08-09
 updatedAt: 2026-08-09
 featured: true
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/do-screenshots-have-metadata.webp"
 coverAlt: "A hand using a smartphone on a wooden desk with a sharing menu visible on the screen"
 practicalTake:
