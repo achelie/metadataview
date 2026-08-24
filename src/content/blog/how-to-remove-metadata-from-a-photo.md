@@ -32,7 +32,7 @@ faqs:
     answer: "Open the exact cleaned file in a metadata viewer or privacy checker and search for GPS, author, owner, serial number, comments, software, and preview fields."
 related:
   - how-to-remove-gps-data-from-photos-before-sharing
-  - what-is-exif-data
+  - remove-metadata-from-mp4
   - do-screenshots-have-metadata
 ---
 
