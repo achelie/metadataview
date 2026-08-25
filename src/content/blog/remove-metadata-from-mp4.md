@@ -32,8 +32,8 @@ faqs:
     answer: "No. Renaming changes the filename only. Embedded QuickTime, XMP, GPS, date, device, and software fields remain in the file."
 related:
   - how-to-remove-metadata-from-a-photo
+  - remove-metadata-from-mp3
   - does-discord-remove-exif-data
-  - does-instagram-remove-exif-data
 ---
 
 To remove metadata from MP4, make a cleaned copy that rewrites the container without re-encoding the video, then inspect that output before sharing it. This can remove GPS, device details, dates, titles, comments, and editing software while keeping the existing video and audio quality. Do not overwrite your only copy. MP4 metadata can sit in several places, so deleting one visible property is not enough.

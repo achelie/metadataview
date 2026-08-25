@@ -37,6 +37,9 @@ const PHOTO_METADATA_REMOVAL_SEO_TITLE = 'How to Remove Metadata From a Photo Be
 const MP4_METADATA_REMOVAL_PATH = '/blog/remove-metadata-from-mp4/';
 const MP4_METADATA_REMOVAL_TITLE = 'How to Remove Metadata From MP4';
 const MP4_METADATA_REMOVAL_SEO_TITLE = 'How to Remove Metadata From MP4 Without Re-encoding | ViewExif';
+const MP3_METADATA_REMOVAL_PATH = '/blog/remove-metadata-from-mp3/';
+const MP3_METADATA_REMOVAL_TITLE = 'How to Remove Metadata From MP3';
+const MP3_METADATA_REMOVAL_SEO_TITLE = 'How to Remove Metadata From MP3 Without Losing Audio Quality | ViewExif';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -62,13 +65,14 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: GMAIL_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: MP3_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: MP3_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', MP3_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: MP4_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: MP4_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', MP4_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: PHOTO_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: PHOTO_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', PHOTO_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveCount(1);
-  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveAttribute('href', IPHONE_EXIF_PATH);
+  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveAttribute('href', PHOTO_LOCATION_PATH);
   await expect(page.getByRole('link', { name: EXIF_VS_METADATA_TITLE, exact: true })).toHaveCount(1);
@@ -77,7 +81,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: PDF_METADATA_TITLE, exact: true })).toHaveAttribute('href', PDF_METADATA_PATH);
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
   await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(6);
-  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /remove-metadata-from-mp4/);
+  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /remove-metadata-from-mp3/);
   await expect(page.getByText('Page 1 of 3', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-pagination')).toBeVisible();
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('1');
@@ -90,7 +94,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
-  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE, PHOTO_LOCATION_TITLE, IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([MP3_METADATA_REMOVAL_TITLE, MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE, PHOTO_LOCATION_TITLE, IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
 });
 
@@ -100,29 +104,31 @@ test('regular guides continue on the second blog page without duplication', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Latest metadata guides.' })).toBeVisible();
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 2 of 3.');
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
+  await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveAttribute('href', IPHONE_EXIF_PATH);
   await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveAttribute('href', EXIF_DATA_PATH);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', GPS_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: GMAIL_TITLE, exact: true })).toHaveAttribute('href', GMAIL_PATH);
   await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveAttribute('href', REDDIT_PATH);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
-  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(0);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE]);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE]);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('2');
   await expect(page.locator('.blog-pagination a[href="/blog/"]')).toHaveText('1');
   await expect(page.locator('.blog-pagination a[href="/blog/page/3/"]')).toHaveText('3');
   await assertNoHorizontalOverflow(page);
 });
 
-test('the final two regular guides continue on the third blog page', async ({ page }) => {
+test('the final three regular guides continue on the third blog page', async ({ page }) => {
   await page.goto('/blog/page/3/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/blog/page/3/');
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 3 of 3.');
-  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(2);
+  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(3);
+  await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
   await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([INSTAGRAM_TITLE, WHATSAPP_TITLE]);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE]);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('3');
   await expect(page.locator('.blog-pagination a[href="/blog/"]')).toHaveText('1');
   await expect(page.locator('.blog-pagination a[href="/blog/page/2/"]')).toHaveText('2');
@@ -878,6 +884,56 @@ test('MP4 metadata removal guide exposes canonical, article metadata, and matchi
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
+test('MP3 metadata removal guide explains ID3 cleanup without re-encoding audio', async ({ page }) => {
+  await page.goto(MP3_METADATA_REMOVAL_PATH);
+  await expect(page).toHaveTitle(MP3_METADATA_REMOVAL_SEO_TITLE);
+  await expect(page.getByRole('heading', { level: 1, name: MP3_METADATA_REMOVAL_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-08-25/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[4-7] min read/);
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /headphones.*music player.*removing metadata.*MP3/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(9);
+  await expect(page.locator('.blog-prose > p').first()).toContainText('To remove metadata from MP3, create a cleaned copy');
+  await expect(page.getByRole('heading', { level: 2, name: 'Can you remove MP3 metadata without losing audio quality?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Should you remove album art and library tags?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Why can MP3 metadata remain after cleanup?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Does removing MP3 metadata make audio anonymous?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(8);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(3);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Audio Metadata Remover', exact: true }).first()).toHaveAttribute('href', '/audio-metadata-remover/');
+  await expect(page.getByRole('link', { name: 'Audio Metadata Viewer', exact: true }).first()).toHaveAttribute('href', '/audio-metadata-viewer/');
+  await expect(page.getByRole('link', { name: 'All Formats Metadata Remover', exact: true })).toHaveAttribute('href', '/metadata-remover/');
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(8);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 10 && answer.trim().length < 180)).toBe(true);
+});
+
+test('MP3 metadata removal guide exposes canonical, article metadata, and matching FAQ schema', async ({ page }) => {
+  await page.goto(MP3_METADATA_REMOVAL_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${MP3_METADATA_REMOVAL_PATH}`);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Remove metadata from MP3.*without re-encoding/i);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', MP3_METADATA_REMOVAL_SEO_TITLE);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(MP3_METADATA_REMOVAL_TITLE);
+  expect(posting.author.name).toBe('ViewExif');
+  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting.keywords).toContain('remove metadata from MP3');
+  expect(posting.keywords).toContain('remove ID3 tags');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
 const relatedGuides = [
   { path: ARTICLE_PATH, expected: [EXIF_VS_METADATA_PATH, WHATSAPP_PATH, INSTAGRAM_PATH] },
   { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, TELEGRAM_PATH, DISCORD_PATH] },
@@ -893,7 +949,8 @@ const relatedGuides = [
   { path: EXIF_VS_METADATA_PATH, expected: [PDF_METADATA_PATH, EXIF_DATA_PATH, ARTICLE_PATH] },
   { path: PDF_METADATA_PATH, expected: [EXIF_VS_METADATA_PATH, GMAIL_PATH, EXIF_DATA_PATH] },
   { path: PHOTO_METADATA_REMOVAL_PATH, expected: [GPS_REMOVAL_PATH, MP4_METADATA_REMOVAL_PATH, ARTICLE_PATH] },
-  { path: MP4_METADATA_REMOVAL_PATH, expected: [PHOTO_METADATA_REMOVAL_PATH, DISCORD_PATH, INSTAGRAM_PATH] },
+  { path: MP4_METADATA_REMOVAL_PATH, expected: [PHOTO_METADATA_REMOVAL_PATH, MP3_METADATA_REMOVAL_PATH, DISCORD_PATH] },
+  { path: MP3_METADATA_REMOVAL_PATH, expected: [MP4_METADATA_REMOVAL_PATH, PHOTO_METADATA_REMOVAL_PATH, GMAIL_PATH] },
 ];
 
 for (const guide of relatedGuides) {
@@ -922,6 +979,7 @@ for (const article of [
   { path: PDF_METADATA_PATH, title: PDF_METADATA_TITLE, label: 'PDF metadata' },
   { path: PHOTO_METADATA_REMOVAL_PATH, title: PHOTO_METADATA_REMOVAL_TITLE, label: 'photo metadata removal' },
   { path: MP4_METADATA_REMOVAL_PATH, title: MP4_METADATA_REMOVAL_TITLE, label: 'MP4 metadata removal' },
+  { path: MP3_METADATA_REMOVAL_PATH, title: MP3_METADATA_REMOVAL_TITLE, label: 'MP3 metadata removal' },
 ]) {
   for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
     test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {
