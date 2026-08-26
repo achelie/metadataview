@@ -32,8 +32,8 @@ faqs:
     answer: "Create a separate cleaned copy with a PDF metadata remover, then scan that copy again. A full PDF rewrite helps prevent old top-level metadata from remaining recoverable."
 related:
   - exif-vs-metadata
+  - remove-metadata-from-pdf
   - does-gmail-remove-exif-data
-  - what-is-exif-data
 ---
 
 To view PDF metadata, open the actual PDF in a metadata viewer and check fields such as Title, Author, Creator, Producer, CreationDate, ModDate, keywords, page count, and XMP. ViewExif reads the file in your browser, so the document stays on your device. The report can tell you which app wrote the PDF and what dates it recorded, but those values can be edited or inherited from an old template.
