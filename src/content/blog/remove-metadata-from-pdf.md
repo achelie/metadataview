@@ -32,7 +32,7 @@ faqs:
     answer: "Yes. A cryptographic PDF signature binds to the signed file bytes. Rewriting metadata changes those bytes and invalidates the existing signature."
 related:
   - how-to-view-pdf-metadata
-  - remove-metadata-from-mp4
+  - remove-metadata-from-word-document
   - does-gmail-remove-exif-data
 ---
 
