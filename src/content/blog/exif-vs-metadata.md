@@ -31,7 +31,7 @@ faqs:
   - question: "Does removing EXIF remove all metadata?"
     answer: "Not always. XMP, IPTC, comments, color profiles, and container fields may remain. Scan the cleaned copy instead of checking only whether its EXIF block disappeared."
 related:
-  - how-to-view-pdf-metadata
+  - what-is-xmp-metadata
   - what-is-exif-data
   - do-screenshots-have-metadata
 ---
