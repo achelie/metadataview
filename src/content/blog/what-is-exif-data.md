@@ -12,8 +12,7 @@ tags:
 publishedAt: 2026-08-18
 updatedAt: 2026-08-18
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/what-is-exif-data.webp"
 coverAlt: "A photographer holding an SD card beside a camera and laptop before inspecting photo EXIF data"
 practicalTake:
@@ -32,9 +31,9 @@ faqs:
   - question: "How can I view EXIF data?"
     answer: "Open the original photo in a metadata viewer, then look for EXIF camera, exposure, date, orientation, software, and GPS fields in the report."
 related:
-  - do-screenshots-have-metadata
-  - how-to-remove-gps-data-from-photos-before-sharing
-  - does-gmail-remove-exif-data
+  - how-to-remove-metadata-from-a-photo
+  - exif-vs-metadata
+  - how-to-find-where-a-photo-was-taken
 ---
 
 EXIF data is information stored inside many digital photo files. It can record the camera model, lens, ISO, aperture, shutter speed, capture time, orientation, editing software, and sometimes GPS coordinates. You do not see these details in the pixels, but a photo app or metadata viewer can read them.

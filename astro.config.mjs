@@ -7,7 +7,7 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   i18n: {
-    locales: ['en', { path: 'de', codes: ['de'] }, { path: 'zh-cn', codes: ['zh-CN'] }],
+    locales: ['en', { path: 'de', codes: ['de'] }, { path: 'fr', codes: ['fr'] }, { path: 'zh-cn', codes: ['zh-CN'] }],
     defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },

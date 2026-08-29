@@ -30,6 +30,7 @@ const isViewItemCurrent = (item: (typeof viewItems)[number]) => item.href === '/
 const languageOptions: Array<{ locale: Locale; label: string; short: string }> = [
   { locale: 'en', label: 'English', short: 'EN' },
   { locale: 'de', label: 'Deutsch', short: 'DE' },
+  { locale: 'fr', label: 'Français', short: 'FR' },
   { locale: 'zh-CN', label: '中文', short: '中文' },
 ];
 const currentLanguage = languageOptions.find((item) => item.locale === locale) ?? languageOptions[0]!;

@@ -42,6 +42,11 @@ const imageRelated = [
   { href: '/image-metadata-remover/', title: 'Image Metadata Remover', note: 'Create a cleaner image copy, then rescan it to confirm what changed.' },
   { href: '/c2pa-viewer/', title: 'C2PA Viewer', note: 'Inspect signed Content Credentials separately from editable image metadata.' },
 ];
+const imageRemoverRelated = [
+  { href: '/image-metadata-viewer/', title: 'Image Metadata Viewer', note: 'Inspect EXIF, GPS, camera, and other photo metadata before creating a clean copy.' },
+  { href: '/image-privacy-checker/', title: 'Image Privacy Checker', note: 'See which location, device, identity, and editing clues deserve attention.' },
+  { href: '/metadata-remover/', title: 'Metadata Remover', note: 'Clean a wider mix of image, video, audio, and document metadata.' },
+];
 const videoRelated = [
   { href: '/video-metadata-remover/', title: 'Video Metadata Remover', note: 'Create a clean copy after reviewing tracks, dates, GPS, and container tags.' },
   { href: '/metadata-viewer/', title: 'Metadata Viewer', note: 'Inspect a broader mix of image, document, audio, and video metadata.' },
@@ -177,7 +182,17 @@ function removalGuide(kind: string, formats: string, detail: string): FormatGuid
   };
 }
 
-const imageRemovalGuide = removalGuide('image', 'PNG, JPEG, WebP, HEIC, TIFF, and GIF', 'Photos can carry GPS, owner names, serial numbers, edit history, and stale previews long after the pixels look harmless.');
+const imageRemovalGuide: FormatGuide = {
+  ...removalGuide('image', 'PNG, JPEG, WebP, HEIC, TIFF, and GIF', 'Photos can carry GPS, owner names, serial numbers, edit history, and stale previews long after the pixels look harmless.'),
+  processTitle: 'How to remove metadata from an image',
+  processDescription: 'Choose an image, review its detected metadata, remove supported writable fields locally, then let ViewExif reopen and verify the generated copy before download.',
+  steps: [
+    { title: 'Choose an image', description: 'Select one supported JPEG, PNG, WebP, HEIC, TIFF, or GIF. The source stays in this browser tab.' },
+    { title: 'Review detected metadata', description: 'Check the original report for EXIF, GPS, camera, lens, timestamps, XMP, IPTC, comments, and software fields.' },
+    { title: 'Remove supported metadata', description: 'The image cleanup engine removes writable descriptive fields while preserving pixels, dimensions, color, orientation, and animation as required.' },
+    { title: 'Verify and download', description: 'ViewExif reopens and rescans the output, then separates removed, preserved, and residual metadata before download.' },
+  ],
+};
 const videoRemovalGuide: FormatGuide = {
   ...removalGuide('video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, and 3G2', 'Video containers can name the authoring app, device, owner, location, and edit dates without showing any of it in playback.'),
   processTitle: 'How to remove metadata from a video',
@@ -341,9 +356,9 @@ export const tools: Record<string, ToolConfig> = {
     ], related: removerRelated,
   },
   imageRemover: makeRemovalTool({
-    scope: 'image', title: 'Image Metadata Remover', metaTitle: 'Image Metadata Remover — Clean PNG, JPEG, WebP, HEIC, TIFF and GIF', path: '/image-metadata-remover/', eyebrow: 'Image tag scrubber', icon: 'eraser', guide: imageRemovalGuide,
-    description: 'Remove writable EXIF, GPS, XMP, IPTC, MakerNote, comments, and hidden previews from PNG, JPEG, WebP, HEIC, TIFF, and GIF images without re-encoding pixels.',
-    shortDescription: 'Clean six image formats while retaining ICC color, orientation, dimensions, and animation.',
+    scope: 'image', title: 'Image Metadata Remover', metaTitle: 'Image Metadata Remover – Remove EXIF, GPS & Photo Metadata | ViewExif', path: '/image-metadata-remover/', eyebrow: 'Local image processing · no upload', heroProof: 'No re-encoding · Preserve image quality · Inspect → Remove → Verify', icon: 'eraser', guide: imageRemovalGuide,
+    description: 'Remove EXIF, GPS, camera information, XMP, IPTC, timestamps and other hidden photo metadata directly in your browser without uploading your image.',
+    shortDescription: 'Remove EXIF, GPS, camera information, XMP, IPTC, timestamps and other hidden photo metadata directly in your browser without uploading your image.',
     formats: 'PNG · JPG / JPEG · WebP · HEIC · TIFF · GIF', accept: '.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,image/png,image/jpeg,image/webp,image/heic,image/heif,image/tiff,image/gif', allowedTypes: ['png','jpeg','webp','heic','tiff','gif'],
     highlights: ['Removes writable image identity and location fields.', 'Keeps compressed pixels and animation intact.', 'Retains color and orientation needed for correct display.', 'Runs the same full embedded scan before and after.'],
     limitations: ['TIFF keeps structural IFD fields required to render pixels.', 'ICC color and Orientation are intentionally preserved.', 'Removing metadata cannot hide visible faces, text, plates, screens, or landmarks.'],
@@ -353,7 +368,12 @@ export const tools: Record<string, ToolConfig> = {
       { question: 'Why are ICC and Orientation preserved?', answer: 'Removing them can change color or rotate the image incorrectly. The report labels them as required technical data rather than claiming they were missed.' },
       { question: 'Does GIF animation survive?', answer: 'Yes. Animation frames, timing, transparency, and looping data are retained. Comments and writable descriptive extensions are removed.' },
       { question: 'Does zero residual metadata mean the picture is anonymous?', answer: 'No. Visible pixels and the output filename can still expose people, text, places, screens, reflections, or account information.' },
-    ],
+      { question: 'How do I remove metadata from an image?', answer: 'Choose an image, review the detected report, create a clean copy, then wait while ViewExif reopens and rescans it before download.' },
+      { question: 'Can I remove EXIF and GPS from a photo?', answer: 'Yes. Writable EXIF and GPS fields are targeted, along with camera, lens, owner, timestamp, XMP, IPTC, comment, and software fields when the format allows it.' },
+      { question: 'Does removing metadata reduce image quality?', answer: 'No. This remover edits supported metadata blocks without re-encoding the image pixels. Dimensions, color, orientation, and animation are checked again before download.' },
+      { question: 'Can all photo metadata be removed?', answer: 'Not always. Required technical fields such as ICC color, orientation, dimensions, or container structure may remain and are listed as preserved or residual.' },
+      { question: 'Is my image uploaded?', answer: 'No. The original, cleanup, and verification scan stay inside this browser tab. ViewExif creates a new local copy and leaves the source unchanged.' },
+    ], related: imageRemoverRelated,
   }),
   videoRemover: makeRemovalTool({
     scope: 'video', title: 'Video Metadata Remover', metaTitle: 'Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif', path: '/video-metadata-remover/', eyebrow: 'Local processing · no upload', heroProof: 'No re-encoding · Preserve video quality · Inspect → Remove → Verify', icon: 'film', guide: videoRemovalGuide, related: videoRemoverRelated,

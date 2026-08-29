@@ -1,56 +1,470 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { localizePath, type Locale } from '../../i18n/core';
+import { POLICY_EFFECTIVE_DATE, SITE_BRAND, SITE_CONTACT_EMAIL } from '../../config/site';
 
-interface Props { locale?: Locale; kind: 'about' | 'privacy' }
+type ContentPageKind = 'about' | 'privacy' | 'contact' | 'terms';
+interface Props { locale?: Locale; kind: ContentPageKind }
+interface ContentLink { label: string; href: string }
+interface LinkedParagraph { text: string; links?: ContentLink[] }
+interface LegalSection { id: string; label: string; title: string; paragraphs: LinkedParagraph[] }
+interface LegalCopy {
+  title: string; description: string; eyebrow: string; heading: string; intro: string;
+  navLabel: string; effectiveLabel: string; operatorNote: string; sections: LegalSection[];
+}
+
 const { locale = 'en', kind } = Astro.props;
 const path = localizePath(`/${kind}/`, locale);
+const contactHref = `mailto:${SITE_CONTACT_EMAIL}`;
+const GOOGLE_PARTNER_SITES = 'https://policies.google.com/technologies/partner-sites';
+const GOOGLE_AD_SETTINGS = 'https://adssettings.google.com/';
+const AHREFS_PRIVACY = 'https://ahrefs.com/privacy-policy';
+const CLOUDFLARE_PRIVACY = 'https://www.cloudflare.com/privacypolicy/';
+const p = (text: string, links: ContentLink[] = []): LinkedParagraph => ({ text, links });
+const s = (id: string, label: string, title: string, ...paragraphs: LinkedParagraph[]): LegalSection => ({ id, label, title, paragraphs });
+const link = (label: string, href: string): ContentLink => ({ label, href });
 
 const aboutCopy = {
   en: {
-    title: 'About ViewExif — A Local Metadata Privacy Toolkit', description: 'Why ViewExif exists, what its browser-only tools do, and where this open MVP draws the line.', eyebrow: 'About the toolkit', heading: 'Files talk. This site translates.', intro: 'A photo can carry GPS. A document can name its author. An audio file can reveal credits and encoding history. ViewExif makes those details visible before you share the file.',
-    principles: [['Local first', 'If a modern browser can do the job safely, the file should not take a detour through somebody else’s server.'], ['Explain the verdict', 'A privacy score without reasons is just a mood. Every risk points to fields and a next action.'], ['Admit the edge', 'Metadata is editable. Credentials have scope. Pixels can leak details. The copy says that out loud.']],
-    toolkit: 'THE TOOLKIT', toolsTitle: 'Four complete paths, not four mockups', toolsText: 'The universal viewer handles 28 file formats across images, documents, video, and audio. Image privacy rules score hidden exposure. Five matching remover routes create and verify content-preserving copies. The C2PA page dynamically loads the official browser verifier.', inspect: 'Inspect a file', clean: 'Clean a copy',
+    title: 'About ViewExif — Who Builds and Checks This Toolkit',
+    description: 'Who operates ViewExif, how its browser-only metadata tools are built, and who is responsible for the guides and technical checks.',
+    eyebrow: 'Who is behind the toolkit', heading: 'One operator. No mystery company.',
+    intro: `${SITE_BRAND} is a brand independently operated by an individual. The same operator builds and maintains the tools, writes and updates the guides, and performs the technical checks described on this site.`,
+    principles: [
+      ['Local first', 'If a modern browser can do the job safely, your file should not take a detour through somebody else’s server.'],
+      ['Show the evidence', 'A privacy score without reasons is just a mood. Results point to the fields found and the next practical step.'],
+      ['Say where it stops', 'Metadata can be edited. Credentials have a limited scope. Visible pixels can still reveal private details. We say that plainly.'],
+    ],
+    operatorLabel: 'RESPONSIBILITY, IN PLAIN SIGHT', operatorTitle: 'Built, written, and checked by the independent operator',
+    operatorText: `${SITE_BRAND} does not claim to be a company, public institution, camera maker, social platform, Google product, Adobe product, or C2PA authority. Product decisions, editorial updates, and technical verification remain the responsibility of its individual operator.`,
+    toolkit: 'THE TOOLKIT', toolsTitle: 'Working paths, not decorative mockups',
+    toolsText: 'The viewer, privacy checker, metadata removers, and C2PA verifier run as real browser tools. Guides explain common sharing risks and are reviewed against the behavior of the current implementation.',
+    inspect: 'Inspect a file', clean: 'Clean a copy', contact: 'Contact the operator', privacy: 'Read the privacy policy', terms: 'Read the terms',
   },
   de: {
-    title: 'Über ViewExif – Lokale Werkzeuge für Metadaten und Datenschutz', description: 'Warum ViewExif existiert, was die reinen Browser-Tools leisten und wo dieses offene Produkt bewusst Grenzen zieht.', eyebrow: 'Über den Werkzeugkasten', heading: 'Dateien reden. Diese Website übersetzt.', intro: 'Ein Foto kann GPS-Daten tragen. Ein Dokument kann seinen Autor nennen. Eine Audiodatei verrät Credits und Codierungsverlauf. ViewExif legt diese Details offen, bevor du die Datei teilst.',
-    principles: [['Lokal zuerst', 'Was ein moderner Browser sicher erledigen kann, muss keinen Umweg über fremde Server nehmen.'], ['Das Ergebnis erklären', 'Ein Datenschutzwert ohne Gründe ist nur Stimmung. Jedes Risiko verweist auf konkrete Felder und einen nächsten Schritt.'], ['Grenzen offen benennen', 'Metadaten sind editierbar. Credentials haben einen begrenzten Aussagebereich. Auch Pixel können Privates verraten. Das sagen wir deutlich.']],
-    toolkit: 'DER WERKZEUGKASTEN', toolsTitle: 'Vier vollständige Wege, keine vier Attrappen', toolsText: 'Der universelle Viewer verarbeitet 28 Bild-, Dokument-, Video- und Audioformate. Datenschutzregeln bewerten versteckte Risiken. Fünf passende Entferner erzeugen inhaltstreue Kopien und prüfen sie erneut. Die C2PA-Seite lädt den offiziellen Browser-Verifier nur bei Bedarf.', inspect: 'Datei prüfen', clean: 'Kopie bereinigen',
+    title: 'Über ViewExif – Wer diesen Werkzeugkasten baut und prüft',
+    description: 'Wer ViewExif betreibt, wie die lokalen Metadaten-Werkzeuge entstehen und wer für Anleitungen und technische Prüfungen verantwortlich ist.',
+    eyebrow: 'Wer hinter den Werkzeugen steht', heading: 'Eine Person. Keine erfundene Firma.',
+    intro: `${SITE_BRAND} ist eine Marke, die unabhängig von einer Einzelperson betrieben wird. Dieselbe Person entwickelt und pflegt die Werkzeuge, schreibt und aktualisiert die Anleitungen und führt die auf dieser Website beschriebenen technischen Prüfungen durch.`,
+    principles: [
+      ['Lokal zuerst', 'Was ein moderner Browser sicher erledigen kann, muss keinen Umweg über fremde Server nehmen.'],
+      ['Belege statt Bauchgefühl', 'Ein Datenschutzwert ohne Gründe ist nur Stimmung. Ergebnisse zeigen die gefundenen Felder und einen praktischen nächsten Schritt.'],
+      ['Grenzen offen benennen', 'Metadaten sind editierbar. Credentials haben einen begrenzten Aussagebereich. Auch sichtbare Pixel können Privates verraten. Das sagen wir deutlich.'],
+    ],
+    operatorLabel: 'VERANTWORTUNG, OHNE VERSTECKSPIEL', operatorTitle: 'Vom unabhängigen Betreiber gebaut, geschrieben und geprüft',
+    operatorText: `${SITE_BRAND} behauptet nicht, ein Unternehmen, eine öffentliche Stelle, ein Kamerahersteller, eine soziale Plattform, ein Google- oder Adobe-Produkt oder eine C2PA-Autorität zu sein. Produktentscheidungen, redaktionelle Aktualisierungen und technische Prüfungen verantwortet der individuelle Betreiber.`,
+    toolkit: 'DER WERKZEUGKASTEN', toolsTitle: 'Funktionierende Wege statt hübscher Attrappen',
+    toolsText: 'Viewer, Datenschutz-Check, Metadaten-Entferner und C2PA-Verifier sind echte Browser-Werkzeuge. Die Anleitungen erklären typische Risiken beim Teilen und werden mit dem Verhalten der aktuellen Version abgeglichen.',
+    inspect: 'Datei prüfen', clean: 'Kopie bereinigen', contact: 'Betreiber kontaktieren', privacy: 'Datenschutz lesen', terms: 'Bedingungen lesen',
+  },
+  fr: {
+    title: 'À propos de ViewExif — Qui construit et vérifie ces outils',
+    description: 'Qui exploite ViewExif, comment ses outils locaux sont construits et qui répond des guides et des vérifications techniques.',
+    eyebrow: 'Qui se trouve derrière les outils', heading: 'Une personne. Pas de société inventée.',
+    intro: `${SITE_BRAND} est une marque exploitée de façon indépendante par une personne. Cette même personne développe et entretient les outils, rédige et met à jour les guides, puis effectue les vérifications techniques décrites sur ce site.`,
+    principles: [
+      ['Local d’abord', 'Si un navigateur moderne peut faire le travail en sécurité, votre fichier n’a aucune raison de passer par le serveur de quelqu’un d’autre.'],
+      ['Montrer les preuves', 'Un score de confidentialité sans explication n’est qu’une impression. Les résultats indiquent les champs trouvés et la prochaine action utile.'],
+      ['Dire franchement où ça s’arrête', 'Les métadonnées sont modifiables. Les credentials ont une portée limitée. Les pixels visibles peuvent encore révéler des détails privés. Nous le disons clairement.'],
+    ],
+    operatorLabel: 'UNE RESPONSABILITÉ BIEN VISIBLE', operatorTitle: 'Conçu, rédigé et vérifié par l’exploitant indépendant',
+    operatorText: `${SITE_BRAND} ne prétend pas être une société, un organisme public, un fabricant d’appareils, un réseau social, un produit Google ou Adobe, ni une autorité C2PA. Les décisions produit, les mises à jour éditoriales et les vérifications techniques relèvent de son exploitant individuel.`,
+    toolkit: 'LA BOÎTE À OUTILS', toolsTitle: 'Des parcours qui fonctionnent, pas des maquettes décoratives',
+    toolsText: 'La visionneuse, l’analyse de confidentialité, les outils de suppression et le vérificateur C2PA fonctionnent réellement dans le navigateur. Les guides expliquent les risques courants du partage et sont vérifiés par rapport au comportement de la version actuelle.',
+    inspect: 'Inspecter un fichier', clean: 'Nettoyer une copie', contact: 'Contacter l’exploitant', privacy: 'Lire la confidentialité', terms: 'Lire les conditions',
   },
   'zh-CN': {
-    title: '关于 ViewExif — 本地元数据隐私工具箱', description: '了解 ViewExif 为什么存在、这些只在浏览器运行的工具能做什么，以及它坦白承认的能力边界。', eyebrow: '关于这套工具', heading: '文件会说话。这里负责翻译。', intro: '照片可能带着 GPS，文档可能写着作者，音频也会留下署名和编码历史。ViewExif 在你分享文件前，把这些藏起来的细节摆到桌面上。',
-    principles: [['本地优先', '现代浏览器能安全完成的事，就没必要让文件绕路去别人家的服务器。'], ['把结论说明白', '不讲原因的隐私分数只是情绪。每项风险都要指向具体字段，再告诉你下一步能做什么。'], ['边界也摆出来', '元数据能改，凭证也有适用范围，画面本身更可能泄密。这里不会装作看不见。']],
-    toolkit: '工具箱', toolsTitle: '四条能走通的完整流程，不是四张效果图', toolsText: '通用查看器支持图片、文档、视频和音频共 28 种格式；图片隐私规则会给隐藏风险打分；五个清理入口会生成副本并再次验证；C2PA 页面则按需加载官方浏览器验证器。', inspect: '检查一个文件', clean: '清理一个副本',
+    title: '关于 ViewExif — 谁在制作和核验这套工具', description: '说明谁在运营 ViewExif、浏览器本地工具如何维护，以及谁对指南和技术核验负责。',
+    eyebrow: '工具背后是谁', heading: '一个独立运营者，没有神秘公司。',
+    intro: `${SITE_BRAND} 是由个人独立运营的品牌。同一位运营者负责开发和维护工具、编写和更新指南，也负责网站所说的技术核验。`,
+    principles: [
+      ['本地优先', '现代浏览器能安全完成的事，就没必要让文件绕路去别人家的服务器。'],
+      ['把证据摆出来', '不讲原因的隐私分数只是情绪。结果会指出发现了哪些字段，再给一个能执行的下一步。'],
+      ['边界也说明白', '元数据能修改，凭证有适用范围，画面本身也可能泄密。这里不会假装看不见。'],
+    ],
+    operatorLabel: '责任写在明面上', operatorTitle: '工具、文章和技术核验都由独立运营者负责',
+    operatorText: `${SITE_BRAND} 不声称自己是公司、公共机构、相机厂商、社交平台，也不隶属于 Google、Adobe 或 C2PA。产品决定、内容更新和技术核验均由个人运营者负责。`,
+    toolkit: '工具箱', toolsTitle: '能真正走通的流程，不是装饰用的效果图',
+    toolsText: '查看器、隐私检查、元数据清理和 C2PA 验证都是能在浏览器里实际运行的工具。指南会解释常见分享风险，并按照当前版本的真实行为做技术核验。',
+    inspect: '检查一个文件', clean: '清理一个副本', contact: '联系运营者', privacy: '查看隐私说明', terms: '查看使用条款',
+  },
+} as const;
+
+const contactCopy = {
+  en: {
+    title: 'Contact ViewExif — Reach the Independent Operator', description: 'Contact the independent operator of ViewExif by email. No contact form, account, or server-side form database is used.',
+    eyebrow: 'A real route to the operator', heading: 'Email, minus the mystery form.',
+    intro: `${SITE_BRAND} is independently operated by an individual. Product, privacy, editorial, and technical questions all reach the same operator.`,
+    emailLabel: 'PUBLIC CONTACT', emailTitle: 'Send an email', emailText: `Use ${SITE_CONTACT_EMAIL} for privacy questions, correction requests, bug reports, rights concerns, or a clear explanation of a surprising result.`, emailButton: `Email ${SITE_CONTACT_EMAIL}`,
+    beforeLabel: 'BEFORE YOU HIT SEND', beforeTitle: 'Give the useful bits. Keep the private bits.',
+    beforeItems: ['Include the page URL and browser version.', 'Describe the file format and the field name, not the private field value.', 'Send a redacted screenshot if the layout matters. Do not attach the original private file.'],
+    noFormTitle: 'Why there is no contact form', noFormText: 'This page does not submit anything to a ViewExif server. Clicking the email link opens your mail app. Your email provider and the receiving mailbox provider will process the message under their own terms.',
+    linksLabel: 'POLICIES AND CONTEXT', linksTitle: 'Check the details before writing', about: 'Who operates ViewExif', privacy: 'How data is handled', terms: 'Rules for using the tools',
+  },
+  de: {
+    title: 'Kontakt zu ViewExif – Den unabhängigen Betreiber erreichen', description: 'Kontaktiere den unabhängigen Betreiber von ViewExif per E-Mail. Kein Formular, kein Konto und keine Formulardatenbank auf dem Server.',
+    eyebrow: 'Ein direkter Weg zum Betreiber', heading: 'E-Mail, ohne rätselhaftes Formular.',
+    intro: `${SITE_BRAND} wird unabhängig von einer Einzelperson betrieben. Produkt-, Datenschutz-, Redaktions- und Technikfragen erreichen dieselbe Person.`,
+    emailLabel: 'ÖFFENTLICHER KONTAKT', emailTitle: 'E-Mail senden', emailText: `Nutze ${SITE_CONTACT_EMAIL} für Datenschutzfragen, Korrekturen, Fehlerberichte, Rechtefragen oder eine klare Beschreibung eines überraschenden Ergebnisses.`, emailButton: `E-Mail an ${SITE_CONTACT_EMAIL}`,
+    beforeLabel: 'VOR DEM ABSENDEN', beforeTitle: 'Sende das Nützliche. Behalte Privates für dich.',
+    beforeItems: ['Nenne Seiten-URL und Browser-Version.', 'Beschreibe Dateiformat und Feldnamen, nicht den privaten Feldwert.', 'Sende bei einem Layoutproblem einen geschwärzten Screenshot. Hänge keine private Originaldatei an.'],
+    noFormTitle: 'Warum es kein Kontaktformular gibt', noFormText: 'Diese Seite sendet nichts an einen ViewExif-Server. Der E-Mail-Link öffnet dein Mailprogramm. Dein Anbieter und der Anbieter des empfangenden Postfachs verarbeiten die Nachricht nach ihren eigenen Bedingungen.',
+    linksLabel: 'REGELN UND HINTERGRUND', linksTitle: 'Lies die Details vor dem Schreiben', about: 'Wer ViewExif betreibt', privacy: 'Wie Daten behandelt werden', terms: 'Regeln für die Werkzeuge',
+  },
+  fr: {
+    title: 'Contacter ViewExif — Joindre l’exploitant indépendant', description: 'Contactez l’exploitant indépendant de ViewExif par e-mail. Aucun formulaire, compte ou base de formulaires côté serveur.',
+    eyebrow: 'Une vraie route vers l’exploitant', heading: 'Un e-mail, sans formulaire mystérieux.',
+    intro: `${SITE_BRAND} est exploité de façon indépendante par une personne. Les questions produit, confidentialité, rédaction et technique arrivent à cette même personne.`,
+    emailLabel: 'CONTACT PUBLIC', emailTitle: 'Envoyer un e-mail', emailText: `Utilisez ${SITE_CONTACT_EMAIL} pour une question de confidentialité, une correction, un bug, un problème de droits ou l’explication claire d’un résultat surprenant.`, emailButton: `Écrire à ${SITE_CONTACT_EMAIL}`,
+    beforeLabel: 'AVANT D’ENVOYER', beforeTitle: 'Donnez l’utile. Gardez le privé.',
+    beforeItems: ['Indiquez l’URL de la page et la version du navigateur.', 'Décrivez le format et le nom du champ, pas sa valeur privée.', 'Envoyez une capture masquée si la mise en page compte. Ne joignez pas le fichier privé original.'],
+    noFormTitle: 'Pourquoi il n’y a aucun formulaire', noFormText: 'Cette page n’envoie rien à un serveur ViewExif. Le lien ouvre votre messagerie. Votre fournisseur et celui de la boîte destinataire traiteront le message selon leurs propres règles.',
+    linksLabel: 'RÈGLES ET CONTEXTE', linksTitle: 'Vérifiez les détails avant d’écrire', about: 'Qui exploite ViewExif', privacy: 'Comment les données sont traitées', terms: 'Règles d’utilisation des outils',
+  },
+  'zh-CN': {
+    title: '联系 ViewExif — 找到独立运营者', description: '通过电子邮件联系 ViewExif 的个人独立运营者。本页没有联系表单、账号或服务端表单数据库。',
+    eyebrow: '真正能找到运营者的入口', heading: '直接发邮件，不玩神秘表单。',
+    intro: `${SITE_BRAND} 由个人独立运营。产品、隐私、内容和技术问题都会交给同一位运营者处理。`,
+    emailLabel: '公开联系方式', emailTitle: '发送电子邮件', emailText: `隐私问题、更正请求、故障报告、权利问题，或某个奇怪结果的清楚说明，都可以发到 ${SITE_CONTACT_EMAIL}。`, emailButton: `发邮件到 ${SITE_CONTACT_EMAIL}`,
+    beforeLabel: '发送之前', beforeTitle: '有用的信息发过来，私人信息留在手里。',
+    beforeItems: ['写上页面 URL 和浏览器版本。', '说明文件格式和字段名，不要发送字段里的私人值。', '如果是界面问题，可以发遮挡后的截图；不要附上私人原文件。'],
+    noFormTitle: '为什么这里没有联系表单', noFormText: '本页不会把任何表单内容提交给 ViewExif 服务器。点击邮箱链接只会打开你的邮件应用；邮件服务商和收件邮箱服务商会按照各自规则处理邮件。',
+    linksLabel: '规则与背景', linksTitle: '发信前可以先看这些', about: '谁在运营 ViewExif', privacy: '数据如何处理', terms: '工具使用规则',
   },
 } as const;
 
 const privacyCopy = {
   en: {
-    title: 'Privacy – Your Files Never Leave Your Device', description: 'How ViewExif keeps file inspection private with local browser processing, short-lived memory, no upload endpoint, and no file-content analytics.', eyebrow: 'Plain-English privacy', heading: 'The server never meets your file.', intro: 'ViewExif is a static browser tool. You select a file; JavaScript in this tab reads it. There is no account, upload route, cloud bucket, or file history.', nav: ['Processing', 'Memory', 'Analytics', 'Cookies', 'Limits'],
-    sections: [['How files are processed', 'Supported files are read from browser memory. Parsing runs in a Web Worker when practical. Image cleanup uses browser image decoding and Canvas re-encoding. C2PA verification loads the official WebAssembly library only on its tool page.', 'No selected file or extracted metadata is sent to a ViewExif server.'], ['What stays in memory', 'The selected file and result live only in the current page session. We do not put them in localStorage, a URL, IndexedDB, or a cookie. Refresh or close the tab and that state disappears.', 'Temporary Object URLs created for downloads are revoked after use. Workers terminate when a task finishes or the page unmounts.'], ['Analytics', 'We use Ahrefs Web Analytics to understand aggregate page traffic. The analytics script does not receive uploaded files, file bytes, metadata values, prompts, filenames, or local paths.', ''], ['Cookies and future ads', 'The MVP does not require an account or first-party session cookie. Future third-party advertising may use its own cookies under its own policy, but browser isolation does not grant an ad script access to the file input or parsed result.', ''], ['The honest limit', 'Local processing protects the transfer path. It does not make the visible content anonymous, prove metadata is true, or detect malicious files. Do not open files you do not trust merely because the parser is local.', '']],
+    title: 'Privacy — Local File Processing and Third-Party Services',
+    description: 'How ViewExif processes files locally, what Ahrefs and Cloudflare receive, and what Google advertising may process only after ads are enabled.',
+    eyebrow: 'Privacy without the fog', heading: 'Your file stays here. A page request does not.',
+    intro: 'ViewExif separates file processing from ordinary website traffic. Your selected file stays in this browser. The page itself still uses hosting and aggregate analytics, which are explained below.',
+    navLabel: 'Privacy policy sections', effectiveLabel: 'Effective date',
+    operatorNote: `${SITE_BRAND} is independently operated by an individual. Privacy questions go to ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('files', 'Files', 'Your file is processed in this browser',
+        p('Supported files are read from browser memory. Parsing usually runs in a Web Worker; image cleanup uses browser decoding and Canvas re-encoding; C2PA verification loads its browser library only on the relevant tool page.'),
+        p('Selected files, filenames, generated hashes, local paths, and extracted metadata values are not uploaded to a ViewExif server. They are not intentionally placed in analytics or future advertising requests.')),
+      s('memory', 'Memory', 'Results are short-lived',
+        p('The selected file and its result live in the current page session. ViewExif does not store them in local storage (localStorage), IndexedDB, a URL, or a Cookie. Refreshing or closing the tab clears that working state.'),
+        p('Temporary Object URLs used for previews or downloads are revoked after use. Workers terminate when their task ends or the page unmounts.')),
+      s('ahrefs', 'Ahrefs', 'Aggregate traffic statistics',
+        p('ViewExif uses Ahrefs Web Analytics to understand page traffic and basic interaction patterns. Ahrefs may process the page URL, referrer, browser and device details, language, city-level location derived from the request, and page interaction signals.'),
+        p('Ahrefs describes this service as Cookie-free by default. It says raw IP addresses are not stored and that an IP address plus User-Agent is used to create a daily rotating hash. The script does not receive selected file bytes, filenames, local paths, hashes, or extracted metadata from ViewExif.', [link('Ahrefs privacy policy', AHREFS_PRIVACY)])),
+      s('cloudflare', 'Cloudflare', 'Hosting and performance signals',
+        p('Cloudflare Pages delivers this site and may process normal request information such as IP address, User-Agent, requested URL, security events, and delivery logs. Cloudflare Web Analytics or browser RUM may also process page-level performance timing and technical events.'),
+        p('ViewExif uses that information to deliver, secure, and diagnose the site, not to build a cross-site profile of you. Cloudflare applies its own retention and security practices.', [link('Cloudflare privacy policy', CLOUDFLARE_PRIVACY)])),
+      s('ads', 'Advertising', 'AdSense is not active in the application build',
+        p('This pre-approval version does not load the Google AdSense script, request Google ads, or create Google advertising Cookies. The published AdSense account identifier and ads.txt entry are used only to verify site ownership and seller authorization.'),
+        p('If ads are enabled later, Google and its third-party advertising technology partners may place or read Cookies and local storage, use web beacons, receive IP addresses or other device identifiers, and process page information and ad interactions. Those signals can be used to serve ads, control frequency, measure performance, prevent fraud, and provide personalized or non-personalized advertising.', [link('How Google uses data on partner sites', GOOGLE_PARTNER_SITES)])),
+      s('choices', 'Choices', 'Consent and advertising controls',
+        p('Before advertising is enabled for visitors in the EEA, United Kingdom, or Switzerland, ViewExif intends to use a Google-certified IAB TCF consent platform with clear options to consent, decline, or manage choices. Personalized advertising will be requested only where the required consent exists.'),
+        p('When advertising is active, the site will provide a way to reopen consent choices. Google also provides account-level advertising controls.', [link('Google Ads Settings', GOOGLE_AD_SETTINGS)])),
+      s('contact', 'Contact', 'Questions, corrections, and requests',
+        p(`You can ask what information ViewExif controls, report an unexpected data flow, or request a correction by emailing ${SITE_CONTACT_EMAIL}. This page has no contact form, so the website does not collect a form submission.`, [link(SITE_CONTACT_EMAIL, contactHref)]),
+        p('Do not attach an original file that contains private information. A redacted screenshot or a list of field names is usually enough to investigate a problem.')),
+      s('limits', 'Limits', 'What local processing cannot promise',
+        p('Local processing protects the file-transfer path. It does not anonymize visible content, prove that metadata is true, or make an untrusted file safe. A cleaned copy should still be inspected before sharing.'),
+        p('This policy will be updated before a new service materially changes these data flows. The effective date above identifies the version currently published.')),
+    ],
   },
   de: {
-    title: 'Datenschutz – Deine Dateien verlassen dein Gerät nicht', description: 'So hält ViewExif Dateiinspektionen privat: lokale Browser-Verarbeitung, kurzlebiger Speicher, kein Upload-Endpunkt und keine Analyse von Dateiinhalten.', eyebrow: 'Datenschutz ohne Juristendeutsch', heading: 'Der Server lernt deine Datei nie kennen.', intro: 'ViewExif ist ein statisches Browser-Tool. Du wählst eine Datei, JavaScript in diesem Tab liest sie. Es gibt kein Konto, keine Upload-Route, keinen Cloud-Speicher und keinen Dateiverlauf.', nav: ['Verarbeitung', 'Speicher', 'Analyse', 'Cookies', 'Grenzen'],
-    sections: [['Wie Dateien verarbeitet werden', 'Unterstützte Dateien werden aus dem Browserspeicher gelesen. Wenn sinnvoll, läuft der Parser in einem Web Worker. Die Bildbereinigung nutzt Browser-Decoding und Canvas-Neucodierung. Für C2PA wird die offizielle WebAssembly-Bibliothek nur auf der passenden Tool-Seite geladen.', 'Weder die ausgewählte Datei noch extrahierte Metadaten werden an einen ViewExif-Server gesendet.'], ['Was im Speicher bleibt', 'Datei und Ergebnis existieren nur in der aktuellen Seitensitzung. Wir speichern sie nicht in localStorage, URL, IndexedDB oder Cookies. Beim Neuladen oder Schließen des Tabs verschwindet der Zustand.', 'Temporäre Object URLs für Downloads werden danach widerrufen. Worker enden, wenn der Vorgang abgeschlossen oder die Seite verlassen wird.'], ['Webanalyse', 'Wir verwenden Ahrefs Web Analytics für zusammengefasste Seitenaufrufe. Das Skript erhält keine Dateien, Datei-Bytes, Metadatenwerte, Dateinamen oder lokalen Pfade.', ''], ['Cookies und mögliche künftige Werbung', 'Die aktuelle Version braucht weder Konto noch eigenen Sitzungs-Cookie. Künftige Drittanbieterwerbung kann nach ihrer eigenen Richtlinie Cookies nutzen; die Browser-Isolation gewährt Werbeskripten jedoch keinen Zugriff auf Dateiauswahl oder Parsergebnis.', ''], ['Die ehrliche Grenze', 'Lokale Verarbeitung schützt den Übertragungsweg. Sie anonymisiert sichtbare Inhalte nicht automatisch, beweist keine Metadaten und erkennt keine schädlichen Dateien. Öffne keine Datei, der du nicht vertraust, nur weil der Parser lokal läuft.', '']],
+    title: 'Datenschutz – Lokale Dateiverarbeitung und externe Dienste',
+    description: 'Wie ViewExif Dateien lokal verarbeitet, was Ahrefs und Cloudflare erhalten und was Google-Werbung erst nach ihrer Aktivierung verarbeiten kann.',
+    eyebrow: 'Datenschutz ohne Nebelwand', heading: 'Deine Datei bleibt hier. Ein Seitenaufruf nicht.',
+    intro: 'ViewExif trennt die Dateiverarbeitung vom normalen Website-Verkehr. Die ausgewählte Datei bleibt in diesem Browser. Für die Seite selbst nutzen wir Hosting und zusammengefasste Statistiken – beides erklären wir hier.',
+    navLabel: 'Abschnitte der Datenschutzerklärung', effectiveLabel: 'Gültig ab',
+    operatorNote: `${SITE_BRAND} wird unabhängig von einer Einzelperson betrieben. Datenschutzfragen gehen an ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('files', 'Dateien', 'Deine Datei wird in diesem Browser verarbeitet',
+        p('Unterstützte Dateien werden aus dem Browserspeicher gelesen. Die Analyse läuft meist in einem Web Worker; die Bildbereinigung nutzt Browser-Decoding und Canvas-Neucodierung; C2PA lädt seine Browser-Bibliothek nur auf der passenden Werkzeugseite.'),
+        p('Ausgewählte Dateien, Dateinamen, erzeugte Hashes, lokale Pfade und extrahierte Metadatenwerte werden nicht an einen ViewExif-Server hochgeladen. Sie werden auch nicht absichtlich in Analyse- oder künftige Werbeanfragen eingefügt.')),
+      s('memory', 'Speicher', 'Ergebnisse bleiben nur kurz',
+        p('Datei und Ergebnis existieren in der aktuellen Seitensitzung. ViewExif speichert sie nicht im lokalen Speicher (local storage oder localStorage), in IndexedDB, einer URL oder einem Cookie. Neuladen oder Schließen des Tabs löscht diesen Arbeitszustand.'),
+        p('Temporäre Object URLs für Vorschau und Download werden nach Gebrauch widerrufen. Worker enden nach ihrer Aufgabe oder wenn die Seite verlassen wird.')),
+      s('ahrefs', 'Ahrefs', 'Zusammengefasste Verkehrsstatistik',
+        p('ViewExif verwendet Ahrefs Web Analytics, um Seitenaufrufe und grundlegende Interaktionen zu verstehen. Ahrefs kann Seiten-URL, Referrer, Browser- und Gerätedaten, Sprache, einen aus der Anfrage abgeleiteten Standort auf Stadtebene und Interaktionssignale verarbeiten.'),
+        p('Ahrefs beschreibt den Dienst standardmäßig als Cookie-frei. Rohe IP-Adressen werden laut Ahrefs nicht gespeichert; aus IP-Adresse und User-Agent entsteht ein täglich wechselnder Hash. Das Skript erhält von ViewExif keine Dateibytes, Namen, lokalen Pfade, Hashes oder extrahierten Metadaten.', [link('Datenschutzerklärung von Ahrefs', AHREFS_PRIVACY)])),
+      s('cloudflare', 'Cloudflare', 'Hosting und Leistungssignale',
+        p('Cloudflare Pages liefert diese Website aus und kann normale Anfragedaten wie IP-Adresse, User-Agent, angeforderte URL, Sicherheitsereignisse und Auslieferungsprotokolle verarbeiten. Cloudflare Web Analytics oder Browser-RUM kann außerdem technische Ereignisse und Zeitmessungen auf Seitenebene verarbeiten.'),
+        p('ViewExif nutzt diese Angaben für Auslieferung, Schutz und Fehlersuche – nicht, um ein seitenübergreifendes Profil zu erstellen. Für Speicherung und Sicherheit gelten die Regeln von Cloudflare.', [link('Datenschutzerklärung von Cloudflare', CLOUDFLARE_PRIVACY)])),
+      s('ads', 'Werbung', 'AdSense ist in der Bewerbungsversion nicht aktiv',
+        p('Diese Version vor der Freigabe lädt kein Google-AdSense-Skript, ruft keine Google-Anzeigen ab und setzt keine Google-Werbe-Cookies. Die veröffentlichte AdSense-Kennung und der ads.txt-Eintrag dienen nur der Eigentumsprüfung und Verkäuferautorisierung.'),
+        p('Wenn Werbung später aktiviert wird, können Google und Drittanbieter für Werbetechnologie Cookies oder local storage setzen und lesen, web beacons einsetzen, IP-Adressen oder andere Gerätekennungen empfangen sowie Seiteninformationen und Anzeigeninteraktionen verarbeiten. Das dient Anzeigenauslieferung, Häufigkeitssteuerung, Messung, Betrugsabwehr und personalisierter oder nicht personalisierter Werbung.', [link('Wie Google Daten auf Partner-Websites verwendet', GOOGLE_PARTNER_SITES)])),
+      s('choices', 'Auswahl', 'Einwilligung und Werbeeinstellungen',
+        p('Bevor Werbung für Besucher im EWR, Vereinigten Königreich oder in der Schweiz aktiviert wird, soll eine Google-zertifizierte IAB-TCF-Einwilligungsplattform klare Optionen zum Zustimmen, Ablehnen und Verwalten anzeigen. Personalisierte Werbung wird nur bei vorliegender erforderlicher Einwilligung angefordert.'),
+        p('Bei aktiver Werbung wird es einen Weg geben, die Auswahl erneut zu öffnen. Google bietet außerdem Einstellungen auf Kontoebene.', [link('Google Ads-Einstellungen', GOOGLE_AD_SETTINGS)])),
+      s('contact', 'Kontakt', 'Fragen, Korrekturen und Anliegen',
+        p(`Fragen zu kontrollierten Informationen, unerwarteten Datenflüssen oder Korrekturen kannst du an ${SITE_CONTACT_EMAIL} senden. Diese Seite hat kein Formular und sammelt daher keine Formulareingabe.`, [link(SITE_CONTACT_EMAIL, contactHref)]),
+        p('Hänge keine Originaldatei mit privaten Angaben an. Ein geschwärzter Screenshot oder eine Liste der Feldnamen reicht meist zur Untersuchung.')),
+      s('limits', 'Grenzen', 'Was lokale Verarbeitung nicht verspricht',
+        p('Lokale Verarbeitung schützt den Übertragungsweg. Sie anonymisiert sichtbare Inhalte nicht, beweist keine Metadaten und macht eine nicht vertrauenswürdige Datei nicht sicher. Prüfe eine bereinigte Kopie vor dem Teilen erneut.'),
+        p('Diese Erklärung wird aktualisiert, bevor ein neuer Dienst die beschriebenen Datenflüsse wesentlich verändert. Das Datum oben kennzeichnet die aktuelle Fassung.')),
+    ],
+  },
+  fr: {
+    title: 'Confidentialité — Traitement local et services tiers',
+    description: 'Comment ViewExif traite les fichiers localement, ce qu’Ahrefs et Cloudflare reçoivent et ce que la publicité Google pourra traiter après activation.',
+    eyebrow: 'La confidentialité sans brouillard', heading: 'Votre fichier reste ici. Une requête de page, non.',
+    intro: 'ViewExif sépare le traitement des fichiers du trafic normal du site. Le fichier choisi reste dans ce navigateur. La page utilise tout de même un hébergement et des statistiques agrégées, expliqués ci-dessous.',
+    navLabel: 'Sections de la politique de confidentialité', effectiveLabel: 'Date d’entrée en vigueur',
+    operatorNote: `${SITE_BRAND} est exploité de façon indépendante par une personne. Les questions de confidentialité vont à ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('files', 'Fichiers', 'Votre fichier est traité dans ce navigateur',
+        p('Les fichiers pris en charge sont lus depuis la mémoire du navigateur. L’analyse s’exécute généralement dans un Web Worker ; le nettoyage d’image utilise le décodage du navigateur et le réencodage Canvas ; C2PA charge sa bibliothèque uniquement sur la page concernée.'),
+        p('Les fichiers choisis, noms de fichier, empreintes générées, chemins locaux et métadonnées extraites ne sont pas envoyés à un serveur ViewExif. Ils ne sont pas volontairement ajoutés aux requêtes de statistiques ou de publicité future.')),
+      s('memory', 'Mémoire', 'Les résultats sont éphémères',
+        p('Le fichier et son résultat vivent dans la session de la page. ViewExif ne les stocke ni dans local storage (localStorage), ni dans IndexedDB, ni dans une URL, ni dans un Cookie. Actualiser ou fermer l’onglet efface cet état de travail.'),
+        p('Les Object URLs temporaires de prévisualisation ou de téléchargement sont révoquées après usage. Les Workers s’arrêtent à la fin de leur tâche ou au démontage de la page.')),
+      s('ahrefs', 'Ahrefs', 'Statistiques de trafic agrégées',
+        p('ViewExif utilise Ahrefs Web Analytics pour comprendre les pages consultées et les interactions de base. Ahrefs peut traiter l’URL, le référent, le navigateur, l’appareil, la langue, une localisation au niveau de la ville déduite de la requête et des signaux d’interaction.'),
+        p('Ahrefs décrit ce service comme sans Cookie par défaut. Il indique ne pas stocker les adresses IP brutes et combiner l’IP et le User-Agent dans une empreinte renouvelée chaque jour. Le script ne reçoit de ViewExif ni octets, noms, chemins locaux, empreintes de fichier ou métadonnées extraites.', [link('Politique de confidentialité Ahrefs', AHREFS_PRIVACY)])),
+      s('cloudflare', 'Cloudflare', 'Hébergement et signaux de performance',
+        p('Cloudflare Pages distribue ce site et peut traiter les informations normales d’une requête : adresse IP, User-Agent, URL demandée, événements de sécurité et journaux de distribution. Cloudflare Web Analytics ou le RUM du navigateur peut aussi traiter des mesures de performance et événements techniques au niveau de la page.'),
+        p('ViewExif les utilise pour distribuer, protéger et diagnostiquer le site, pas pour établir votre profil entre plusieurs sites. Cloudflare applique ses propres pratiques de conservation et de sécurité.', [link('Politique de confidentialité Cloudflare', CLOUDFLARE_PRIVACY)])),
+      s('ads', 'Publicité', 'AdSense est inactif dans la version de candidature',
+        p('Cette version avant approbation ne charge pas le script Google AdSense, ne demande aucune annonce Google et ne crée aucun Cookie publicitaire Google. L’identifiant AdSense publié et le fichier ads.txt servent uniquement à vérifier la propriété et l’autorisation du vendeur.'),
+        p('Si la publicité est activée plus tard, Google et ses partenaires technologiques tiers pourront placer ou lire des Cookies et le local storage, employer des web beacons, recevoir l’adresse IP ou d’autres identifiants et traiter les informations de page et interactions publicitaires. Ces signaux servent à diffuser, plafonner la fréquence, mesurer, lutter contre la fraude et proposer des annonces personnalisées ou non.', [link('Utilisation des données par Google sur les sites partenaires', GOOGLE_PARTNER_SITES)])),
+      s('choices', 'Choix', 'Consentement et réglages publicitaires',
+        p('Avant d’activer la publicité pour les visiteurs de l’EEE, du Royaume-Uni ou de Suisse, ViewExif prévoit une plateforme IAB TCF certifiée par Google avec des choix clairs : accepter, refuser ou gérer. La publicité personnalisée ne sera demandée que lorsque le consentement nécessaire existe.'),
+        p('Lorsque la publicité sera active, un moyen permettra de rouvrir ces choix. Google propose aussi des réglages au niveau du compte.', [link('Paramètres des annonces Google', GOOGLE_AD_SETTINGS)])),
+      s('contact', 'Contact', 'Questions, corrections et demandes',
+        p(`Vous pouvez demander quelles informations ViewExif contrôle, signaler un flux inattendu ou demander une correction à ${SITE_CONTACT_EMAIL}. Cette page ne possède aucun formulaire et le site ne collecte donc aucune saisie de formulaire.`, [link(SITE_CONTACT_EMAIL, contactHref)]),
+        p('Ne joignez pas un original contenant des informations privées. Une capture masquée ou une liste de noms de champs suffit généralement pour enquêter.')),
+      s('limits', 'Limites', 'Ce que le traitement local ne promet pas',
+        p('Le traitement local protège le trajet du fichier. Il n’anonymise pas le contenu visible, ne prouve pas que les métadonnées sont vraies et ne sécurise pas un fichier douteux. Vérifiez encore la copie nettoyée avant de la partager.'),
+        p('Cette politique sera mise à jour avant qu’un nouveau service ne modifie sensiblement ces flux. La date ci-dessus identifie la version publiée.')),
+    ],
   },
   'zh-CN': {
-    title: '隐私说明 — 文件不会离开你的设备', description: 'ViewExif 通过浏览器本地处理、短期内存、不设上传接口，也不分析文件内容，尽量把文件检查留在你的设备上。', eyebrow: '说人话的隐私说明', heading: '服务器根本见不到你的文件。', intro: 'ViewExif 是静态浏览器工具。你选择文件，当前标签页里的 JavaScript 负责读取。没有账号、上传接口、云存储桶，也没有文件历史。', nav: ['处理方式', '内存', '流量统计', 'Cookies', '能力边界'],
-    sections: [['文件怎么处理', '支持的文件从浏览器内存读取，合适时会交给 Web Worker 解析。图片清理使用浏览器解码和 Canvas 重新编码；C2PA 只在对应工具页按需加载官方 WebAssembly 库。', '你选择的文件和提取出的元数据都不会发送到 ViewExif 服务器。'], ['内存里会留下什么', '文件和结果只存在于当前页面会话。我们不会把它们放进 localStorage、URL、IndexedDB 或 Cookie。刷新或关闭标签页，状态就没了。', '下载用的临时 Object URL 会在使用后撤销。任务完成或页面卸载时，Worker 也会终止。'], ['流量统计', '我们使用 Ahrefs Web Analytics 了解汇总后的页面流量。统计脚本不会收到文件、文件字节、元数据值、文件名或本地路径。', ''], ['Cookie 与未来的广告', '当前版本不需要账号或第一方会话 Cookie。未来的第三方广告可能依据自己的政策使用 Cookie，但浏览器隔离不会让广告脚本碰到文件输入框或解析结果。', ''], ['老实说，边界在这里', '本地处理保护的是传输路径。它不会自动匿名化画面、证明元数据为真，也不能识别恶意文件。别因为解析器在本地，就随手打开不可信的文件。', '']],
+    title: '隐私说明 — 本地文件处理与第三方服务', description: '说明 ViewExif 如何在本地处理文件、Ahrefs 和 Cloudflare 会收到什么，以及启用广告后 Google 可能处理什么。',
+    eyebrow: '不绕弯子的隐私说明', heading: '文件留在这里，网页请求不会。',
+    intro: 'ViewExif 把文件处理和普通网站流量分开。你选择的文件留在当前浏览器里；网页本身仍然需要托管服务和汇总统计，具体情况都写在下面。',
+    navLabel: '隐私说明章节', effectiveLabel: '生效日期',
+    operatorNote: `${SITE_BRAND} 由个人独立运营。隐私问题请发到 ${SITE_CONTACT_EMAIL}。`,
+    sections: [
+      s('files', '文件', '文件只在这个浏览器里处理',
+        p('支持的文件从浏览器内存读取。解析通常在 Web Worker 中运行；图片清理使用浏览器解码和 Canvas 重新编码；C2PA 只在对应工具页加载浏览器库。'),
+        p('你选择的文件、文件名、生成的哈希、本地路径和提取出的元数据值都不会上传到 ViewExif 服务器，也不会被有意放进统计请求或未来的广告请求。')),
+      s('memory', '内存', '结果只短暂停留',
+        p('文件和结果只存在于当前页面会话。ViewExif 不会把它们写进 local storage（localStorage）、IndexedDB、URL 或 Cookie。刷新或关闭标签页，工作状态就会消失。'),
+        p('预览或下载用的临时 Object URL 会在使用后撤销；任务结束或页面卸载时，Worker 也会终止。')),
+      s('ahrefs', 'Ahrefs', '汇总后的流量统计',
+        p('ViewExif 使用 Ahrefs Web Analytics 了解页面流量和基础交互。Ahrefs 可能处理页面 URL、来源页、浏览器和设备信息、语言、从请求推断的城市级位置以及页面交互信号。'),
+        p('Ahrefs 称这项服务默认不使用 Cookie，不保存原始 IP；IP 地址和 User-Agent 仅用于生成每天轮换的哈希。ViewExif 不会把文件字节、文件名、本地路径、文件哈希或提取出的元数据交给该脚本。', [link('Ahrefs 隐私政策', AHREFS_PRIVACY)])),
+      s('cloudflare', 'Cloudflare', '托管与性能信号',
+        p('Cloudflare Pages 负责分发网站，可能处理正常请求中的 IP 地址、User-Agent、请求 URL、安全事件和分发日志。Cloudflare Web Analytics 或浏览器 RUM 还可能处理页面级性能时序和技术事件。'),
+        p('ViewExif 用这些信息分发、保护和排查网站，不用它们建立跨网站用户画像。Cloudflare 按照自己的规则保存和保护相关信息。', [link('Cloudflare 隐私政策', CLOUDFLARE_PRIVACY)])),
+      s('ads', '广告', '申请版本尚未启用 AdSense',
+        p('这个待审批版本不会加载 Google AdSense 脚本、请求 Google 广告或创建 Google 广告 Cookie。公开的 AdSense 账号标识和 ads.txt 只用于验证网站控制权与授权卖方。'),
+        p('以后启用广告时，Google 和广告技术合作伙伴可能放置或读取 Cookie 与 local storage，使用 web beacon，接收 IP 地址或其他设备标识，并处理页面信息和广告互动。这些信号可能用于投放、频次控制、效果衡量、反欺诈以及个性化或非个性化广告。', [link('Google 如何使用合作伙伴网站的数据', GOOGLE_PARTNER_SITES)])),
+      s('choices', '选择', '同意管理与广告控制',
+        p('在向欧洲经济区、英国或瑞士访客启用广告前，ViewExif 计划使用经过 Google 认证的 IAB TCF 同意管理平台，首层提供同意、不同意和管理选项。只有取得所需同意时，才会请求个性化广告。'),
+        p('广告启用后，网站会提供重新打开同意选项的入口。Google 也提供账号层面的广告控制。', [link('Google 广告设置', GOOGLE_AD_SETTINGS)])),
+      s('contact', '联系', '问题、更正与请求',
+        p(`你可以发邮件到 ${SITE_CONTACT_EMAIL}，询问 ViewExif 控制哪些信息、报告意外数据流或请求更正。本页没有联系表单，因此网站不会收集表单内容。`, [link(SITE_CONTACT_EMAIL, contactHref)]),
+        p('不要附上含私人信息的原始文件。经过遮挡的截图或字段名列表，通常已经足够排查问题。')),
+      s('limits', '边界', '本地处理不承诺什么',
+        p('本地处理保护的是文件传输路径。它不会匿名化画面、证明元数据为真，也不会把不可信文件变安全。分享前仍应再次检查清理后的副本。'),
+        p('如果新服务会实质改变上述数据流，我们会先更新这份说明。页面顶部的日期代表当前发布版本。')),
+    ],
   },
-} as const;
+} satisfies Record<Locale, LegalCopy>;
+
+const termsCopy = {
+  en: {
+    title: 'Terms of Use — ViewExif', description: 'Practical rules for ViewExif, including local processing, user responsibility, acceptable use, availability, and third-party services.',
+    eyebrow: 'Terms without the courtroom costume', heading: 'Use the tools. Keep your judgment switched on.',
+    intro: 'These terms explain the deal between you and ViewExif’s independent individual operator. They do not invent a company, office, or jurisdiction that does not exist.',
+    navLabel: 'Terms of use sections', effectiveLabel: 'Effective date', operatorNote: `${SITE_BRAND} is independently operated by an individual. Questions about these terms go to ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('service', 'Service', 'What ViewExif provides',
+        p('ViewExif provides browser-based tools and educational guides for inspecting, explaining, and removing supported metadata, plus limited C2PA verification. Available formats and results can change as browsers and libraries change.'),
+        p('Using the site means you accept these terms. If you do not accept them, do not use the tools.')),
+      s('local', 'Local processing', 'Local does not mean magic',
+        p('Supported file operations are designed to run in your browser. ViewExif does not provide cloud storage, backups, recovery, or a record of the files you inspect.'),
+        p('Keep your original file. Check the cleaned copy before deleting anything or relying on it for legal, investigative, archival, medical, financial, or safety-critical work.')),
+      s('responsibility', 'Your responsibility', 'Use files you have the right to handle',
+        p('You are responsible for the files you open, the rights and permissions needed to process them, the conclusions you draw, and where you share the output.'),
+        p('Do not submit confidential material to a third party merely because a ViewExif guide links to it. Redact private details before asking for support.')),
+      s('acceptable-use', 'Acceptable use', 'Do not turn a privacy tool into someone else’s problem',
+        p('Do not use ViewExif to break the law, violate intellectual-property or privacy rights, stalk or identify people without a lawful basis, evade access controls, distribute malware, overload the service, or misrepresent altered evidence as authentic.'),
+        p('Automated access must remain reasonable and must not disrupt the site or imitate ad impressions, clicks, or user activity.')),
+      s('ownership', 'Ownership', 'Site materials and your files',
+        p('You keep whatever rights you already have in your files. ViewExif does not claim ownership merely because a file is processed in your browser.'),
+        p('The ViewExif name, original site design, code, and written material remain protected by their applicable rights. Third-party libraries, marks, and referenced services belong to their respective owners and keep their own licenses.')),
+      s('third-parties', 'Third parties', 'Some pieces have their own rules',
+        p('The site depends on browser APIs and third-party libraries, analytics, hosting, and external links. Their availability and behavior are outside the operator’s full control.'),
+        p('A link is not an endorsement, partnership, or guarantee. Review the third party’s terms and privacy information before sending it data.')),
+      s('availability', 'Availability', 'No uptime or perfect-result promise',
+        p('ViewExif is provided on an as-available basis. The operator does not promise uninterrupted access, support for every file, complete extraction, complete removal, or that a result is suitable for a particular purpose.'),
+        p('Metadata standards conflict, damaged files behave strangely, and software changes. Verify important results with another suitable tool or qualified professional.')),
+      s('liability', 'Responsibility limits', 'Keep the risk proportional',
+        p('To the extent allowed by applicable law, the operator is not responsible for indirect loss, lost data, lost profit, or decisions made solely from a ViewExif result. Nothing here excludes a right or responsibility that the law does not allow to be excluded.'),
+        p('These terms do not choose an invented governing jurisdiction. Mandatory law that applies to you and the operator continues to apply.')),
+      s('changes', 'Changes', 'Updates and contact',
+        p('The tools and these terms may change. Material changes receive a new effective date on this page; continued use after publication means the revised terms apply from that date.'),
+        p(`Questions or a report of misuse can be sent to ${SITE_CONTACT_EMAIL}.`, [link(SITE_CONTACT_EMAIL, contactHref)])),
+    ],
+  },
+  de: {
+    title: 'Nutzungsbedingungen — ViewExif', description: 'Praktische Regeln für ViewExif: lokale Verarbeitung, Eigenverantwortung, zulässige Nutzung, Verfügbarkeit und externe Dienste.',
+    eyebrow: 'Bedingungen ohne Gerichtssaal-Kostüm', heading: 'Nutze die Werkzeuge. Lass dein Urteil eingeschaltet.',
+    intro: 'Diese Bedingungen erklären die Vereinbarung zwischen dir und dem unabhängigen individuellen Betreiber von ViewExif. Sie erfinden weder Firma noch Büro oder Gerichtsstand.',
+    navLabel: 'Abschnitte der Nutzungsbedingungen', effectiveLabel: 'Gültig ab', operatorNote: `${SITE_BRAND} wird unabhängig von einer Einzelperson betrieben. Fragen zu diesen Bedingungen gehen an ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('service', 'Dienst', 'Was ViewExif anbietet',
+        p('ViewExif bietet Browser-Werkzeuge und Anleitungen zum Prüfen, Erklären und Entfernen unterstützter Metadaten sowie eine begrenzte C2PA-Prüfung. Formate und Ergebnisse können sich mit Browsern und Bibliotheken ändern.'),
+        p('Mit der Nutzung akzeptierst du diese Bedingungen. Wenn du sie nicht akzeptierst, verwende die Werkzeuge nicht.')),
+      s('local', 'Lokale Verarbeitung', 'Lokal heißt nicht magisch',
+        p('Unterstützte Dateioperationen sollen in deinem Browser laufen. ViewExif bietet keinen Cloud-Speicher, keine Sicherung, keine Wiederherstellung und keinen Verlauf deiner geprüften Dateien.'),
+        p('Bewahre das Original auf. Prüfe die bereinigte Kopie, bevor du etwas löschst oder sie für rechtliche, investigative, archivische, medizinische, finanzielle oder sicherheitskritische Arbeit nutzt.')),
+      s('responsibility', 'Deine Verantwortung', 'Verarbeite nur Dateien, die du bearbeiten darfst',
+        p('Du verantwortest die geöffneten Dateien, notwendige Rechte und Erlaubnisse, deine Schlussfolgerungen und die Weitergabe der Ergebnisse.'),
+        p('Sende vertrauliches Material nicht allein deshalb an Dritte, weil eine ViewExif-Anleitung dorthin verlinkt. Schwärze private Angaben vor einer Support-Anfrage.')),
+      s('acceptable-use', 'Zulässige Nutzung', 'Mach aus einem Datenschutzwerkzeug kein Problem für andere',
+        p('Nutze ViewExif nicht für Rechtsverstöße, Verletzungen von Urheber- oder Datenschutzrechten, unrechtmäßiges Verfolgen oder Identifizieren, Umgehen von Zugriffsschutz, Malware-Verteilung, Überlastung oder die falsche Darstellung veränderter Beweise als authentisch.'),
+        p('Automatisierter Zugriff muss angemessen bleiben und darf weder den Dienst stören noch Anzeigenaufrufe, Klicks oder menschliche Nutzung vortäuschen.')),
+      s('ownership', 'Rechte', 'Website-Material und deine Dateien',
+        p('Du behältst bestehende Rechte an deinen Dateien. ViewExif beansprucht kein Eigentum, nur weil eine Datei in deinem Browser verarbeitet wird.'),
+        p('Name, ursprüngliches Design, Code und Texte von ViewExif bleiben durch die jeweiligen Rechte geschützt. Bibliotheken, Marken und erwähnte Dienste gehören ihren Eigentümern und behalten ihre Lizenzen.')),
+      s('third-parties', 'Dritte', 'Manche Teile haben eigene Regeln',
+        p('Die Website nutzt Browser-APIs und externe Bibliotheken, Analyse, Hosting und Links. Verfügbarkeit und Verhalten liegen nicht vollständig in der Hand des Betreibers.'),
+        p('Ein Link ist keine Empfehlung, Partnerschaft oder Garantie. Lies Bedingungen und Datenschutz des Dritten, bevor du Daten sendest.')),
+      s('availability', 'Verfügbarkeit', 'Keine Zusage für Laufzeit oder perfekte Ergebnisse',
+        p('ViewExif wird nach Verfügbarkeit angeboten. Der Betreiber verspricht weder ununterbrochenen Zugang noch Unterstützung jeder Datei, vollständige Extraktion, vollständige Entfernung oder Eignung für einen bestimmten Zweck.'),
+        p('Metadatenstandards widersprechen sich, beschädigte Dateien verhalten sich seltsam und Software ändert sich. Prüfe wichtige Ergebnisse mit einem geeigneten zweiten Werkzeug oder einer qualifizierten Fachperson.')),
+      s('liability', 'Haftungsgrenzen', 'Halte das Risiko verhältnismäßig',
+        p('Soweit das anwendbare Recht es erlaubt, haftet der Betreiber nicht für mittelbare Schäden, Daten- oder Gewinnverlust oder Entscheidungen, die allein auf einem ViewExif-Ergebnis beruhen. Unabdingbare Rechte und Pflichten bleiben unberührt.'),
+        p('Diese Bedingungen wählen keinen erfundenen Gerichtsstand. Zwingendes Recht, das für dich und den Betreiber gilt, gilt weiterhin.')),
+      s('changes', 'Änderungen', 'Aktualisierungen und Kontakt',
+        p('Werkzeuge und Bedingungen können sich ändern. Wesentliche Änderungen erhalten auf dieser Seite ein neues Datum; bei weiterer Nutzung gilt die veröffentlichte Fassung ab diesem Datum.'),
+        p(`Fragen oder Hinweise auf Missbrauch gehen an ${SITE_CONTACT_EMAIL}.`, [link(SITE_CONTACT_EMAIL, contactHref)])),
+    ],
+  },
+  fr: {
+    title: 'Conditions d’utilisation — ViewExif', description: 'Les règles pratiques de ViewExif : traitement local, responsabilité, usage acceptable, disponibilité et services tiers.',
+    eyebrow: 'Des conditions sans costume de tribunal', heading: 'Utilisez les outils. Gardez votre jugement allumé.',
+    intro: 'Ces conditions expliquent l’accord entre vous et l’exploitant individuel indépendant de ViewExif. Elles n’inventent ni société, ni bureau, ni juridiction.',
+    navLabel: 'Sections des conditions d’utilisation', effectiveLabel: 'Date d’entrée en vigueur', operatorNote: `${SITE_BRAND} est exploité de façon indépendante par une personne. Les questions sur ces conditions vont à ${SITE_CONTACT_EMAIL}.`,
+    sections: [
+      s('service', 'Service', 'Ce que fournit ViewExif',
+        p('ViewExif fournit des outils dans le navigateur et des guides pour inspecter, expliquer et supprimer les métadonnées prises en charge, ainsi qu’une vérification C2PA limitée. Les formats et résultats peuvent changer avec les navigateurs et bibliothèques.'),
+        p('Utiliser le site signifie accepter ces conditions. Si vous ne les acceptez pas, n’utilisez pas les outils.')),
+      s('local', 'Traitement local', 'Local ne veut pas dire magique',
+        p('Les opérations prises en charge sont conçues pour s’exécuter dans votre navigateur. ViewExif ne fournit ni stockage cloud, ni sauvegarde, ni récupération, ni historique des fichiers inspectés.'),
+        p('Gardez l’original. Vérifiez la copie nettoyée avant de supprimer quoi que ce soit ou de l’utiliser dans un travail juridique, d’enquête, d’archive, médical, financier ou critique pour la sécurité.')),
+      s('responsibility', 'Votre responsabilité', 'Utilisez des fichiers que vous avez le droit de traiter',
+        p('Vous êtes responsable des fichiers ouverts, des droits et autorisations nécessaires, des conclusions tirées et du partage des résultats.'),
+        p('N’envoyez pas un document confidentiel à un tiers simplement parce qu’un guide ViewExif propose un lien. Masquez les détails privés avant de demander de l’aide.')),
+      s('acceptable-use', 'Usage acceptable', 'Ne transformez pas un outil de confidentialité en problème pour autrui',
+        p('N’utilisez pas ViewExif pour enfreindre la loi, violer des droits, suivre ou identifier quelqu’un sans base légitime, contourner un contrôle d’accès, distribuer un logiciel malveillant, saturer le service ou présenter une preuve modifiée comme authentique.'),
+        p('L’accès automatisé doit rester raisonnable et ne doit ni perturber le site ni imiter des impressions publicitaires, des clics ou une activité humaine.')),
+      s('ownership', 'Droits', 'Les éléments du site et vos fichiers',
+        p('Vous conservez les droits que vous possédez déjà sur vos fichiers. ViewExif ne revendique aucune propriété parce qu’un fichier est traité dans votre navigateur.'),
+        p('Le nom, le design original, le code et les textes de ViewExif restent protégés par leurs droits applicables. Bibliothèques, marques et services cités appartiennent à leurs propriétaires et conservent leurs licences.')),
+      s('third-parties', 'Tiers', 'Certaines pièces ont leurs propres règles',
+        p('Le site dépend d’API du navigateur, de bibliothèques, de statistiques, d’un hébergeur et de liens externes. Leur disponibilité et leur comportement échappent en partie à l’exploitant.'),
+        p('Un lien n’est ni une recommandation, ni un partenariat, ni une garantie. Consultez les conditions et la confidentialité du tiers avant de lui envoyer des données.')),
+      s('availability', 'Disponibilité', 'Aucune promesse de disponibilité ou de résultat parfait',
+        p('ViewExif est fourni selon sa disponibilité. L’exploitant ne promet ni accès continu, ni prise en charge de chaque fichier, ni extraction ou suppression complète, ni adaptation à un objectif particulier.'),
+        p('Les normes se contredisent, les fichiers endommagés se comportent bizarrement et les logiciels changent. Vérifiez les résultats importants avec un autre outil adapté ou un professionnel qualifié.')),
+      s('liability', 'Limites', 'Gardez le risque proportionné',
+        p('Dans la mesure permise par le droit applicable, l’exploitant ne répond pas des pertes indirectes, de données, de bénéfices ou des décisions prises uniquement à partir d’un résultat ViewExif. Rien ici n’écarte un droit ou une responsabilité que la loi interdit d’écarter.'),
+        p('Ces conditions ne choisissent aucune juridiction inventée. Le droit impératif applicable à vous et à l’exploitant continue de s’appliquer.')),
+      s('changes', 'Modifications', 'Mises à jour et contact',
+        p('Les outils et ces conditions peuvent évoluer. Un changement important reçoit une nouvelle date sur cette page ; la version révisée s’applique à compter de sa publication si vous continuez à utiliser le site.'),
+        p(`Les questions et signalements d’abus vont à ${SITE_CONTACT_EMAIL}.`, [link(SITE_CONTACT_EMAIL, contactHref)])),
+    ],
+  },
+  'zh-CN': {
+    title: '使用条款 — ViewExif', description: 'ViewExif 的实用使用规则，包括本地处理、用户责任、可接受使用、可用性和第三方服务。',
+    eyebrow: '不穿法庭戏服的使用条款', heading: '工具可以用，判断力别关机。',
+    intro: '这些条款说明你与 ViewExif 个人独立运营者之间的约定。这里不会编造一个并不存在的公司、办公室或司法管辖区。',
+    navLabel: '使用条款章节', effectiveLabel: '生效日期', operatorNote: `${SITE_BRAND} 由个人独立运营。条款相关问题请发到 ${SITE_CONTACT_EMAIL}。`,
+    sections: [
+      s('service', '服务', 'ViewExif 提供什么',
+        p('ViewExif 提供浏览器工具和知识指南，用于查看、解释和清理受支持的元数据，也提供能力有限的 C2PA 验证。浏览器和依赖库变化时，支持格式与结果也可能变化。'),
+        p('使用网站代表你接受这些条款；如果不接受，请不要使用工具。')),
+      s('local', '本地处理', '本地运行不等于魔法',
+        p('受支持的文件操作会尽量在浏览器内完成。ViewExif 不提供云存储、备份、恢复，也不保存你检查过哪些文件。'),
+        p('请保留原文件。在删除任何内容，或把结果用于法律、调查、存档、医疗、财务和安全关键场景前，先检查清理后的副本。')),
+      s('responsibility', '你的责任', '只处理你有权处理的文件',
+        p('你需要为打开的文件、必要的权利与许可、自己得出的结论以及结果分享方式负责。'),
+        p('不要只因为 ViewExif 指南提供了外链，就把机密材料交给第三方。寻求支持前，请先遮挡私人信息。')),
+      s('acceptable-use', '可接受使用', '别把隐私工具变成别人的麻烦',
+        p('不得使用 ViewExif 违法、侵犯知识产权或隐私权、在没有合法依据时跟踪或识别人、绕过访问控制、传播恶意软件、压垮服务，或把修改过的证据冒充为真实内容。'),
+        p('自动访问必须保持合理，不能干扰网站，也不能伪造广告展示、点击或真人活动。')),
+      s('ownership', '权利归属', '网站内容与你的文件',
+        p('你继续拥有自己原本享有的文件权利。文件在浏览器里被处理，不代表 ViewExif 对它主张所有权。'),
+        p('ViewExif 名称、原创设计、代码和文字受相应权利保护。第三方依赖库、商标和所提服务归各自权利人所有，并沿用各自许可。')),
+      s('third-parties', '第三方', '有些部件按自己的规则运行',
+        p('网站依赖浏览器 API、第三方库、统计、托管和外部链接。它们的可用性与行为并不完全受运营者控制。'),
+        p('提供链接不代表背书、合作或保证。向第三方发送数据前，请先阅读对方的条款与隐私说明。')),
+      s('availability', '可用性', '不承诺永远在线或结果完美',
+        p('ViewExif 按当前可用状态提供。运营者不承诺网站不中断、支持每个文件、完整提取或彻底清理，也不保证结果适合某个特定用途。'),
+        p('元数据标准会互相打架，损坏文件会有奇怪表现，软件也在变化。重要结果请用另一款合适工具或请专业人士复核。')),
+      s('liability', '责任边界', '让风险和工具能力匹配',
+        p('在适用法律允许的范围内，运营者不对间接损失、数据丢失、利润损失，或完全依赖 ViewExif 结果作出的决定负责。法律不允许排除的权利和责任不受这段文字影响。'),
+        p('这些条款不会指定一个编造出来的管辖地。对你和运营者具有强制效力的法律仍然适用。')),
+      s('changes', '变更', '更新与联系',
+        p('工具和条款可能变化。重大变更会在本页写上新的生效日期；发布后继续使用，即代表修订版从该日期起适用。'),
+        p(`条款问题或滥用报告请发送到 ${SITE_CONTACT_EMAIL}。`, [link(SITE_CONTACT_EMAIL, contactHref)])),
+    ],
+  },
+} satisfies Record<Locale, LegalCopy>;
 
 const about = aboutCopy[locale];
 const privacy = privacyCopy[locale];
-const meta = kind === 'about' ? about : privacy;
-const sectionIds = ['processing', 'memory', 'analytics', 'cookies', 'limits'];
+const terms = termsCopy[locale];
+const contact = contactCopy[locale];
+const meta = kind === 'about' ? about : kind === 'privacy' ? privacy : kind === 'terms' ? terms : contact;
+const legal = kind === 'privacy' ? privacy : terms;
 ---
 <BaseLayout title={meta.title} description={meta.description} path={path} locale={locale} translated>
-  {kind === 'about' ? <article class="content-page">
-    <header><span class="eyebrow">{about.eyebrow}</span><h1>{about.heading}</h1><p>{about.intro}</p></header>
+  {kind === 'about' ? <article class="content-page content-page-about">
+    <header>
+      <span class="eyebrow">{about.eyebrow}</span>
+      <h1>{about.heading}</h1>
+      <p>{about.intro}</p>
+    </header>
     <div class="manifesto">{about.principles.map((item, index) => <div><span>{String(index + 1).padStart(2, '0')}</span><h2>{item[0]}</h2><p>{item[1]}</p></div>)}</div>
-    <section class="about-tools"><span class="section-index">{about.toolkit}</span><h2>{about.toolsTitle}</h2><p>{about.toolsText}</p><div class="button-row"><a class="button button-primary" href={localizePath('/metadata-viewer/', locale)}>{about.inspect}</a><a class="button button-secondary" href={localizePath('/metadata-remover/', locale)}>{about.clean}</a></div></section>
-  </article> : <article class="content-page">
-    <header><span class="eyebrow">{privacy.eyebrow}</span><h1>{privacy.heading}</h1><p>{privacy.intro}</p></header>
-    <div class="content-grid"><nav>{privacy.nav.map((label, index) => <a href={`#${sectionIds[index]}`}>{label}</a>)}</nav><div>{privacy.sections.map((section, index) => <section id={sectionIds[index]}><span class="section-index">{String(index + 1).padStart(2, '0')}</span><h2>{section[0]}</h2><p>{section[1]}</p>{section[2] && <p>{section[2]}</p>}</section>)}</div></div>
+    <section class="operator-statement">
+      <span class="section-index">{about.operatorLabel}</span>
+      <h2>{about.operatorTitle}</h2>
+      <p>{about.operatorText}</p>
+      <a class="operator-email" href={contactHref}>{SITE_CONTACT_EMAIL}</a>
+      <div class="text-link-row"><a href={localizePath('/contact/', locale)}>{about.contact}</a><a href={localizePath('/privacy/', locale)}>{about.privacy}</a><a href={localizePath('/terms/', locale)}>{about.terms}</a></div>
+    </section>
+    <section class="about-tools">
+      <span class="section-index">{about.toolkit}</span><h2>{about.toolsTitle}</h2><p>{about.toolsText}</p>
+      <div class="button-row"><a class="button button-primary" href={localizePath('/metadata-viewer/', locale)}>{about.inspect}</a><a class="button button-secondary" href={localizePath('/metadata-remover/', locale)}>{about.clean}</a></div>
+    </section>
+  </article> : kind === 'contact' ? <article class="content-page content-page-contact">
+    <header>
+      <span class="eyebrow">{contact.eyebrow}</span>
+      <h1>{contact.heading}</h1>
+      <p>{contact.intro}</p>
+    </header>
+    <div class="contact-ledger">
+      <section class="contact-mail"><span class="section-index">{contact.emailLabel}</span><h2>{contact.emailTitle}</h2><p>{contact.emailText}</p><a class="button button-primary contact-email" href={contactHref}>{contact.emailButton}</a></section>
+      <section class="contact-checklist"><span class="section-index">{contact.beforeLabel}</span><h2>{contact.beforeTitle}</h2><ol>{contact.beforeItems.map((item, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{item}</p></li>)}</ol></section>
+      <section class="contact-no-form"><h2>{contact.noFormTitle}</h2><p>{contact.noFormText}</p></section>
+      <section class="contact-context"><span class="section-index">{contact.linksLabel}</span><h2>{contact.linksTitle}</h2><div class="text-link-row"><a href={localizePath('/about/', locale)}>{contact.about}</a><a href={localizePath('/privacy/', locale)}>{contact.privacy}</a><a href={localizePath('/terms/', locale)}>{contact.terms}</a></div></section>
+    </div>
+  </article> : <article class:list={['content-page', `content-page-${kind}`]}>
+    <header>
+      <span class="eyebrow">{legal.eyebrow}</span>
+      <h1>{legal.heading}</h1>
+      <div class="legal-intro"><p>{legal.intro}</p><p class="policy-date"><strong>{legal.effectiveLabel}</strong><time datetime={POLICY_EFFECTIVE_DATE}>{POLICY_EFFECTIVE_DATE}</time></p></div>
+    </header>
+    <div class="content-grid legal-grid">
+      <nav aria-label={legal.navLabel}>{legal.sections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}</nav>
+      <div>{legal.sections.map((section, index) => <section id={section.id}>
+        <span class="section-index">{String(index + 1).padStart(2, '0')}</span><h2>{section.title}</h2>
+        {section.paragraphs.map((paragraph) => <p>{paragraph.text}{paragraph.links?.length ? <span class="inline-links">{paragraph.links.map((item) => <a href={item.href} rel={item.href.startsWith('http') ? 'external' : undefined}>{item.label}</a>)}</span> : null}</p>)}
+      </section>)}</div>
+    </div>
+    <aside class="policy-operator"><strong>{SITE_BRAND}</strong><p>{legal.operatorNote}</p><a href={contactHref}>{SITE_CONTACT_EMAIL}</a></aside>
   </article>}
 </BaseLayout>

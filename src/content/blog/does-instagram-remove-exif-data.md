@@ -11,8 +11,7 @@ tags:
 publishedAt: 2026-08-11
 updatedAt: 2026-08-11
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/does-instagram-remove-exif-data.webp"
 coverAlt: "Hands browsing an Instagram photo grid on a smartphone in front of a computer"
 practicalTake:

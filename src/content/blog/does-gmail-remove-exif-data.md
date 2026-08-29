@@ -11,8 +11,7 @@ tags:
 publishedAt: 2026-08-15
 updatedAt: 2026-08-15
 featured: false
-author: "ViewExif Editorial Team"
-reviewedBy: "ViewExif Product Engineering"
+author: "ViewExif"
 cover: "../../assets/blog/does-gmail-remove-exif-data.webp"
 coverAlt: "A black laptop and smartphone on a bright white desk prepared for sending an email attachment"
 practicalTake:
@@ -31,9 +30,9 @@ faqs:
   - question: "Does renaming a photo remove its EXIF data?"
     answer: "No. Renaming changes the filename, while EXIF remains stored inside the image. You need to remove or rewrite those embedded fields separately."
 related:
+  - how-to-view-pdf-metadata
   - does-telegram-remove-exif-data
   - does-whatsapp-remove-exif-data
-  - does-discord-remove-exif-data
 ---
 
 Does Gmail remove EXIF data? No, not from a normal photo attachment. Gmail usually delivers the file with the metadata it already contains, which may include GPS coordinates, the camera model, capture time, lens details, an author name, and editing software.

@@ -82,10 +82,6 @@ const schemas = [
           <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
           <span><small>Written by</small><strong>{post.data.author}</strong></span>
         </div>
-        <div class="blog-byline__person blog-byline__person--review">
-          <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span><small>Technical review</small><strong>{post.data.reviewedBy}</strong></span>
-        </div>
         <div class="blog-byline__date">
           <span>Last edited <time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></span>
           <small>{minutes} min read</small>
