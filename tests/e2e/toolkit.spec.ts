@@ -626,6 +626,44 @@ test('image metadata viewer keeps its URL signals while adding photo-focused gui
   await expect(page.locator('.report-drop-copy')).toContainText(/PNG.*JPG.*JPEG.*WebP.*HEIC.*TIFF.*GIF/i);
 });
 
+test('image metadata remover keeps URL signals while explaining EXIF cleanup', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/image-metadata-remover/');
+
+  await expect(page).toHaveTitle('Image Metadata Remover – Remove EXIF, GPS & Photo Metadata | ViewExif');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', 'Remove EXIF, GPS, camera information, XMP, IPTC, timestamps and other hidden photo metadata directly in your browser without uploading your image.');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/image-metadata-remover/');
+  await expect(page.locator('main h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Image Metadata Remover');
+  await expect(page.locator('.tool-hero .eyebrow')).toHaveText('Local image processing · no upload');
+  await expect(page.locator('.tool-hero-proof')).toContainText('No re-encoding');
+  await expect(page.locator('.tool-hero-proof')).toContainText('Inspect → Remove → Verify');
+  await expect(page.getByRole('heading', { name: 'What photo metadata can be removed?' })).toBeVisible();
+  await expect(page.locator('.image-remover-groups article')).toHaveCount(4);
+  await expect(page.getByRole('heading', { name: 'Why remove image metadata?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to remove metadata from an image' })).toBeVisible();
+  await expect(page.locator('.format-guide-process .home-process-list li')).toHaveCount(4);
+  for (const question of ['How do I remove metadata from an image?', 'Can I remove EXIF and GPS from a photo?', 'Does removing metadata reduce image quality?', 'Can all photo metadata be removed?', 'Is my image uploaded?']) {
+    await expect(page.getByRole('heading', { name: question })).toBeVisible();
+  }
+  const relatedTools = page.locator('.related-tools');
+  await expect(page.getByRole('heading', { name: 'Related image tools' })).toBeVisible();
+  for (const [name, href] of [['Image Metadata Viewer', '/image-metadata-viewer/'], ['Image Privacy Checker', '/image-privacy-checker/'], ['Metadata Remover', '/metadata-remover/']] as const) {
+    await expect(relatedTools.getByRole('link', { name })).toHaveAttribute('href', href);
+  }
+  const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
+  expect(faqSchema.mainEntity).toHaveLength(10);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  const mobileGroups = await page.locator('.image-remover-groups article').evaluateAll((articles) => articles.map((article) => {
+    const rect = article.getBoundingClientRect();
+    return { x: rect.x, y: rect.y };
+  }));
+  expect(new Set(mobileGroups.map((group) => group.x)).size).toBe(1);
+  expect(mobileGroups[1]!.y).toBeGreaterThan(mobileGroups[0]!.y);
+});
+
 test('home image report puts an EXIF Summary before the full metadata ledger', async ({ page }) => {
   await page.goto('/');
   await upload(page, 'photo.png', png([

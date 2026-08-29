@@ -1848,6 +1848,9 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
   .video-metadata-remover-page .tool-hero-proof { margin-top: .55rem; font-size: .61rem; }
   .metadata-remover-page .tool-hero { padding-block: .4rem .7rem; }
   .metadata-remover-page .tool-hero-copy > p { font-size: .82rem; line-height: 1.28; }
+  .image-metadata-remover-page .tool-hero { padding-block: .4rem .7rem; }
+  .image-metadata-remover-page .tool-hero-copy > p { font-size: .82rem; line-height: 1.28; }
+  .image-metadata-remover-page .tool-hero-proof { margin-top: .55rem; font-size: .61rem; }
   .tool-hero { grid-template-columns: 42px minmax(0,1fr); gap: .8rem; padding-block: .85rem 1.15rem; }
   .tool-hero-icon { width: 39px; height: 39px; box-shadow: 3px 3px 0 var(--ink); }
   .tool-hero h1 { margin-top: .2rem; font-size: clamp(2.35rem,11vw,3.25rem); }

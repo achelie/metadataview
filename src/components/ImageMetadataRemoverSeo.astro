@@ -1,0 +1,22 @@
+---
+const cleanupGroups = [
+  ['EXIF', 'Remove writable EXIF records, including camera / lens information and device or serial details when the file exposes them.'],
+  ['GPS location & timestamps', 'Clear stored coordinates and capture timestamps so a shared copy does not carry the original place or time when those fields are writable.'],
+  ['XMP & IPTC', 'Target XMP, IPTC, captions, author, copyright, and other descriptive photo fields without changing the visible image.'],
+  ['Comments, software & editing', 'Remove comments, software names, and editing information that can reveal how the image was created or processed.'],
+];
+---
+
+<section class="image-remover-seo metadata-remover-seo" aria-labelledby="image-remover-scope-title">
+  <span class="section-index metadata-remover-seo-index">PHOTO CLEANUP</span>
+  <div class="metadata-remover-seo-body">
+    <header class="metadata-remover-seo-heading">
+      <h2 id="image-remover-scope-title">What photo metadata can be removed?</h2>
+      <p>Inspect the source, remove supported writable fields, then verify the new copy. ViewExif works locally and reports what was removed, preserved, or still present instead of promising that every tag can disappear.</p>
+      <p class="remover-flow-line"><strong>Inspect</strong><span aria-hidden="true">→</span><strong>Remove</strong><span aria-hidden="true">→</span><strong>Verify</strong></p>
+    </header>
+    <div class="metadata-remover-groups image-remover-groups">
+      {cleanupGroups.map(([name, description]) => <article><h3>{name}</h3><p>{description}</p></article>)}
+    </div>
+  </div>
+</section>
