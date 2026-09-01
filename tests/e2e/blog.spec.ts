@@ -58,6 +58,9 @@ const ANDROID_EXIF_SEO_TITLE = 'How to View EXIF Data on Android: Photos, GPS, a
 const PHOTO_DATE_PATH = '/blog/how-to-tell-when-a-photo-was-taken/';
 const PHOTO_DATE_TITLE = 'How to Tell When a Photo Was Taken';
 const PHOTO_DATE_SEO_TITLE = 'How to Tell When a Photo Was Taken Using EXIF Dates | ViewExif';
+const MAC_PHOTO_METADATA_PATH = '/blog/how-to-view-photo-metadata-on-mac/';
+const MAC_PHOTO_METADATA_TITLE = 'How to View Photo Metadata on Mac';
+const MAC_PHOTO_METADATA_SEO_TITLE = 'How to View Photo Metadata on Mac: EXIF, GPS & Dates | ViewExif';
 
 async function assertNoHorizontalOverflow(page: Page) {
   const overflow = await page.evaluate(() => ({
@@ -91,8 +94,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: EXIF_VS_METADATA_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: PDF_METADATA_TITLE, exact: true })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: PDF_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(1);
-  await expect(page.getByRole('link', { name: PDF_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', PDF_METADATA_REMOVAL_PATH);
+  await expect(page.getByRole('link', { name: PDF_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: WORD_METADATA_REMOVAL_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: WORD_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', WORD_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: XMP_METADATA_TITLE, exact: true })).toHaveCount(1);
@@ -103,10 +105,12 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.getByRole('link', { name: ANDROID_EXIF_TITLE, exact: true })).toHaveAttribute('href', ANDROID_EXIF_PATH);
   await expect(page.getByRole('link', { name: PHOTO_DATE_TITLE, exact: true })).toHaveCount(1);
   await expect(page.getByRole('link', { name: PHOTO_DATE_TITLE, exact: true })).toHaveAttribute('href', PHOTO_DATE_PATH);
+  await expect(page.getByRole('link', { name: MAC_PHOTO_METADATA_TITLE, exact: true })).toHaveCount(1);
+  await expect(page.getByRole('link', { name: MAC_PHOTO_METADATA_TITLE, exact: true })).toHaveAttribute('href', MAC_PHOTO_METADATA_PATH);
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
   await expect(page.locator('.blog-latest .blog-post-card__media img')).toHaveCount(6);
-  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /how-to-tell-when-a-photo-was-taken/);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([PHOTO_DATE_TITLE, ANDROID_EXIF_TITLE, CHECK_IMAGE_METADATA_TITLE, XMP_METADATA_TITLE, WORD_METADATA_REMOVAL_TITLE, PDF_METADATA_REMOVAL_TITLE]);
+  await expect(page.locator('.blog-latest .blog-post-card__media img').first()).toHaveAttribute('src', /how-to-view-photo-metadata-on-mac/);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([MAC_PHOTO_METADATA_TITLE, PHOTO_DATE_TITLE, ANDROID_EXIF_TITLE, CHECK_IMAGE_METADATA_TITLE, XMP_METADATA_TITLE, WORD_METADATA_REMOVAL_TITLE]);
   await expect(page.getByText('Page 1 of 4', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-pagination')).toBeVisible();
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('1');
@@ -120,7 +124,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
-  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([PHOTO_DATE_TITLE, ANDROID_EXIF_TITLE, CHECK_IMAGE_METADATA_TITLE, XMP_METADATA_TITLE, WORD_METADATA_REMOVAL_TITLE, PDF_METADATA_REMOVAL_TITLE, MP3_METADATA_REMOVAL_TITLE, MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE, PHOTO_LOCATION_TITLE, IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
+  expect(collection.mainEntity.itemListElement.map((item: { name: string }) => item.name)).toEqual([MAC_PHOTO_METADATA_TITLE, PHOTO_DATE_TITLE, ANDROID_EXIF_TITLE, CHECK_IMAGE_METADATA_TITLE, XMP_METADATA_TITLE, WORD_METADATA_REMOVAL_TITLE, PDF_METADATA_REMOVAL_TITLE, MP3_METADATA_REMOVAL_TITLE, MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE, PHOTO_LOCATION_TITLE, IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE, ARTICLE_TITLE]);
   await assertNoHorizontalOverflow(page);
 });
 
@@ -130,12 +134,13 @@ test('regular guides continue on the second blog page without duplication', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Latest metadata guides.' })).toBeVisible();
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 2 of 4.');
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
+  await expect(page.getByRole('link', { name: PDF_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', PDF_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: MP3_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', MP3_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: MP4_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', MP4_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: PHOTO_METADATA_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', PHOTO_METADATA_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: PDF_METADATA_TITLE, exact: true })).toHaveAttribute('href', PDF_METADATA_PATH);
   await expect(page.getByRole('link', { name: EXIF_VS_METADATA_TITLE, exact: true })).toHaveAttribute('href', EXIF_VS_METADATA_PATH);
-  await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveAttribute('href', PHOTO_LOCATION_PATH);
+  await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: GMAIL_TITLE, exact: true })).toHaveCount(0);
@@ -144,7 +149,7 @@ test('regular guides continue on the second blog page without duplication', asyn
   await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(0);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([MP3_METADATA_REMOVAL_TITLE, MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE, PHOTO_LOCATION_TITLE]);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([PDF_METADATA_REMOVAL_TITLE, MP3_METADATA_REMOVAL_TITLE, MP4_METADATA_REMOVAL_TITLE, PHOTO_METADATA_REMOVAL_TITLE, PDF_METADATA_TITLE, EXIF_VS_METADATA_TITLE]);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('2');
   await expect(page.locator('.blog-pagination a[href="/blog/"]')).toHaveText('1');
   await expect(page.locator('.blog-pagination a[href="/blog/page/3/"]')).toHaveText('3');
@@ -157,15 +162,16 @@ test('six more regular guides continue on the third blog page', async ({ page })
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/blog/page/3/');
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 3 of 4.');
   await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(6);
+  await expect(page.getByRole('link', { name: PHOTO_LOCATION_TITLE, exact: true })).toHaveAttribute('href', PHOTO_LOCATION_PATH);
   await expect(page.getByRole('link', { name: IPHONE_EXIF_TITLE, exact: true })).toHaveAttribute('href', IPHONE_EXIF_PATH);
   await expect(page.getByRole('link', { name: EXIF_DATA_TITLE, exact: true })).toHaveAttribute('href', EXIF_DATA_PATH);
   await expect(page.getByRole('link', { name: GPS_REMOVAL_TITLE, exact: true })).toHaveAttribute('href', GPS_REMOVAL_PATH);
   await expect(page.getByRole('link', { name: GMAIL_TITLE, exact: true })).toHaveAttribute('href', GMAIL_PATH);
   await expect(page.getByRole('link', { name: REDDIT_TITLE, exact: true })).toHaveAttribute('href', REDDIT_PATH);
-  await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
+  await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveCount(0);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveCount(0);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE, TELEGRAM_TITLE]);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([PHOTO_LOCATION_TITLE, IPHONE_EXIF_TITLE, EXIF_DATA_TITLE, GPS_REMOVAL_TITLE, GMAIL_TITLE, REDDIT_TITLE]);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('3');
   await expect(page.locator('.blog-pagination a[href="/blog/"]')).toHaveText('1');
   await expect(page.locator('.blog-pagination a[href="/blog/page/2/"]')).toHaveText('2');
@@ -173,15 +179,16 @@ test('six more regular guides continue on the third blog page', async ({ page })
   await assertNoHorizontalOverflow(page);
 });
 
-test('the three oldest regular guides continue on the fourth blog page', async ({ page }) => {
+test('the four oldest regular guides continue on the fourth blog page', async ({ page }) => {
   await page.goto('/blog/page/4/');
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://www.viewexif.com/blog/page/4/');
   await expect(page.locator('.blog-index__header > p')).toContainText('Page 4 of 4.');
-  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(3);
+  await expect(page.locator('.blog-latest .blog-post-card')).toHaveCount(4);
+  await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
   await expect(page.getByRole('link', { name: DISCORD_TITLE, exact: true })).toHaveAttribute('href', DISCORD_PATH);
   await expect(page.getByRole('link', { name: INSTAGRAM_TITLE, exact: true })).toHaveAttribute('href', INSTAGRAM_PATH);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
-  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE]);
+  expect(await page.locator('.blog-latest .blog-post-card h2 a').allTextContents()).toEqual([TELEGRAM_TITLE, DISCORD_TITLE, INSTAGRAM_TITLE, WHATSAPP_TITLE]);
   await expect(page.locator('.blog-pagination [aria-current="page"]')).toHaveText('4');
   await assertNoHorizontalOverflow(page);
 });
@@ -1290,6 +1297,56 @@ test('photo date guide exposes canonical, article metadata, and matching FAQ sch
   expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
 });
 
+test('Mac photo metadata guide explains Finder, Preview, Photos, and complete-file inspection', async ({ page }) => {
+  await page.goto(MAC_PHOTO_METADATA_PATH);
+  await expect(page).toHaveTitle(MAC_PHOTO_METADATA_SEO_TITLE);
+  await expect(page.getByRole('heading', { level: 1, name: MAC_PHOTO_METADATA_TITLE })).toBeVisible();
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-01/);
+  await expect(page.locator('.blog-byline__date small')).toHaveText(/[4-7] min read/);
+  await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /MacBook.*camera.*photo metadata/i);
+  const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
+  expect(coverRatio).toBeGreaterThan(1.88);
+  expect(coverRatio).toBeLessThan(1.92);
+  await expect(page.locator('.practical-take li')).toHaveCount(3);
+  await expect(page.locator('.blog-toc nav a')).toHaveCount(10);
+  await expect(page.locator('.blog-prose > p').first()).toContainText('To view photo metadata on a Mac');
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you view photo metadata in Finder?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you inspect EXIF data in Preview?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Why can Photos and Finder show different details?' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'How do you check the complete original file?' })).toBeVisible();
+  await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(5);
+  await expect(page.locator('.blog-faq article')).toHaveCount(5);
+  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(3);
+  await expect(page.locator('.blog-sources')).toHaveCount(0);
+  await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Image Metadata Viewer', exact: true }).first()).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: 'Image Privacy Checker', exact: true }).first()).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(page.getByRole('link', { name: 'Image Metadata Remover', exact: true }).first()).toHaveAttribute('href', '/image-metadata-remover/');
+  const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
+  expect(sectionAnswers).toHaveLength(9);
+  expect(sectionAnswers.every((answer) => answer.trim().length > 20 && answer.trim().length < 180)).toBe(true);
+});
+
+test('Mac photo metadata guide exposes canonical, article metadata, and matching FAQ schema', async ({ page }) => {
+  await page.goto(MAC_PHOTO_METADATA_PATH);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${MAC_PHOTO_METADATA_PATH}`);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /view photo metadata on Mac.*Finder.*Preview.*Photos/i);
+  await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', MAC_PHOTO_METADATA_SEO_TITLE);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /^https:\/\/www\.viewexif\.com\/(?:_astro\/|@fs\/)/);
+  const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
+  const posting = schemas.find((schema) => schema['@type'] === 'BlogPosting');
+  const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
+  expect(posting.headline).toBe(MAC_PHOTO_METADATA_TITLE);
+  expect(posting.author.name).toBe('ViewExif');
+  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting.keywords).toContain('How to View Photo Metadata on Mac');
+  expect(posting.keywords).toContain('Mac photo metadata');
+  expect(faq.mainEntity).toHaveLength(5);
+  const visibleQuestions = await page.locator('.blog-faq h3').allTextContents();
+  expect(faq.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(visibleQuestions);
+});
+
 const relatedGuides = [
   { path: ARTICLE_PATH, expected: [EXIF_VS_METADATA_PATH, WHATSAPP_PATH, INSTAGRAM_PATH] },
   { path: WHATSAPP_PATH, expected: [INSTAGRAM_PATH, TELEGRAM_PATH, DISCORD_PATH] },
@@ -1313,6 +1370,7 @@ const relatedGuides = [
   { path: CHECK_IMAGE_METADATA_PATH, expected: [EXIF_DATA_PATH, IPHONE_EXIF_PATH, PHOTO_METADATA_REMOVAL_PATH] },
   { path: ANDROID_EXIF_PATH, expected: [IPHONE_EXIF_PATH, CHECK_IMAGE_METADATA_PATH, GPS_REMOVAL_PATH] },
   { path: PHOTO_DATE_PATH, expected: [EXIF_DATA_PATH, CHECK_IMAGE_METADATA_PATH, ANDROID_EXIF_PATH] },
+  { path: MAC_PHOTO_METADATA_PATH, expected: [CHECK_IMAGE_METADATA_PATH, PHOTO_DATE_PATH, IPHONE_EXIF_PATH] },
 ];
 
 for (const guide of relatedGuides) {
@@ -1348,6 +1406,7 @@ for (const article of [
   { path: CHECK_IMAGE_METADATA_PATH, title: CHECK_IMAGE_METADATA_TITLE, label: 'image metadata checking' },
   { path: ANDROID_EXIF_PATH, title: ANDROID_EXIF_TITLE, label: 'Android EXIF' },
   { path: PHOTO_DATE_PATH, title: PHOTO_DATE_TITLE, label: 'photo date' },
+  { path: MAC_PHOTO_METADATA_PATH, title: MAC_PHOTO_METADATA_TITLE, label: 'Mac photo metadata' },
 ]) {
   for (const viewport of [{ width: 390, height: 844 }, { width: 239, height: 844 }]) {
     test(`${article.label} article stays readable at ${viewport.width}px`, async ({ page }) => {
