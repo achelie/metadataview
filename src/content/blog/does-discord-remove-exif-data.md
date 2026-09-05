@@ -9,7 +9,7 @@ tags:
   - GPS metadata
   - attachment privacy
 publishedAt: 2026-08-12
-updatedAt: 2026-08-12
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-discord-remove-exif-data.webp"
@@ -22,7 +22,7 @@ faqs:
   - question: "Does Discord remove GPS from images?"
     answer: "Discord normally removes embedded GPS coordinates from uploaded JPEG photos. If the location matters, clean the file yourself and check the downloaded attachment rather than relying on that normal behavior."
   - question: "Does Discord remove metadata from videos?"
-    answer: "Current user tests say new video uploads are sanitized, but Discord had a confirmed video location leak in 2020. Old uploads and unusual formats deserve a fresh check."
+    answer: "Historical community reports describe changes to video handling, not a current guarantee. Inspect the actual downloaded video and clean sensitive fields before uploading."
   - question: "Does Discord remove or change filenames?"
     answer: "A filename is not EXIF. Discord may display or alter it depending on the client and upload route, so rename files that contain a real name, project title, or private note."
   - question: "Does uploading an image as a file preserve EXIF?"
@@ -35,13 +35,11 @@ related:
   - does-instagram-remove-exif-data
 ---
 
-Does Discord remove EXIF data? Usually, yes, when you upload an ordinary photo. The copy served by Discord normally loses camera details, capture time, and GPS coordinates. That does not cover every format, every old attachment, or everything people can learn from the picture.
+Discord photo downloads have lost camera EXIF and GPS in historical user reports. Those reports are not a current field-by-field guarantee, especially for older attachments, alternate download routes and video. Inspect the exact saved attachment before relying on its metadata.
 
 The original in your camera roll is not cleaned. Discord processes a separate upload, so deleting the attachment later does nothing to the file on your phone.
 
 ## Does Discord remove EXIF data from photos?
-
-Yes. A JPEG photo uploaded to Discord normally arrives without its original EXIF block.
 
 That matches a [2024 r/discordapp test](https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/) where the poster downloaded images from a chat and could not find the location or date fields. Other users reported the same result for photos and said newer video uploads were also being cleaned.
 
@@ -104,6 +102,12 @@ Send the file to a private test channel, download the attachment, and inspect th
 Open it in the [Image Metadata Viewer](/image-metadata-viewer/) and search for `GPS`, `Location`, `DateTimeOriginal`, `Make`, `Model`, `Artist`, `Comment`, and `Software`. The [Image Privacy Checker](/image-privacy-checker/) groups fields that may deserve attention.
 
 Check the final route you plan to use. A JPEG preview, a PNG attachment, and a video do not necessarily pass through the same processing. Repeat the test after a major app change if the file is sensitive.
+
+## How much can the historical reports tell you?
+
+The community reports cited here describe particular upload routes and dates. They are useful warnings about differences between JPEG, PNG and video, but they are not current certification of Discord's media pipeline. In particular, a claimed fix for newer uploads does not establish the contents of an older attachment.
+
+When inspecting an existing post, distinguish the displayed preview from the file obtained through the attachment download. Read the saved file's format and metadata. If it is an archive, inspect the contained file separately. For a new post, clean the source before upload; avoid treating a claim about JPEG EXIF as a promise about video telemetry or PNG text.
 
 ## How do you remove metadata before Discord?
 

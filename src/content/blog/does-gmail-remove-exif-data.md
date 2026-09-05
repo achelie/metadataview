@@ -9,7 +9,7 @@ tags:
   - email attachments
   - image privacy
 publishedAt: 2026-08-15
-updatedAt: 2026-08-15
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-gmail-remove-exif-data.webp"
@@ -42,8 +42,6 @@ Gmail behaves differently from Instagram, Reddit, or a chat app that routinely r
 The sending route still matters. A photo added with the paperclip is not quite the same workflow as an image pasted into the message, shared from Google Photos, or replaced with a Drive link. Check the exact file you plan to send instead of trusting the Gmail preview.
 
 ## Does Gmail remove EXIF from photo attachments?
-
-No. A photo added as a regular Gmail attachment normally reaches the recipient with its embedded EXIF unchanged.
 
 A [Gmail Help Community test](https://support.google.com/mail/thread/122174064/image-file-tags-and-metadata-in-gmail?hl=en) compared a downloaded attachment with the source and found the files were byte for byte identical. The same discussion says Gmail sends attached and embedded image files unaltered. That is a community product expert's test, not a formal promise for every future Gmail client, but it matches how ordinary email attachments are supposed to work.
 
@@ -103,6 +101,12 @@ Download the attachment from a receiving account and compare that copy with the 
 Open both in the [Image Metadata Viewer](/image-metadata-viewer/) and compare the SHA-256 value, file size, dimensions, MIME type, and metadata fields. Matching hashes mean the bytes match. Different hashes mean some step changed the file, so inspect the differences rather than assuming the change improved privacy.
 
 The [Image Privacy Checker](/image-privacy-checker/) gives a shorter view of GPS, names, device IDs, editing history, and embedded previews. Use an ordinary test photo for route testing. Sending a genuinely sensitive original to yourself still gives Gmail that original.
+
+## Attachment privacy and message privacy are separate
+
+The attachment contains one set of records; the email contains another. Clearing image GPS or an author tag does not change the sender address, recipients, subject, message time or quoted conversation. Review both before sending a sensitive attachment.
+
+In the compose window, confirm that the attachment is the cleaned filename you intended. A thumbnail is insufficient because the original and cleaned image can look the same. When using a Drive link, check access permissions as well as the hosted file. Neither an inline preview nor a new download date proves that embedded fields were removed. Google documents attachment handling, but the cited community comparison does not establish a permanent metadata-retention guarantee.
 
 ## Should you remove metadata before attaching a photo?
 

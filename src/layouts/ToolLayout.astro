@@ -14,6 +14,7 @@ import MetadataRemovalWorkbench from '../components/MetadataRemovalWorkbench';
 import C2paWorkbench from '../components/C2paWorkbench';
 import C2paEducation from '../components/C2paEducation.astro';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
+import ResultReadingGuide from '../components/ResultReadingGuide.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
 import type { FormatGuide } from '../content/tools';
@@ -62,6 +63,7 @@ const schemas = [
     <nav class="breadcrumbs" aria-label={t('Breadcrumb', '面包屑导航', 'Brotkrümelnavigation', 'Fil d’Ariane')}><a href={localizePath('/', locale)}>{t('Home', '首页', 'Startseite', 'Accueil')}</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} proof={props.heroProof} locale={locale} />
     {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" locale={locale} scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load locale={locale} /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load locale={locale} scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load locale={locale} formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load locale={locale} mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    <ResultReadingGuide locale={locale} path={props.path} kind={props.productionC2paViewer ? 'c2pa' : props.productionPrivacyChecker ? 'privacy' : props.productionMetadataRemover ? 'remover' : 'viewer'} />
     {props.productionC2paViewer ? <C2paEducation locale={locale} faqs={visibleFaqs} /> : <>
       {isImageSeoPage && <ImageMetadataSeo />}
       {isVideoSeoPage && <VideoMetadataSeo />}

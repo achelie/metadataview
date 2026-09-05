@@ -10,7 +10,7 @@ tags:
   - photo metadata
   - file metadata
 publishedAt: 2026-08-21
-updatedAt: 2026-08-21
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/exif-vs-metadata.webp"
@@ -38,11 +38,7 @@ related:
 
 EXIF is one type of metadata, while metadata is the wider name for information about a file. EXIF usually holds camera details such as the model, lens, exposure settings, capture time, orientation, and sometimes GPS. Other metadata can include captions, copyright, editing history, color profiles, file dates, and details stored by a photo app rather than inside the image.
 
-The short version is simple: all EXIF is metadata, but not all metadata is EXIF.
-
 ## What is the difference between EXIF and metadata?
-
-Metadata is the umbrella term. EXIF is one standard under that umbrella, built mainly for camera and image information.
 
 Suppose a JPEG shows a birthday cake. Its EXIF might say the photo came from an iPhone 15, used ISO 200, and was captured at 7:42 p.m. Its other metadata might include a photographer credit in IPTC, an edit record in XMP, and a Display P3 color profile. Windows may then show a Created date for the copy you downloaded yesterday.
 
@@ -114,6 +110,12 @@ Open the original image in a viewer that separates readable EXIF from the full n
 Drop the file into the [Image Metadata Viewer](/image-metadata-viewer/). The readable report groups familiar camera, date, GPS, color, and authorship details. The native view shows the original field paths and sources, which helps when a value exists outside EXIF.
 
 Use the original or exported file you actually care about. A thumbnail, screenshot, chat preview, and downloaded copy can each have different metadata. Search the report for terms such as GPS, author, creator, software, comment, path, serial, and date rather than stopping at one section title.
+
+## One concept can exist in more than one family
+
+EXIF, IPTC and XMP are not mutually exclusive boxes for every concept. A creator, date or description can appear in more than one place, and an application may synchronize only some of those values. The same-looking label therefore does not guarantee the same source.
+
+When comparing reports, group values by both meaning and native path. When cleaning, search all readable groups for the unwanted value instead of clearing only the EXIF version. File-system timestamps and library records remain separate: changing embedded XMP does not automatically update a catalog, and changing a catalog does not prove the exported image changed.
 
 ## How do you remove metadata safely?
 

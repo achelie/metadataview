@@ -143,7 +143,7 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} is independently operated by an individual. Privacy questions go to ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Files', 'Your file is processed in this browser',
-        p('Supported files are read from browser memory. Parsing usually runs in a Web Worker; image cleanup uses browser decoding and Canvas re-encoding; C2PA verification loads its browser library only on the relevant tool page.'),
+        p('Supported files are read from browser memory. Parsing and format-specific metadata cleanup run locally, generally in Web Workers. Some image privacy workflows also use browser decoding and Canvas re-encoding; the result explains the operation used. C2PA verification loads its browser library only on the relevant tool page.'),
         p('Selected files, filenames, generated hashes, local paths, and extracted metadata values are not uploaded to a ViewExif server. They are not intentionally placed in analytics or future advertising requests.')),
       s('memory', 'Memory', 'Results are short-lived',
         p('The selected file and its result live in the current page session. ViewExif does not store them in local storage (localStorage), IndexedDB, a URL, or a Cookie. Refreshing or closing the tab clears that working state.'),
@@ -177,7 +177,7 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} wird unabhängig von einer Einzelperson betrieben. Datenschutzfragen gehen an ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Dateien', 'Deine Datei wird in diesem Browser verarbeitet',
-        p('Unterstützte Dateien werden aus dem Browserspeicher gelesen. Die Analyse läuft meist in einem Web Worker; die Bildbereinigung nutzt Browser-Decoding und Canvas-Neucodierung; C2PA lädt seine Browser-Bibliothek nur auf der passenden Werkzeugseite.'),
+        p('Unterstützte Dateien werden aus dem Browserspeicher gelesen. Analyse und formatspezifische Metadatenbereinigung laufen lokal, meist in Web Workern. Einige Bild-Datenschutzabläufe verwenden auch Browser-Decoding und Canvas-Neucodierung; das Ergebnis beschreibt den verwendeten Vorgang. C2PA lädt seine Bibliothek nur auf der passenden Werkzeugseite.'),
         p('Ausgewählte Dateien, Dateinamen, erzeugte Hashes, lokale Pfade und extrahierte Metadatenwerte werden nicht an einen ViewExif-Server hochgeladen. Sie werden auch nicht absichtlich in Analyse- oder künftige Werbeanfragen eingefügt.')),
       s('memory', 'Speicher', 'Ergebnisse bleiben nur kurz',
         p('Datei und Ergebnis existieren in der aktuellen Seitensitzung. ViewExif speichert sie nicht im lokalen Speicher (local storage oder localStorage), in IndexedDB, einer URL oder einem Cookie. Neuladen oder Schließen des Tabs löscht diesen Arbeitszustand.'),
@@ -211,7 +211,7 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} est exploité de façon indépendante par une personne. Les questions de confidentialité vont à ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Fichiers', 'Votre fichier est traité dans ce navigateur',
-        p('Les fichiers pris en charge sont lus depuis la mémoire du navigateur. L’analyse s’exécute généralement dans un Web Worker ; le nettoyage d’image utilise le décodage du navigateur et le réencodage Canvas ; C2PA charge sa bibliothèque uniquement sur la page concernée.'),
+        p('Les fichiers pris en charge sont lus depuis la mémoire du navigateur. L’analyse et le nettoyage des métadonnées selon le format s’exécutent localement, généralement dans des Web Workers. Certaines opérations de confidentialité des images utilisent aussi le décodage et le réencodage Canvas ; le résultat précise l’opération utilisée. C2PA charge sa bibliothèque uniquement sur la page concernée.'),
         p('Les fichiers choisis, noms de fichier, empreintes générées, chemins locaux et métadonnées extraites ne sont pas envoyés à un serveur ViewExif. Ils ne sont pas volontairement ajoutés aux requêtes de statistiques ou de publicité future.')),
       s('memory', 'Mémoire', 'Les résultats sont éphémères',
         p('Le fichier et son résultat vivent dans la session de la page. ViewExif ne les stocke ni dans local storage (localStorage), ni dans IndexedDB, ni dans une URL, ni dans un Cookie. Actualiser ou fermer l’onglet efface cet état de travail.'),
@@ -244,7 +244,7 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} 由个人独立运营。隐私问题请发到 ${SITE_CONTACT_EMAIL}。`,
     sections: [
       s('files', '文件', '文件只在这个浏览器里处理',
-        p('支持的文件从浏览器内存读取。解析通常在 Web Worker 中运行；图片清理使用浏览器解码和 Canvas 重新编码；C2PA 只在对应工具页加载浏览器库。'),
+        p('支持的文件从浏览器内存读取。解析和按格式处理的元数据清理都在本地完成，通常由 Web Worker 执行。部分图片隐私处理也会使用浏览器解码和 Canvas 重新编码，结果会说明采用的操作。C2PA 只在对应工具页加载浏览器库。'),
         p('你选择的文件、文件名、生成的哈希、本地路径和提取出的元数据值都不会上传到 ViewExif 服务器，也不会被有意放进统计请求或未来的广告请求。')),
       s('memory', '内存', '结果只短暂停留',
         p('文件和结果只存在于当前页面会话。ViewExif 不会把它们写进 local storage（localStorage）、IndexedDB、URL 或 Cookie。刷新或关闭标签页，工作状态就会消失。'),

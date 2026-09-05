@@ -80,7 +80,7 @@ const schemas = [
       <div class="blog-byline" aria-label="Article details">
         <div class="blog-byline__person">
           <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span><small>Written by</small><strong>{post.data.author}</strong></span>
+          <span><small>Written by</small><strong><a href="/about/" rel="author">{post.data.author}</a></strong></span>
         </div>
         <div class="blog-byline__date">
           <span>Last edited <time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></span>

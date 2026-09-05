@@ -9,7 +9,7 @@ tags:
   - image privacy
   - GPS metadata
 publishedAt: 2026-08-09
-updatedAt: 2026-08-09
+updatedAt: 2026-09-05
 featured: true
 author: "ViewExif"
 cover: "../../assets/blog/do-screenshots-have-metadata.webp"
@@ -115,6 +115,12 @@ You do not need to upload the screenshot to a server.
 4. Look at the screenshot at full size and check every visible corner yourself.
 
 The tools run in the current browser tab. They do not use OCR or face recognition, so the pixel check is still your job.
+
+## Which screenshot details travel with the file?
+
+Separate three places before deciding what to remove. Embedded PNG text, XMP or EXIF travels inside the image. A name such as a screenshot date travels as the filename unless renamed. A favorite marker, album or manually assigned place may exist only in the photo library.
+
+If a screenshot is a PDF, such as a full-page capture, inspect it as a document rather than assuming image rules apply. A cropped export is also a separate file: inspect the exported copy, including any preview fields the reader exposes. Technical dimensions and color information are expected; the useful decision is whether names, locations, comments or visible content should reach the recipient.
 
 ## How to make a cleaner copy
 

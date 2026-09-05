@@ -10,7 +10,7 @@ tags:
   - PDF properties
   - PDF author
 publishedAt: 2026-08-22
-updatedAt: 2026-08-22
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-view-pdf-metadata.webp"
@@ -116,6 +116,12 @@ The risk is easy to overlook because the pages can look anonymous. A resume expo
 Metadata inspection does not replace reading the document. Names, addresses, comments, attachments, form values, and revision artifacts may also exist in the PDF content or structure. ViewExif reports metadata and safe document facts; it does not claim to be a legal redaction or document forensics service.
 
 If you handle several file types, the [all-format Metadata Viewer](/metadata-viewer/) lets you check PDFs alongside Office documents, images, video, and audio without sending the files to a server.
+
+## Read conflicting PDF properties without choosing a winner
+
+A PDF can contain an Info Author value and an XMP creator value that differ. Record each with its source; the shorter properties panel may expose only one. Creator commonly names the source application, while Producer names software involved in writing the PDF, so neither should automatically be interpreted as a person's identity.
+
+If the PDF is encrypted or a block cannot be read, state that limitation before treating a blank report as absence. Keep the original, inspect accessible properties and use an authorized compatible reader when necessary. Metadata inspection does not replace validation of a PDF digital signature.
 
 ## How do you remove PDF metadata?
 

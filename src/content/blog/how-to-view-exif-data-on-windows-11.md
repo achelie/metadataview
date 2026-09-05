@@ -115,6 +115,12 @@ For location, search `GPSLatitude` and `GPSLongitude` and keep their north/south
 
 Use the [image metadata checking guide](/blog/how-to-check-metadata-of-an-image/) if you need help interpreting the other sections. A viewer can report stored coordinates, but it cannot recover an exact location from absent GPS tags.
 
+## Do not confuse the General and Details tabs
+
+The General tab describes the local file, including when that copy was created or modified on the current system. Details can expose selected embedded properties through the installed file handlers. A value absent from Details may still exist in another metadata group.
+
+If two viewers disagree, confirm they opened the same file and compare the field source. Do not install a codec or convert the image solely to make a date appear: conversion creates another file and can change the record. Use a reader that supports the original format, then distinguish a missing field from a failed read.
+
 ## How do you remove private details before sharing?
 
 Create a separate cleaned copy, then inspect that output to confirm which fields remain.

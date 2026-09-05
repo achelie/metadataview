@@ -10,7 +10,7 @@ tags:
   - EXIF data on Mac
   - view image metadata macOS
 publishedAt: 2026-09-01
-updatedAt: 2026-09-01
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-view-photo-metadata-on-mac.webp"
@@ -121,6 +121,12 @@ Photos can export an unmodified original or create a new rendered file. Social p
 Once a field is removed from a copy, Preview cannot recover it. Check a backup, the Photos original, or the camera card. Installing a different viewer only helps when the field is present but hidden by the current app.
 
 A missing camera row does not make the file anonymous. It may still contain XMP, a creator name, editing software, a thumbnail, or coordinates that Finder never displayed.
+
+## Keep library edits separate from the exported file
+
+Finder, Preview and Photos answer different questions. Finder describes the local file; Preview inspects a file; Photos can combine embedded values with library edits. A date or place displayed in Photos is therefore not enough to establish the contents of an email attachment.
+
+Choose the export intended for the recipient and inspect that file. Note any format conversion, such as HEIC to JPEG, before comparing reports. If Preview cannot display a field or image, that does not by itself prove the metadata is absent. Preserve the source and use a compatible reader rather than repeatedly exporting new copies to troubleshoot it.
 
 ## How do you remove private photo metadata on Mac?
 

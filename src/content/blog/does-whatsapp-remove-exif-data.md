@@ -9,7 +9,7 @@ tags:
   - GPS metadata
   - image privacy
 publishedAt: 2026-08-10
-updatedAt: 2026-08-10
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-whatsapp-remove-exif-data.webp"
@@ -35,7 +35,7 @@ related:
   - does-discord-remove-exif-data
 ---
 
-Does WhatsApp remove EXIF data? Usually, when you send the image as a normal photo. It arrives as a new chat image, commonly without the original camera tags or GPS coordinates.
+WhatsApp has removed EXIF and GPS from normal photo transfers in the published study discussed below. That finding applies to the tested transfer modes and app versions, not every future send. Treat a received chat photo as a separate file and inspect it when the metadata matters.
 
 Tap Document instead and the answer changes. **Sending the picture as a document can preserve the original file and its metadata**. HD keeps more image detail, but WhatsApp still handles it as a photo rather than an untouched file.
 
@@ -98,6 +98,12 @@ If the result matters, test your exact workflow:
 3. Inspect that copy, not the original sitting in your camera roll.
 
 WhatsApp behavior can change by app version, phone, format, and send method. The downloaded copy answers the question better than a blanket rule.
+
+## Choose the send mode for the information you need to preserve
+
+For an archive, request the original as a file and check the capture-time fields after receipt. For privacy, clean the outgoing file before choosing any send mode. For visual quality alone, an HD option does not answer whether dates or GPS survive.
+
+If a received picture lacks `DateTimeOriginal`, record the chat date as a sending date, not a replacement capture date. If you assign an estimated date in your library, label it as an estimate and preserve the received file. A later transfer cannot restore absent camera values. The comparison of send modes above describes reported behavior, not a field-by-field guarantee for every current WhatsApp client.
 
 ## Clean the file before you send it
 

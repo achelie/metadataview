@@ -10,7 +10,7 @@ tags:
   - view EXIF data
   - photo metadata
 publishedAt: 2026-09-03
-updatedAt: 2026-09-03
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/exif-metadata-definition-and-how-to-view.webp"
@@ -127,6 +127,12 @@ Yes. Metadata tools and photo editors can change or delete EXIF without visibly 
 That is useful when a camera clock was wrong or when GPS should not leave your device. It also means an EXIF date, author name, or camera model is context rather than proof. Compare it with the file history and other evidence when accuracy matters.
 
 Before sharing a personal image, run the outgoing copy through the [Image Privacy Checker](/image-privacy-checker/). If it contains GPS, owner names, device identifiers, or other fields you do not want to send, create a separate copy with the [Image Metadata Remover](/image-metadata-remover/). Inspect the cleaned result afterward and keep the original for your archive.
+
+## A short vocabulary for reading the report
+
+A tag is a named field, a value is its contents, and a group or path identifies where the reader found it. A friendly label such as Date created may hide distinctions that the native path makes visible. Read the path before comparing it with another app's label.
+
+An embedded record sits inside the file; a sidecar sits beside it; a catalog record lives in an app's library. This guide defines those terms for reading a report. The broader EXIF overview explains common camera fields, while the image-checking guide covers the inspection workflow. Opening a file in a viewer reads its record; it does not certify the camera clock or the photographer's identity.
 
 ## What should you trust in an EXIF report?
 

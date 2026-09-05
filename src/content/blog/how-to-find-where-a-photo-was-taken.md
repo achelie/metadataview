@@ -10,7 +10,7 @@ tags:
   - photo GPS metadata
   - image GPS location
 publishedAt: 2026-08-20
-updatedAt: 2026-08-20
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-find-where-a-photo-was-taken.webp"
@@ -129,6 +129,12 @@ Without GPS coordinates, EXIF cannot accurately determine the place where a phot
 You may still find `DateTimeOriginal`, camera model, lens, orientation, or editing software. Those fields can help sort a collection or understand the file's history. They do not translate into a street address.
 
 Visible clues such as a landmark, road sign, mountain, or shop name are a different kind of investigation. They come from the pixels, not photo GPS metadata, and this guide does not treat an AI location guess as an EXIF result.
+
+## How do you avoid putting the map pin in the wrong place?
+
+Read latitude and longitude together with their references. Convert degrees, minutes and seconds with `degrees + minutes / 60 + seconds / 3600`, then apply a negative sign for south or west. Do not negate a value twice if the viewer already shows signed decimal coordinates.
+
+Latitude must be between −90 and 90; longitude between −180 and 180. Reversed latitude and longitude, a missing reference or a rounded display can put a pin somewhere else. A valid numeric range does not prove the camera recorded the correct location. If a reference is missing or competing GPS groups disagree, keep the raw values and describe the location as uncertain rather than choosing whichever pin looks plausible.
 
 ## How do you remove GPS before sharing a photo?
 

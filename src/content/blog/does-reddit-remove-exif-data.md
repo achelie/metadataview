@@ -9,7 +9,7 @@ tags:
   - GPS metadata
   - image privacy
 publishedAt: 2026-08-14
-updatedAt: 2026-08-14
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-reddit-remove-exif-data.webp"
@@ -35,15 +35,13 @@ related:
   - does-telegram-remove-exif-data
 ---
 
-Does Reddit remove EXIF data? Usually, yes, from the image copy that Reddit hosts and serves to readers. A normal upload is processed, and the downloaded Reddit copy normally no longer contains the original camera model, capture settings, or GPS coordinates.
+Reddit-hosted photo copies have lost camera metadata in reported uploads, but that does not establish a guarantee for every format or download route. An externally hosted image is a separate case: Reddit can link to a file whose metadata it never rewrites.
 
 There is a catch: Reddit receives your original upload before it can make a processed copy. An image linked from another website is a different case too. Reddit can show a preview, but it cannot clean the original file on someone else's server.
 
 If a photo could expose your home, workplace, or identity, remove its metadata before posting. Treat Reddit's processing as a useful side effect, not your privacy plan.
 
 ## Does Reddit remove EXIF from uploaded photos?
-
-Yes. A standard Reddit-hosted image normally reaches other users as a processed copy without the original EXIF and GPS fields.
 
 This is the behavior Reddit users keep seeing, though Reddit does not publish a field-by-field promise for every app, format, and upload surface. In an [r/help question about photo EXIF](https://www.reddit.com/r/help/comments/1dx53tz/does_reddit_still_remove_exif_data_when_i_upload/), the poster had removed a cat photo because they were unsure. Several replies said Reddit strips the data from the hosted image.
 
@@ -107,6 +105,12 @@ Use a harmless test photo if you want to compare Reddit's current behavior. Open
 Then run the [Image Privacy Checker](/image-privacy-checker/) for a shorter risk-focused view. Compare the downloaded copy with the source. Check dimensions, MIME type, filename, and file size as well as the EXIF section.
 
 Do not upload a genuinely sensitive original just to test whether Reddit cleans it. Test with an ordinary image, or skip the experiment and remove the metadata first.
+
+## Check the destination behind a Reddit preview
+
+A post can expose both a Reddit preview and an external source. Open the destination information before deciding which file you are checking: a clean preview does not describe a linked portfolio image or cloud original.
+
+The community reports below support a cautious expectation about processed images, not a permanent deletion guarantee. Apply that distinction to avatars and banners too; neither a smaller size nor a different extension proves every private field is absent. If you replace a hosted original, remember that an earlier download is a separate copy. Local cleanup protects the next upload, not copies already distributed.
 
 ## Should you remove metadata before posting on Reddit?
 

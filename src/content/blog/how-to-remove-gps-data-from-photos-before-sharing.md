@@ -9,7 +9,7 @@ tags:
   - EXIF removal
   - location data
 publishedAt: 2026-08-17
-updatedAt: 2026-08-17
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-remove-gps-data-from-photos-before-sharing.webp"
@@ -111,6 +111,12 @@ Inspect the exact cleaned file and search for coordinates, location names, and d
 Open it in the [Image Metadata Viewer](/image-metadata-viewer/) and search for `GPS`, `latitude`, `longitude`, `position`, `location`, `city`, and `country`. Check EXIF, XMP, IPTC, and embedded previews if the report shows them. A blank map in one photo app is not the same as an empty metadata report.
 
 If you plan to send the file through email, attach the cleaned copy rather than the original. Our [Gmail EXIF guide](/blog/does-gmail-remove-exif-data/) explains why an ordinary email attachment can preserve the bytes you give it. If you are using a messenger, the [WhatsApp EXIF guide](/blog/does-whatsapp-remove-exif-data/) covers the difference between a compressed photo and an original document.
+
+## GPS-only removal or broader privacy cleanup?
+
+Decide whether you want to keep capture settings and dates before cleaning. Removing coordinates alone can preserve an archive's useful camera record, but a city, caption, owner name or location-bearing comment can exist outside the GPS group. ViewExif's image remover targets a broader set of writable descriptive fields; it is not a promise of GPS-only editing.
+
+After cleanup, search for latitude, longitude, location and any place names you recognized in the original. Check XMP and IPTC as well as EXIF. A map missing from an app is not sufficient verification, because the app may simply omit a readable field. Keep the original for your private library.
 
 ## What can still reveal location after GPS is removed?
 

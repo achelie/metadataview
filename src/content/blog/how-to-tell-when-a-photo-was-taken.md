@@ -10,7 +10,7 @@ tags:
   - photo capture date
   - EXIF date
 publishedAt: 2026-08-31
-updatedAt: 2026-08-31
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-tell-when-a-photo-was-taken.webp"
@@ -123,6 +123,12 @@ Without an embedded capture time, the file alone usually cannot tell you the exa
 Look for another original copy, a camera filename, the message that carried it, or nearby photos from the event. These can narrow the window, but a message date shows when the file was sent. Clues in the pixels are visual investigation, not recovered metadata.
 
 If a platform stripped the field, only a source copy or backup can bring it back. A different metadata viewer cannot display bytes that are no longer there.
+
+## How do you resolve conflicting time fields?
+
+Read the tag path as well as its friendly label. An EXIF capture time, an XMP edit date and the operating system's file date can legitimately disagree because they record different events. Keep each value with its source instead of replacing them with the oldest date.
+
+Pair `DateTimeOriginal` with `OffsetTimeOriginal` when available. For example, a stated local time of 19:00 with an offset of +09:00 converts to 10:00 UTC; a bare 19:00 does not establish any UTC instant. This is a conversion example, not a finding about a particular photo. Compare GPS date and time only when both are readable, and account for their UTC convention. An unexplained disagreement remains a limitation of the record.
 
 ## How do you verify a photo date before relying on it?
 

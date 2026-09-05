@@ -10,7 +10,7 @@ tags:
   - EXIF data Android
   - Google Photos metadata
 publishedAt: 2026-08-30
-updatedAt: 2026-08-30
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-view-exif-data-on-android.webp"
@@ -116,6 +116,12 @@ The receiving copy can lose EXIF when an app resizes, recompresses, exports, or 
 This is common with chat attachments, social media downloads, edited copies, and screenshots. The original in `DCIM/Camera` may keep the full camera record while the version in `Downloads` contains only dimensions and a new file date. Sending as a document or file sometimes preserves more than sending through a photo picker, but behavior varies by app and version.
 
 Do not try to infer the original fields from a stripped copy. Once the coordinates or capture time are absent, another viewer cannot recreate them. Compare the camera original with the received file if you need to know what changed.
+
+## When Gallery, Google Photos and the file disagree
+
+First identify the app showing the information. A manufacturer's Gallery, Google Photos and a file manager need not read the same sources or show the same fields. A place assigned in a cloud library can differ from GPS embedded in the exported image.
+
+Save the copy you actually intend to inspect and read it in the viewer. A blank gallery panel calls for checking native fields; a parser warning calls for resolving a reading problem. Neither result alone means the camera never wrote EXIF. Keep app-level corrections separate from file-level values when deciding what will travel in an attachment.
 
 ## What should you do before sharing an Android photo?
 

@@ -10,7 +10,7 @@ tags:
   - XMP sidecar file
   - photo metadata
 publishedAt: 2026-08-28
-updatedAt: 2026-08-28
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/what-is-xmp-metadata.webp"
@@ -57,7 +57,7 @@ There is no fixed XMP checklist. The format uses namespaces, which are groups of
 | `xmpRights:UsageTerms` | Copyright or reuse instructions |
 | `photoshop:City` | A city recorded for the image |
 
-XMP can also contain camera values, GPS coordinates, face regions, persistent document IDs and detailed editor settings. [ExifTool's XMP reference](https://exiftool.org/TagNames/XMP.html) lists hundreds of fields because apps and industries add their own schemas.
+XMP can also contain camera values, GPS coordinates, face regions, persistent document IDs and detailed editor settings. [ExifTool's XMP reference](https://github.com/exiftool/exiftool/blob/master/html/TagNames/XMP.html) lists hundreds of fields because apps and industries add their own schemas.
 
 ## How is XMP different from EXIF and IPTC?
 
@@ -117,7 +117,7 @@ A separate `.xmp` sidecar is also shareable data. If you send it with the photo,
 
 ## How do you view XMP metadata?
 
-Upload the image itself to a metadata viewer and search the native fields for XMP groups, creator names, rights, locations, ratings and edit records.
+Choose the image locally in a metadata viewer and search the native fields for XMP groups, creator names, rights, locations, ratings and edit records.
 
 The [Image Metadata Viewer](/image-metadata-viewer/) shows readable fields first, then the original group paths in All fields. Search for `XMP`, `dc`, `xmp`, `photoshop`, `crs`, `creator`, `rights`, `GPS`, `location`, `history` and `document ID`.
 
@@ -134,6 +134,12 @@ The [Image Metadata Remover](/image-metadata-remover/) removes writable descript
 If the workflow uses a sidecar, cleaning the image does not delete that separate `.xmp` file. Do not attach or publish the sidecar with the cleaned image. If you decide to delete it locally, back it up first because it may contain the only copy of your adjustments.
 
 Read [how to remove metadata from a photo](/blog/how-to-remove-metadata-from-a-photo/) for the full clean, verify and share workflow. The verification step matters because XMP can contain duplicate fields and custom namespaces that a short Properties panel never shows.
+
+## Which XMP copy are you changing?
+
+Before editing XMP, locate whether it is embedded in the media or stored in a separate `.xmp` sidecar. A catalog can keep another working copy. Editing one does not establish that all three now agree.
+
+Record the namespace and property as well as the displayed value. Two applications can expose different subsets, and custom namespaces may not appear in a simple properties panel. If a sensitive name remains after cleanup, search readable native fields for that value rather than only the familiar Creator label. Retain the original media and sidecar together for an archive; share only the reviewed copies.
 
 ## Should you keep XMP metadata in your photo archive?
 

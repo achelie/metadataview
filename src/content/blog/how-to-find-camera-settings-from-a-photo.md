@@ -10,7 +10,7 @@ tags:
   - photo EXIF settings
   - find ISO aperture shutter speed
 publishedAt: 2026-09-02
-updatedAt: 2026-09-02
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-find-camera-settings-from-a-photo.webp"
@@ -127,6 +127,12 @@ Read the settings as clues about the photographer's trade-offs, not as a recipe 
 A fast shutter may have frozen movement. A wide aperture may have helped in low light or reduced depth of field. A higher ISO may have kept the shutter fast enough to avoid blur. Focal length tells you about the lens setting, but not the shooting distance or crop applied later.
 
 The best comparison is between your own similar frames. Keep the subject and light roughly consistent, then see what changed when you adjusted one setting. Copying a stranger's numbers without their light, distance, lens, and timing is less useful than it sounds.
+
+## Compare equivalent settings before treating them as a mismatch
+
+Keep the tag name and unit beside each value. `ExposureTime` of 0.004 seconds and a displayed shutter speed of 1/250 second describe the same duration. `FNumber` is an f-number; do not compare an unconverted `ApertureValue` directly with it. Physical focal length and a 35 mm equivalent are different measurements.
+
+If an ordinary camera field and a maker-note field disagree, retain both and identify their sources. A digital crop, composite image or edited export may explain a difference, but the metadata alone does not establish that explanation. Record an unavailable lens as unknown rather than inferring a specific lens from focal length.
 
 ## Should you remove camera settings before sharing?
 

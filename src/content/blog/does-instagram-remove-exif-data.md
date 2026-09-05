@@ -9,7 +9,7 @@ tags:
   - GPS metadata
   - social media privacy
 publishedAt: 2026-08-11
-updatedAt: 2026-08-11
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-instagram-remove-exif-data.webp"
@@ -35,13 +35,11 @@ related:
   - does-discord-remove-exif-data
 ---
 
-Does Instagram remove EXIF data? Usually, yes, from the public photo copy that people can view or save. Instagram processes uploaded photos, and the camera model, capture settings, original time, and GPS coordinates normally disappear from that version.
+Instagram has stripped embedded metadata from saved public photo copies in the historical testing discussed below. This is not a current guarantee for every post, Story or direct message. Inspect the actual downloaded copy; it cannot show what Meta received in the original upload.
 
 That answer has two limits. Instagram does not publish a promise that every EXIF field is removed from every post, Story, direct message, format, and app version. Also, a clean public image does not mean Meta learned nothing about the upload.
 
 ## Does Instagram remove EXIF data from uploaded photos?
-
-Yes, Instagram normally serves a processed photo without the original camera EXIF.
 
 Instagram's own [photo resolution guidance](https://www.facebook.com/help/instagram/1631821640426723) says it may resize an upload to fit its supported dimensions. In practice, the public copy is a different file with a different size and hash. Older platform testing by the [Embedded Metadata Initiative](https://www.embeddedmetadata.org/social-media-test-results.php) found that Instagram's saved copies had their embedded metadata stripped.
 
@@ -65,7 +63,7 @@ You would need the original file from the photographer, a backup, or another unp
 
 ## Can an Instagram photo reveal your IP or home address?
 
-The public image file does not reveal your IP address, but the post can still reveal where you are.
+A camera's ordinary EXIF fields are not a record of the IP address used to upload a post. However, an address written into a caption, custom field or visible screen can still appear in an image, and a post can reveal a location without an IP address.
 
 This worry came up in [r/AskTechnology](https://www.reddit.com/r/AskTechnology/comments/1qpxwx0/is_it_possible_to_find_my_ip_if_i_post_my_picture/) after a user's friend claimed to find their home through Instagram photo metadata. The replies separated two issues that often get mixed together: followers do not get your connection IP from the image's EXIF, while visible clues can still give away a location.
 
@@ -104,6 +102,12 @@ Inspect the exact file you plan to upload, not a similar copy in your camera rol
 Open it in the [Image Metadata Viewer](/image-metadata-viewer/) and search for `GPS`, `Location`, `DateTimeOriginal`, `Make`, `Model`, `Artist`, `Comment`, and `Software`. Then use the [Image Privacy Checker](/image-privacy-checker/) to group the fields that deserve a closer look.
 
 This check happens in your browser tab. If you exported the picture from Lightroom, edited it in another app, or downloaded it from cloud storage, inspect that final export. Every save can change the result.
+
+## What the public-copy claim does and does not cover
+
+The older study cited above concerns saved public copies and the fields it inspected. It does not establish today's behavior for every Story, direct message, download route or image format. Instagram's resizing documentation describes dimensions, not an exhaustive EXIF deletion contract.
+
+For a file you already downloaded, inspect that copy and report the fields actually present. For an upload you have not made, remove unwanted fields locally first. Removing a post cannot recall copies others saved, and an empty GPS report cannot remove a location tag you added in Instagram. Keep file metadata, visible post information and Meta's account-level data separate when deciding what to share.
 
 ## How do you remove Instagram photo metadata safely?
 

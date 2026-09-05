@@ -1,0 +1,24 @@
+---
+import type { Locale } from '../i18n/core';
+const { locale = 'en' } = Astro.props as { locale?: Locale };
+const labels = {
+  en: ['Choose a guide for your question', 'Read stored GPS', 'Separate capture time from file dates', 'Check what a screenshot carries', 'Remove private fields before sharing', 'These guides explain the fields and decisions behind the tools.'],
+  de: ['Wähle eine Anleitung für deine Frage', 'Gespeicherte GPS-Daten lesen', 'Aufnahmezeit von Dateidaten unterscheiden', 'Metadaten eines Screenshots verstehen', 'Private Felder vor dem Teilen entfernen', 'Diese englischen Anleitungen erklären die Felder und Entscheidungen hinter den Werkzeugen.'],
+  fr: ['Choisissez un guide selon votre question', 'Lire les coordonnées GPS enregistrées', 'Distinguer prise de vue et dates du fichier', 'Comprendre les métadonnées des captures', 'Retirer les champs privés avant le partage', 'Ces guides en anglais expliquent les champs et les choix proposés par les outils.'],
+  'zh-CN': ['按你要解决的问题阅读', '读取照片里保存的 GPS', '区分拍摄时间与文件日期', '检查截图可能携带的信息', '分享前清理私人字段', '这些英文指南解释工具中的字段，以及如何根据结果作出判断。'],
+}[locale];
+const paths = ['how-to-find-where-a-photo-was-taken', 'how-to-tell-when-a-photo-was-taken', 'do-screenshots-have-metadata', 'how-to-remove-gps-data-from-photos-before-sharing'];
+---
+<nav class="reading-routes" aria-label={labels[0]}>
+  <div><h2>{labels[0]}</h2><p>{labels[5]}</p></div>
+  <ul>{paths.map((slug, i) => <li><a href={`/blog/${slug}/`} hreflang="en">{labels[i + 1]}</a></li>)}</ul>
+</nav>
+<style>
+  .reading-routes { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2rem; margin: 3rem 0; padding: 1.5rem 0; border-block: 1px solid currentColor; }
+  h2 { font-size: clamp(1.25rem, 3vw, 1.8rem); margin: 0 0 .75rem; }
+  p { line-height: 1.65; margin: 0; }
+  ul { margin: 0; padding-left: 1.25rem; }
+  li { margin: .6rem 0; }
+  a { text-underline-offset: .2em; overflow-wrap: anywhere; }
+  @media (max-width: 640px) { .reading-routes { grid-template-columns: minmax(0, 1fr); gap: 1rem; } }
+</style>
