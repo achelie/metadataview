@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
-import { BlobReader, BlobWriter, TextReader, TextWriter, Uint8ArrayReader, Uint8ArrayWriter, ZipReader, ZipWriter } from '@zip.js/zip.js';
+import { cleanOoxml } from '../lib/metadata-removal/ooxml-cleanup';
+import { verifyEncodedPayload } from '../lib/metadata-removal/content-integrity';
 import type { DetectedFileType } from '../lib/metadata/types';
 import type { MetadataCleanupEngine, MetadataWorkerCleanup } from '../lib/metadata-removal/types';
 import type { MetadataRemovalWorkerRequest, MetadataRemovalWorkerResponse } from './metadata-removal-protocol';
@@ -47,53 +48,6 @@ async function cleanTagLib(file: File, type: DetectedFileType): Promise<Metadata
     return result(audio.getFileBuffer(), type, 'taglib', ['Cover art, chapters, attachments, and codec data were intentionally retained.']);
   } finally {
     audio.dispose();
-  }
-}
-
-function sanitizeCoreXml(): string {
-  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>';
-}
-
-function sanitizeAppXml(xml: string): string {
-  return xml.replace(/<(Application|AppVersion|Company|Manager|Template|HyperlinkBase)(?:\s[^>]*)?>[\s\S]*?<\/\1>/gi, '<$1></$1>');
-}
-
-function sanitizeCustomXml(): string {
-  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"/>';
-}
-
-async function cleanOoxml(file: File, type: DetectedFileType): Promise<MetadataWorkerCleanup> {
-  const reader = new ZipReader(new BlobReader(file), { useWebWorkers: false, strictness: 'strict', checkAmbiguity: true });
-  const writer = new ZipWriter(new BlobWriter(MIME[type]), { useWebWorkers: false });
-  let count = 0;
-  try {
-    const entries = await reader.getEntries({ strictness: 'strict', checkAmbiguity: true, maxAppendedDataSize: 0 });
-    if (entries.length > 10_000) throw new Error('The Office package exceeds the 10,000 entry safety limit.');
-    const names = new Set<string>();
-    for (const entry of entries) {
-      count += 1;
-      const normalized = entry.filename.toLowerCase();
-      if (names.has(normalized) || entry.encrypted || entry.filename.includes('..') || entry.filename.includes('\\') || entry.filename.startsWith('/')) throw new Error('The Office package contains an unsafe or ambiguous entry.');
-      names.add(normalized);
-      if (entry.directory) { await writer.add(entry.filename, undefined, { directory: true }); continue; }
-      if (normalized === 'docprops/core.xml') {
-        await writer.add(entry.filename, new TextReader(sanitizeCoreXml()));
-      } else if (normalized === 'docprops/custom.xml') {
-        await writer.add(entry.filename, new TextReader(sanitizeCustomXml()));
-      } else if (normalized === 'docprops/app.xml') {
-        const xml = await entry.getData(new TextWriter('utf-8'), { useWebWorkers: false, checkSignature: true });
-        await writer.add(entry.filename, new TextReader(sanitizeAppXml(xml)));
-      } else {
-        const bytes = await entry.getData(new Uint8ArrayWriter(), { useWebWorkers: false, checkSignature: true, checkOverlappingEntry: true });
-        await writer.add(entry.filename, new Uint8ArrayReader(bytes));
-      }
-    }
-    if (!count) throw new Error('The Office package is empty.');
-    const blob = await writer.close();
-    return result(new Uint8Array(await blob.arrayBuffer()), type, 'ooxml-zip', ['Document body, comments, revisions, media, and embedded objects were intentionally retained.']);
-  } finally {
-    await reader.close().catch(() => undefined);
-    await writer.close().catch(() => undefined);
   }
 }
 
@@ -216,6 +170,7 @@ self.onmessage = async (event: MessageEvent<MetadataRemovalWorkerRequest>) => {
     send({ id: request.id, status: 'progress', stage: 'reading-container' });
     send({ id: request.id, status: 'progress', stage: 'rewriting-file' });
     const cleaned = await clean(request);
+    cleaned.contentChecks ??= [await verifyEncodedPayload(request.file, new Blob([cleaned.data]))];
     send({ id: request.id, status: 'progress', stage: 'finalizing' });
     send({ id: request.id, status: 'success', result: cleaned }, [cleaned.data]);
   } catch (error) {

@@ -276,7 +276,7 @@ test('privacy checker renders an explainable report', async ({ page }) => {
   await expect(page.getByText(/does not guarantee that an image is safe to share/i)).toBeVisible();
 });
 
-test('metadata remover creates a downloadable clean copy', async ({ page }) => {
+test('metadata remover creates a downloadable clean copy', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
@@ -290,7 +290,7 @@ test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   expect((await downloadPromise).suggestedFilename()).toMatch(/clean\.png$/);
 });
 
-test('PDF removal rewrites the file with qpdf and removes the old Info author', async ({ page }) => {
+test('PDF removal rewrites the file with qpdf and removes the old Info author', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/document-metadata-remover/');
   await upload(page, 'signed-off.pdf', pdf(), 'application/pdf');
@@ -309,7 +309,7 @@ test('PDF removal rewrites the file with qpdf and removes the old Info author', 
   expect(bytes.toString('latin1')).not.toContain('Ada Example');
 });
 
-test('audio removal uses TagLib without re-encoding the stream container', async ({ page }) => {
+test('audio removal uses TagLib without re-encoding the stream container', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/audio-metadata-remover/');
   await upload(page, 'credits.mp3', mp3(), 'audio/mpeg');
@@ -321,7 +321,7 @@ test('audio removal uses TagLib without re-encoding the stream container', async
   await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
 });
 
-test('Office removal keeps body XML while clearing Core and Custom properties', async ({ page }) => {
+test('Office removal keeps body XML while clearing Core and Custom properties', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   const source = await ooxmlFixture('docx', { author: 'Ada Example', customName: 'Client', customValue: 'Secret Account', bodyText: 'BODY-STAYS-HERE' });
   await page.goto('/document-metadata-remover/');
@@ -347,7 +347,7 @@ test('Office removal keeps body XML while clearing Core and Custom properties', 
   await zip.close();
 });
 
-test('AVI removal keeps the RIFF container valid after the custom scrubber runs', async ({ page }) => {
+test('AVI removal keeps the RIFF container valid after the custom scrubber runs', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/video-metadata-remover/');
   await upload(page, 'clip.avi', Buffer.from(videoFixture('avi')), videoMime('avi'));

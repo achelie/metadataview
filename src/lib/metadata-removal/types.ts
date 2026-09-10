@@ -67,4 +67,5 @@ export interface MetadataWorkerCleanup {
   mime: string;
   engine: MetadataCleanupEngine;
   warnings: string[];
+  contentChecks?: MetadataOutputCheck[];
 }

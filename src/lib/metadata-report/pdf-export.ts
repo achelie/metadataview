@@ -1,3 +1,4 @@
+import type { PDFFont } from 'pdf-lib';
 import type { MetadataReport } from './types';
 
 export interface PdfReportContent {
@@ -63,30 +64,45 @@ export function buildPdfReportContent(report: MetadataReport): PdfReportContent 
   return { lines, truncated, omittedNativeFields };
 }
 
-function ascii(value: string): string {
-  return value.normalize('NFKD').replace(/[^\x20-\x7E]/g, '?');
+let fontDownload: Promise<Uint8Array> | undefined;
+async function loadReportFont(): Promise<Uint8Array> {
+  fontDownload ??= fetch('/fonts/NotoSansSC-Regular.ttf', { signal: AbortSignal.timeout(60_000) })
+    .then(async (response) => { if (!response.ok) throw new Error('The PDF font could not be loaded. Please retry.'); return new Uint8Array(await response.arrayBuffer()); })
+    .catch((error) => { fontDownload = undefined; throw error; });
+  return fontDownload;
 }
 
-function wrap(text: string, length = 94): string[] {
+export function wrapPdfText(text: string, font: PDFFont, size: number, maxWidth: number): string[] {
   if (!text) return [''];
-  const output: string[] = [];
-  let remaining = ascii(text);
-  while (remaining.length > length) {
-    let cut = remaining.lastIndexOf(' ', length);
-    if (cut < length * .45) cut = length;
-    output.push(remaining.slice(0, cut));
-    remaining = remaining.slice(cut).trimStart();
+  const lines: string[] = [];
+  let line = '';
+  for (const character of text) {
+    if (line && font.widthOfTextAtSize(line + character, size) > maxWidth) { lines.push(line); line = ''; }
+    line += character;
   }
-  output.push(remaining);
-  return output;
+  if (line) lines.push(line);
+  return lines;
 }
 
-export async function createMetadataReportPdfBytes(report: MetadataReport): Promise<Uint8Array> {
+export async function createMetadataReportPdfBytes(report: MetadataReport, fontBytes?: Uint8Array): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
   const document = await PDFDocument.create();
-  const regular = await document.embedFont(StandardFonts.Helvetica);
-  const bold = await document.embedFont(StandardFonts.HelveticaBold);
+  let regular = await document.embedFont(StandardFonts.Helvetica);
+  let bold = await document.embedFont(StandardFonts.HelveticaBold);
   const content = buildPdfReportContent(report);
+  const allText = content.lines.map((line) => line.text).join('');
+  const standardCharacters = new Set(regular.getCharacterSet());
+  if (Array.from(allText).some((character) => !standardCharacters.has(character.codePointAt(0)!))) {
+    const { default: fontkit } = await import('@pdf-lib/fontkit');
+    document.registerFontkit(fontkit);
+    // fontkit's CJK subsets can extract correctly while rendering missing glyphs.
+    // Embed the reviewed static font intact; only non-WinAnsi exports load it.
+    regular = await document.embedFont(fontBytes ?? await loadReportFont(), { subset: false });
+    bold = regular;
+    const supported = new Set(regular.getCharacterSet());
+    const missing = Array.from(allText).find((character) => !supported.has(character.codePointAt(0)!));
+    if (missing) throw new Error('The PDF font cannot display U+' + missing.codePointAt(0)!.toString(16).toUpperCase() + '. Export JSON to preserve this value.');
+  }
   const pageSize: [number, number] = [612, 792];
   const margin = 48;
   let page = document.addPage(pageSize);
@@ -94,16 +110,17 @@ export async function createMetadataReportPdfBytes(report: MetadataReport): Prom
   const newPage = () => { page = document.addPage(pageSize); y = pageSize[1] - margin; };
   for (const line of content.lines) {
     const size = line.size ?? 9;
-    for (const part of wrap(line.text, size >= 16 ? 58 : size >= 12 ? 78 : 96)) {
+    const font = line.bold ? bold : regular;
+    for (const part of wrapPdfText(line.text, font, size, pageSize[0] - 2 * margin)) {
       if (y < margin + 24) newPage();
-      page.drawText(part, { x: margin, y, size, font: line.bold ? bold : regular, color: rgb(.08, .09, .08) });
+      page.drawText(part, { x: margin, y, size, font, color: rgb(.08, .09, .08) });
       y -= size + 4;
     }
     if (!line.text) y -= 4;
   }
   const pages = document.getPages();
   pages.forEach((pdfPage, index) => pdfPage.drawText(`${index + 1} / ${pages.length}`, { x: 540, y: 24, size: 8, font: regular, color: rgb(.38, .38, .34) }));
-  document.setTitle(`${ascii(report.file.name)} metadata report`);
+  document.setTitle(`${report.file.name} metadata report`);
   document.setSubject('Local metadata inspection report');
   document.setCreator('ViewExif');
   return document.save();

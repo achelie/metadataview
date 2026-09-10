@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createMetadataReport } from '../../src/lib/metadata-report/create-report';
 import { createSafeReportExport } from '../../src/lib/metadata-report/safe-export';
@@ -103,6 +104,28 @@ describe('canonical metadata report', () => {
 });
 
 describe('PDF report', () => {
+  it('preserves Chinese, accented text and filenames in the exported PDF', async () => {
+    const report = createMetadataReport(parsed(), evidence);
+    report.file.name = '旅行照片-张三.jpg';
+    report.readableSections[0]!.fields[0]!.displayValue = '作者：张三；地点：上海；Café München';
+    const bytes = await createMetadataReportPdfBytes(report, readFileSync('public/fonts/NotoSansSC-Regular.ttf'));
+    const { PDFDocument } = await import('pdf-lib');
+    expect((await PDFDocument.load(bytes)).getTitle()).toBe('旅行照片-张三.jpg metadata report');
+    const { getDocument } = await import('pdfjs-dist/legacy/build/pdf.mjs');
+    const loadingTask = getDocument({ data: bytes.slice(), useSystemFonts: false });
+    const document = await loadingTask.promise;
+    let text = '';
+    try {
+      for (let i = 1; i <= document.numPages; i++) {
+        const page = await document.getPage(i);
+        text += (await page.getTextContent()).items.map((item) => 'str' in item ? item.str : '').join('');
+      }
+    } finally { await loadingTask.destroy(); }
+    expect(text).toContain('作者：张三');
+    expect(text).toContain('Café München');
+    mkdirSync('output/pdf', { recursive: true });
+    writeFileSync('output/pdf/unicode-report-test.pdf', bytes);
+  });
   it('creates a PDF signature locally', async () => {
     const report = createMetadataReport(parsed(), evidence);
     const bytes = await createMetadataReportPdfBytes(report);

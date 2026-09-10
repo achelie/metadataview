@@ -2,6 +2,15 @@
 
 ViewExif includes open-source software that runs locally in the visitor's browser.
 
+## PDF Unicode font support
+
+- Package: `@pdf-lib/fontkit` 1.1.1, MIT license
+- Font: Noto Sans SC, SIL Open Font License 1.1
+- Source revision and static font generation: `public/fonts/SOURCE.txt`
+- Font license: `public/fonts/OFL.txt`
+
+The font is served from this site only when needed for a local PDF export. Its full static outlines are embedded to preserve CJK rendering across PDF readers.
+
 ## C2PA WebAssembly verifier
 
 - Package: `@contentauth/c2pa-web` 0.13.1

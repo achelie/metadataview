@@ -1,9 +1,14 @@
 import type { MetadataReport, MetadataReportField } from '../metadata-report/types';
 import type { MetadataRemovalField, MetadataRemovalReport } from './types';
 
-const ENVIRONMENT = /^(system|file|exiftool)(?:\.|:|\/)|file(?:name|size|type|permissions|device|inode|modifydate|accessdate)|newguid/i;
-const STRUCTURAL = /(?:mime|filetype|extension|format|width|height|dimension|megapixel|aspect|orientation|color(?:space|profile)|icc|bitdepth|bitsper|compression|encoding|codec|duration|bitrate|samplerate|channels|trackcount|streamcount|framecount|framerate|animation|loopcount|pagecount|pages|wordcount|words|slidecount|slides|worksheet|sheetcount|entrycount|relationship|mediaentries|objectcount|offset|headersize|container|majorbrand|compatiblebrand|handler|timescale)/i;
-const PRESERVED_CONTENT = /(?:cover\s*art|picture|artwork|chapter|subtitle|attachment|annotation|revision|commentthread|noteslide|embeddedobject)/i;
+// Match canonical tag keys, never substrings of labels or arbitrary paths.
+const ENVIRONMENT_KEYS = /^(?:filename|directory|filesize|filepermissions|filedevice|fileinode|filemodifydate|fileaccessdate|filecreatedate|exiftoolversion|newguid)$/i;
+const STRUCTURAL = /^(?:(?:image|video|audio|source|exif)?(?:width|height|dimensions|size|duration|codec|bitrate|samplerate|channels|bitdepth|compression)|mime(?:type)?|filetype(?:extension)?|extension|format|megapixels?|aspectratio|orientation|orientationmeaning|colorspace|colorprofile|bitsper(?:sample|pixel)|encodingprocess|framerate|framecount|trackcount|streamcount|animation|animated|loopcount|pagecount|pages|storedpagecount|wordcount|words|slidecount|slides|worksheetcount|sheetcount|entrycount|relationshipcount|mediaentries|objectcount|offset|headersize|container|majorbrand|compatiblebrands?|handler(?:type|description)?|timescale)$/i;
+const PRESERVED_CONTENT = /^(?:coverart|pictures?|artwork|chapters?|chaptercount|subtitles?|attachments?|attachmentcount|annotations?|revisions?|commentthreads?|noteslides?|notespagecount|embeddedobjects?|embeddedobjectcount)$/i;
+
+function canonicalKey(field: MetadataReportField): string {
+  return field.key.replace(/[ _-]/g, '');
+}
 const ELIGIBLE = /(?:gps|latitude|longitude|location|author|artist|creator|owner|company|manager|email|phone|serial|device|camera|lens|software|producer|application|encoder|encodedby|create(?:d|date|time)|modify(?:date|time)|timestamp|title|subject|keyword|description|comment|copyright|rights|license|rating|genre|album|xmp|iptc|exif|makernote|photoshop|history|documentid|instanceid|originalfilename|filepath|directory|template|custom)/i;
 
 function signature(field: MetadataReportField): string {
@@ -21,12 +26,16 @@ export function reportFields(report: MetadataReport): MetadataReportField[] {
 }
 
 export function isEnvironmentField(field: MetadataReportField): boolean {
-  return ENVIRONMENT.test(`${field.groupPath ?? ''}.${field.path}.${field.source}.${field.key}`);
+  const group = field.groupPath || field.path.split(/[.:/]/).slice(0, -1).join(':');
+  const runtime = /^(?:System|File|ExifTool)(?:$|[.:/])/i.test(group);
+  return runtime && ENVIRONMENT_KEYS.test(canonicalKey(field));
 }
 
 export function isPreservedField(field: MetadataReportField): boolean {
-  const text = `${field.label} ${field.key} ${field.path} ${field.groupPath ?? ''}`;
-  return STRUCTURAL.test(text) || PRESERVED_CONTENT.test(text);
+  const key = canonicalKey(field);
+  // ICC is an explicit rendering-data exception, scoped to its actual source group.
+  const icc = /^(?:ICC_Profile|ICC-header|ICC)(?:$|[.:/])/i.test(field.groupPath ?? '');
+  return !isEnvironmentField(field) && (STRUCTURAL.test(key) || PRESERVED_CONTENT.test(key) || icc);
 }
 
 export function isEligibleField(field: MetadataReportField): boolean {
