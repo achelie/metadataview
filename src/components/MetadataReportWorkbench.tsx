@@ -477,7 +477,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
 
       {placement === 'home' && report.category === 'image' ? <section className="home-exif-summary" aria-labelledby="home-exif-summary-title">
         <header><span className="eyebrow">{t("photo-quick-read")}</span><div><h3 id="home-exif-summary-title">EXIF Summary</h3><p>{t("the-photo-details-people-check-first-missing-means-this-file-did-not-expose-a-usable-value")}</p></div></header>
-        <dl>{exifSummary.map((item) => <div key={item.id} data-exif-summary={item.id}><dt>{item.label}</dt><dd>{item.value ? item.href ? <a href={item.href} target="_blank" rel="noreferrer">{item.value}<small>{t("open-map")}</small></a> : item.value : <span>{t("not-found")}</span>}</dd></div>)}</dl>
+        <dl>{exifSummary.map((item) => <div key={item.id} data-exif-summary={item.id}><dt>{item.label}</dt><dd>{item.value ? item.href ? <><span>{item.value}</span><a href={item.href} target="_blank" rel="noopener noreferrer" aria-describedby="home-map-disclosure">{t("open-map")}</a><p id="home-map-disclosure" className="map-disclosure">{t("map-disclosure")}</p></> : item.value : <span>{t("not-found")}</span>}</dd></div>)}</dl>
         <footer><span>{t("full-metadata-continues-below")}</span><a href="#metadata-results-heading">EXIF · XMP · IPTC · ICC · File Information · Raw Metadata ↓</a></footer>
       </section> : null}
 
@@ -502,8 +502,8 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t("parser-warnings")}><Icon icon={warningIcon} width="22" /> <div><strong>{t("warning-count", { count: report.warnings.length })}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
 
       {gps ? <aside className="map-action report-map-action" aria-label={t("gps-metadata-location")}>
-        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t("gps-location-found")}</strong><small>{t("coordinates-stored-in-this-file")}</small><code>{gps.text}</code></span></div>
-        <a href={gps.mapUrl} target="_blank" rel="noreferrer">{t("open-map")}</a>
+        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t("gps-location-found")}</strong><small>{t("coordinates-stored-in-this-file")}</small><code>{gps.text}</code><span id="report-map-disclosure" className="map-disclosure">{t("map-disclosure")}</span></span></div>
+        <a href={gps.mapUrl} target="_blank" rel="noopener noreferrer" aria-describedby="report-map-disclosure">{t("open-map")}</a>
       </aside> : null}
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>

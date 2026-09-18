@@ -1781,7 +1781,9 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .video-metadata-process { margin-top: 0; }
 .report-map-action { margin: 1rem clamp(1rem,3vw,2.2rem) 0; border-left: 7px solid var(--acid); }
 .report-map-action code { display: block; margin-top: .18rem; color: var(--ink); font-size: .82rem; }
-.report-map-action > a { padding: .7rem .9rem; border: 1px solid var(--ink); color: var(--ink); background: var(--acid); font-size: .78rem; font-weight: 900; white-space: nowrap; }
+.report-map-action > a { padding: .7rem .9rem; border: 1px solid var(--ink); color: var(--ink); background: var(--acid); font-size: .78rem; font-weight: 900; overflow-wrap: anywhere; flex-shrink: 0; max-width: 100%; }
+.report-map-action > div, .report-map-action > div > span { min-width: 0; }
+.map-disclosure { display: block; margin: .55rem 0 0; font-size: .8rem; font-weight: 400; line-height: 1.55; color: var(--muted); overflow-wrap: anywhere; }
 .report-map-action > a:hover { color: var(--paper); background: var(--ink); }
 
 .tool-notes,.specialized-notes { display: grid; grid-template-columns: minmax(230px,.55fr) minmax(0,1.45fr); gap: clamp(2rem,6vw,6rem); padding: clamp(3.5rem,7vw,6rem) 0; border-top: 1px solid var(--ink); }

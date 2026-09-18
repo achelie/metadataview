@@ -1,7 +1,7 @@
 ---
 title: "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained"
-description: "Discord usually strips EXIF from uploaded photos, but videos, PNG chunks, filenames, old attachments, and visible clues still deserve a quick check."
-excerpt: "Discord usually removes camera EXIF and GPS from uploaded photos. Videos, PNG data, old attachments, and visible clues make the full answer less tidy."
+description: "Does Discord remove EXIF data? Historical user reports cover specific photo and video downloads. Check GPS, PNG fields, and the exact attachment you save."
+excerpt: "Discord users have reported missing photo metadata, but those reports do not certify every attachment. Here is how to check photos, videos, PNG fields, and filenames."
 category: "Image privacy"
 tags:
   - Discord
@@ -9,18 +9,18 @@ tags:
   - GPS metadata
   - attachment privacy
 publishedAt: 2026-08-12
-updatedAt: 2026-09-05
+updatedAt: 2026-09-18
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/does-discord-remove-exif-data.webp"
 coverAlt: "Person holding a smartphone beside a computer while using a chat app"
 practicalTake:
-  - "A normal JPEG uploaded to Discord usually loses its camera EXIF and GPS, while the original on your device stays unchanged."
+  - "A 2024 user reported finding no metadata in downloaded chat pictures, without a controlled source comparison or a complete field inventory."
   - "Old videos and PNG custom data have behaved differently over time, so inspect the copy you actually download from Discord."
   - "Removing EXIF does not hide a filename, street sign, reflection, username, or any other clue that is visible in the post."
 faqs:
   - question: "Does Discord remove GPS from images?"
-    answer: "Discord normally removes embedded GPS coordinates from uploaded JPEG photos. If the location matters, clean the file yourself and check the downloaded attachment rather than relying on that normal behavior."
+    answer: "The cited 2024 user report describes downloaded pictures, not a current GPS-removal guarantee. Clean sensitive coordinates before upload and inspect the exact saved attachment."
   - question: "Does Discord remove metadata from videos?"
     answer: "Historical community reports describe changes to video handling, not a current guarantee. Inspect the actual downloaded video and clean sensitive fields before uploading."
   - question: "Does Discord remove or change filenames?"
@@ -35,20 +35,20 @@ related:
   - does-instagram-remove-exif-data
 ---
 
-Discord photo downloads have lost camera EXIF and GPS in historical user reports. Those reports are not a current field-by-field guarantee, especially for older attachments, alternate download routes and video. Inspect the exact saved attachment before relying on its metadata.
+A 2024 Discord user reported finding no metadata in pictures downloaded from a chat. The report did not document source-file tags, formats or client versions. It cannot establish which fields Discord removed or guarantee current behavior. Inspect the exact saved attachment.
 
 The original in your camera roll is not cleaned. Discord processes a separate upload, so deleting the attachment later does nothing to the file on your phone.
 
 ## Does Discord remove EXIF data from photos?
 
-That matches a [2024 r/discordapp test](https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/) where the poster downloaded images from a chat and could not find the location or date fields. Other users reported the same result for photos and said newer video uploads were also being cleaned.
+In a [July 2024 r/discordapp discussion](https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/), the poster said they downloaded chat pictures and found no data. There is no supplied before-and-after field inventory. Another commenter believed newer videos were cleaned; that opinion is not a video test or an official guarantee.
 
-| What you send | What the Discord copy usually keeps |
+| What you send | What the cited evidence establishes |
 | --- | --- |
-| JPEG camera photo | Pixels, dimensions, and basic file details, but not camera EXIF or GPS |
-| PNG with text or custom chunks | Results have changed across download routes and app updates |
-| New phone video | User tests say location metadata is now removed, but verify it |
-| Old Discord video | May predate the 2020 video fix |
+| JPEG camera photo | The 2024 picture report does not identify formats or prove JPEG-wide removal |
+| PNG with text or custom chunks | A 2023 community thread reports loss and later recovery through some routes |
+| New phone video | No current removal guarantee established by these sources |
+| Old Discord video | A 2020 report found location data; announced work did not certify every file |
 | Original file in an archive | Treat it as the original and assume its metadata remains |
 
 Discord has changed its media pipeline before. What matters is the downloaded attachment you have now, not a test someone ran five years ago.
@@ -57,23 +57,23 @@ Discord has changed its media pipeline before. What matters is the downloaded at
 
 No. If Discord removed the tags, a metadata viewer cannot rebuild them from the downloaded copy.
 
-A [2021 r/discordapp thread](https://www.reddit.com/r/discordapp/comments/ll1kod/does_discord_remove_exif_data/) reached the practical answer quickly: upload the file, download it, and inspect the result. If the GPS or capture time is gone, you need the original photo or a backup to get it back.
+Compare against an original known to contain the fields you are checking. An empty report on a random attachment alone cannot show whether the sender’s camera ever recorded GPS.
 
 When a photo arrives without a useful date, the download time is not the moment the camera took the picture. A filename may offer a clue, but it is not reliable proof.
 
 ## Why did Discord videos leak GPS in 2020?
 
-Discord cleaned photo metadata at the time, but its video path briefly left phone location data intact.
+A November 2020 community report described location data in downloaded phone videos. It documents a historical risk, not the behavior of every current video upload.
 
-In a widely shared [2020 r/discordapp investigation](https://www.reddit.com/r/discordapp/comments/jzwite/psa_discord_does_not_strip_location_data_for/), users downloaded phone videos and found GPS information that could narrow down where they were recorded. A Discord staff reply said image metadata was already stripped, acknowledged that video was harder, and described fixes for mobile apps and the backend.
+The [2020 r/discordapp thread](https://www.reddit.com/r/discordapp/comments/jzwite/psa_discord_does_not_strip_location_data_for/) includes a reply from ReallyAmused describing image stripping and planned video work: an iOS change had merged for a future release, Android had no ETA, and backend work was a proof of concept. This is evidence of an announcement at that time, not proof that all clients or stored attachments were fixed.
 
-The risk was not theoretical. Another user later said [someone found their address from an old video](https://www.reddit.com/r/discordapp/comments/sq9xwj/does_discord_strip_video_exif_data/). Replies pointed out that new uploads should have been covered after November 2020, while an older attachment could still be a problem.
+Do not assign a universal “safe after November 2020” cutoff. The announcement does not establish one. A downloaded copy also survives independently of later changes to the service.
 
-If you posted a sensitive phone video before that change, remove the old message. Do not assume Discord retroactively replaced every copy people had already downloaded.
+If an old message exposes a sensitive phone video, review and remove it if necessary. Do not assume Discord retroactively replaced every copy people had already downloaded.
 
 ## Does Discord keep PNG metadata and custom chunks?
 
-Sometimes. PNG data has not behaved as consistently as JPEG EXIF.
+The cited 2023 discussion reports changing PNG results. It does not establish which chunks survive in a current download.
 
 PNG can hold text fields and application-specific chunks that are not the usual camera EXIF. In 2023, [game and art communities reported that Discord had stripped data stored inside PNG files](https://www.reddit.com/r/discordapp/comments/12800f7/discord_is_stripping_metadata_out_of_png_images/). Some relied on those chunks to carry character or project data. Later replies reported different results depending on how the PNG was uploaded and downloaded.
 
@@ -81,9 +81,9 @@ For privacy and backups, the lesson is the same: a PNG attachment is not a depen
 
 ## Can a Discord image reveal your IP or address?
 
-The image file does not contain your connection IP, but the post can still reveal where you live.
+Ordinary camera EXIF does not record the connection IP used to upload it. Custom text or visible content can still contain an address, and the post can reveal where you live.
 
-One [r/discordapp user worried that a stranger had found their school and city](https://www.reddit.com/r/discordapp/comments/foilna/does_discord_automatically_strip_exif_data/). Replies noted that Discord strips image EXIF and that an IP address would not usually pinpoint a home anyway. A link to a site controlled by someone else is a separate risk because opening it creates a network request.
+Opening an external link creates a separate network request. A map or other website can receive your connection information even if the picture you inspected contains no GPS tags.
 
 The pixels are often the easier route. Street signs, house numbers, school badges, reflections, windows, and landmarks survive metadata removal. A reused username or reverse image search can connect the post to another account. Clean metadata helps, but it cannot crop the photo for you.
 
@@ -91,13 +91,13 @@ The pixels are often the easier route. Street signs, house numbers, school badge
 
 A photo app may use the download date because Discord's copy no longer has the original capture time.
 
-This is a common archive headache. A recent [Immich discussion](https://www.reddit.com/r/immich/comments/1ucdnw8/i_made_this_tool_to_fix_wrong_timeline_dates_by/) described rebuilding dates from filenames after services such as Discord stripped the embedded timestamp. That can improve sorting, but a filename can be renamed or generated by an app, so it remains a best guess.
+Before repairing a library date, compare the saved attachment with the source. If capture time is absent, a filename or message time may help you estimate it. Label that estimate: neither is proof of when the camera took the picture.
 
 If the date matters, keep the original file. The Discord attachment is a sharing copy, not a photo archive.
 
 ## How do you test the exact Discord upload?
 
-Send the file to a private test channel, download the attachment, and inspect that downloaded copy.
+Use a harmless synthetic file with known tags in a private test channel, download the attachment, and inspect that downloaded copy. Do not upload a private original just to test removal.
 
 Open it in the [Image Metadata Viewer](/image-metadata-viewer/) and search for `GPS`, `Location`, `DateTimeOriginal`, `Make`, `Model`, `Artist`, `Comment`, and `Software`. The [Image Privacy Checker](/image-privacy-checker/) groups fields that may deserve attention.
 

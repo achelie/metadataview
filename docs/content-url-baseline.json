@@ -6,11 +6,15 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
       "/blog/",
+      "/blog/do-screenshots-have-metadata/",
+      "/blog/how-to-find-where-a-photo-was-taken/",
+      "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "/blog/how-to-tell-when-a-photo-was-taken/",
       "/c2pa-viewer/",
       "/contact/",
       "/de/",
@@ -36,7 +40,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -67,7 +71,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -98,7 +102,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -128,7 +132,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -137,14 +141,16 @@
       "/blog/do-screenshots-have-metadata/",
       "/blog/exif-metadata-definition-and-how-to-view/",
       "/blog/how-to-find-camera-settings-from-a-photo/",
+      "/blog/how-to-find-where-a-photo-was-taken/",
+      "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
       "/blog/how-to-tell-when-a-photo-was-taken/",
-      "/blog/how-to-view-exif-data-on-android/",
       "/blog/how-to-view-exif-data-on-windows-11/",
       "/blog/how-to-view-photo-metadata-on-mac/",
       "/blog/page/2/",
       "/blog/page/3/",
       "/blog/page/4/",
       "/blog/page/5/",
+      "/blog/what-is-a-metadata-strategy/",
       "/c2pa-viewer/",
       "/contact/",
       "/de/",
@@ -170,7 +176,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -205,7 +211,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -241,7 +247,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -276,7 +282,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -312,7 +318,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -347,7 +353,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -382,7 +388,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -417,7 +423,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -456,7 +462,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -491,7 +497,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -526,7 +532,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -563,7 +569,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -599,7 +605,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -637,7 +643,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -675,7 +681,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -713,7 +719,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -749,7 +755,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -785,7 +791,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -820,7 +826,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -856,7 +862,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -891,19 +897,19 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
       "/blog/",
       "/blog/how-to-check-metadata-of-an-image/",
+      "/blog/how-to-view-exif-data-on-android/",
       "/blog/page/2/",
       "/blog/page/3/",
       "/blog/page/4/",
       "/blog/page/5/",
       "/blog/remove-metadata-from-mp3/",
-      "/blog/remove-metadata-from-mp4/",
       "/blog/remove-metadata-from-pdf/",
       "/blog/remove-metadata-from-word-document/",
       "/blog/what-is-xmp-metadata/",
@@ -932,7 +938,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -947,7 +953,7 @@
       "/blog/page/3/",
       "/blog/page/4/",
       "/blog/page/5/",
-      "/blog/what-is-exif-data/",
+      "/blog/remove-metadata-from-mp4/",
       "/c2pa-viewer/",
       "/contact/",
       "/de/",
@@ -973,7 +979,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -981,7 +987,6 @@
       "/blog/",
       "/blog/does-discord-remove-exif-data/",
       "/blog/does-gmail-remove-exif-data/",
-      "/blog/does-instagram-remove-exif-data/",
       "/blog/does-reddit-remove-exif-data/",
       "/blog/does-telegram-remove-exif-data/",
       "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
@@ -989,6 +994,7 @@
       "/blog/page/3/",
       "/blog/page/4/",
       "/blog/page/5/",
+      "/blog/what-is-exif-data/",
       "/c2pa-viewer/",
       "/contact/",
       "/de/",
@@ -1014,12 +1020,13 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
       "/blog/",
+      "/blog/does-instagram-remove-exif-data/",
       "/blog/does-whatsapp-remove-exif-data/",
       "/blog/page/2/",
       "/blog/page/3/",
@@ -1050,7 +1057,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1085,7 +1092,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1121,7 +1128,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1156,7 +1163,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1186,13 +1193,48 @@
     ]
   },
   {
+    "canonical": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+    "title": "What Is a Metadata Strategy? A Practical Guide for Your Files | ViewExif",
+    "h1": "What Is a Metadata Strategy?",
+    "robots": "",
+    "links": [
+      "/",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
+      "/_astro/blog.CDDW-B5y.css",
+      "/about/",
+      "/audio-metadata-remover/",
+      "/audio-metadata-viewer/",
+      "/blog/",
+      "/blog/exif-vs-metadata/",
+      "/blog/how-to-check-metadata-of-an-image/",
+      "/blog/what-is-a-metadata-strategy/",
+      "/blog/what-is-xmp-metadata/",
+      "/c2pa-viewer/",
+      "/contact/",
+      "/de/",
+      "/document-metadata-remover/",
+      "/document-metadata-viewer/",
+      "/favicon.svg",
+      "/fr/",
+      "/image-metadata-remover/",
+      "/image-metadata-viewer/",
+      "/image-privacy-checker/",
+      "/metadata-remover/",
+      "/privacy/",
+      "/terms/",
+      "/video-metadata-remover/",
+      "/video-metadata-viewer/",
+      "/zh-cn/"
+    ]
+  },
+  {
     "canonical": "https://www.viewexif.com/blog/what-is-exif-data/",
     "title": "What Is EXIF Data? GPS, Camera Info &amp; Photo Metadata Explained | ViewExif",
     "h1": "What Is EXIF Data?",
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1230,7 +1272,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/_astro/blog.CDDW-B5y.css",
       "/about/",
       "/audio-metadata-remover/",
@@ -1265,7 +1307,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -1295,7 +1337,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -1325,8 +1367,12 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
+      "/blog/do-screenshots-have-metadata/",
+      "/blog/how-to-find-where-a-photo-was-taken/",
+      "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "/blog/how-to-tell-when-a-photo-was-taken/",
       "/de/",
       "/de/about/",
       "/de/audio-metadata-remover/",
@@ -1354,7 +1400,7 @@
     "h1": "Eine Person. Keine erfundene Firma.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/blog/",
       "/de/",
@@ -1385,7 +1431,7 @@
     "h1": "Audio-Metadaten-Entferner",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-remover/",
       "/blog/",
       "/de/",
@@ -1416,7 +1462,7 @@
     "h1": "Audio-Metadaten-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-viewer/",
       "/blog/",
       "/de/",
@@ -1446,7 +1492,7 @@
     "h1": "C2PA-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/c2pa-viewer/",
       "/de/",
@@ -1476,7 +1522,7 @@
     "h1": "E-Mail, ohne rätselhaftes Formular.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/contact/",
       "/de/",
@@ -1506,7 +1552,7 @@
     "h1": "Dokument-Metadaten-Entferner",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1537,7 +1583,7 @@
     "h1": "Dokument-Metadaten-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1567,7 +1613,7 @@
     "h1": "Bild-Metadaten-Entferner",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1597,7 +1643,7 @@
     "h1": "Bild-Metadaten-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1627,7 +1673,7 @@
     "h1": "Bild-Datenschutz-Check",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1657,7 +1703,7 @@
     "h1": "Metadaten-Entferner",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1687,7 +1733,7 @@
     "h1": "Metadaten-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1718,7 +1764,7 @@
     "h1": "Deine Datei bleibt hier. Ein Seitenaufruf nicht.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1748,7 +1794,7 @@
     "h1": "Nutze die Werkzeuge. Lass dein Urteil eingeschaltet.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1778,7 +1824,7 @@
     "h1": "Video-Metadaten-Entferner",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1808,7 +1854,7 @@
     "h1": "Video-Metadaten-Viewer",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/",
       "/de/about/",
@@ -1840,7 +1886,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -1871,7 +1917,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -1901,8 +1947,12 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
+      "/blog/do-screenshots-have-metadata/",
+      "/blog/how-to-find-where-a-photo-was-taken/",
+      "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "/blog/how-to-tell-when-a-photo-was-taken/",
       "/de/",
       "/favicon.svg",
       "/fr/",
@@ -1930,7 +1980,7 @@
     "h1": "Une personne. Pas de société inventée.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/blog/",
       "/de/about/",
@@ -1961,7 +2011,7 @@
     "h1": "Suppresseur de métadonnées audio",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-remover/",
       "/blog/",
       "/de/audio-metadata-remover/",
@@ -1992,7 +2042,7 @@
     "h1": "Lecteur de métadonnées audio",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-viewer/",
       "/blog/",
       "/de/audio-metadata-viewer/",
@@ -2022,7 +2072,7 @@
     "h1": "Lecteur C2PA",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/c2pa-viewer/",
       "/de/c2pa-viewer/",
@@ -2052,7 +2102,7 @@
     "h1": "Un e-mail, sans formulaire mystérieux.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/contact/",
       "/de/contact/",
@@ -2082,7 +2132,7 @@
     "h1": "Suppresseur de métadonnées de document",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/document-metadata-remover/",
       "/document-metadata-remover/",
@@ -2113,7 +2163,7 @@
     "h1": "Lecteur de métadonnées de document",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/document-metadata-viewer/",
       "/document-metadata-viewer/",
@@ -2143,7 +2193,7 @@
     "h1": "Suppresseur de métadonnées d’image",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-metadata-remover/",
       "/favicon.svg",
@@ -2173,7 +2223,7 @@
     "h1": "Lecteur de métadonnées d’image",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-metadata-viewer/",
       "/favicon.svg",
@@ -2203,7 +2253,7 @@
     "h1": "Vérificateur de confidentialité des images",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-privacy-checker/",
       "/favicon.svg",
@@ -2233,7 +2283,7 @@
     "h1": "Suppresseur de métadonnées",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/metadata-remover/",
       "/favicon.svg",
@@ -2263,7 +2313,7 @@
     "h1": "Lecteur de métadonnées",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/metadata-viewer/",
       "/favicon.svg",
@@ -2294,7 +2344,7 @@
     "h1": "Votre fichier reste ici. Une requête de page, non.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/privacy/",
       "/favicon.svg",
@@ -2324,7 +2374,7 @@
     "h1": "Utilisez les outils. Gardez votre jugement allumé.",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/terms/",
       "/favicon.svg",
@@ -2354,7 +2404,7 @@
     "h1": "Suppresseur de métadonnées vidéo",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/video-metadata-remover/",
       "/favicon.svg",
@@ -2384,7 +2434,7 @@
     "h1": "Lecteur de métadonnées vidéo",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/video-metadata-viewer/",
       "/favicon.svg",
@@ -2416,7 +2466,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2446,7 +2496,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2476,7 +2526,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2506,7 +2556,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2536,7 +2586,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2567,7 +2617,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2597,7 +2647,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2627,7 +2677,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2657,7 +2707,7 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/audio-metadata-remover/",
       "/audio-metadata-viewer/",
@@ -2688,8 +2738,12 @@
     "robots": "",
     "links": [
       "/",
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
+      "/blog/do-screenshots-have-metadata/",
+      "/blog/how-to-find-where-a-photo-was-taken/",
+      "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "/blog/how-to-tell-when-a-photo-was-taken/",
       "/de/",
       "/favicon.svg",
       "/fr/",
@@ -2717,7 +2771,7 @@
     "h1": "一个独立运营者，没有神秘公司。",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/about/",
       "/blog/",
       "/de/about/",
@@ -2748,7 +2802,7 @@
     "h1": "音频元数据清除器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-remover/",
       "/blog/",
       "/de/audio-metadata-remover/",
@@ -2779,7 +2833,7 @@
     "h1": "音频元数据查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/audio-metadata-viewer/",
       "/blog/",
       "/de/audio-metadata-viewer/",
@@ -2809,7 +2863,7 @@
     "h1": "C2PA 查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/c2pa-viewer/",
       "/de/c2pa-viewer/",
@@ -2839,7 +2893,7 @@
     "h1": "直接发邮件，不玩神秘表单。",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/contact/",
       "/de/contact/",
@@ -2869,7 +2923,7 @@
     "h1": "文档元数据清除器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/document-metadata-remover/",
       "/document-metadata-remover/",
@@ -2900,7 +2954,7 @@
     "h1": "文档元数据查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/document-metadata-viewer/",
       "/document-metadata-viewer/",
@@ -2930,7 +2984,7 @@
     "h1": "图片元数据清除器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-metadata-remover/",
       "/favicon.svg",
@@ -2960,7 +3014,7 @@
     "h1": "图片元数据查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-metadata-viewer/",
       "/favicon.svg",
@@ -2990,7 +3044,7 @@
     "h1": "图片隐私检查器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/image-privacy-checker/",
       "/favicon.svg",
@@ -3020,7 +3074,7 @@
     "h1": "元数据清除器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/metadata-remover/",
       "/favicon.svg",
@@ -3050,7 +3104,7 @@
     "h1": "元数据查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/metadata-viewer/",
       "/favicon.svg",
@@ -3081,7 +3135,7 @@
     "h1": "文件留在这里，网页请求不会。",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/privacy/",
       "/favicon.svg",
@@ -3111,7 +3165,7 @@
     "h1": "工具可以用，判断力别关机。",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/terms/",
       "/favicon.svg",
@@ -3141,7 +3195,7 @@
     "h1": "视频元数据清除器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/video-metadata-remover/",
       "/favicon.svg",
@@ -3171,7 +3225,7 @@
     "h1": "视频元数据查看器",
     "robots": "",
     "links": [
-      "/_astro/BaseLayout.8j87roej.css",
+      "/_astro/BaseLayout.Ha6Y1oCb.css",
       "/blog/",
       "/de/video-metadata-viewer/",
       "/favicon.svg",

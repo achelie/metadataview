@@ -375,10 +375,16 @@ export const reportMessages = {
     "fr": "Les détails photo les plus consultés. « Introuvable » signifie que le fichier ne fournit pas de valeur exploitable."
   },
   "open-map": {
-    "en": "Open map",
-    "zh-CN": "打开地图",
-    "de": "Karte öffnen",
-    "fr": "Ouvrir la carte"
+    "en": "View on OpenStreetMap",
+    "zh-CN": "在 OpenStreetMap 查看",
+    "de": "Auf OpenStreetMap ansehen",
+    "fr": "Voir sur OpenStreetMap"
+  },
+  "map-disclosure": {
+    "en": "Opening OpenStreetMap sends these coordinates and network request information, including your IP address, to that service. Your original file is not uploaded.",
+    "zh-CN": "打开 OpenStreetMap 会向该服务发送此坐标及 IP 地址等网络请求信息。原文件不会上传。",
+    "de": "Beim Öffnen von OpenStreetMap erhält der Dienst diese Koordinaten und Angaben zur Netzwerkanfrage, etwa deine IP-Adresse. Deine Originaldatei wird nicht hochgeladen.",
+    "fr": "Ouvrir OpenStreetMap transmet à ce service ces coordonnées et les informations de requête réseau, dont votre adresse IP. Le fichier original reste dans votre navigateur."
   },
   "not-found": {
     "en": "Not found",

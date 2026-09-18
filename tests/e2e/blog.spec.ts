@@ -14,6 +14,22 @@ const REDDIT_PATH = '/blog/does-reddit-remove-exif-data/';
 const REDDIT_TITLE = 'Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy';
 const GMAIL_PATH = '/blog/does-gmail-remove-exif-data/';
 const GMAIL_TITLE = 'Does Gmail Remove EXIF Data? What Photo Attachments Keep';
+
+test('six revised platform guides keep visible FAQ answers and structured data identical', async ({ page }) => {
+  for (const path of [WHATSAPP_PATH, INSTAGRAM_PATH, DISCORD_PATH, TELEGRAM_PATH, REDDIT_PATH, GMAIL_PATH]) {
+    await page.goto(path);
+    const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll(nodes => nodes.map(node => JSON.parse(node.textContent ?? '{}')));
+    const faq = schemas.find(schema => schema['@type'] === 'FAQPage');
+    const visible = await page.locator('.blog-faq article').evaluateAll(nodes => nodes.map(node => ({
+      question: node.querySelector('h3')?.textContent,
+      answer: node.querySelector('p')?.textContent,
+    })));
+    expect(faq.mainEntity.map((entry: { name: string; acceptedAnswer: { text: string } }) => ({ question: entry.name, answer: entry.acceptedAnswer.text })), path).toEqual(visible);
+    const posting = schemas.find(schema => schema['@type'] === 'BlogPosting');
+    expect(posting.dateModified).toMatch(/^2026-09-18/);
+    expect(posting.description).toBe(await page.locator('meta[name="description"]').getAttribute('content'));
+  }
+});
 const GPS_REMOVAL_PATH = '/blog/how-to-remove-gps-data-from-photos-before-sharing/';
 const GPS_REMOVAL_TITLE = 'How to Remove GPS Data from Photos Before Sharing';
 const EXIF_DATA_PATH = '/blog/what-is-exif-data/';
@@ -288,7 +304,7 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
 test('WhatsApp guide answers real date, filename, and recovery questions without a sources block', async ({ page }) => {
   await page.goto(WHATSAPP_PATH);
   await expect(page.getByRole('heading', { level: 1, name: WHATSAPP_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /WhatsApp and Signal messaging app icons/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -327,7 +343,7 @@ test('WhatsApp guide metadata and visible FAQ share the same source data', async
 test('Instagram guide answers separate privacy, recovery, ranking, and reused-content questions', async ({ page }) => {
   await page.goto(INSTAGRAM_PATH);
   await expect(page.getByRole('heading', { level: 1, name: INSTAGRAM_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /Instagram photo grid/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -371,7 +387,7 @@ test('Instagram guide metadata and visible FAQ share the same source data', asyn
 test('Discord guide covers photos, old videos, PNG data, location clues, and archive dates', async ({ page }) => {
   await page.goto(DISCORD_PATH);
   await expect(page.getByRole('heading', { level: 1, name: DISCORD_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /smartphone beside a computer/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -417,7 +433,7 @@ test('Discord guide metadata and visible FAQ share the same source data', async 
 test('Telegram guide separates photo, file, HD, Secret Chat, forwarding, and visible clues', async ({ page }) => {
   await page.goto(TELEGRAM_PATH);
   await expect(page.getByRole('heading', { level: 1, name: TELEGRAM_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /smartphone displaying a photo gallery/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -463,7 +479,7 @@ test('Telegram guide metadata and visible FAQ share the same source data', async
 test('Reddit guide separates hosted copies, linked originals, platform access, and visible clues', async ({ page }) => {
   await page.goto(REDDIT_PATH);
   await expect(page.getByRole('heading', { level: 1, name: REDDIT_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /person using a smartphone/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -509,7 +525,7 @@ test('Reddit guide metadata and visible FAQ share the same source data', async (
 test('Gmail guide separates attachments, inline images, local dates, forwarding, and Drive links', async ({ page }) => {
   await page.goto(GMAIL_PATH);
   await expect(page.getByRole('heading', { level: 1, name: GMAIL_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-18/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /laptop and smartphone/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -526,7 +542,7 @@ test('Gmail guide separates attachments, inline images, local dates, forwarding,
   await expect(page.locator('.blog-faq article')).toHaveCount(5);
   await expect(page.locator('.blog-sources')).toHaveCount(0);
   await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
-  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(3);
+  await expect(page.locator('.blog-prose a[href*="support.google.com/mail/answer/6584"]')).toHaveCount(2);
   await expect(page.getByRole('link', { name: TELEGRAM_TITLE, exact: true })).toHaveAttribute('href', TELEGRAM_PATH);
   await expect(page.getByRole('link', { name: WHATSAPP_TITLE, exact: true })).toHaveAttribute('href', WHATSAPP_PATH);
   await expect(page.getByRole('link', { name: PDF_METADATA_TITLE, exact: true })).toHaveAttribute('href', PDF_METADATA_PATH);

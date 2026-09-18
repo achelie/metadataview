@@ -1,0 +1,4463 @@
+{
+  "checkedAt": "2026-09-17T13:28:58.190Z",
+  "repositoryHead": "9b49ba8",
+  "scope": "Public production crawl, source review and representative Chromium checks; no AdSense private account access",
+  "pages": [
+    {
+      "url": "https://www.viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 251,
+      "title": "Free Online EXIF &amp; Metadata Viewer | ViewExif",
+      "h1": [
+        "Free Online EXIF &amp; Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 808,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:51 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 71,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/about/",
+      "status": 200,
+      "final": "https://www.viewexif.com/about/",
+      "ms": 1056,
+      "title": "About ViewExif — Who Builds and Checks This Toolkit",
+      "h1": [
+        "One operator. No mystery company."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/about/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 213,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 60,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/audio-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/audio-metadata-remover/",
+      "ms": 846,
+      "title": "Audio Metadata Remover — Clean MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+      "h1": [
+        "Audio Metadata Remover"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/audio-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 639,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/audio-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/audio-metadata-viewer/",
+      "ms": 843,
+      "title": "Audio Metadata Viewer – View MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+      "h1": [
+        "Audio Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/audio-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 717,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/blog/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/",
+      "ms": 953,
+      "title": "Metadata Privacy Guides | ViewExif",
+      "h1": [
+        "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 400,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 86,
+      "images": [
+        "/_astro/do-screenshots-have-metadata.Deo63h5a.webp",
+        "/_astro/what-is-a-metadata-strategy.BN6dTx8H.webp",
+        "/_astro/how-to-view-exif-data-on-windows-11.0rzUrCOm.webp",
+        "/_astro/exif-metadata-definition-and-how-to-view.9a015dFs.webp",
+        "/_astro/how-to-find-camera-settings-from-a-photo.BLAbHrRy.webp",
+        "/_astro/how-to-view-photo-metadata-on-mac.Bk8bvTkl.webp",
+        "/_astro/how-to-tell-when-a-photo-was-taken.D5ks-ikI.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "ms": 263,
+      "title": "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save | ViewExif",
+      "h1": [
+        "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1577,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:51 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 91,
+      "images": [
+        "/_astro/do-screenshots-have-metadata.Deo63h5a.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "ms": 251,
+      "title": "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained | ViewExif",
+      "h1": [
+        "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1709,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:51 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 102,
+      "images": [
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "ms": 263,
+      "title": "Does Gmail Remove EXIF Data? What Photo Attachments Keep | ViewExif",
+      "h1": [
+        "Does Gmail Remove EXIF Data? What Photo Attachments Keep"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1888,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 98,
+      "images": [
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp",
+        "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "ms": 318,
+      "title": "Does Instagram Remove EXIF Data? What Photos Still Reveal | ViewExif",
+      "h1": [
+        "Does Instagram Remove EXIF Data? What Photos Still Reveal"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1774,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 102,
+      "images": [
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "ms": 304,
+      "title": "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy | ViewExif",
+      "h1": [
+        "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1869,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 94,
+      "images": [
+        "/_astro/does-reddit-remove-exif-data.DzS-EhJV.webp",
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "ms": 298,
+      "title": "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained | ViewExif",
+      "h1": [
+        "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1811,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 97,
+      "images": [
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "ms": 249,
+      "title": "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained | ViewExif",
+      "h1": [
+        "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1644,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 95,
+      "images": [
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "ms": 290,
+      "title": "EXIF Metadata Definition and How to View It | ViewExif",
+      "h1": [
+        "EXIF Metadata Definition and How to View It"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2137,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 105,
+      "images": [
+        "/_astro/exif-metadata-definition-and-how-to-view.9a015dFs.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/how-to-find-camera-settings-from-a-photo.BLAbHrRy.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "ms": 309,
+      "title": "EXIF vs Metadata: What Is the Difference? | ViewExif",
+      "h1": [
+        "EXIF vs Metadata: What Is the Difference?"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1921,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 96,
+      "images": [
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/what-is-xmp-metadata.D_U-E_vw.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/do-screenshots-have-metadata.Deo63h5a.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "ms": 301,
+      "title": "How to Check Metadata of an Image: EXIF, GPS, and More | ViewExif",
+      "h1": [
+        "How to Check Metadata of an Image"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2249,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 99,
+      "images": [
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "ms": 306,
+      "title": "How to Find Camera Settings From a Photo: EXIF Guide | ViewExif",
+      "h1": [
+        "How to Find Camera Settings From a Photo"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2194,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 104,
+      "images": [
+        "/_astro/how-to-find-camera-settings-from-a-photo.BLAbHrRy.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-view-photo-metadata-on-mac.Bk8bvTkl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "ms": 257,
+      "title": "How to Find Where a Photo Was Taken Using EXIF Data | ViewExif",
+      "h1": [
+        "How to Find Where a Photo Was Taken"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1992,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 97,
+      "images": [
+        "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "ms": 379,
+      "title": "How to Remove GPS Data from Photos Before Sharing | ViewExif",
+      "h1": [
+        "How to Remove GPS Data from Photos Before Sharing"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1964,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 100,
+      "images": [
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "ms": 305,
+      "title": "How to Remove Metadata From a Photo Before Sharing | ViewExif",
+      "h1": [
+        "How to Remove Metadata From a Photo"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2169,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:52 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 102,
+      "images": [
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp",
+        "/_astro/remove-metadata-from-mp4.CqBOIquS.webp",
+        "/_astro/do-screenshots-have-metadata.Deo63h5a.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "ms": 320,
+      "title": "How to Tell When a Photo Was Taken Using EXIF Dates | ViewExif",
+      "h1": [
+        "How to Tell When a Photo Was Taken"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2138,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 105,
+      "images": [
+        "/_astro/how-to-tell-when-a-photo-was-taken.D5ks-ikI.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/how-to-view-exif-data-on-android.BJo3vpmx.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "ms": 270,
+      "title": "How to View EXIF Data on Android: Photos, GPS, and Camera Info | ViewExif",
+      "h1": [
+        "How to View EXIF Data on Android"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2152,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 103,
+      "images": [
+        "/_astro/how-to-view-exif-data-on-android.BJo3vpmx.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "ms": 303,
+      "title": "How to View EXIF Data on iPhone: Photos, GPS &amp; Camera Info | ViewExif",
+      "h1": [
+        "How to View EXIF Data on iPhone"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2092,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 98,
+      "images": [
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp",
+        "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "ms": 285,
+      "title": "How to View EXIF Data on Windows 11: Camera Info &amp; GPS | ViewExif",
+      "h1": [
+        "How to View EXIF Data on Windows 11"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2053,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 100,
+      "images": [
+        "/_astro/how-to-view-exif-data-on-windows-11.0rzUrCOm.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/how-to-tell-when-a-photo-was-taken.D5ks-ikI.webp",
+        "/_astro/how-to-find-camera-settings-from-a-photo.BLAbHrRy.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "ms": 316,
+      "title": "How to View PDF Metadata: Author, Dates, and Software | ViewExif",
+      "h1": [
+        "How to View PDF Metadata"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2054,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 96,
+      "images": [
+        "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/remove-metadata-from-pdf.CO9a7WIW.webp",
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "ms": 333,
+      "title": "How to View Photo Metadata on Mac: EXIF, GPS &amp; Dates | ViewExif",
+      "h1": [
+        "How to View Photo Metadata on Mac"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2193,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 100,
+      "images": [
+        "/_astro/how-to-view-photo-metadata-on-mac.Bk8bvTkl.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/how-to-tell-when-a-photo-was-taken.D5ks-ikI.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/2/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/page/2/",
+      "ms": 277,
+      "title": "Metadata Privacy Guides — Page 2 | ViewExif",
+      "h1": [
+        "Latest metadata guides."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/page/2/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 313,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 80,
+      "images": [
+        "/_astro/how-to-view-exif-data-on-android.BJo3vpmx.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+        "/_astro/what-is-xmp-metadata.D_U-E_vw.webp",
+        "/_astro/remove-metadata-from-word-document.D7iMWibH.webp",
+        "/_astro/remove-metadata-from-pdf.CO9a7WIW.webp",
+        "/_astro/remove-metadata-from-mp3.C71LyULl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/3/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/page/3/",
+      "ms": 300,
+      "title": "Metadata Privacy Guides — Page 3 | ViewExif",
+      "h1": [
+        "Latest metadata guides."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/page/3/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 330,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 80,
+      "images": [
+        "/_astro/remove-metadata-from-mp4.CqBOIquS.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp",
+        "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/4/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/page/4/",
+      "ms": 277,
+      "title": "Metadata Privacy Guides — Page 4 | ViewExif",
+      "h1": [
+        "Latest metadata guides."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/page/4/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 337,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 80,
+      "images": [
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp",
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp",
+        "/_astro/does-reddit-remove-exif-data.DzS-EhJV.webp",
+        "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/5/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/page/5/",
+      "ms": 305,
+      "title": "Metadata Privacy Guides — Page 5 | ViewExif",
+      "h1": [
+        "Latest metadata guides."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/page/5/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 148,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 68,
+      "images": [
+        "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp",
+        "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "ms": 268,
+      "title": "How to Remove Metadata From MP3 Without Losing Audio Quality | ViewExif",
+      "h1": [
+        "How to Remove Metadata From MP3"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2055,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 99,
+      "images": [
+        "/_astro/remove-metadata-from-mp3.C71LyULl.webp",
+        "/_astro/remove-metadata-from-mp4.CqBOIquS.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "ms": 309,
+      "title": "How to Remove Metadata From MP4 Without Re-encoding | ViewExif",
+      "h1": [
+        "How to Remove Metadata From MP4"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1849,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 98,
+      "images": [
+        "/_astro/remove-metadata-from-mp4.CqBOIquS.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/remove-metadata-from-mp3.C71LyULl.webp",
+        "/_astro/does-discord-remove-exif-data.G0sUDclX.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "ms": 296,
+      "title": "How to Remove Metadata From PDF Safely | ViewExif",
+      "h1": [
+        "How to Remove Metadata From PDF"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2043,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 100,
+      "images": [
+        "/_astro/remove-metadata-from-pdf.CO9a7WIW.webp",
+        "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+        "/_astro/remove-metadata-from-word-document.D7iMWibH.webp",
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "ms": 281,
+      "title": "How to Remove Metadata From a Word Document | ViewExif",
+      "h1": [
+        "How to Remove Metadata From a Word Document"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2228,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 106,
+      "images": [
+        "/_astro/remove-metadata-from-word-document.D7iMWibH.webp",
+        "/_astro/remove-metadata-from-pdf.CO9a7WIW.webp",
+        "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+        "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "ms": 250,
+      "title": "What Is a Metadata Strategy? A Practical Guide for Your Files | ViewExif",
+      "h1": [
+        "What Is a Metadata Strategy?"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2018,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 97,
+      "images": [
+        "/_astro/what-is-a-metadata-strategy.BN6dTx8H.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/what-is-xmp-metadata.D_U-E_vw.webp",
+        "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "ms": 297,
+      "title": "What Is EXIF Data? GPS, Camera Info &amp; Photo Metadata Explained | ViewExif",
+      "h1": [
+        "What Is EXIF Data?"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2207,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 97,
+      "images": [
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "status": 200,
+      "final": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "ms": 314,
+      "title": "What Is XMP Metadata? Sidecars, Editing Data, and Privacy | ViewExif",
+      "h1": [
+        "What Is XMP Metadata?"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 2234,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 104,
+      "images": [
+        "/_astro/what-is-xmp-metadata.D_U-E_vw.webp",
+        "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+        "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+        "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp"
+      ]
+    },
+    {
+      "url": "https://www.viewexif.com/c2pa-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/c2pa-viewer/",
+      "ms": 252,
+      "title": "C2PA Viewer — Verify Content Credentials and File Provenance",
+      "h1": [
+        "C2PA Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/c2pa-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 613,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:53 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 56,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/contact/",
+      "status": 200,
+      "final": "https://www.viewexif.com/contact/",
+      "ms": 215,
+      "title": "Contact ViewExif — Reach the Independent Operator",
+      "h1": [
+        "Email, minus the mystery form."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/contact/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 165,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/",
+      "ms": 253,
+      "title": "Kostenloser EXIF- &amp; Metadaten-Viewer online | ViewExif",
+      "h1": [
+        "EXIF &amp; Metadaten kostenlos online ansehen"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 640,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 66,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/about/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/about/",
+      "ms": 293,
+      "title": "Über ViewExif – Wer diesen Werkzeugkasten baut und prüft",
+      "h1": [
+        "Eine Person. Keine erfundene Firma."
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/about/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 187,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 60,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/audio-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/audio-metadata-remover/",
+      "ms": 421,
+      "title": "Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen",
+      "h1": [
+        "Audio-Metadaten-Entferner"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/audio-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 576,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/audio-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/audio-metadata-viewer/",
+      "ms": 312,
+      "title": "Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags",
+      "h1": [
+        "Audio-Metadaten-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/audio-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 593,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/c2pa-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/c2pa-viewer/",
+      "ms": 380,
+      "title": "C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren",
+      "h1": [
+        "C2PA-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/c2pa-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 550,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 56,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/contact/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/contact/",
+      "ms": 260,
+      "title": "Kontakt zu ViewExif – Den unabhängigen Betreiber erreichen",
+      "h1": [
+        "E-Mail, ohne rätselhaftes Formular."
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/contact/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 134,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/document-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/document-metadata-remover/",
+      "ms": 325,
+      "title": "Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen",
+      "h1": [
+        "Dokument-Metadaten-Entferner"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/document-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 566,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/document-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/document-metadata-viewer/",
+      "ms": 294,
+      "title": "Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften",
+      "h1": [
+        "Dokument-Metadaten-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/document-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 566,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/image-metadata-remover/",
+      "ms": 269,
+      "title": "Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen",
+      "h1": [
+        "Bild-Metadaten-Entferner"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/image-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 591,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/image-metadata-viewer/",
+      "ms": 397,
+      "title": "Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen",
+      "h1": [
+        "Bild-Metadaten-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/image-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 583,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-privacy-checker/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/image-privacy-checker/",
+      "ms": 277,
+      "title": "Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden",
+      "h1": [
+        "Bild-Datenschutz-Check"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/image-privacy-checker/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 562,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 59,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/metadata-remover/",
+      "ms": 305,
+      "title": "Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen",
+      "h1": [
+        "Metadaten-Entferner"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 586,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 63,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/metadata-viewer/",
+      "ms": 310,
+      "title": "Metadaten-Viewer – Versteckte Dateidaten online ansehen",
+      "h1": [
+        "Metadaten-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 505,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/privacy/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/privacy/",
+      "ms": 253,
+      "title": "Datenschutz – Lokale Dateiverarbeitung und externe Dienste",
+      "h1": [
+        "Deine Datei bleibt hier. Ein Seitenaufruf nicht."
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/privacy/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 586,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 68,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/terms/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/terms/",
+      "ms": 262,
+      "title": "Nutzungsbedingungen — ViewExif",
+      "h1": [
+        "Nutze die Werkzeuge. Lass dein Urteil eingeschaltet."
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/terms/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 500,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:54 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 65,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/video-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/video-metadata-remover/",
+      "ms": 298,
+      "title": "Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen",
+      "h1": [
+        "Video-Metadaten-Entferner"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/video-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 604,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/de/video-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/de/video-metadata-viewer/",
+      "ms": 294,
+      "title": "Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen",
+      "h1": [
+        "Video-Metadaten-Viewer"
+      ],
+      "lang": "de",
+      "canonical": "https://www.viewexif.com/de/video-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 579,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/document-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/document-metadata-remover/",
+      "ms": 245,
+      "title": "Document Metadata Remover — Clean PDF, DOCX, PPTX and XLSX Properties",
+      "h1": [
+        "Document Metadata Remover"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/document-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 651,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/document-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/document-metadata-viewer/",
+      "ms": 296,
+      "title": "Document Metadata Viewer – View PDF, DOCX, PPTX and XLSX Properties",
+      "h1": [
+        "Document Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/document-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 713,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/",
+      "ms": 278,
+      "title": "Visionneuse EXIF et métadonnées gratuite en ligne | ViewExif",
+      "h1": [
+        "Visionneuse EXIF et métadonnées gratuite en ligne"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 781,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 66,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/about/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/about/",
+      "ms": 289,
+      "title": "À propos de ViewExif — Qui construit et vérifie ces outils",
+      "h1": [
+        "Une personne. Pas de société inventée."
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/about/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 243,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 60,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/audio-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/audio-metadata-remover/",
+      "ms": 272,
+      "title": "Nettoyer les métadonnées MP3, FLAC, OGG, M4A, WAV et WMA",
+      "h1": [
+        "Suppresseur de métadonnées audio"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/audio-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 712,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+      "ms": 305,
+      "title": "Métadonnées audio — lire les balises MP3, FLAC, OGG, M4A, WAV et WMA",
+      "h1": [
+        "Lecteur de métadonnées audio"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 735,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/c2pa-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/c2pa-viewer/",
+      "ms": 291,
+      "title": "Lecteur C2PA — vérifier Content Credentials et la provenance d’un fichier",
+      "h1": [
+        "Lecteur C2PA"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/c2pa-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 637,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 56,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/contact/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/contact/",
+      "ms": 396,
+      "title": "Contacter ViewExif — Joindre l’exploitant indépendant",
+      "h1": [
+        "Un e-mail, sans formulaire mystérieux."
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/contact/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 163,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/document-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/document-metadata-remover/",
+      "ms": 305,
+      "title": "Nettoyer les propriétés PDF, DOCX, PPTX et XLSX",
+      "h1": [
+        "Suppresseur de métadonnées de document"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/document-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 703,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/document-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/document-metadata-viewer/",
+      "ms": 250,
+      "title": "Métadonnées de document — lire PDF, DOCX, PPTX et XLSX",
+      "h1": [
+        "Lecteur de métadonnées de document"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/document-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 717,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/image-metadata-remover/",
+      "ms": 333,
+      "title": "Nettoyer les métadonnées PNG, JPEG, WebP, HEIC, TIFF et GIF",
+      "h1": [
+        "Suppresseur de métadonnées d’image"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/image-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 711,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/image-metadata-viewer/",
+      "ms": 299,
+      "title": "Métadonnées d’image — lire PNG, JPEG, WebP, HEIC, TIFF et GIF",
+      "h1": [
+        "Lecteur de métadonnées d’image"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/image-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 722,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-privacy-checker/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/image-privacy-checker/",
+      "ms": 274,
+      "title": "Confidentialité des images — détecter EXIF, GPS et métadonnées cachées",
+      "h1": [
+        "Vérificateur de confidentialité des images"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/image-privacy-checker/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 679,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 59,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/metadata-remover/",
+      "ms": 299,
+      "title": "Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents",
+      "h1": [
+        "Suppresseur de métadonnées"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 717,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 63,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/metadata-viewer/",
+      "ms": 294,
+      "title": "Lecteur de métadonnées — voir les informations cachées d’un fichier",
+      "h1": [
+        "Lecteur de métadonnées"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 502,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:55 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/privacy/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/privacy/",
+      "ms": 285,
+      "title": "Confidentialité — Traitement local et services tiers",
+      "h1": [
+        "Votre fichier reste ici. Une requête de page, non."
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/privacy/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 759,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 68,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/terms/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/terms/",
+      "ms": 300,
+      "title": "Conditions d’utilisation — ViewExif",
+      "h1": [
+        "Utilisez les outils. Gardez votre jugement allumé."
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/terms/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 618,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 65,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/video-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/video-metadata-remover/",
+      "ms": 275,
+      "title": "Nettoyer les métadonnées MP4, MOV, MKV, WebM, AVI et FLV",
+      "h1": [
+        "Suppresseur de métadonnées vidéo"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/video-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 732,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/fr/video-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/fr/video-metadata-viewer/",
+      "ms": 264,
+      "title": "Métadonnées vidéo — lire MP4, MOV, MKV, WebM, AVI et FLV",
+      "h1": [
+        "Lecteur de métadonnées vidéo"
+      ],
+      "lang": "fr",
+      "canonical": "https://www.viewexif.com/fr/video-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 722,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/image-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/image-metadata-remover/",
+      "ms": 307,
+      "title": "Image Metadata Remover – Remove EXIF, GPS &amp; Photo Metadata | ViewExif",
+      "h1": [
+        "Image Metadata Remover"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/image-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 961,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/image-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/image-metadata-viewer/",
+      "ms": 327,
+      "title": "Image Metadata Viewer – View EXIF, GPS &amp; Photo Metadata | ViewExif",
+      "h1": [
+        "Image Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/image-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1047,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/image-privacy-checker/",
+      "status": 200,
+      "final": "https://www.viewexif.com/image-privacy-checker/",
+      "ms": 300,
+      "title": "Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata",
+      "h1": [
+        "Image Privacy Checker"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/image-privacy-checker/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 683,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 59,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/metadata-remover/",
+      "ms": 233,
+      "title": "Metadata Remover – Remove File Metadata Online | ViewExif",
+      "h1": [
+        "Metadata Remover"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 953,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 63,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/metadata-viewer/",
+      "ms": 249,
+      "title": "Metadata Viewer – View Hidden File Metadata Online",
+      "h1": [
+        "Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 543,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/privacy/",
+      "status": 200,
+      "final": "https://www.viewexif.com/privacy/",
+      "ms": 302,
+      "title": "Privacy — Local File Processing and Third-Party Services",
+      "h1": [
+        "Your file stays here. A page request does not."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/privacy/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 682,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 68,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/terms/",
+      "status": 200,
+      "final": "https://www.viewexif.com/terms/",
+      "ms": 320,
+      "title": "Terms of Use — ViewExif",
+      "h1": [
+        "Use the tools. Keep your judgment switched on."
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/terms/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 589,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 65,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/video-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/video-metadata-remover/",
+      "ms": 361,
+      "title": "Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif",
+      "h1": [
+        "Video Metadata Remover"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/video-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1105,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/video-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/video-metadata-viewer/",
+      "ms": 284,
+      "title": "Video Metadata Viewer – View MP4, MOV, GPS &amp; Codec Info | ViewExif",
+      "h1": [
+        "Video Metadata Viewer"
+      ],
+      "lang": "en",
+      "canonical": "https://www.viewexif.com/video-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 1397,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/",
+      "ms": 253,
+      "title": "免费在线 EXIF 与元数据查看器 | ViewExif",
+      "h1": [
+        "免费在线 EXIF 与元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 144,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 66,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/about/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/about/",
+      "ms": 299,
+      "title": "关于 ViewExif — 谁在制作和核验这套工具",
+      "h1": [
+        "一个独立运营者，没有神秘公司。"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/about/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 31,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 60,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+      "ms": 369,
+      "title": "音频元数据清除器 — 清理 MP3、FLAC、OGG、M4A、WAV 与 WMA",
+      "h1": [
+        "音频元数据清除器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 125,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+      "ms": 293,
+      "title": "音频元数据查看器 — 查看 MP3、FLAC、OGG、M4A、WAV 与 WMA 标签",
+      "h1": [
+        "音频元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 134,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+      "ms": 262,
+      "title": "C2PA 查看器 — 验证内容凭证与文件来源",
+      "h1": [
+        "C2PA 查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 135,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:56 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 56,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/contact/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/contact/",
+      "ms": 325,
+      "title": "联系 ViewExif — 找到独立运营者",
+      "h1": [
+        "直接发邮件，不玩神秘表单。"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/contact/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 30,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+      "ms": 293,
+      "title": "文档元数据清除器 — 清理 PDF、DOCX、PPTX 与 XLSX 属性",
+      "h1": [
+        "文档元数据清除器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 121,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+      "ms": 268,
+      "title": "文档元数据查看器 — 查看 PDF、DOCX、PPTX 与 XLSX 属性",
+      "h1": [
+        "文档元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 126,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+      "ms": 308,
+      "title": "图片元数据清除器 — 清理 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+      "h1": [
+        "图片元数据清除器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 153,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+      "ms": 229,
+      "title": "图片元数据查看器 — 查看 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+      "h1": [
+        "图片元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 132,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+      "ms": 311,
+      "title": "图片隐私检查器 — 查找 EXIF、GPS 和隐藏元数据",
+      "h1": [
+        "图片隐私检查器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 109,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 59,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/metadata-remover/",
+      "ms": 298,
+      "title": "元数据清除器 — 清理图片、视频、音频和文档标签",
+      "h1": [
+        "元数据清除器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 117,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 63,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+      "ms": 258,
+      "title": "元数据查看器 — 在线查看文件里的隐藏信息",
+      "h1": [
+        "元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 184,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 58,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/privacy/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/privacy/",
+      "ms": 273,
+      "title": "隐私说明 — 本地文件处理与第三方服务",
+      "h1": [
+        "文件留在这里，网页请求不会。"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/privacy/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 135,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 68,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/terms/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/terms/",
+      "ms": 292,
+      "title": "使用条款 — ViewExif",
+      "h1": [
+        "工具可以用，判断力别关机。"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/terms/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 75,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 65,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+      "ms": 304,
+      "title": "视频元数据清除器 — 清理 MP4、MOV、MKV、WebM、AVI 与 FLV",
+      "h1": [
+        "视频元数据清除器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 153,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+      "status": 200,
+      "final": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+      "ms": 388,
+      "title": "视频元数据查看器 — 查看 MP4、MOV、MKV、WebM、AVI 与 FLV",
+      "h1": [
+        "视频元数据查看器"
+      ],
+      "lang": "zh-CN",
+      "canonical": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+      "noindex": false,
+      "account": "ca-pub-7443237558968985",
+      "adRuntime": false,
+      "words": 133,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:57 GMT",
+        "server": "cloudflare"
+      },
+      "linkCount": 62,
+      "images": []
+    }
+  ],
+  "probes": [
+    {
+      "url": "https://www.viewexif.com/robots.txt",
+      "status": 200,
+      "final": "https://www.viewexif.com/robots.txt",
+      "ms": 261,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/plain; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      },
+      "body": "User-agent: *\r\nAllow: /\r\n\r\nSitemap: https://www.viewexif.com/sitemap.xml\r\n"
+    },
+    {
+      "url": "https://www.viewexif.com/ads.txt",
+      "status": 200,
+      "final": "https://www.viewexif.com/ads.txt",
+      "ms": 355,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/plain; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      },
+      "body": "google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0\r\n"
+    },
+    {
+      "url": "https://www.viewexif.com/audit-missing-page-20260917/",
+      "status": 404,
+      "final": "https://www.viewexif.com/audit-missing-page-20260917/",
+      "ms": 297,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "http://viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 942,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "https://viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 1198,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:59 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "http://www.viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 1304,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:59 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "https://viewexif.com/ads.txt",
+      "status": 200,
+      "final": "https://www.viewexif.com/ads.txt",
+      "ms": 1050,
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/plain; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      },
+      "body": "google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0\r\n"
+    },
+    {
+      "url": "https://www.viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 300,
+      "ua": "Mediapartners-Google",
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 251,
+      "ua": "AdsBot-Google",
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:58 GMT",
+        "server": "cloudflare"
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/",
+      "status": 200,
+      "final": "https://www.viewexif.com/",
+      "ms": 1281,
+      "ua": "Googlebot",
+      "headers": {
+        "content-security-policy": "connect-src 'self' https://analytics.ahrefs.com",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 17 Sep 2026 13:28:59 GMT",
+        "server": "cloudflare"
+      }
+    }
+  ],
+  "articles": [
+    {
+      "file": "do-screenshots-have-metadata.md",
+      "words": 1076,
+      "headings": [
+        "What a screenshot usually keeps",
+        "What iPhone, Android, Windows, and Mac save",
+        "What people are actually worried about",
+        "A screenshot can reveal location without GPS",
+        "How to check the file you will share",
+        "Which screenshot details travel with the file?",
+        "How to make a cleaner copy"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/Android/comments/7b1cb2/til_android_screenshots_dont_include_any_metadata/",
+        "https://www.reddit.com/r/privacy/comments/1amghzo/does_screenshot_on_macos_scrub_exifmetadata/",
+        "https://www.reddit.com/r/privacy/comments/ubrsu6/metadata_stored_on_filesjpegscreenshots/"
+      ]
+    },
+    {
+      "file": "does-discord-remove-exif-data.md",
+      "words": 1107,
+      "headings": [
+        "Does Discord remove EXIF data from photos?",
+        "Can someone recover EXIF from a Discord download?",
+        "Why did Discord videos leak GPS in 2020?",
+        "Does Discord keep PNG metadata and custom chunks?",
+        "Can a Discord image reveal your IP or address?",
+        "Why do saved Discord images show the wrong date?",
+        "How do you test the exact Discord upload?",
+        "How much can the historical reports tell you?",
+        "How do you remove metadata before Discord?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/",
+        "https://www.reddit.com/r/discordapp/comments/ll1kod/does_discord_remove_exif_data/",
+        "https://www.reddit.com/r/discordapp/comments/jzwite/psa_discord_does_not_strip_location_data_for/",
+        "https://www.reddit.com/r/discordapp/comments/sq9xwj/does_discord_strip_video_exif_data/",
+        "https://www.reddit.com/r/discordapp/comments/12800f7/discord_is_stripping_metadata_out_of_png_images/",
+        "https://www.reddit.com/r/discordapp/comments/foilna/does_discord_automatically_strip_exif_data/",
+        "https://www.reddit.com/r/immich/comments/1ucdnw8/i_made_this_tool_to_fix_wrong_timeline_dates_by/"
+      ]
+    },
+    {
+      "file": "does-gmail-remove-exif-data.md",
+      "words": 1313,
+      "headings": [
+        "Does Gmail remove EXIF from photo attachments?",
+        "Does pasting a photo into Gmail change the answer?",
+        "Why does a downloaded photo show a new created date?",
+        "Can a Gmail recipient recover the original date or GPS?",
+        "What happens when someone forwards the email?",
+        "What happens to photos larger than 25 MB?",
+        "How do you check the file a Gmail recipient gets?",
+        "Attachment privacy and message privacy are separate",
+        "Should you remove metadata before attaching a photo?"
+      ],
+      "externalLinks": [
+        "https://support.google.com/mail/thread/122174064/image-file-tags-and-metadata-in-gmail?hl=en",
+        "https://www.reddit.com/r/GMail/comments/p8s7rp/does_gmail_strip_images_of_metadata_before_being/",
+        "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+        "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/",
+        "https://support.google.com/mail/answer/6584?hl=en"
+      ]
+    },
+    {
+      "file": "does-instagram-remove-exif-data.md",
+      "words": 1143,
+      "headings": [
+        "Does Instagram remove EXIF data from uploaded photos?",
+        "Can someone recover the original EXIF from an Instagram download?",
+        "Can an Instagram photo reveal your IP or home address?",
+        "Does changing the EXIF date improve Instagram reach?",
+        "Does removing metadata beat reused-content detection?",
+        "What can Instagram still know after EXIF is removed?",
+        "How do you check the exact photo before posting?",
+        "What the public-copy claim does and does not cover",
+        "How do you remove Instagram photo metadata safely?"
+      ],
+      "externalLinks": [
+        "https://www.facebook.com/help/instagram/1631821640426723",
+        "https://www.embeddedmetadata.org/social-media-test-results.php",
+        "https://www.reddit.com/r/techsupport/comments/khw8xj/is_there_a_possible_work_around_to_get_exif_data/",
+        "https://www.reddit.com/r/AskTechnology/comments/1qpxwx0/is_it_possible_to_find_my_ip_if_i_post_my_picture/",
+        "https://www.facebook.com/privacy/policy/",
+        "https://www.reddit.com/r/Instagram/comments/esbd10/question_about_instagram_and_exif_data/",
+        "https://ai.meta.com/tools/system-cards/instagram-feed-ranking/",
+        "https://www.reddit.com/r/shutterencoder/comments/1m1upec/how_to_bulk_remove_metadata_from_videos_without/"
+      ]
+    },
+    {
+      "file": "does-reddit-remove-exif-data.md",
+      "words": 1283,
+      "headings": [
+        "Does Reddit remove EXIF from uploaded photos?",
+        "Can Reddit read EXIF before stripping it?",
+        "What changes when you post an image link?",
+        "Why do Reddit downloads have different names and dates?",
+        "Can someone recover the removed EXIF from Reddit?",
+        "Can Reddit reveal your location without GPS?",
+        "How do you check the copy Reddit serves?",
+        "Check the destination behind a Reddit preview",
+        "Should you remove metadata before posting on Reddit?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/help/comments/1dx53tz/does_reddit_still_remove_exif_data_when_i_upload/",
+        "https://www.reddit.com/r/privacy/comments/wixm7w/does_reddit_erase_location_metadata_from_the/"
+      ]
+    },
+    {
+      "file": "does-telegram-remove-exif-data.md",
+      "words": 1221,
+      "headings": [
+        "Does Telegram remove EXIF from normal photos?",
+        "Does Send as File keep GPS and camera details?",
+        "Does Telegram HD remove EXIF data?",
+        "Does Secret Chat strip image metadata?",
+        "What happens when you forward a Telegram image?",
+        "Can Telegram reveal details after EXIF is gone?",
+        "How do you check the exact Telegram upload?",
+        "Distinguish a quality option from a metadata choice",
+        "How do you remove metadata before Telegram?"
+      ],
+      "externalLinks": [
+        "https://telegram.org/blog/direct-to-channel-trim-voice-and-more",
+        "https://www.reddit.com/r/Telegram/comments/1l8zir0/is_it_true/",
+        "https://www.reddit.com/r/Telegram/comments/1sjflgf/media_upload_metadata_question/",
+        "https://www.telegram.org/privacy",
+        "https://telegram.org/blog/direct-to-channel-trim-voice-and-more"
+      ]
+    },
+    {
+      "file": "does-whatsapp-remove-exif-data.md",
+      "words": 1050,
+      "headings": [
+        "What WhatsApp sends in each mode",
+        "Why WhatsApp photos land on the wrong date",
+        "A WhatsApp filename is a clue, not proof",
+        "Can you recover EXIF after WhatsApp removed it?",
+        "Location can leak without GPS",
+        "Check the copy you actually received",
+        "Choose the send mode for the information you need to preserve",
+        "Clean the file before you send it"
+      ],
+      "externalLinks": [
+        "https://doi.org/10.70322/plfs.2025.10006",
+        "https://www.reddit.com/r/googlephotos/comments/16bt46n/how_to_preserve_upload_date_when_no_exif_data_is_present/",
+        "https://www.reddit.com/r/immich/comments/1n8gl4o/whatsapp_exif_date_changer_from_filename_exiftool/",
+        "https://www.reddit.com/r/whatsapp/comments/1t5osx6/whatsapp_metadata_and_filename_logic/",
+        "https://www.reddit.com/r/iphone/comments/35a2w5/is_it_at_all_possible_to_get_exif_data_from_photos_sent_on_whatsapp/"
+      ]
+    },
+    {
+      "file": "exif-metadata-definition-and-how-to-view.md",
+      "words": 1502,
+      "headings": [
+        "What is the definition of EXIF metadata?",
+        "Is EXIF the same as all photo metadata?",
+        "What information can an EXIF report show?",
+        "How do you view EXIF metadata in a browser?",
+        "How do you view EXIF on a phone or computer?",
+        "Why can two apps show different EXIF fields?",
+        "Why can Google Photos data appear in a sidecar file?",
+        "Why might an original-looking photo have no EXIF?",
+        "Can EXIF metadata be edited or removed?",
+        "A short vocabulary for reading the report",
+        "What should you trust in an EXIF report?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/NextCloud/comments/1qri69p/nextcloud_android_app_exif_data/",
+        "https://www.reddit.com/r/googlephotos/comments/1usf6nc/i_built_a_cli_tool_to_fix_google_photos_metadata/",
+        "https://www.reddit.com/r/AnalogCommunity/comments/1u3libe/i_built_filmtag_an_opensource_tool_to_batchinject/"
+      ]
+    },
+    {
+      "file": "exif-vs-metadata.md",
+      "words": 1363,
+      "headings": [
+        "What is the difference between EXIF and metadata?",
+        "What counts as metadata outside EXIF?",
+        "Is a file date the same as an EXIF date?",
+        "Can a screenshot have metadata without EXIF?",
+        "Can an app show metadata that is not inside the file?",
+        "Which metadata can expose private details?",
+        "How do you view EXIF and other metadata?",
+        "One concept can exist in more than one family",
+        "How do you remove metadata safely?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+        "https://www.reddit.com/r/privacy/comments/1amghzo/does_screenshot_on_macos_scrub_exifmetadata/"
+      ]
+    },
+    {
+      "file": "how-to-check-metadata-of-an-image.md",
+      "words": 1671,
+      "headings": [
+        "What should you check first?",
+        "How do you check metadata with a browser?",
+        "How do you check image metadata on iPhone and Android?",
+        "How do you check image metadata on Windows and Mac?",
+        "Which image metadata fields are worth reading?",
+        "Why can the same image show different metadata?",
+        "What does missing metadata mean?",
+        "Can metadata prove who made an image?",
+        "A report that is empty, incomplete or contradictory",
+        "What should you do before sharing an image?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/NextCloud/comments/1qri69p/nextcloud_android_app_exif_data/",
+        "https://www.reddit.com/r/googlephotos/comments/1usf6nc/i_built_a_cli_tool_to_fix_google_photos_metadata/",
+        "https://www.reddit.com/r/AnalogCommunity/comments/1u3libe/i_built_filmtag_an_opensource_tool_to_batchinject/"
+      ]
+    },
+    {
+      "file": "how-to-find-camera-settings-from-a-photo.md",
+      "words": 1574,
+      "headings": [
+        "How do you find camera settings from a photo?",
+        "Which EXIF fields contain the camera settings?",
+        "Where can you view settings on a phone or computer?",
+        "How can you check settings across many photos?",
+        "Why are the camera settings missing?",
+        "Can you recover settings after EXIF was removed?",
+        "Can you infer camera settings from the pixels alone?",
+        "Why can two apps show different settings?",
+        "How do you use the settings to learn from a photo?",
+        "Compare equivalent settings before treating them as a mismatch",
+        "Should you remove camera settings before sharing?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/AskPhotography/comments/1ht9puo/app_that_shows_you_what_camera_was_used_and_iso/",
+        "https://www.reddit.com/r/AskPhotography/comments/zbff05/looking_for_image_browser_that_shows_exif_info/",
+        "https://www.reddit.com/r/AskPhotography/comments/ywbq8f/best_app_to_see_photo_data_iso_aperture_lens_etc/"
+      ]
+    },
+    {
+      "file": "how-to-find-where-a-photo-was-taken.md",
+      "words": 1382,
+      "headings": [
+        "How do you find a photo location from EXIF?",
+        "What do GPSLatitude and GPSLongitude mean?",
+        "How do you check photo GPS on iPhone and Android?",
+        "Why does a photo have no GPS coordinates?",
+        "Do social platforms remove the image GPS location?",
+        "Can a photo app show a place that is not in EXIF?",
+        "What can EXIF tell you when GPS is missing?",
+        "How do you avoid putting the map pin in the wrong place?",
+        "How do you remove GPS before sharing a photo?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/LifeProTips/comments/1sb7ssk/lpt_before_posting_photos_online_check_if_they/",
+        "https://www.reddit.com/r/googlephotos/comments/1qwdf0d/manual_tagging_of_location_of_photos_in_google/"
+      ]
+    },
+    {
+      "file": "how-to-remove-gps-data-from-photos-before-sharing.md",
+      "words": 1360,
+      "headings": [
+        "What is the fastest way to remove GPS data?",
+        "How do you remove GPS from an iPhone photo?",
+        "How do you remove GPS from an Android photo?",
+        "How do you remove GPS on Windows or Mac?",
+        "How do you clean a whole folder without missing files?",
+        "Does taking a screenshot remove GPS safely?",
+        "How do you verify that GPS is really gone?",
+        "GPS-only removal or broader privacy cleanup?",
+        "What can still reveal location after GPS is removed?"
+      ],
+      "externalLinks": [
+        "https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web",
+        "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/",
+        "https://www.reddit.com/r/privacy/comments/1r7qv5h/best_way_to_clearobfuscatespoof_file_datametadata/",
+        "https://www.reddit.com/r/privacy/comments/1sg2fc1/how_do_i_remove_metadata_from_a_photo/"
+      ]
+    },
+    {
+      "file": "how-to-remove-metadata-from-a-photo.md",
+      "words": 1585,
+      "headings": [
+        "What is the safest way to remove metadata from a photo?",
+        "Which photo metadata should you remove?",
+        "How do you remove photo metadata with ViewExif?",
+        "How do you remove metadata on iPhone or Android?",
+        "How do you remove metadata on Windows or Mac?",
+        "Does a screenshot remove metadata from a photo?",
+        "Does removing metadata reduce image quality?",
+        "How do you verify that the metadata is gone?",
+        "Read the cleanup result before choosing the attachment",
+        "What can metadata removal not hide?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/",
+        "https://www.reddit.com/r/privacy/comments/1r7qv5h/best_way_to_clearobfuscatespoof_file_datametadata/",
+        "https://www.reddit.com/r/privacy/comments/1sg2fc1/how_do_i_remove_metadata_from_a_photo/"
+      ]
+    },
+    {
+      "file": "how-to-tell-when-a-photo-was-taken.md",
+      "words": 1492,
+      "headings": [
+        "How can you tell when a photo was taken?",
+        "Which photo date should you trust?",
+        "Why does the file say it was created today?",
+        "What happens after email, chat, or social upload?",
+        "How do you check the date on a phone or computer?",
+        "Can screenshots and edited copies keep the original date?",
+        "Why can the time be wrong by hours or years?",
+        "Can EXIF dates be changed or faked?",
+        "What if the photo has no DateTimeOriginal?",
+        "How do you resolve conflicting time fields?",
+        "How do you verify a photo date before relying on it?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+        "https://www.reddit.com/r/iCloud/comments/1vnw3yd/pics_shared_with_me_lost_exif_data/",
+        "https://www.reddit.com/r/googlephotos/comments/1r5lrdc/metadata_in_google_photos/"
+      ]
+    },
+    {
+      "file": "how-to-view-exif-data-on-android.md",
+      "words": 1477,
+      "headings": [
+        "How do you view EXIF data in Google Photos?",
+        "How do you view EXIF data in Samsung Gallery?",
+        "What EXIF fields can an Android phone show?",
+        "Why does one Android app show more metadata than another?",
+        "How do you inspect the complete original file?",
+        "Why does Google Photos show the wrong date?",
+        "How do you check GPS metadata on Android?",
+        "Why can a downloaded or shared photo lose EXIF?",
+        "When Gallery, Google Photos and the file disagree",
+        "What should you do before sharing an Android photo?"
+      ],
+      "externalLinks": [
+        "https://support.google.com/photos/answer/6128850?co=GENIE.Platform%3DAndroid&hl=en",
+        "https://www.reddit.com/r/GalaxyNote8/comments/7z0kdn/how_can_i_read_the_exif_metadata_on_the_photos_i/",
+        "https://www.reddit.com/r/NextCloud/comments/1qri69p/nextcloud_android_app_exif_data/",
+        "https://www.reddit.com/r/googlephotos/comments/1r5lrdc/metadata_in_google_photos/",
+        "https://support.google.com/photos/answer/6153599?co=GENIE.Platform%3DAndroid&hl=en"
+      ]
+    },
+    {
+      "file": "how-to-view-exif-data-on-iphone.md",
+      "words": 1516,
+      "headings": [
+        "How do you view photo information in iPhone Photos?",
+        "What EXIF data can iPhone Photos show?",
+        "How do you read ISO, aperture, and shutter speed?",
+        "How do you view the full EXIF, XMP, IPTC, and GPS report?",
+        "Why is EXIF data missing from an iPhone photo?",
+        "Can iPhone photo metadata reveal your location?",
+        "Can you change a photo's date or location in Photos?",
+        "Which file should you choose in the browser?",
+        "How do you remove EXIF and GPS before sharing?"
+      ],
+      "externalLinks": [
+        "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios",
+        "https://www.reddit.com/r/iCloud/comments/1vnw3yd/pics_shared_with_me_lost_exif_data/",
+        "https://www.reddit.com/r/ios/comments/1o390ce/exif_location_sharing_a_privacy_nightmare/",
+        "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios"
+      ]
+    },
+    {
+      "file": "how-to-view-exif-data-on-windows-11.md",
+      "words": 1405,
+      "headings": [
+        "How do you view EXIF in File Explorer?",
+        "How do you see photo information in Microsoft Photos?",
+        "Which fields should you look for?",
+        "How can you compare EXIF across a folder?",
+        "Why do Date, Date taken, and Date created disagree?",
+        "Why is the Details tab empty when another app finds metadata?",
+        "How do you view more complete EXIF and GPS data?",
+        "Do not confuse the General and Details tabs",
+        "How do you remove private details before sharing?"
+      ],
+      "externalLinks": [
+        "https://support.microsoft.com/en-us/windows/apps/photos/manage-photos-and-videos-with-microsoft-photos-app",
+        "https://www.reddit.com/r/Windows11/comments/1ki8rtz/",
+        "https://learn.microsoft.com/en-us/windows/win32/wic/-wic-photoprop-system-photo-datetaken",
+        "https://www.reddit.com/r/googlephotos/comments/1i8si0q/",
+        "https://www.reddit.com/r/WindowsHelp/comments/1d76xmx/"
+      ]
+    },
+    {
+      "file": "how-to-view-pdf-metadata.md",
+      "words": 1488,
+      "headings": [
+        "How do you view PDF metadata in a browser?",
+        "What PDF metadata can you see?",
+        "How do you view PDF metadata on Windows and Mac?",
+        "How do you view PDF metadata in Adobe Acrobat?",
+        "Why do the PDF author and date look wrong?",
+        "Can PDF metadata prove when a document was created?",
+        "Can PDF metadata expose private information?",
+        "Read conflicting PDF properties without choosing a winner",
+        "How do you remove PDF metadata?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/LazyLibrarian/comments/1krjiy5/feature_request_autoreject_semiautoedit_filter/",
+        "https://www.reddit.com/r/argentina/comments/1p5tge6/el_chiqui_mafia_public%C3%B3_en_el_sitio_de_la_afa_un/"
+      ]
+    },
+    {
+      "file": "how-to-view-photo-metadata-on-mac.md",
+      "words": 1553,
+      "headings": [
+        "How do you view photo metadata in Finder?",
+        "How do you inspect EXIF data in Preview?",
+        "What photo metadata can you see in Photos?",
+        "Which Mac metadata view should you use?",
+        "Why can Photos and Finder show different details?",
+        "How do you check the complete original file?",
+        "Which date and GPS fields should you trust?",
+        "Why can metadata disappear after export or download?",
+        "Keep library edits separate from the exported file",
+        "How do you remove private photo metadata on Mac?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/MacOS/comments/1e2hkvq/how_can_i_see_metadata_of_photos_and_videos_in/",
+        "https://www.reddit.com/r/ricohGR/comments/1o1xb7e/see_detailed_metadata_exif_data_in_jpg_files_on/",
+        "https://www.reddit.com/r/MacOS/comments/1t50ycz/date_time_original/"
+      ]
+    },
+    {
+      "file": "remove-metadata-from-mp3.md",
+      "words": 1508,
+      "headings": [
+        "What is the safest way to remove metadata from MP3?",
+        "What metadata can an MP3 contain?",
+        "Can you remove MP3 metadata without losing audio quality?",
+        "Should you remove album art and library tags?",
+        "Why can MP3 metadata remain after cleanup?",
+        "Does removing MP3 metadata make audio anonymous?",
+        "How do you remove MP3 metadata with ViewExif?",
+        "Choose privacy cleanup or music-library editing",
+        "How do you verify the cleaned MP3?"
+      ],
+      "externalLinks": [
+        "https://taglib.org/api/classTagLib_1_1MPEG_1_1File.html",
+        "https://www.reddit.com/r/DigitalAudioPlayer/comments/1sa9fl8/what_exactly_is_metadata/",
+        "https://www.reddit.com/r/mp3players/comments/1suia4v/no_album_art_on_my_cason_mp3_player/",
+        "https://www.reddit.com/r/musichoarder/comments/1urdj5o/how_can_i_delete_a_tag_from_all_songs_in_my/"
+      ]
+    },
+    {
+      "file": "remove-metadata-from-mp4.md",
+      "words": 1316,
+      "headings": [
+        "What is the safest way to remove metadata from MP4?",
+        "What metadata can an MP4 file contain?",
+        "Can you remove MP4 metadata without re-encoding?",
+        "Why can GPS remain after an MP4 cleanup?",
+        "Does removing MP4 metadata change video quality?",
+        "Does removing metadata make a video anonymous?",
+        "Can deleting MP4 metadata avoid reused-content detection?",
+        "Single location tags and timed telemetry need different checks",
+        "How do you verify the cleaned MP4?"
+      ],
+      "externalLinks": [
+        "https://github.com/exiftool/exiftool/blob/master/html/TagNames/QuickTime.html",
+        "https://www.reddit.com/r/privacy/comments/1kfolnu/how_to_anonymize_a_video/",
+        "https://www.reddit.com/r/shutterencoder/comments/1hj7ib3/how_to_remove_gpslocation_metadata_from/",
+        "https://www.reddit.com/r/shutterencoder/comments/1m1upec/how_to_bulk_remove_metadata_from_videos_without/"
+      ]
+    },
+    {
+      "file": "remove-metadata-from-pdf.md",
+      "words": 1489,
+      "headings": [
+        "What is the safest way to remove metadata from PDF?",
+        "What metadata can a PDF contain?",
+        "Why is deleting Author and Title not enough?",
+        "Why does the Modified date still appear after cleanup?",
+        "Does Print to PDF remove all PDF metadata?",
+        "Why does a full PDF rewrite matter?",
+        "What happens to a digitally signed PDF?",
+        "Does PDF metadata removal hide everything private?",
+        "Define what a successful PDF cleanup covers",
+        "How do you verify the cleaned PDF?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/pdf/comments/1qlgf75/pdf_metadata/",
+        "https://www.reddit.com/r/pdf/comments/1mopabc/remove_modified_metadata_not_change_to_the_same/",
+        "https://github.com/exiftool/exiftool/blob/master/html/TagNames/PDF.html",
+        "https://www.reddit.com/r/pdf/comments/1p3a132/edit_digitally_signed_pdf/"
+      ]
+    },
+    {
+      "file": "remove-metadata-from-word-document.md",
+      "words": 1631,
+      "headings": [
+        "How do you remove metadata from a Word document?",
+        "What metadata can a Word document store?",
+        "How do you use Word's Document Inspector on Windows?",
+        "What can you remove on Mac or in Word for the web?",
+        "Are comments and tracked changes just metadata?",
+        "Is clearing Author enough to remove Word metadata?",
+        "Can removed Word metadata be recovered?",
+        "Does saving as PDF remove Word metadata?",
+        "How do you verify the cleaned DOCX?",
+        "Use the right order before the final send",
+        "Does removing Word metadata make the document anonymous?"
+      ],
+      "externalLinks": [
+        "https://support.microsoft.com/en-US/Office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks",
+        "https://support.microsoft.com/en-au/office/inspect-document-b0088a7a-d482-4b87-b762-7c94c7c71e23",
+        "https://www.reddit.com/r/msp/comments/mrgkum/software_to_auto_strip_metadata_from_word/",
+        "https://www.reddit.com/r/privacy/comments/7gkhwf/what_software_is_there_to_remove_metadata_from/",
+        "https://www.reddit.com/r/MicrosoftWord/comments/1tprgty/retrieving_word_metadata/"
+      ]
+    },
+    {
+      "file": "what-is-a-metadata-strategy.md",
+      "words": 1484,
+      "headings": [
+        "What should a metadata strategy include?",
+        "Which problem should you solve first?",
+        "Which metadata belongs in your field list?",
+        "How do you keep tags and filenames consistent?",
+        "Where should the metadata live?",
+        "Who maintains the rules and checks the results?",
+        "How should privacy affect your sharing rules?",
+        "How do you start without reorganizing everything?"
+      ],
+      "externalLinks": [
+        "https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/best-practices/metadata-best-practices",
+        "https://www.reddit.com/r/Lightroom/comments/wtac6h/",
+        "https://www.reddit.com/r/Lightroom/comments/1abaiwp/",
+        "https://helpx.adobe.com/lightroom-classic/desktop/organize-photos-in-lightroom-classic/metadata-basics-actions.html",
+        "https://www.reddit.com/r/Lightroom/comments/1kc2rnd/"
+      ]
+    },
+    {
+      "file": "what-is-exif-data.md",
+      "words": 1668,
+      "headings": [
+        "Is EXIF the same as photo metadata?",
+        "What information can EXIF data contain?",
+        "What does DateTimeOriginal really tell you?",
+        "Does EXIF data include GPS location?",
+        "Can EXIF data reveal private information?",
+        "Can EXIF data be changed or deleted?",
+        "How can you view photo EXIF data?",
+        "Why orientation and color are different from a private note",
+        "How do you remove EXIF before sharing a photo?"
+      ],
+      "externalLinks": [
+        "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+        "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/"
+      ]
+    },
+    {
+      "file": "what-is-xmp-metadata.md",
+      "words": 1642,
+      "headings": [
+        "What does XMP metadata store?",
+        "How is XMP different from EXIF and IPTC?",
+        "Does XMP metadata change image quality?",
+        "Is XMP embedded in the file or stored as a sidecar?",
+        "Why can a sidecar go missing during export or backup?",
+        "Why does Lightroom report an XMP metadata conflict?",
+        "Can XMP metadata expose private information?",
+        "How do you view XMP metadata?",
+        "How do you remove XMP metadata safely?",
+        "Which XMP copy are you changing?",
+        "Should you keep XMP metadata in your photo archive?"
+      ],
+      "externalLinks": [
+        "https://github.com/exiftool/exiftool/blob/master/html/TagNames/XMP.html",
+        "https://developer.adobe.com/xmp/docs/xmp-specifications/",
+        "https://www.reddit.com/r/photography/comments/1mqay9o/exifiptc_metadata_or_xmp_sidecar_files/",
+        "https://www.reddit.com/r/immich/comments/1t8rs2d/xmp_metadata/",
+        "https://www.reddit.com/r/Lightroom/comments/1rc8klz/lightroom_created_sidecar_xmp_now_complaining/",
+        "https://helpx.adobe.com/uk/lightroom-classic/desktop/organize-photos-in-lightroom-classic/create-xmp-acr-files.html"
+      ]
+    }
+  ],
+  "imageChecks": [
+    {
+      "url": "/_astro/do-screenshots-have-metadata.Deo63h5a.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/exif-vs-metadata.BFbdDZYg.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-whatsapp-remove-exif-data.BvW_TVON.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-instagram-remove-exif-data.CMmX-nWq.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-discord-remove-exif-data.G0sUDclX.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-telegram-remove-exif-data.CPdTk6lF.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/what-is-a-metadata-strategy.BN6dTx8H.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-view-exif-data-on-windows-11.0rzUrCOm.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/exif-metadata-definition-and-how-to-view.9a015dFs.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-find-camera-settings-from-a-photo.BLAbHrRy.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-view-photo-metadata-on-mac.Bk8bvTkl.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-tell-when-a-photo-was-taken.D5ks-ikI.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-gmail-remove-exif-data.B_EFhvJh.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-view-pdf-metadata.BIdoiJ5E.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/does-reddit-remove-exif-data.DzS-EhJV.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/what-is-exif-data.BiOfC2Fg.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-check-metadata-of-an-image.DP7XoEIg.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/what-is-xmp-metadata.D_U-E_vw.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-view-exif-data-on-iphone.CYSfPcCl.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-remove-metadata-from-a-photo.CFTBifPb.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-find-where-a-photo-was-taken.B_CP5VRo.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-remove-gps-data-from-photos-before-sharing.I1T0EhWV.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/remove-metadata-from-mp4.CqBOIquS.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/how-to-view-exif-data-on-android.BJo3vpmx.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/remove-metadata-from-pdf.CO9a7WIW.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/remove-metadata-from-word-document.D7iMWibH.webp",
+      "status": 200
+    },
+    {
+      "url": "/_astro/remove-metadata-from-mp3.C71LyULl.webp",
+      "status": 200
+    }
+  ],
+  "externalLinkChecks": {
+    "checkedAt": "2026-09-17T13:30:29.388Z",
+    "results": [
+      {
+        "url": "https://ai.meta.com/tools/system-cards/instagram-feed-ranking/",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://developer.adobe.com/xmp/docs/xmp-specifications/",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://developer.adobe.com/xmp/docs/xmp-specifications/",
+        "result": "reachable"
+      },
+      {
+        "url": "https://doi.org/10.70322/plfs.2025.10006",
+        "articles": [
+          "does-whatsapp-remove-exif-data.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://www.sciepublish.com/article/pii/567",
+        "result": "reachable"
+      },
+      {
+        "url": "https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/best-practices/metadata-best-practices",
+        "articles": [
+          "what-is-a-metadata-strategy.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/best-practices/metadata-best-practices",
+        "result": "reachable"
+      },
+      {
+        "url": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/PDF.html",
+        "articles": [
+          "remove-metadata-from-pdf.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/PDF.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/QuickTime.html",
+        "articles": [
+          "remove-metadata-from-mp4.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/QuickTime.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/XMP.html",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://github.com/exiftool/exiftool/blob/master/html/TagNames/XMP.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://helpx.adobe.com/lightroom-classic/desktop/organize-photos-in-lightroom-classic/metadata-basics-actions.html",
+        "articles": [
+          "what-is-a-metadata-strategy.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://helpx.adobe.com/lightroom-classic/desktop/organize-photos-in-lightroom-classic/metadata-basics-actions.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://helpx.adobe.com/uk/lightroom-classic/desktop/organize-photos-in-lightroom-classic/create-xmp-acr-files.html",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://helpx.adobe.com/uk/lightroom-classic/desktop/organize-photos-in-lightroom-classic/create-xmp-acr-files.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://learn.microsoft.com/en-us/windows/win32/wic/-wic-photoprop-system-photo-datetaken",
+        "articles": [
+          "how-to-view-exif-data-on-windows-11.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/wic/-wic-photoprop-system-photo-datetaken",
+        "result": "reachable"
+      },
+      {
+        "url": "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios",
+        "articles": [
+          "how-to-view-exif-data-on-iphone.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios",
+        "result": "reachable"
+      },
+      {
+        "url": "https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web",
+        "articles": [
+          "how-to-remove-gps-data-from-photos-before-sharing.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web",
+        "result": "reachable"
+      },
+      {
+        "url": "https://support.google.com/mail/answer/6584?hl=en",
+        "articles": [
+          "does-gmail-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://support.google.com/mail/thread/122174064/image-file-tags-and-metadata-in-gmail?hl=en",
+        "articles": [
+          "does-gmail-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://support.google.com/photos/answer/6128850?co=GENIE.Platform%3DAndroid&hl=en",
+        "articles": [
+          "how-to-view-exif-data-on-android.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://support.google.com/photos/answer/6153599?co=GENIE.Platform%3DAndroid&hl=en",
+        "articles": [
+          "how-to-view-exif-data-on-android.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://support.microsoft.com/en-au/office/inspect-document-b0088a7a-d482-4b87-b762-7c94c7c71e23",
+        "articles": [
+          "remove-metadata-from-word-document.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://support.microsoft.com/en-au/office/inspect-document-b0088a7a-d482-4b87-b762-7c94c7c71e23",
+        "result": "reachable"
+      },
+      {
+        "url": "https://support.microsoft.com/en-US/Office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks",
+        "articles": [
+          "remove-metadata-from-word-document.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://support.microsoft.com/en-us/office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks",
+        "result": "reachable"
+      },
+      {
+        "url": "https://support.microsoft.com/en-us/windows/apps/photos/manage-photos-and-videos-with-microsoft-photos-app",
+        "articles": [
+          "how-to-view-exif-data-on-windows-11.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://support.microsoft.com/en-us/windows/apps/photos/manage-photos-and-videos-with-microsoft-photos-app",
+        "result": "reachable"
+      },
+      {
+        "url": "https://taglib.org/api/classTagLib_1_1MPEG_1_1File.html",
+        "articles": [
+          "remove-metadata-from-mp3.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://taglib.org/api/classTagLib_1_1MPEG_1_1File.html",
+        "result": "reachable"
+      },
+      {
+        "url": "https://telegram.org/blog/direct-to-channel-trim-voice-and-more",
+        "articles": [
+          "does-telegram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.embeddedmetadata.org/social-media-test-results.php",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": 200,
+        "finalUrl": "https://www.embeddedmetadata.org/social-media-test-results.php",
+        "result": "reachable"
+      },
+      {
+        "url": "https://www.facebook.com/help/instagram/1631821640426723",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.facebook.com/privacy/policy/",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/AnalogCommunity/comments/1u3libe/i_built_filmtag_an_opensource_tool_to_batchinject/",
+        "articles": [
+          "exif-metadata-definition-and-how-to-view.md",
+          "how-to-check-metadata-of-an-image.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Android/comments/7b1cb2/til_android_screenshots_dont_include_any_metadata/",
+        "articles": [
+          "do-screenshots-have-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/argentina/comments/1p5tge6/el_chiqui_mafia_public%C3%B3_en_el_sitio_de_la_afa_un/",
+        "articles": [
+          "how-to-view-pdf-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/AskPhotography/comments/1ht9puo/app_that_shows_you_what_camera_was_used_and_iso/",
+        "articles": [
+          "how-to-find-camera-settings-from-a-photo.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/AskPhotography/comments/ywbq8f/best_app_to_see_photo_data_iso_aperture_lens_etc/",
+        "articles": [
+          "how-to-find-camera-settings-from-a-photo.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/AskPhotography/comments/zbff05/looking_for_image_browser_that_shows_exif_info/",
+        "articles": [
+          "how-to-find-camera-settings-from-a-photo.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/AskTechnology/comments/1qpxwx0/is_it_possible_to_find_my_ip_if_i_post_my_picture/",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/DigitalAudioPlayer/comments/1sa9fl8/what_exactly_is_metadata/",
+        "articles": [
+          "remove-metadata-from-mp3.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+        "articles": [
+          "does-gmail-remove-exif-data.md",
+          "exif-vs-metadata.md",
+          "how-to-tell-when-a-photo-was-taken.md",
+          "what-is-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/12800f7/discord_is_stripping_metadata_out_of_png_images/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/foilna/does_discord_automatically_strip_exif_data/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/jzwite/psa_discord_does_not_strip_location_data_for/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/ll1kod/does_discord_remove_exif_data/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/discordapp/comments/sq9xwj/does_discord_strip_video_exif_data/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/GalaxyNote8/comments/7z0kdn/how_can_i_read_the_exif_metadata_on_the_photos_i/",
+        "articles": [
+          "how-to-view-exif-data-on-android.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/GMail/comments/p8s7rp/does_gmail_strip_images_of_metadata_before_being/",
+        "articles": [
+          "does-gmail-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/googlephotos/comments/16bt46n/how_to_preserve_upload_date_when_no_exif_data_is_present/",
+        "articles": [
+          "does-whatsapp-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/googlephotos/comments/1i8si0q/",
+        "articles": [
+          "how-to-view-exif-data-on-windows-11.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/googlephotos/comments/1qwdf0d/manual_tagging_of_location_of_photos_in_google/",
+        "articles": [
+          "how-to-find-where-a-photo-was-taken.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/googlephotos/comments/1r5lrdc/metadata_in_google_photos/",
+        "articles": [
+          "how-to-tell-when-a-photo-was-taken.md",
+          "how-to-view-exif-data-on-android.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/googlephotos/comments/1usf6nc/i_built_a_cli_tool_to_fix_google_photos_metadata/",
+        "articles": [
+          "exif-metadata-definition-and-how-to-view.md",
+          "how-to-check-metadata-of-an-image.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/help/comments/1dx53tz/does_reddit_still_remove_exif_data_when_i_upload/",
+        "articles": [
+          "does-reddit-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/iCloud/comments/1vnw3yd/pics_shared_with_me_lost_exif_data/",
+        "articles": [
+          "how-to-tell-when-a-photo-was-taken.md",
+          "how-to-view-exif-data-on-iphone.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/immich/comments/1n8gl4o/whatsapp_exif_date_changer_from_filename_exiftool/",
+        "articles": [
+          "does-whatsapp-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/immich/comments/1t8rs2d/xmp_metadata/",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/immich/comments/1ucdnw8/i_made_this_tool_to_fix_wrong_timeline_dates_by/",
+        "articles": [
+          "does-discord-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Instagram/comments/esbd10/question_about_instagram_and_exif_data/",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/ios/comments/1o390ce/exif_location_sharing_a_privacy_nightmare/",
+        "articles": [
+          "how-to-view-exif-data-on-iphone.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/iphone/comments/35a2w5/is_it_at_all_possible_to_get_exif_data_from_photos_sent_on_whatsapp/",
+        "articles": [
+          "does-whatsapp-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/LazyLibrarian/comments/1krjiy5/feature_request_autoreject_semiautoedit_filter/",
+        "articles": [
+          "how-to-view-pdf-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/LifeProTips/comments/1sb7ssk/lpt_before_posting_photos_online_check_if_they/",
+        "articles": [
+          "how-to-find-where-a-photo-was-taken.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Lightroom/comments/1abaiwp/",
+        "articles": [
+          "what-is-a-metadata-strategy.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Lightroom/comments/1kc2rnd/",
+        "articles": [
+          "what-is-a-metadata-strategy.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Lightroom/comments/1rc8klz/lightroom_created_sidecar_xmp_now_complaining/",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Lightroom/comments/wtac6h/",
+        "articles": [
+          "what-is-a-metadata-strategy.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/MacOS/comments/1e2hkvq/how_can_i_see_metadata_of_photos_and_videos_in/",
+        "articles": [
+          "how-to-view-photo-metadata-on-mac.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/MacOS/comments/1t50ycz/date_time_original/",
+        "articles": [
+          "how-to-view-photo-metadata-on-mac.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/MicrosoftWord/comments/1tprgty/retrieving_word_metadata/",
+        "articles": [
+          "remove-metadata-from-word-document.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/mp3players/comments/1suia4v/no_album_art_on_my_cason_mp3_player/",
+        "articles": [
+          "remove-metadata-from-mp3.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/msp/comments/mrgkum/software_to_auto_strip_metadata_from_word/",
+        "articles": [
+          "remove-metadata-from-word-document.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/musichoarder/comments/1urdj5o/how_can_i_delete_a_tag_from_all_songs_in_my/",
+        "articles": [
+          "remove-metadata-from-mp3.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/NextCloud/comments/1qri69p/nextcloud_android_app_exif_data/",
+        "articles": [
+          "exif-metadata-definition-and-how-to-view.md",
+          "how-to-check-metadata-of-an-image.md",
+          "how-to-view-exif-data-on-android.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/pdf/comments/1mopabc/remove_modified_metadata_not_change_to_the_same/",
+        "articles": [
+          "remove-metadata-from-pdf.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/pdf/comments/1p3a132/edit_digitally_signed_pdf/",
+        "articles": [
+          "remove-metadata-from-pdf.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/pdf/comments/1qlgf75/pdf_metadata/",
+        "articles": [
+          "remove-metadata-from-pdf.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/photography/comments/1mqay9o/exifiptc_metadata_or_xmp_sidecar_files/",
+        "articles": [
+          "what-is-xmp-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/1amghzo/does_screenshot_on_macos_scrub_exifmetadata/",
+        "articles": [
+          "do-screenshots-have-metadata.md",
+          "exif-vs-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/",
+        "articles": [
+          "does-gmail-remove-exif-data.md",
+          "how-to-remove-gps-data-from-photos-before-sharing.md",
+          "how-to-remove-metadata-from-a-photo.md",
+          "what-is-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/1kfolnu/how_to_anonymize_a_video/",
+        "articles": [
+          "remove-metadata-from-mp4.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/1r7qv5h/best_way_to_clearobfuscatespoof_file_datametadata/",
+        "articles": [
+          "how-to-remove-gps-data-from-photos-before-sharing.md",
+          "how-to-remove-metadata-from-a-photo.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/1sg2fc1/how_do_i_remove_metadata_from_a_photo/",
+        "articles": [
+          "how-to-remove-gps-data-from-photos-before-sharing.md",
+          "how-to-remove-metadata-from-a-photo.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/7gkhwf/what_software_is_there_to_remove_metadata_from/",
+        "articles": [
+          "remove-metadata-from-word-document.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/ubrsu6/metadata_stored_on_filesjpegscreenshots/",
+        "articles": [
+          "do-screenshots-have-metadata.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/privacy/comments/wixm7w/does_reddit_erase_location_metadata_from_the/",
+        "articles": [
+          "does-reddit-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/ricohGR/comments/1o1xb7e/see_detailed_metadata_exif_data_in_jpg_files_on/",
+        "articles": [
+          "how-to-view-photo-metadata-on-mac.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/shutterencoder/comments/1hj7ib3/how_to_remove_gpslocation_metadata_from/",
+        "articles": [
+          "remove-metadata-from-mp4.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/shutterencoder/comments/1m1upec/how_to_bulk_remove_metadata_from_videos_without/",
+        "articles": [
+          "does-instagram-remove-exif-data.md",
+          "remove-metadata-from-mp4.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/techsupport/comments/khw8xj/is_there_a_possible_work_around_to_get_exif_data/",
+        "articles": [
+          "does-instagram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Telegram/comments/1l8zir0/is_it_true/",
+        "articles": [
+          "does-telegram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Telegram/comments/1sjflgf/media_upload_metadata_question/",
+        "articles": [
+          "does-telegram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/whatsapp/comments/1t5osx6/whatsapp_metadata_and_filename_logic/",
+        "articles": [
+          "does-whatsapp-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/Windows11/comments/1ki8rtz/",
+        "articles": [
+          "how-to-view-exif-data-on-windows-11.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.reddit.com/r/WindowsHelp/comments/1d76xmx/",
+        "articles": [
+          "how-to-view-exif-data-on-windows-11.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      },
+      {
+        "url": "https://www.telegram.org/privacy",
+        "articles": [
+          "does-telegram-remove-exif-data.md"
+        ],
+        "status": null,
+        "result": "unverified",
+        "error": "fetch failed"
+      }
+    ]
+  },
+  "browser": {
+    "results": [
+      {
+        "route": "/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/image-metadata-viewer/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/image-metadata-viewer/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/image-privacy-checker/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/image-privacy-checker/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/c2pa-viewer/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/c2pa-viewer/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/blog/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/blog/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/blog/does-instagram-remove-exif-data/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/blog/does-instagram-remove-exif-data/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "en",
+        "adRuntime": false
+      },
+      {
+        "route": "/de/privacy/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "de",
+        "adRuntime": false
+      },
+      {
+        "route": "/de/privacy/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "de",
+        "adRuntime": false
+      },
+      {
+        "route": "/fr/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "fr",
+        "adRuntime": false
+      },
+      {
+        "route": "/fr/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "fr",
+        "adRuntime": false
+      },
+      {
+        "route": "/zh-cn/",
+        "status": 200,
+        "width": 1440,
+        "scroll": 1440,
+        "h1": 1,
+        "lang": "zh-CN",
+        "adRuntime": false
+      },
+      {
+        "route": "/zh-cn/",
+        "status": 200,
+        "width": 390,
+        "scroll": 390,
+        "h1": 1,
+        "lang": "zh-CN",
+        "adRuntime": false
+      }
+    ],
+    "errors": []
+  },
+  "syntheticCleanup": {
+    "fixture": "Synthetic 1x1 PNG; no private user file",
+    "sourceBytes": 173,
+    "outputBytes": 69,
+    "authorMarkerAbsent": true,
+    "emailMarkerAbsent": true,
+    "receipt": {
+      "schemaVersion": "1.0",
+      "generatedAt": "2026-09-17T13:34:43.596Z",
+      "source": {
+        "name": "adsense-audit-synthetic",
+        "type": "png",
+        "size": 173
+      },
+      "output": {
+        "name": "adsense-audit-synthetic-clean.png",
+        "type": "png",
+        "size": 69,
+        "mime": "image/png"
+      },
+      "engine": "exiftool",
+      "status": "verified-residual",
+      "counts": {
+        "removed": 15,
+        "preserved": 27,
+        "residual": 29
+      },
+      "checks": [
+        {
+          "id": "signature",
+          "label": "File signature",
+          "status": "passed",
+          "message": "Output is still PNG."
+        },
+        {
+          "id": "non-empty",
+          "label": "Output bytes",
+          "status": "passed",
+          "message": "Output contains 69 B."
+        },
+        {
+          "id": "fact-format",
+          "label": "Format",
+          "status": "passed",
+          "message": "Format remains PNG."
+        },
+        {
+          "id": "fact-dimensions",
+          "label": "Dimensions",
+          "status": "passed",
+          "message": "Dimensions remains 1 × 1 px."
+        },
+        {
+          "id": "content-payload",
+          "label": "Encoded payload SHA-256",
+          "status": "passed",
+          "message": "Encoded image/audio/video payloads match. Rendering, ancillary data and track interpretation are not certified by this check."
+        }
+      ],
+      "warnings": [
+        "ICC color data, orientation, animation, and structural image fields were intentionally retained."
+      ]
+    }
+  },
+  "build": {
+    "command": "pnpm build",
+    "result": "failed before Astro started",
+    "reason": "astro executable not available in current checkout",
+    "testsRun": false
+  },
+  "checklist": {
+    "referenceRequirements": 73,
+    "reportRows": 73,
+    "missing": [],
+    "duplicates": [],
+    "extra": [],
+    "counts": {
+      "Unknown": 12,
+      "N/A": 16,
+      "Pass": 44,
+      "Fail": 1
+    }
+  }
+}
