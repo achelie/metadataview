@@ -32,7 +32,13 @@ await Promise.all(Array.from({ length: 6 }, async () => {
       if ((live.html.match(/name="google-adsense-account" content="ca-pub-7443237558968985"/g) ?? []).length !== 1) failures.push('account meta');
       if (/adsbygoogle|fundingchoicesmessages|pagead2\.googlesyndication/i.test(live.html)) failures.push('advertising runtime');
       if (local.includes('result-reading-guide') && !live.html.includes('result-reading-guide')) failures.push('missing result guide');
-      if (/\/blog\/[^/]+\/$/.test(route) && !route.includes('/page/') && !live.html.includes('2026-09-05')) failures.push('stale article');
+      if (/\/blog\/[^/]+\/$/.test(route) && !route.includes('/page/')) {
+        const article = html => [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]
+          .map(match => JSON.parse(match[1])).find(schema => schema['@type'] === 'BlogPosting');
+        const expected = article(local);
+        const actual = article(live.html);
+        if (!expected || !actual || actual.dateModified !== expected.dateModified || actual.description !== expected.description) failures.push('stale article');
+      }
       results.push({ url: entry.canonical, status: live.status, failures });
     } catch (error) { results.push({ url: entry.canonical, failures: [error.message] }); }
   }
