@@ -132,7 +132,12 @@ test('a sample travels viewer → privacy → remover → processed-copy privacy
   expect(finalAudit.writes).toEqual(baseline.writes);
   expect(requests.filter(({ url }) => new URL(url).pathname === sampleAsset)).toHaveLength(1);
   const origin = new URL(page.url()).origin;
-  expect(requests.filter((request) => new URL(request.url).origin === origin && !['GET', 'HEAD'].includes(request.method))).toEqual([]);
+  // Production adds a Cloudflare performance beacon. Keep checking its payload below.
+  const isCloudflareRum = (request: { url: string; method: string }) => {
+    const url = new URL(request.url);
+    return origin === 'https://www.viewexif.com' && url.origin === origin && url.pathname === '/cdn-cgi/rum' && request.method === 'POST';
+  };
+  expect(requests.filter((request) => new URL(request.url).origin === origin && !['GET', 'HEAD'].includes(request.method) && !isCloudflareRum(request))).toEqual([]);
   const traffic = requests.map(({ url, body }) => {
     try { return decodeURIComponent(`${url}\n${body}`); } catch { return `${url}\n${body}`; }
   }).join('\n');
