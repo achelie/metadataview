@@ -2,6 +2,15 @@ import type { Locale } from './core';
 import { interpolate } from './workbench-format';
 
 export const reportMessages = {
+  "report-actions": { en: "Report actions", "zh-CN": "报告操作", de: "Berichtsaktionen", fr: "Actions du rapport" },
+  "scan-finished": { en: "Scan complete · {count} fields", "zh-CN": "扫描完成 · {count} 个字段", de: "Scan abgeschlossen · {count} Felder", fr: "Analyse terminée · {count} champs" },
+  "original-diagnostic": { en: "Original diagnostic", "zh-CN": "原始诊断信息", de: "Originaldiagnose", fr: "Diagnostic d’origine" },
+  "parser-note": { en: "The parser returned a note. Review the original details.", "zh-CN": "解析器返回了提示，可展开查看原始详情。", de: "Der Parser hat einen Hinweis zurückgegeben. Sieh dir die Originaldetails an.", fr: "L’analyseur a renvoyé une note. Consultez les détails d’origine." },
+  "download-report-pdf": { en: "Download report (PDF)", "zh-CN": "下载报告（英文 PDF）", de: "Bericht laden (PDF)", fr: "Télécharger le rapport (PDF)" },
+  "more-exports": { en: "More exports", "zh-CN": "更多导出", de: "Weitere Exporte", fr: "Autres exports" },
+  "more-photo-details": { en: "More photo details", "zh-CN": "更多拍摄参数", de: "Weitere Aufnahmedaten", fr: "Autres paramètres photo" },
+  "file-details": { en: "File details and fingerprints", "zh-CN": "文件详情与校验指纹", de: "Dateidetails und Prüfsummen", fr: "Détails du fichier et empreintes" },
+  "view-all-metadata": { en: "View all metadata", "zh-CN": "查看全部元数据", de: "Alle Metadaten ansehen", fr: "Voir toutes les métadonnées" },
   "scan-canceled": {
     "en": "Deep scan canceled; the initial report remains available",
     "zh-CN": "深度扫描已取消，初步报告仍可使用",

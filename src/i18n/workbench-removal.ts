@@ -1,7 +1,54 @@
 import type { Locale } from './core';
 import { interpolate } from './workbench-format';
+import { MetadataError } from '../lib/metadata/errors';
+import { reportErrors } from './workbench-report';
 
 export const removalMessages = {
+  "cleanup-downloads": {
+    "en": "Cleanup downloads", "zh-CN": "清理结果下载", "de": "Bereinigte Dateien herunterladen", "fr": "Téléchargements du nettoyage"
+  },
+  "more-exports": {
+    "en": "More exports", "zh-CN": "更多导出", "de": "Weitere Exporte", "fr": "Autres exports"
+  },
+  "copy-download-started": {
+    "en": "Copy download started", "zh-CN": "已开始下载副本", "de": "Download der Kopie gestartet", "fr": "Téléchargement de la copie lancé"
+  },
+  "receipt-download-started": {
+    "en": "Receipt download started", "zh-CN": "已开始下载收据", "de": "Download des Belegs gestartet", "fr": "Téléchargement du reçu lancé"
+  },
+  "download-processed-copy": {
+    "en": "Download processed copy", "zh-CN": "下载已处理副本", "de": "Bearbeitete Kopie herunterladen", "fr": "Télécharger la copie traitée"
+  },
+  "download-residual-note": {
+    "en": "{count} metadata fields remain. Review them before sharing.",
+    "zh-CN": "仍有 {count} 个元数据字段残留，分享前请先检查。",
+    "de": "{count} Metadatenfelder bleiben erhalten. Prüfe sie vor dem Teilen.",
+    "fr": "Il reste {count} champs de métadonnées. Vérifiez-les avant de partager."
+  },
+  "download-incomplete-note": {
+    "en": "The full scan did not finish. This copy may still contain metadata.",
+    "zh-CN": "完整扫描尚未完成，这份副本可能仍含有元数据。",
+    "de": "Der vollständige Scan wurde nicht beendet. Diese Kopie kann noch Metadaten enthalten.",
+    "fr": "L’analyse complète n’a pas abouti. Cette copie peut encore contenir des métadonnées."
+  },
+  "source-scan-incomplete-warning": {
+    "en": "The original metadata scan was incomplete. Removal counts cannot account for unread fields.",
+    "zh-CN": "原文件的元数据扫描未完成，清理数量不包含尚未读取的字段。",
+    "de": "Der Metadatenscan des Originals war unvollständig. Nicht gelesene Felder sind in der Anzahl entfernter Felder nicht enthalten.",
+    "fr": "L’analyse du fichier source était incomplète. Le nombre de suppressions n’inclut pas les champs non lus."
+  },
+  "source-signature-warning": {
+    "en": "The source carried a signature or Content Credential. Any signature on this modified copy is no longer valid.",
+    "zh-CN": "原文件带有签名或内容凭证，修改后副本上的原签名不再有效。",
+    "de": "Das Original enthielt eine Signatur oder ein Content Credential. Eine Signatur auf dieser geänderten Kopie ist nicht mehr gültig.",
+    "fr": "Le fichier source comportait une signature ou des Content Credentials. Toute signature sur cette copie modifiée n’est plus valide."
+  },
+  "output-scan-incomplete-warning": {
+    "en": "The full output rescan did not finish.",
+    "zh-CN": "输出副本的完整复查未完成。",
+    "de": "Der vollständige Kontrollscan der Ausgabe wurde nicht abgeschlossen.",
+    "fr": "La nouvelle analyse complète de la copie n’a pas abouti."
+  },
   "result-verified": {
     "en": "Metadata scan verified. Review the separate content checks below.",
     "zh-CN": "元数据扫描验证通过。请查看下方独立的内容检查。",
@@ -473,3 +520,19 @@ export const removalMessages = {
 } as const satisfies Record<string, Record<Locale, string>>;
 export type removalMessageKey = keyof typeof removalMessages;
 export const removalTranslator = (locale: Locale) => (key: removalMessageKey, values: Record<string, string | number> = {}): string => interpolate(removalMessages[key][locale], values);
+
+export function removalErrorText(error: unknown, locale: Locale, fallback: removalMessageKey): string {
+  const message = error instanceof Error ? error.message : '';
+  if (locale === 'en') return message || removalTranslator(locale)(fallback);
+  const code = error instanceof MetadataError ? error.code
+    : /timed? ?out|did not finish within/i.test(message) ? 'PARSE_TIMEOUT' : '';
+  return reportErrors[locale][code] ?? removalTranslator(locale)(fallback);
+}
+
+export function removalWarningText(warning: string, locale: Locale): string {
+  const known = ['source-scan-incomplete-warning', 'source-signature-warning', 'output-scan-incomplete-warning'] as const;
+  const key = known.find((item) => removalMessages[item].en === warning);
+  if (key) return removalTranslator(locale)(key);
+  if (/ExifTool did not finish within/i.test(warning)) return removalTranslator(locale)('output-scan-incomplete-warning');
+  return warning;
+}

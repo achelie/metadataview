@@ -39,6 +39,7 @@ test('image cleanup verifies payload and downloads a receipt', async ({ page }) 
   await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 60_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   await expect(page.locator('.removal-result')).toBeVisible({ timeout: 60_000 });
+  await page.locator('.removal-result .result-export-menu > summary').click();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download receipt' }).click();
   const receipt = JSON.parse(await readFile((await (await download).path())!, 'utf8'));
@@ -52,6 +53,7 @@ test('Office cleanup proves untouched package contents match', async ({ page }) 
   await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 60_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   await expect(page.locator('.removal-result')).toBeVisible({ timeout: 60_000 });
+  await page.locator('.removal-result .result-export-menu > summary').click();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download receipt' }).click();
   const receipt = JSON.parse(await readFile((await (await download).path())!, 'utf8'));
@@ -61,9 +63,9 @@ test('Office cleanup proves untouched package contents match', async ({ page }) 
 test('Unicode PDF export keeps the original filename', async ({ page }) => {
   await page.goto('/metadata-viewer/');
   await select(page, '旅行照片-张三.png', await png(page), 'image/png');
-  await expect(page.getByRole('button', { name: 'Readable PDF', exact: true })).toBeEnabled({ timeout: 60_000 });
+  await expect(page.getByRole('button', { name: 'Download report (PDF)', exact: true })).toBeEnabled({ timeout: 60_000 });
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Readable PDF', exact: true }).click();
+  await page.getByRole('button', { name: 'Download report (PDF)', exact: true }).click();
   const bytes = await readFile((await (await download).path())!);
   const { PDFDocument } = await import('pdf-lib');
   expect((await PDFDocument.load(bytes)).getTitle()).toBe('旅行照片-张三.png metadata report');
@@ -80,6 +82,7 @@ test('cold engine load stays usable under constrained CPU and network', async ({
   const source = await png(page);
   const start = Date.now();
   await select(page, 'cold.png', source, 'image/png');
+  await page.locator('.result-export-menu > summary').click();
   await expect(page.getByRole('button', { name: 'Complete JSON', exact: true })).toBeEnabled({ timeout: 100_000 });
   await info.attach('cold-load-budget.json', { body: JSON.stringify({ elapsedMs: Date.now() - start, downloadBytesPerSecond: 1_000_000, cpuSlowdown: 4 }), contentType: 'application/json' });
   await page.getByRole('button', { name: 'Clear', exact: true }).click();

@@ -17,7 +17,6 @@ import fileSearchIcon from '@iconify-icons/lucide/file-search';
 import uploadIcon from '@iconify-icons/lucide/upload-cloud';
 import searchIcon from '@iconify-icons/lucide/search';
 import imageIcon from '@iconify-icons/lucide/image';
-import shareIcon from '@iconify-icons/lucide/share-2';
 import routeIcon from '@iconify-icons/lucide/git-branch';
 import wavesIcon from '@iconify-icons/lucide/waves';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -30,10 +29,17 @@ import type {
   C2paValidationEntry,
 } from '../lib/c2pa/types';
 import { downloadJson, sanitizeFilename } from '../lib/metadata/utils';
-import type { Locale } from '../i18n/core';
+import { localizePath, type Locale } from '../i18n/core';
 import { LocaleProvider, useLocale } from '../i18n/react';
-import { localizeC2paValidation } from '../i18n/c2pa';
+import { c2paEmptyMessages, localizeC2paAction, localizeC2paError, localizeC2paValidation, localizeC2paWarning } from '../i18n/c2pa';
 import { DisclosureChevron } from './DisclosureChevron';
+import { useSampleImage } from '../lib/samples/use-sample-image';
+import { SampleImageBar, SampleImageBadge } from './SampleImage';
+import { ResultActionBar } from './ResultActionBar';
+import { ToolFileLink } from './ToolFileLink';
+import { useIncomingToolFile } from '../lib/tool-handoff/use-incoming-tool-file';
+import { discardToolFile } from '../lib/tool-handoff/store';
+import { sampleMessages } from '../i18n/samples';
 
 interface Props {
   formats: string;
@@ -42,6 +48,10 @@ interface Props {
 }
 
 type PreviewFacts = { width: number; height: number } | null;
+
+// Match the ordinary viewers' allowedTypes; C2PA also accepts formats they do not.
+const imageMetadataTypes = new Set(['png', 'jpeg', 'webp', 'heic', 'tiff', 'gif']);
+const ordinaryMetadataTypes = new Set([...imageMetadataTypes, 'pdf', 'mp4', 'mov', 'avi', 'mp3', 'm4a', 'wav']);
 
 const progressCopy: Record<C2paProgressStage, string> = {
   'checking-file': 'Checking the real file signature',
@@ -88,6 +98,11 @@ const stateCopy: Record<C2paCheckState, string> = {
 };
 
 const frUi: Record<string, string> = {
+  'Download report': 'Télécharger le rapport', 'More exports': 'Autres exports', 'Report downloads': 'Téléchargements du rapport',
+  'JSON report · saved to your device': 'Rapport JSON · enregistré sur votre appareil',
+  'Credential check complete': 'Vérification des informations d’authenticité terminée',
+  'Credential check complete · none found': 'Vérification terminée · aucune information trouvée',
+  'Report download started': 'Téléchargement du rapport lancé',
   'Waiting for a file': 'En attente d’un fichier', 'Verification canceled': 'Vérification annulée',
   'Verification was canceled. Retry this file or choose another one.': 'La vérification a été annulée. Relancez ce fichier ou choisissez-en un autre.',
   'Verification stopped safely': 'Vérification arrêtée sans risque', 'The Content Credentials check could not finish.': 'La vérification des Content Credentials n’a pas pu se terminer.',
@@ -193,6 +208,9 @@ export default function C2paWorkbench({ locale = 'en', ...props }: Props) {
 
 function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   const locale = useLocale();
+  const sample = useSampleImage('c2pa');
+  const emptyCopy = c2paEmptyMessages(locale);
+  const sampleCopy = sampleMessages(locale);
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
   const fr = locale === 'fr';
@@ -203,6 +221,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   const input = useRef<HTMLInputElement>(null);
   const chooseButton = useRef<HTMLDivElement>(null);
   const resultHeading = useRef<HTMLHeadingElement>(null);
+  const signedSampleButton = useRef<HTMLButtonElement>(null);
   const verifier = useRef<C2paVerifierClient | null>(null);
   const runId = useRef(0);
   const [file, setFile] = useState<File | null>(null);
@@ -217,14 +236,19 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   const [previewFailed, setPreviewFailed] = useState(false);
   const [previewFacts, setPreviewFacts] = useState<PreviewFacts>(null);
   const [selectedProvenance, setSelectedProvenance] = useState('file');
+  const [exportNotice, setExportNotice] = useState('');
 
   const openPicker = () => {
+    sample.cancel();
     if (!input.current) return;
     input.current.value = '';
     input.current.click();
   };
 
   const clear = (returnFocus = true) => {
+    discardToolFile();
+    sample.cancel();
+    setExportNotice('');
     runId.current += 1;
     verifier.current?.cancel();
     setFile(null); setReport(null); setBusy(false); setStage(null); setError(null); setNotice(t('Waiting for a file', '等待选择文件', 'Warte auf eine Datei')); setQuery(''); setSelectedProvenance('file');
@@ -264,6 +288,9 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   }, [report?.generatedAt]);
 
   const inspect = async (selected: File) => {
+    discardToolFile();
+    sample.cancel();
+    setExportNotice('');
     const currentId = runId.current + 1;
     runId.current = currentId;
     verifier.current?.cancel();
@@ -282,7 +309,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
       });
       if (runId.current !== currentId) return;
       setReport(result);
-      setNotice(zh ? (result.status === 'not-found' ? '凭证检查完成 · 没有找到' : `凭证检查完成 · ${result.validationState}`) : de ? (result.status === 'not-found' ? 'Credential-Prüfung abgeschlossen · nichts gefunden' : `Credential-Prüfung abgeschlossen · ${result.validationState}`) : fr ? (result.status === 'not-found' ? 'Vérification terminée · rien trouvé' : `Vérification terminée · ${result.validationState}`) : result.status === 'not-found' ? 'Credential check complete · none found' : `Credential check complete · ${result.validationState}`);
+      setNotice(result.status === 'not-found' ? t('Credential check complete · none found', '凭证检查完成 · 没有找到', 'Credential-Prüfung abgeschlossen · nichts gefunden') : t('Credential check complete', '凭证检查完成', 'Credential-Prüfung abgeschlossen'));
     } catch (caught) {
       if (runId.current !== currentId) return;
       if (caught instanceof C2paCancellationError) {
@@ -290,12 +317,14 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
         setError(t('Verification was canceled. Retry this file or choose another one.', '验证已取消。可以重试这个文件，或者换一个。', 'Die Prüfung wurde abgebrochen. Versuche die Datei erneut oder wähle eine andere.'));
       } else {
         setNotice(t('Verification stopped safely', '验证已安全停止', 'Prüfung sicher gestoppt'));
-        setError(caught instanceof Error ? caught.message : t('The Content Credentials check could not finish.', '内容凭证检查没能完成。', 'Die Prüfung der Content Credentials konnte nicht abgeschlossen werden.'));
+        setError(localizeC2paError(caught, locale));
       }
     } finally {
       if (runId.current === currentId) { setBusy(false); setStage(null); }
     }
   };
+
+  useIncomingToolFile((selected) => void inspect(selected));
 
   const pick = (files: FileList | null) => {
     const selected = files?.item(0);
@@ -303,29 +332,30 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   };
 
   const cancel = () => {
+    sample.cancel();
     verifier.current?.cancel();
   };
 
   const copyReceipt = async () => {
     if (!report) return;
-    try { await copyText(reportReceipt(report)); setNotice(t('Verification receipt copied', '验证收据已复制', 'Englischer Prüfbeleg kopiert')); }
-    catch { setNotice(t('Clipboard access was blocked by this browser', '浏览器阻止了剪贴板访问', 'Der Browser hat den Zugriff auf die Zwischenablage blockiert')); }
+    try { await copyText(reportReceipt(report)); setExportNotice(t('Verification receipt copied', '验证收据已复制', 'Englischer Prüfbeleg kopiert')); }
+    catch { setExportNotice(t('Clipboard access was blocked by this browser', '浏览器阻止了剪贴板访问', 'Der Browser hat den Zugriff auf die Zwischenablage blockiert')); }
   };
 
   const needle = query.trim().toLowerCase();
   const filteredValidation = useMemo(() => report ? {
-    failure: report.validation.failure.filter((entry) => !needle || JSON.stringify(entry).toLowerCase().includes(needle)),
-    informational: report.validation.informational.filter((entry) => !needle || JSON.stringify(entry).toLowerCase().includes(needle)),
-    success: report.validation.success.filter((entry) => !needle || JSON.stringify(entry).toLowerCase().includes(needle)),
-  } : { failure: [], informational: [], success: [] }, [report, needle]);
-  const filteredActions = useMemo(() => report?.actions.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
+    failure: report.validation.failure.filter((entry) => !needle || JSON.stringify([entry, localizeC2paValidation(entry, locale)]).toLowerCase().includes(needle)),
+    informational: report.validation.informational.filter((entry) => !needle || JSON.stringify([entry, localizeC2paValidation(entry, locale)]).toLowerCase().includes(needle)),
+    success: report.validation.success.filter((entry) => !needle || JSON.stringify([entry, localizeC2paValidation(entry, locale)]).toLowerCase().includes(needle)),
+  } : { failure: [], informational: [], success: [] }, [report, needle, locale]);
+  const filteredActions = useMemo(() => report?.actions.filter((item) => !needle || JSON.stringify([item, localizeC2paAction(item, locale)]).toLowerCase().includes(needle)) ?? [], [report, needle, locale]);
   const filteredIngredients = useMemo(() => report?.ingredients.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
   const filteredAssertions = useMemo(() => report?.assertions.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
   const filteredManifests = useMemo(() => report?.manifests.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)) ?? [], [report, needle]);
   const validationPresentation = useMemo(() => report ? presentC2paValidation(report.validation) : null, [report]);
   const filteredValidationPresentation = useMemo(() => presentC2paValidation(filteredValidation), [filteredValidation]);
   const watermarkDeclarations = useMemo(() => report ? collectWatermarkDeclarations(report.actions, report.assertions) : [], [report]);
-  const filteredWatermarks = useMemo(() => watermarkDeclarations.filter((item) => !needle || JSON.stringify(item).toLowerCase().includes(needle)), [watermarkDeclarations, needle]);
+  const filteredWatermarks = useMemo(() => watermarkDeclarations.filter((item) => !needle || JSON.stringify([item, item.source === 'action' ? localizeC2paAction({ action: item.code, label: item.label }, locale) : item.label]).toLowerCase().includes(needle)), [watermarkDeclarations, needle, locale]);
 
   const verdictZh = {
     trusted: { eyebrow: '可信 C2PA 状态', title: '可信凭证', body: '凭证有效，而且验证器报告签名者可连接到已配置的信任锚。' },
@@ -350,6 +380,9 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   } as const;
   const verdict = report ? (zh ? verdictZh[report.status] : de ? verdictDe[report.status] : fr ? verdictFr[report.status] : verdictCopy[report.status]) : null;
   const active = report?.activeManifest;
+  const showNoCredentials = Boolean(report?.status === 'not-found');
+  const metadataPath = report && ordinaryMetadataTypes.has(report.file.detectedType)
+    ? localizePath(imageMetadataTypes.has(report.file.detectedType) ? '/image-metadata-viewer/' : '/metadata-viewer/', locale) : null;
   const hasCredential = report ? ['trusted', 'valid', 'invalid'].includes(report.status) : false;
   const honestTitle = zh ? (report?.status === 'invalid' ? '不要依赖无效清单里的声明。' : report?.status === 'not-found' ? '没有凭证不等于内容造假。' : report?.status === 'unsupported' ? '这里不支持，不代表别处验证会无效。' : '有效签名是证据，不是真相机器。') : de ? (report?.status === 'invalid' ? 'Verlass dich nicht auf Angaben aus einem ungültigen Manifest.' : report?.status === 'not-found' ? 'Kein Credential ist kein Beweis für eine Fälschung.' : report?.status === 'unsupported' ? 'Hier nicht unterstützt heißt nicht anderswo ungültig.' : 'Eine gültige Signatur ist ein Beleg, keine Wahrheitsmaschine.') : fr ? (report?.status === 'invalid' ? 'Ne vous fiez pas aux déclarations d’un manifeste invalide.' : report?.status === 'not-found' ? 'L’absence de Content Credential ne prouve pas une falsification.' : report?.status === 'unsupported' ? 'Non pris en charge ici ne signifie pas invalide ailleurs.' : 'Une signature valide est une preuve, pas une machine à vérité.') : report?.status === 'invalid' ? 'Do not rely on invalid manifest claims.'
     : report?.status === 'not-found' ? 'No credential is not a fake-content verdict.'
@@ -363,7 +396,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
       : report?.status === 'invalid' ? 'Invalid'
         : report?.status === 'not-found' ? 'No credential' : 'Unsupported';
 
-  return <section className="workbench c2pa-workbench" aria-busy={busy}>
+  return <section className="workbench c2pa-workbench" aria-busy={busy || sample.loading}>
     <div className="workbench-topline">
       <div className="local-proof"><Icon icon={shieldIcon} width="18" aria-hidden="true" /><span>{t('File bytes stay in this tab.', '文件字节只留在当前标签页。', 'Die Dateibytes bleiben in diesem Tab.')}</span></div>
       <span className="status-line" role="status" aria-live="polite"><i className={busy ? 'pulse' : ''} />{notice}</span>
@@ -378,6 +411,9 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
       <aside><Icon icon={fingerprintIcon} width="20" /><p><strong>{t('What gets checked?', '会检查什么？', 'Was wird geprüft?')}</strong>{t('Signature, file binding, manifest structure, actions, ingredients, and assertions.', '签名、文件绑定、清单结构、操作、素材和断言。', 'Signatur, Dateibindung, Manifeststruktur, Aktionen, Zutaten und Assertions.')}</p></aside>
     </div> : null}
 
+    {!file ? <SampleImageBar sample={sample} onSelect={(selected) => void inspect(selected)} locale={locale} /> : null}
+    {sample.isSample(file) ? <SampleImageBadge sampleId={sample.sampleId(file) ?? sample.id} locale={locale} /> : null}
+
     {file && !report ? <div className="c2pa-pending">
       <span className="c2pa-pending-mark"><Icon icon={fileSearchIcon} width="28" /></span>
       <div><span className="eyebrow">{t('Local verification', '本地验证', 'Lokale Prüfung')}</span><h2>{busy ? progress(stage ?? 'checking-file') : t('No receipt was produced.', '没有生成收据。', 'Es wurde kein Beleg erstellt.')}</h2><p><strong>{file.name}</strong> · {formatBytes(file.size)}</p>{error ? <p className="c2pa-error" role="alert">{error}</p> : null}</div>
@@ -390,6 +426,47 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />{t('Replace', '替换', 'Ersetzen')}</button><button className="button button-ghost" type="button" onClick={() => clear()}><Icon icon={trashIcon} width="16" />{t('Clear', '清除', 'Leeren')}</button></div>
       </header>
 
+      <ResultActionBar label={t('Report downloads', '报告下载', 'Berichtsdownloads')} className="c2pa-result-actions">
+        <button className="button button-primary" type="button" onClick={() => { downloadJson(report, sanitizeFilename(report.file.name, '-c2pa-report')); setExportNotice(t('Report download started', '已开始下载报告', 'Download des Berichts gestartet')); }}><Icon icon={downloadIcon} width="16" />{t('Download report', '下载报告', 'Bericht herunterladen')}</button>
+        <details className="result-export-menu">
+          <summary className="disclosure-summary"><span className="disclosure-label">{t('More exports', '更多导出', 'Weitere Exporte')}</span><DisclosureChevron /></summary>
+          <div className="result-export-options"><button className="button button-secondary" type="button" onClick={() => void copyReceipt()}><Icon icon={copyIcon} width="16" />{t('Copy receipt', '复制英文收据', 'Englischen Beleg kopieren')}</button></div>
+        </details>
+        <span className="result-action-note">{t('JSON report · saved to your device', 'JSON 报告 · 保存到你的设备', 'JSON-Bericht · auf deinem Gerät gespeichert')}</span>
+        <span className="result-action-feedback" role="status" aria-live="polite">{exportNotice}</span>
+      </ResultActionBar>
+
+      {showNoCredentials ? <section className="c2pa-no-credentials" aria-labelledby="c2pa-no-credentials-title">
+        <div className="c2pa-no-summary">
+          <div className="c2pa-no-copy">
+            <span className="c2pa-no-mark" aria-hidden="true"><Icon icon={fileSearchIcon} width="24" /></span>
+            <h3 id="c2pa-no-credentials-title">{emptyCopy.title}</h3>
+            <p>{emptyCopy.explanation}</p>
+            <p className="c2pa-no-meaning">{emptyCopy.meaning}</p>
+            {!metadataPath ? <p>{emptyCopy.unsupportedMetadata}</p> : null}
+            <div className="c2pa-no-next-actions">
+              {file && metadataPath ? <ToolFileLink file={file} href={metadataPath} className="button button-primary"><Icon icon={fileSearchIcon} width="18" aria-hidden="true" />{emptyCopy.metadata}</ToolFileLink> : null}
+              <button ref={signedSampleButton} className="button button-secondary" type="button" disabled={sample.loading} onClick={() => void sample.load((selected) => void inspect(selected))}><Icon icon={imageIcon} width="18" aria-hidden="true" />{sample.loading ? sampleCopy.loading : sample.error ? emptyCopy.retrySample : emptyCopy.signedSample}</button>
+              {sample.loading ? <button className="button button-ghost" type="button" onClick={() => { sample.cancel(); window.requestAnimationFrame(() => signedSampleButton.current?.focus()); }}>{sampleCopy.cancel}</button> : null}
+            </div>
+            <span className="sr-only" role="status">{sample.loading ? sampleCopy.loading : ''}</span>
+            {sample.error ? <p className="sample-image-error" role="alert">{sampleCopy.error}</p> : null}
+            <p className="c2pa-no-sample-note">{emptyCopy.sampleNote} <a href="/samples/SOURCES.md" target="_blank" rel="noreferrer">Adobe · CC BY-SA 4.0 · {sampleCopy.source}</a></p>
+          </div>
+          <figure className="c2pa-no-preview">
+            {previewableImage && previewUrl && !previewFailed ? <img src={previewUrl} alt={zh ? `${report.file.name} 的预览` : de ? `Vorschau von ${report.file.name}` : fr ? `Aperçu de ${report.file.name}` : `Preview of ${report.file.name}`} onError={() => setPreviewFailed(true)} onLoad={(event) => setPreviewFacts({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })} /> : <div><Icon icon={imageIcon} width="28" aria-hidden="true" /><span>{emptyCopy.previewUnavailable}</span></div>}
+            <figcaption>{report.file.detectedType.toUpperCase()}{previewFacts ? ` · ${previewFacts.width} × ${previewFacts.height}` : ''}</figcaption>
+          </figure>
+        </div>
+        <dl className="c2pa-no-file-details" aria-label={emptyCopy.fileDetails}>
+          <div><dt>{t('Detected format', '检测格式', 'Erkanntes Format')}</dt><dd>{report.file.detectedType.toUpperCase()} <small>{report.file.inspectedMime ?? report.file.mime}</small></dd></div>
+          <div><dt>{emptyCopy.size}</dt><dd>{formatBytes(report.file.size)}</dd></div>
+          {previewFacts ? <div><dt>{emptyCopy.dimensions}</dt><dd>{previewFacts.width} × {previewFacts.height}</dd></div> : null}
+          <div className="c2pa-no-fingerprint"><dt>SHA-256</dt><dd><code>{report.fingerprint?.value ?? t('Not calculated', '未计算', 'Nicht berechnet')}</code>{report.fingerprint ? <button className="button button-ghost" type="button" aria-label={t('Copy SHA-256', '复制 SHA-256', 'SHA-256 kopieren')} onClick={() => { void copyText(report.fingerprint!.value).then(() => setExportNotice(emptyCopy.hashCopied)).catch(() => setExportNotice(t('Clipboard access was blocked by this browser', '浏览器阻止了剪贴板访问', 'Der Browser hat den Zugriff auf die Zwischenablage blockiert'))); }}><Icon icon={copyIcon} width="17" aria-hidden="true" /></button> : null}</dd></div>
+        </dl>
+        {report.warnings.length ? <div className="c2pa-no-warnings">{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}>{localizeC2paWarning(warning, locale)}</p>)}</div> : null}
+        <SafeJsonDetails locale={locale} className="c2pa-no-diagnostics" title={emptyCopy.diagnostics} note={emptyCopy.diagnosticsNote} value={report} />
+      </section> : <>
       <div className="c2pa-report-overview">
         <section className="c2pa-asset-card" aria-labelledby="c2pa-asset-title">
           <div className="c2pa-asset-preview">
@@ -405,8 +482,6 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
               <div><dt>{t('Cert status', '证书状态', 'Zertifikatsstatus')}</dt><dd>{report.checks.publisherTrust === 'passed' ? t('Trusted signer', '可信签名者', 'Vertrauenswürdiger Signierer') : report.status === 'invalid' ? t('Invalid credential', '无效凭证', 'Ungültiges Credential') : hasCredential ? t('Trust not checked', '信任未检查', 'Vertrauen nicht geprüft') : t('Not applicable', '不适用', 'Nicht zutreffend')}</dd></div>
               <div><dt>{t('Software', '软件', 'Software')}</dt><dd>{active?.claimGenerator ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div>
             </dl>
-            <button className="button button-primary c2pa-share-button" type="button" onClick={() => downloadJson(report, sanitizeFilename(report.file.name, '-c2pa-report'))}><Icon icon={shareIcon} width="16" />{t('Create shareable report', '生成可分享的英文报告', 'Teilbaren englischen Bericht erstellen')}</button>
-            <small className="c2pa-local-export-note">{t('Downloads a local JSON receipt. Nothing is uploaded.', '下载本地 JSON 收据，不会上传任何内容。', 'Lädt einen lokalen englischen JSON-Beleg herunter. Nichts wird hochgeladen.')}</small>
           </div>
         </section>
 
@@ -427,7 +502,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
         <div className="c2pa-hash"><Icon icon={fingerprintIcon} width="19" /><span>SHA-256</span><code>{report.fingerprint?.value ?? t('Not calculated', '未计算', 'Nicht berechnet')}</code>{report.fingerprint ? <button type="button" aria-label={t('Copy SHA-256', '复制 SHA-256', 'SHA-256 kopieren')} onClick={() => void copyText(report.fingerprint!.value)}><Icon icon={copyIcon} width="15" /></button> : null}</div>
       </section>
 
-      {report.warnings.length ? <div className="c2pa-warning-list">{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><strong>{warning.code}</strong> {warning.message}</p>)}</div> : null}
+      {report.warnings.length ? <div className="c2pa-warning-list">{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><strong>{warning.code}</strong> {localizeC2paWarning(warning, locale)}</p>)}</div> : null}
 
       <label className="c2pa-search"><Icon icon={searchIcon} width="17" /><span className="sr-only">{t('Search this credential report', '搜索凭证报告', 'Credential-Bericht durchsuchen')}</span><input type="search" value={query} onChange={(event) => setQuery(event.currentTarget.value)} placeholder={t('Search checks, actions, sources, or assertions', '搜索检查、操作、来源或断言', 'Prüfungen, Aktionen, Quellen oder Assertions suchen')} /></label>
 
@@ -439,35 +514,35 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
 
         <section className="c2pa-evidence-panel c2pa-actions-panel" aria-labelledby="c2pa-actions-title">
           <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Signed history', '签名历史', 'Signierter Verlauf')}</span><h3 id="c2pa-actions-title">{t('Actions', '操作记录', 'Aktionen')}</h3><p>{zh ? `活动 C2PA 操作断言中有 ${report.actions.length} 条记录。` : de ? `${report.actions.length} Einträge aus der aktiven C2PA-Aktions-Assertion.` : fr ? `${report.actions.length} entrée(s) dans l’assertion d’actions C2PA active.` : `${report.actions.length} entr${report.actions.length === 1 ? 'y' : 'ies'} from the active C2PA actions assertion.`}</p></div><strong>{filteredActions.length}</strong></header>
-          {filteredActions.length ? <div className="c2pa-action-list">{filteredActions.map((action, index) => <article key={action.id}><i>{index + 1}</i><div><strong>{action.label}</strong><code>{action.action}</code></div><div><p>{action.softwareAgent ?? action.description ?? t('No tool was stated.', '未声明工具。', 'Kein Werkzeug angegeben.')}</p><small>{[action.when, action.digitalSourceType].filter(Boolean).join(' · ') || t('No timestamp or source type stated.', '未声明时间或来源类型。', 'Kein Zeitstempel oder Quelltyp angegeben.')}</small>{action.details ? <SafeJsonDetails locale={locale} title={t('Action details', '操作详情', 'Aktionsdetails')} note={t('Safe structured values', '安全结构化值', 'Sichere strukturierte Werte')} value={action.details} /> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>{query ? t('No matching actions.', '没有匹配的操作。', 'Keine passenden Aktionen.') : t('No actions were declared.', '没有声明操作。', 'Es wurden keine Aktionen angegeben.')}</strong><p>{t('A missing action list does not mean the file was never edited.', '缺少操作列表，不代表文件从未被编辑。', 'Eine fehlende Aktionsliste bedeutet nicht, dass die Datei nie bearbeitet wurde.')}</p></div>}
+          {filteredActions.length ? <div className="c2pa-action-list">{filteredActions.map((action, index) => <article key={action.id}><i>{index + 1}</i><div><strong>{localizeC2paAction(action, locale)}</strong><code>{action.action}</code></div><div><p>{action.softwareAgent ?? action.description ?? t('No tool was stated.', '未声明工具。', 'Kein Werkzeug angegeben.')}</p><small>{[action.when, action.digitalSourceType].filter(Boolean).join(' · ') || t('No timestamp or source type stated.', '未声明时间或来源类型。', 'Kein Zeitstempel oder Quelltyp angegeben.')}</small>{action.details ? <SafeJsonDetails locale={locale} title={t('Action details', '操作详情', 'Aktionsdetails')} note={t('Safe structured values', '安全结构化值', 'Sichere strukturierte Werte')} value={action.details} /> : null}</div></article>)}</div> : <div className="c2pa-empty"><strong>{query ? t('No matching actions.', '没有匹配的操作。', 'Keine passenden Aktionen.') : t('No actions were declared.', '没有声明操作。', 'Es wurden keine Aktionen angegeben.')}</strong><p>{t('A missing action list does not mean the file was never edited.', '缺少操作列表，不代表文件从未被编辑。', 'Eine fehlende Aktionsliste bedeutet nicht, dass die Datei nie bearbeitet wurde.')}</p></div>}
         </section>
 
         <section className="c2pa-evidence-panel c2pa-provenance-panel" aria-labelledby="c2pa-provenance-title">
           <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Direct source links', '直接来源链接', 'Direkte Quellenverweise')}</span><h3 id="c2pa-provenance-title">{t('Provenance', '来源关系', 'Herkunft')}</h3><p>{report.ingredients.length ? (zh ? `${report.ingredients.length} 个直接素材链接到当前文件。` : de ? `${report.ingredients.length} direkte Quelle${report.ingredients.length === 1 ? '' : 'n'} mit dieser Datei verknüpft.` : fr ? `${report.ingredients.length} ingrédient(s) directement lié(s) à ce fichier.` : `${report.ingredients.length} direct ingredient${report.ingredients.length === 1 ? '' : 's'} linked to this file.`) : t('Current file only · no prior ingredients declared.', '只有当前文件 · 未声明之前的素材', 'Nur aktuelle Datei · keine vorherigen Quellen angegeben.')}</p></div><Icon icon={routeIcon} width="25" /></header>
           <div className={`c2pa-provenance-flow ${filteredIngredients.length ? 'has-sources' : ''}`}>
             {filteredIngredients.length ? <div className="c2pa-source-nodes">{filteredIngredients.map((ingredient) => <button key={ingredient.id} type="button" className={selectedProvenance === ingredient.id ? 'is-selected' : ''} aria-pressed={selectedProvenance === ingredient.id} onClick={() => setSelectedProvenance(ingredient.id)}><span>{t('Source asset', '源素材', 'Quelldatei')}</span><strong>{ingredient.title}</strong><small>{ingredient.format ?? ingredient.relationship ?? t('Format not stated', '未声明格式', 'Format nicht angegeben')}</small></button>)}</div> : null}
-            <button type="button" className={`c2pa-current-node ${selectedProvenance === 'file' ? 'is-selected' : ''}`} aria-pressed={selectedProvenance === 'file'} onClick={() => setSelectedProvenance('file')}><span>{t('This file', '当前文件', 'Diese Datei')} · {credentialBadge}</span><strong>{report.file.name}</strong><small>{active?.signer ? (zh ? `由 ${active.signer} 签署` : de ? `Signiert von ${active.signer}` : `Signed by ${active.signer}`) : t('No signer stated', '未声明签名者', 'Kein Signierer angegeben')}</small></button>
+            <button type="button" className={`c2pa-current-node ${selectedProvenance === 'file' ? 'is-selected' : ''}`} aria-pressed={selectedProvenance === 'file'} onClick={() => setSelectedProvenance('file')}><span>{t('This file', '当前文件', 'Diese Datei')} · {credentialBadge}</span><strong>{report.file.name}</strong><small>{active?.signer ? (zh ? `由 ${active.signer} 签署` : de ? `Signiert von ${active.signer}` : fr ? `Signé par ${active.signer}` : `Signed by ${active.signer}`) : t('No signer stated', '未声明签名者', 'Kein Signierer angegeben')}</small></button>
           </div>
-          <div className="c2pa-selected-node"><span className="eyebrow">{t('Selected node', '当前选中节点', 'Ausgewählter Knoten')}</span><div><span className="c2pa-node-thumb"><Icon icon={selectedIngredient ? linkIcon : imageIcon} width="28" /></span><div><small>{selectedIngredient ? t('Source asset', '源素材', 'Quelldatei') : t('This file', '当前文件', 'Diese Datei')} · {selectedIngredient ? selectedIngredient.relationship ?? t('relationship not stated', '未声明关系', 'Beziehung nicht angegeben') : credentialBadge}</small><h4>{selectedIngredient?.title ?? report.file.name}</h4><p>{selectedIngredient ? [selectedIngredient.format, selectedIngredient.instanceId ?? selectedIngredient.documentId].filter(Boolean).join(' · ') || t('No additional source details were stated.', '未声明更多来源细节。', 'Keine weiteren Quelldetails angegeben.') : active?.signer ? (zh ? `由 ${active.signer} 签署` : de ? `Signiert von ${active.signer}` : `Signed by ${active.signer}`) : t('No C2PA signer is attached to this file.', '此文件没有附带 C2PA 签名者。', 'Mit dieser Datei ist kein C2PA-Signierer verknüpft.')}</p></div></div><p>{report.status === 'invalid' ? t('The active credential is invalid, so treat every provenance claim as diagnostic only.', '活动凭证无效，所有来源声明都只能当作诊断线索。', 'Das aktive Credential ist ungültig. Behandle alle Herkunftsangaben nur als Diagnosehinweise.') : report.status === 'not-found' ? t('No Content Credentials were found, so no signed provenance chain is available.', '没有找到内容凭证，因此也没有可用的签名来源链。', 'Es wurden keine Content Credentials gefunden, daher ist keine signierte Herkunftskette verfügbar.') : t('This view shows declared direct links only. It does not invent relationships that are absent from the manifest.', '这里只显示已声明的直接关系，不会编造清单中没有的链接。', 'Diese Ansicht zeigt nur angegebene direkte Verbindungen. Sie erfindet keine Beziehungen, die im Manifest fehlen.')}</p></div>
+          <div className="c2pa-selected-node"><span className="eyebrow">{t('Selected node', '当前选中节点', 'Ausgewählter Knoten')}</span><div><span className="c2pa-node-thumb"><Icon icon={selectedIngredient ? linkIcon : imageIcon} width="28" /></span><div><small>{selectedIngredient ? t('Source asset', '源素材', 'Quelldatei') : t('This file', '当前文件', 'Diese Datei')} · {selectedIngredient ? selectedIngredient.relationship ?? t('relationship not stated', '未声明关系', 'Beziehung nicht angegeben') : credentialBadge}</small><h4>{selectedIngredient?.title ?? report.file.name}</h4><p>{selectedIngredient ? [selectedIngredient.format, selectedIngredient.instanceId ?? selectedIngredient.documentId].filter(Boolean).join(' · ') || t('No additional source details were stated.', '未声明更多来源细节。', 'Keine weiteren Quelldetails angegeben.') : active?.signer ? (zh ? `由 ${active.signer} 签署` : de ? `Signiert von ${active.signer}` : fr ? `Signé par ${active.signer}` : `Signed by ${active.signer}`) : t('No C2PA signer is attached to this file.', '此文件没有附带 C2PA 签名者。', 'Mit dieser Datei ist kein C2PA-Signierer verknüpft.')}</p></div></div><p>{report.status === 'invalid' ? t('The active credential is invalid, so treat every provenance claim as diagnostic only.', '活动凭证无效，所有来源声明都只能当作诊断线索。', 'Das aktive Credential ist ungültig. Behandle alle Herkunftsangaben nur als Diagnosehinweise.') : report.status === 'not-found' ? t('No Content Credentials were found, so no signed provenance chain is available.', '没有找到内容凭证，因此也没有可用的签名来源链。', 'Es wurden keine Content Credentials gefunden, daher ist keine signierte Herkunftskette verfügbar.') : t('This view shows declared direct links only. It does not invent relationships that are absent from the manifest.', '这里只显示已声明的直接关系，不会编造清单中没有的链接。', 'Diese Ansicht zeigt nur angegebene direkte Verbindungen. Sie erfindet keine Beziehungen, die im Manifest fehlen.')}</p></div>
         </section>
 
         <section className="c2pa-evidence-panel c2pa-watermark-panel" aria-labelledby="c2pa-watermark-title">
-          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Manifest declaration', '清单声明', 'Manifestangabe')}</span><h3 id="c2pa-watermark-title">{t('Embedded watermark', '内嵌水印', 'Eingebettetes Wasserzeichen')}</h3><p>{zh ? `活动清单中找到 ${watermarkDeclarations.length} 条声明。` : de ? `${watermarkDeclarations.length} Angabe${watermarkDeclarations.length === 1 ? '' : 'n'} im aktiven Manifest gefunden.` : `${watermarkDeclarations.length} declaration${watermarkDeclarations.length === 1 ? '' : 's'} found in the active manifest.`}</p></div><Icon icon={wavesIcon} width="25" /></header>
+          <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Manifest declaration', '清单声明', 'Manifestangabe')}</span><h3 id="c2pa-watermark-title">{t('Embedded watermark', '内嵌水印', 'Eingebettetes Wasserzeichen')}</h3><p>{zh ? `活动清单中找到 ${watermarkDeclarations.length} 条声明。` : de ? `${watermarkDeclarations.length} Angabe${watermarkDeclarations.length === 1 ? '' : 'n'} im aktiven Manifest gefunden.` : fr ? `${watermarkDeclarations.length} déclaration(s) trouvée(s) dans le manifeste actif.` : `${watermarkDeclarations.length} declaration${watermarkDeclarations.length === 1 ? '' : 's'} found in the active manifest.`}</p></div><Icon icon={wavesIcon} width="25" /></header>
           <p className="c2pa-watermark-note">{t('This verifier reads watermark declarations in Content Credentials. It does not inspect pixels or audio samples to confirm that a watermark signal is present.', '验证器只读取内容凭证中的水印声明，不检查像素或音频样本来确认水印信号是否真实存在。', 'Dieser Verifier liest Wasserzeichenangaben in Content Credentials. Er untersucht keine Pixel oder Audiosamples, um ein tatsächliches Wasserzeichensignal zu bestätigen.')}</p>
-          {filteredWatermarks.length ? <div className="c2pa-watermark-list">{filteredWatermarks.map((item) => <div key={item.id}><span>{item.source}</span><strong>{item.label}</strong><code>{item.code}</code></div>)}</div> : <div className="c2pa-empty"><strong>{query ? t('No matching watermark declaration.', '没有匹配的水印声明。', 'Keine passende Wasserzeichenangabe.') : t('No watermark declaration found.', '没有找到水印声明。', 'Keine Wasserzeichenangabe gefunden.')}</strong><p>{t('This result does not prove that the media contains no invisible watermark.', '这个结果不能证明媒体里没有不可见水印。', 'Dieses Ergebnis beweist nicht, dass das Medium kein unsichtbares Wasserzeichen enthält.')}</p></div>}
+          {filteredWatermarks.length ? <div className="c2pa-watermark-list">{filteredWatermarks.map((item) => <div key={item.id}><span>{item.source}</span><strong>{item.source === 'action' ? localizeC2paAction({ action: item.code, label: item.label }, locale) : item.label}</strong><code>{item.code}</code></div>)}</div> : <div className="c2pa-empty"><strong>{query ? t('No matching watermark declaration.', '没有匹配的水印声明。', 'Keine passende Wasserzeichenangabe.') : t('No watermark declaration found.', '没有找到水印声明。', 'Keine Wasserzeichenangabe gefunden.')}</strong><p>{t('This result does not prove that the media contains no invisible watermark.', '这个结果不能证明媒体里没有不可见水印。', 'Dieses Ergebnis beweist nicht, dass das Medium kein unsichtbares Wasserzeichen enthält.')}</p></div>}
         </section>
 
         <section className="c2pa-evidence-panel c2pa-technical-panel" aria-labelledby="c2pa-technical-title">
           <header className="c2pa-evidence-heading"><div><span className="eyebrow">{t('Complete evidence', '完整证据', 'Vollständige Nachweise')}</span><h3 id="c2pa-technical-title">{t('Technical details', '技术详情', 'Technische Details')}</h3><p>{t('Assertions, manifest history, and the safe normalized JSON receipt.', '断言、清单历史和安全规范化 JSON 收据。', 'Assertions, Manifestverlauf und der sicher normalisierte JSON-Beleg.')}</p></div><strong>{report.assertions.length + report.manifests.length}</strong></header>
           <details><summary className="disclosure-summary"><span className="disclosure-label">{t('Assertions', '断言', 'Assertions')}<small>{filteredAssertions.length} {t('safe entries', '条安全记录', 'sichere Einträge')}</small></span><DisclosureChevron /></summary>{filteredAssertions.length ? <div className="c2pa-assertion-list">{filteredAssertions.map((assertion) => <SafeJsonDetails locale={locale} key={assertion.id} title={assertion.label} note={`${assertion.kind ?? t('Unknown format', '未知格式', 'Unbekanntes Format')} · ${assertion.created ? t('created by signer', '由签名者创建', 'vom Signierer erstellt') : t('gathered', '已收集', 'gesammelt')}`} value={assertion.data} />)}</div> : <div className="c2pa-empty"><strong>{t('No matching assertions.', '没有匹配的断言。', 'Keine passenden Assertions.')}</strong><p>{t('Clear the search to restore the assertion index.', '清空搜索即可恢复断言索引。', 'Leere die Suche, um den Assertion-Index wiederherzustellen.')}</p></div>}</details>
-          <details><summary className="disclosure-summary"><span className="disclosure-label">{t('Manifest history', '清单历史', 'Manifestverlauf')}<small>{filteredManifests.length} {t('entries', '条记录', 'Einträge')}</small></span><DisclosureChevron /></summary>{filteredManifests.length ? <div className="c2pa-manifest-list">{filteredManifests.map((manifest, index) => <article key={manifest.label} className={manifest.active ? 'is-active' : undefined}><span>{manifest.active ? t('Active', '活动清单', 'Aktiv') : (zh ? `历史 ${index + 1}` : de ? `Verlauf ${index + 1}` : `History ${index + 1}`)}</span><h4>{manifest.title ?? manifest.label}</h4><code>{manifest.label}</code><dl><div><dt>{t('Generator', '生成器', 'Generator')}</dt><dd>{manifest.claimGenerator ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Signer', '签名者', 'Signierer')}</dt><dd>{manifest.signer ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Signed', '签发时间', 'Signiert')}</dt><dd>{manifest.signedAt ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Contents', '内容', 'Inhalt')}</dt><dd>{manifest.assertionCount} {t('assertions', '条断言', 'Assertions')} · {manifest.ingredientCount} {t('ingredients', '个素材', 'Quellen')}</dd></div></dl></article>)}</div> : <div className="c2pa-empty"><strong>{t('No manifest matches this search.', '没有清单匹配当前搜索。', 'Kein Manifest passt zur aktuellen Suche.')}</strong><p>{t('Clear the search to restore the provenance history.', '清空搜索即可恢复来源历史。', 'Leere die Suche, um den Herkunftsverlauf wiederherzustellen.')}</p></div>}</details>
+          <details><summary className="disclosure-summary"><span className="disclosure-label">{t('Manifest history', '清单历史', 'Manifestverlauf')}<small>{filteredManifests.length} {t('entries', '条记录', 'Einträge')}</small></span><DisclosureChevron /></summary>{filteredManifests.length ? <div className="c2pa-manifest-list">{filteredManifests.map((manifest, index) => <article key={manifest.label} className={manifest.active ? 'is-active' : undefined}><span>{manifest.active ? t('Active', '活动清单', 'Aktiv') : (zh ? `历史 ${index + 1}` : de ? `Verlauf ${index + 1}` : fr ? `Historique ${index + 1}` : `History ${index + 1}`)}</span><h4>{manifest.title ?? manifest.label}</h4><code>{manifest.label}</code><dl><div><dt>{t('Generator', '生成器', 'Generator')}</dt><dd>{manifest.claimGenerator ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Signer', '签名者', 'Signierer')}</dt><dd>{manifest.signer ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Signed', '签发时间', 'Signiert')}</dt><dd>{manifest.signedAt ?? t('Not stated', '未声明', 'Nicht angegeben')}</dd></div><div><dt>{t('Contents', '内容', 'Inhalt')}</dt><dd>{manifest.assertionCount} {t('assertions', '条断言', 'Assertions')} · {manifest.ingredientCount} {t('ingredients', '个素材', 'Quellen')}</dd></div></dl></article>)}</div> : <div className="c2pa-empty"><strong>{t('No manifest matches this search.', '没有清单匹配当前搜索。', 'Kein Manifest passt zur aktuellen Suche.')}</strong><p>{t('Clear the search to restore the provenance history.', '清空搜索即可恢复来源历史。', 'Leere die Suche, um den Herkunftsverlauf wiederherzustellen.')}</p></div>}</details>
           <SafeJsonDetails locale={locale} className="is-raw" title={t('Complete safe C2PA report', '完整安全 C2PA 报告', 'Vollständiger sicherer C2PA-Bericht')} note={t('No file bytes, Blob URLs, thumbnails, or worker state', '不含文件字节、Blob URL、缩略图或 Worker 状态', 'Keine Dateibytes, Blob-URLs, Vorschaubilder oder Worker-Zustände')} value={report} />
         </section>
       </div>
 
       <aside className="c2pa-honest-limit"><Icon icon={infoIcon} width="22" /><div><strong>{honestTitle}</strong><p>{t('Content Credentials can show who signed a claim and whether it still binds to this file. They cannot prove that every statement or visible scene is true. This privacy-first verifier also makes no external trust-list or OCSP request.', '内容凭证能显示谁签署了声明，以及它是否仍绑定当前文件；它不能证明每段话或画面都是真的。这个隐私优先的验证器也不会请求外部信任列表或 OCSP。', 'Content Credentials zeigen, wer eine Aussage signiert hat und ob sie noch an diese Datei gebunden ist. Sie beweisen nicht, dass jede Aussage oder sichtbare Szene wahr ist. Dieser datenschutzfreundliche Verifier stellt außerdem keine Anfragen an externe Vertrauenslisten oder OCSP.')}</p></div></aside>
+      </>}
 
-      <footer className="c2pa-export"><div><span className="eyebrow">{t('Portable receipt', '可携带收据', 'Portabler Beleg')}</span><h3>{t('Keep the result with the file.', '把结果和文件放在一起。', 'Bewahre das Ergebnis zusammen mit der Datei auf.')}</h3><p>{t('The JSON contains safe manifest data and status codes, never the source bytes.', 'JSON 保持英文 schema，包含安全清单数据和状态码，不包含源文件字节。', 'Das JSON behält das englische Schema und enthält sichere Manifestdaten und Statuscodes, niemals die Quelldateibytes.')}</p></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => void copyReceipt()}><Icon icon={copyIcon} width="16" />{t('Copy receipt', '复制英文收据', 'Englischen Beleg kopieren')}</button><button className="button button-primary" type="button" onClick={() => downloadJson(report, sanitizeFilename(report.file.name, '-c2pa-report'))}><Icon icon={downloadIcon} width="16" />{t('Download JSON', '下载 JSON', 'JSON herunterladen')}</button></div></footer>
     </div> : null}
   </section>;
 }

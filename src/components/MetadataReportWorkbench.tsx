@@ -1,6 +1,7 @@
 import { engineMessage } from '../i18n/workbench-engine';
 import { downloadBlob } from '../lib/browser/download';
 import { reportTranslator, reportErrors } from '../i18n/workbench-report';
+import { reportDisplay } from '../i18n/report-display';
 import { Icon } from '@iconify/react';
 import checkIcon from '@iconify-icons/lucide/shield-check';
 import uploadIcon from '@iconify-icons/lucide/upload-cloud';
@@ -17,8 +18,15 @@ import fileIcon from '@iconify-icons/lucide/file';
 import xIcon from '@iconify-icons/lucide/x';
 import cpuIcon from '@iconify-icons/lucide/cpu';
 import scanIcon from '@iconify-icons/lucide/scan-search';
-import mapIcon from '@iconify-icons/lucide/map-pin';
 import { DisclosureChevron } from './DisclosureChevron';
+import { ResultActionBar } from './ResultActionBar';
+import { SampleImageBar, SampleImageBadge } from './SampleImage';
+import { useSampleImage } from '../lib/samples/use-sample-image';
+import { ToolFileLink } from './ToolFileLink';
+import { ToolNextSteps } from './ToolNextSteps';
+import { toolHandoffText } from '../i18n/tool-handoff';
+import { useIncomingToolFile } from '../lib/tool-handoff/use-incoming-tool-file';
+import { discardToolFile } from '../lib/tool-handoff/store';
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ExifToolCancellationError, ExifToolWorkerClient } from '../lib/exiftool-worker-client';
 import { IMAGE_LIMITS } from '../lib/metadata/limits';
@@ -163,18 +171,30 @@ function gpsFromReport(report: MetadataReport | null): { text: string; mapUrl: s
   };
 }
 
-function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
+function PhotoSummaryRows({ items, locale }: { items: ReturnType<typeof exifSummaryFromReport>; locale: Locale }) {
+  const t = reportTranslator(locale);
+  return <dl>{items.map((item) => <div key={item.id} data-exif-summary={item.id}>
+    <dt>{reportDisplay(locale, item.label)}</dt><dd>{item.value ? <>{item.value}{item.href ? <>
+      <a href={item.href} target="_blank" rel="noopener noreferrer" aria-describedby="home-map-disclosure">{t('open-map')}</a>
+      <p id="home-map-disclosure" className="map-disclosure">{t('map-disclosure')}</p>
+    </> : null}</> : <span>{t('not-found')}</span>}</dd>
+  </div>)}</dl>;
+}
+
+function FieldRows({ section, expanded, onExpand, onCopy, locale, readable }: {
   section: MetadataReportSection;
   expanded: Set<string>;
   onExpand: (id: string) => void;
   onCopy: (field: MetadataReportField) => void;
   locale: Locale;
+  readable: boolean;
 }) {
 
   const t = reportTranslator(locale);
   const number = (value: number) => value.toLocaleString(locale);
   return <div className="report-field-list">
     {section.fields.map((field) => {
+      const label = readable ? reportDisplay(locale, field.label) : field.label;
       const long = field.displayValue.length > DISPLAY_LIMIT;
       const open = expanded.has(field.id);
       const shown = long && !open ? `${field.displayValue.slice(0, DISPLAY_LIMIT)}…` : field.displayValue;
@@ -182,14 +202,14 @@ function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
       const showNumeric = numeric !== null && numeric !== field.displayValue;
       return <article key={field.id} className={field.sensitive ? 'is-sensitive' : undefined} data-field-path={field.path}>
         <div className="report-field-name">
-          <div><strong>{field.label}</strong>{field.sensitive ? <mark>{t("sensitive")}</mark> : null}</div>
+          <div><strong>{label}</strong>{field.sensitive ? <mark>{t("sensitive")}</mark> : null}</div>
           <small>{field.key}</small>
           {field.binarySummary ? <span className="report-binary-chip">{field.binarySummary.bytes === undefined ? t("binary-payload") : `${number(field.binarySummary.bytes)} B ${t("binary")}`}</span> : null}
         </div>
         <div className="report-field-value">
           <code>{shown}</code>
           {showNumeric ? <small className="report-raw-number">{t("raw-value")}: {numeric}</small> : null}
-          {field.binarySummary ? <small className="report-binary-note">{field.binarySummary.note}</small> : null}
+          {field.binarySummary ? <small className="report-binary-note">{reportDisplay(locale, field.binarySummary.note)}</small> : null}
           {long ? <button className="report-text-button disclosure-toggle" type="button" aria-expanded={open} onClick={() => onExpand(field.id)}><span>{open ? t("show-less") : t("show-all", { count: number(field.displayValue.length) })}</span><DisclosureChevron /></button> : null}
           {field.alternates?.length ? <details className="report-alternates"><summary className="disclosure-summary"><span className="disclosure-label">{t("alternates", { count: field.alternates.length })}</span><DisclosureChevron /></summary>{field.alternates.map((alternate) => <div key={`${alternate.path}-${alternate.displayValue}`}><b>{alternate.source}</b><code>{alternate.displayValue}</code><small>{alternate.path}</small></div>)}</details> : null}
         </div>
@@ -198,7 +218,7 @@ function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
           <small>{field.path}</small>
           <div className="report-field-meta"><i>{field.origin}</i>{field.tagId !== undefined ? <i>ID {field.tagId}</i> : null}{field.format ? <i>{field.format}</i> : null}</div>
         </div>
-        <button className="report-copy-icon" type="button" aria-label={t("copy-field", { name: field.label })} title={t("copy-field", { name: field.label })} onClick={() => onCopy(field)}><Icon icon={copyIcon} width="16" /></button>
+        <button className="report-copy-icon" type="button" aria-label={t("copy-field", { name: label })} title={t("copy-field", { name: label })} onClick={() => onCopy(field)}><Icon icon={copyIcon} width="16" /></button>
       </article>;
     })}
   </div>;
@@ -230,6 +250,7 @@ export default function MetadataReportWorkbench({ locale = 'en', ...props }: Pro
 
 function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, placement = 'tool' }: Omit<Props, 'locale'>) {
   const locale = useLocale();
+  const sample = useSampleImage('metadata');
 
   const t = reportTranslator(locale);
   const number = (value: number) => value.toLocaleString(locale);
@@ -248,6 +269,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState(t("waiting-for-a-file"));
+  const [actionMessage, setActionMessage] = useState('');
   const [view, setView] = useState<ViewMode>('readable');
   const [query, setQuery] = useState('');
   const deferredQuery = useDeferredValue(query);
@@ -262,6 +284,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const exifRunning = exifStatus === 'loading' || exifStatus === 'extracting' || exifStatus === 'building';
 
   const openPicker = () => {
+    sample.cancel();
     if (!input.current) return;
     input.current.value = '';
     input.current.click();
@@ -281,13 +304,15 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   };
 
   const clear = () => {
+    discardToolFile();
+    sample.cancel();
     runId.current += 1;
     task.current?.cancel();
     task.current = null;
     exifTool.current?.terminate();
     exifTool.current = null;
     releasePreview();
-    setFile(null); setReport(null); setBusy(false); setError(null); setNotice(t("waiting-for-a-file"));
+    setFile(null); setReport(null); setBusy(false); setError(null); setActionMessage(''); setNotice(t("waiting-for-a-file"));
     setView('readable'); setQuery(''); setSource('all'); setExpanded(new Set()); setOpenRaw(false);
     setExifStatus('idle'); setExifMode('standard'); setRenderLimit(FIELD_BATCH);
     if (input.current) input.current.value = '';
@@ -330,6 +355,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       const merged = mergeExifToolInspection(baseReport, inspection);
       setReport(merged);
       setExifStatus('complete');
+      setNotice(t('scan-finished', { count: merged.nativeSections.reduce((total, section) => total + section.fields.length, 0).toLocaleString(locale) }));
     } catch (caught) {
       if (runId.current !== currentId) return;
       if (caught instanceof ExifToolCancellationError) {
@@ -339,17 +365,20 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       const message = caught instanceof Error ? caught.message : t("exiftool-could-not-inspect-this-file");
       setReport((current) => current ? recordExifToolFailure(current, message, mode) : current);
       setExifStatus('failed');
+      setNotice(t('full-scan-incomplete'));
     }
   };
 
   const inspect = async (selected: File, extraFiles = 0) => {
+    discardToolFile();
+    sample.cancel();
     const currentId = runId.current + 1;
     runId.current = currentId;
     task.current?.cancel();
     exifTool.current?.terminate();
     exifTool.current = null;
     releasePreview();
-    setFile(selected); setReport(null); setError(null); setBusy(true); setView('readable'); setQuery(''); setSource('all'); setExpanded(new Set());
+    setFile(selected); setReport(null); setError(null); setActionMessage(''); setBusy(true); setView('readable'); setQuery(''); setSource('all'); setExpanded(new Set());
     setExifStatus('idle'); setExifMode('standard'); setRenderLimit(FIELD_BATCH);
     if (selected.type.startsWith('image/')) showPreview(selected);
     const limit = fileLimit(scope);
@@ -381,6 +410,8 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     }
   };
 
+  useIncomingToolFile((selected) => void inspect(selected));
+
   const pickFiles = (files: FileList | null) => {
     if (!files?.length) return;
     const selected = files.item(0);
@@ -393,9 +424,9 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     const needle = deferredQuery.trim().toLowerCase();
     return baseSections.map((section) => ({ ...section, fields: section.fields.filter((field) => {
       if (source !== 'all' && field.source !== source) return false;
-      return !needle || field.searchValue.toLowerCase().includes(needle) || `${field.label} ${field.key} ${field.path} ${field.source}`.toLowerCase().includes(needle);
+      return !needle || field.searchValue.toLowerCase().includes(needle) || `${reportDisplay(locale, field.label)} ${reportDisplay(locale, section.title)} ${field.label} ${field.key} ${field.path} ${field.source}`.toLowerCase().includes(needle);
     }) })).filter((section) => section.fields.length);
-  }, [baseSections, deferredQuery, source]);
+  }, [baseSections, deferredQuery, source, locale]);
   const matchingFields = useMemo(() => filtered.flatMap((section) => section.fields), [filtered]);
   const renderedSections = useMemo(() => limitSections(filtered, renderLimit), [filtered, renderLimit]);
   const renderedCount = renderedSections.reduce((count, section) => count + section.fields.length, 0);
@@ -407,8 +438,8 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   const fullImageScan = report?.category === 'image';
 
   const copied = async (text: string, message: string) => {
-    try { await copyText(text); setNotice(message); }
-    catch { setNotice(t("clipboard-access-was-blocked-by-this-browser")); }
+    try { await copyText(text); setNotice(message); setActionMessage(message); }
+    catch { const message = t('clipboard-access-was-blocked-by-this-browser'); setNotice(message); setActionMessage(message); }
   };
 
   const downloadJson = (rawOnly = false) => {
@@ -417,18 +448,21 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     const suffix = rawOnly ? '-raw-metadata.json' : '-metadata-report.json';
     downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), sanitizeFilename(report.file.name, suffix));
     setNotice(rawOnly ? t("raw-safe-json-downloaded") : t("complete-json-report-downloaded"));
+    setActionMessage(rawOnly ? t('raw-safe-json-downloaded') : t('complete-json-report-downloaded'));
   };
 
   const downloadPdf = async () => {
     if (!report || exportingPdf || exifRunning) return;
-    setExportingPdf(true); setNotice(t("building-the-readable-pdf-in-this-tab"));
+    setExportingPdf(true); setActionMessage(''); setNotice(t("building-the-readable-pdf-in-this-tab"));
     try {
       const { downloadMetadataReportPdf } = await import('../lib/metadata-report/pdf-export');
       await downloadMetadataReportPdf(report, sanitizeFilename(report.file.name, '-metadata-report.pdf'));
       setNotice(t("readable-pdf-report-downloaded-json-remains-the-complete-record"));
+      setActionMessage(t('readable-pdf-report-downloaded-json-remains-the-complete-record'));
     } catch (error) {
       const reason = error instanceof Error ? error.message : t("unknown-browser-error");
       setNotice(t("pdf-error", { reason }));
+      setActionMessage(t('pdf-error', { reason }));
     }
     finally { setExportingPdf(false); }
   };
@@ -445,7 +479,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     setNotice(t("scan-canceled"));
   };
 
-  return <section id={`metadata-workbench-${placement}`} className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning}>
+  return <section id={`metadata-workbench-${placement}`} className={`workbench report-workbench is-${placement}`} aria-busy={busy || exifRunning || sample.loading}>
     <div className="workbench-topline">
       <div className="local-proof"><Icon icon={checkIcon} width="18" aria-hidden="true" /><span>{t("your-file-stays-on-this-device")}</span></div>
       <span className="status-line" role="status" aria-live="polite"><i className={busy || exifRunning ? 'pulse' : ''} />{notice}</span>
@@ -459,7 +493,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       <span className="report-drop-mark" aria-hidden="true"><Icon icon={uploadIcon} width="33" /></span>
       <div className="report-drop-copy"><span className="eyebrow">{t("one-file-processed-locally")}</span><strong>{t(scope === "image" ? "drop-image" : "drop-file")}</strong><p id={`report-drop-help-${placement}`}>{formats} · {t("up-to")} {formatLimit(fileLimit(scope))}</p><span className="button button-primary report-pick-button" aria-hidden="true">{chooseLabel}</span></div>
       <span className="report-drop-note">{t("exiftool-loads-after-you-choose-a-file")}<small>{t("nothing-is-uploaded")}</small></span>
-    </div>{placement === 'home' ? <aside className="home-exif-upload-guide" aria-label={t("photo-metadata-highlights")}>
+    </div>{allowedTypes.includes('jpeg') ? <SampleImageBar sample={sample} onSelect={(selected) => void inspect(selected)} locale={locale} /> : null}{placement === 'home' ? <aside className="home-exif-upload-guide" aria-label={t("photo-metadata-highlights")}>
       <p>{t("view-exif-data-gps-location-camera-settings-date-taken-and-file-metadata-directly-in-your-browser")}</p>
       <ul><li>{t("camera-lens")}</li><li>{t("gps-location")}</li><li>{t("date-taken")}</li><li>{t("full-metadata")}</li></ul>
     </aside> : null}</> : null}
@@ -472,25 +506,44 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
 
     {report ? <div className="report-result">
       <header className="report-heading">
-        <div><span className="eyebrow">{t("report-ready-bytes-stayed-local")}</span><h2 ref={resultHeading} tabIndex={-1}>{t("file-report", { name: report.file.name })}</h2><p>{t("a-practical-reading-first-then-the-exact-exiftool-paths-when-you-need-receipts")}</p></div>
+        <div className="report-heading-preview">{preview && report.category === 'image' ? <img src={preview} alt={t("file-preview", { name: report.file.name })} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="28" />}</div>
+        <div className="report-heading-copy"><span className="eyebrow">{t("report-ready-bytes-stayed-local")}</span><h2 ref={resultHeading} tabIndex={-1}>{t("file-report", { name: report.file.name })}</h2><p>{report.file.detectedType.toUpperCase()} · {(report.file.size / 1024).toFixed(1)} KB{report.facts.find((fact) => fact.id === 'dimensions') ? ` · ${report.facts.find((fact) => fact.id === 'dimensions')!.value}` : ''}</p></div>
         <div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={replaceIcon} width="16" />{t("replace")}</button><button className="button button-ghost" type="button" onClick={clear}><Icon icon={trashIcon} width="16" />{t("clear")}</button></div>
       </header>
 
-      {placement === 'home' && report.category === 'image' ? <section className="home-exif-summary" aria-labelledby="home-exif-summary-title">
-        <header><span className="eyebrow">{t("photo-quick-read")}</span><div><h3 id="home-exif-summary-title">EXIF Summary</h3><p>{t("the-photo-details-people-check-first-missing-means-this-file-did-not-expose-a-usable-value")}</p></div></header>
-        <dl>{exifSummary.map((item) => <div key={item.id} data-exif-summary={item.id}><dt>{item.label}</dt><dd>{item.value ? item.href ? <><span>{item.value}</span><a href={item.href} target="_blank" rel="noopener noreferrer" aria-describedby="home-map-disclosure">{t("open-map")}</a><p id="home-map-disclosure" className="map-disclosure">{t("map-disclosure")}</p></> : item.value : <span>{t("not-found")}</span>}</dd></div>)}</dl>
-        <footer><span>{t("full-metadata-continues-below")}</span><a href="#metadata-results-heading">EXIF · XMP · IPTC · ICC · File Information · Raw Metadata ↓</a></footer>
+      <ResultActionBar label={t('report-actions')} className="report-export-actions">
+        <button className="button button-primary" type="button" onClick={() => void downloadPdf()} disabled={exportingPdf || exifRunning}><Icon icon={pdfIcon} width="16" />{exportingPdf ? t('building-pdf') : t('download-report-pdf')}</button>
+        <details className="result-export-menu"><summary className="disclosure-summary button button-secondary"><span>{t('more-exports')}</span><DisclosureChevron /></summary>
+          <div className="result-export-options">
+            <button className="button button-secondary" type="button" disabled={exifRunning} onClick={() => downloadJson()}><Icon icon={jsonIcon} width="16" />{t('complete-json')}</button>
+            <button className="button button-secondary" type="button" disabled={exifRunning} onClick={() => downloadJson(true)}><Icon icon={downloadIcon} width="16" />{t('raw-json')}</button>
+            <button className="button button-ghost" type="button" disabled={exifRunning} onClick={() => void copied(linesFor(allFields), t('all-readable-and-native-fields-copied'))}><Icon icon={copyIcon} width="16" />{t('copy-all')}</button>
+            <button className="button button-ghost" type="button" disabled={!matchingFields.length} onClick={() => void copied(linesFor(matchingFields), t('visible-copied', { count: matchingFields.length }))}><Icon icon={copyIcon} width="16" />{t('copy-visible')}</button>
+            <p>{t('pdf-deliberately-trims-giant-fields-json-is-the-complete-safe-record-and-never-includes-file-bytes-or-preview-urls')}</p>
+          </div>
+        </details>
+        {exifRunning ? <p className="result-action-note" role="status">{t('export-wait')}</p> : null}
+        {actionMessage ? <p className="result-action-note" role="status">{actionMessage}</p> : null}
+      </ResultActionBar>
+
+      {sample.isSample(file) ? <SampleImageBadge sampleId={sample.sampleId(file) ?? sample.id} locale={locale} /> : null}
+
+      {report.category === 'image' ? <section className="home-exif-summary" aria-labelledby="home-exif-summary-title">
+        <header><span className="eyebrow">{t("photo-quick-read")}</span><div><h3 id="home-exif-summary-title">{reportDisplay(locale, 'EXIF Summary')}</h3><p>{t("the-photo-details-people-check-first-missing-means-this-file-did-not-expose-a-usable-value")}</p></div></header>
+        <PhotoSummaryRows items={exifSummary.filter((item) => ['camera', 'date', 'gps'].includes(item.id))} locale={locale} />
+        <details className="report-photo-details" open><summary className="disclosure-summary"><span>{t('more-photo-details')}</span><DisclosureChevron /></summary><PhotoSummaryRows items={exifSummary.filter((item) => !['camera', 'date', 'gps'].includes(item.id))} locale={locale} /></details>
+        <footer><a href="#metadata-results-heading">{t('view-all-metadata')} ↓</a></footer>
       </section> : null}
 
-      <section className="report-summary" aria-labelledby="report-summary-title">
-        <div className="report-preview">{preview && report.category === 'image' ? <img src={preview} alt={t("file-preview", { name: report.file.name })} onError={releasePreview} /> : <Icon icon={report.category === 'image' ? imageIcon : fileIcon} width="46" />}</div>
-        <div className="report-file-title"><span id="report-summary-title">{t("file-summary")}</span><strong>{report.file.name}</strong><small>{report.category} / {report.file.detectedType}</small></div>
-        <dl className="report-facts">{report.facts.map((fact) => <div key={fact.id}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+      <details className="report-summary report-file-details" open={report.category !== 'image'}>
+        <summary className="disclosure-summary"><span>{t('file-details')}</span><DisclosureChevron /></summary>
+        <p className="report-detail-intro">{t('a-practical-reading-first-then-the-exact-exiftool-paths-when-you-need-receipts')}</p>
+        <dl className="report-facts">{report.facts.map((fact) => <div key={fact.id}><dt>{reportDisplay(locale, fact.label)}</dt><dd>{fact.value}</dd></div>)}</dl>
         <div className="report-hashes">
           <div><span>{t("sha-256-primary-fingerprint")}</span><code>{report.evidence.sha256}</code><button type="button" aria-label={t("copy-sha-256")} onClick={() => void copied(report.evidence.sha256, t("sha-256-copied"))}><Icon icon={copyIcon} width="15" /></button></div>
           <div><span>{t("md5-compatibility-checksum-not-security-proof")}</span><code>{report.evidence.md5}</code><button type="button" aria-label={t("copy-md5")} onClick={() => void copied(report.evidence.md5, t("md5-copied"))}><Icon icon={copyIcon} width="15" /></button></div>
         </div>
-      </section>
+      </details>
 
       <section className={`report-engine is-${exifStatus}${fullImageScan ? ' is-full-scan' : ''}`} aria-label={t("exiftool-inspection-status")} aria-busy={exifRunning}>
         <div className="report-engine-mark"><Icon icon={cpuIcon} width="24" /></div>
@@ -500,17 +553,18 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <div className="report-engine-actions">{exifRunning ? <button className="button button-ghost" type="button" onClick={stopExifTool}><Icon icon={xIcon} width="16" />{fullImageScan ? t("cancel-full-scan") : t("stop-deep-scan")}</button> : null}{!fullImageScan && exifStatus === 'complete' && exifMode === 'standard' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool('embedded')}><Icon icon={scanIcon} width="16" />{t("scan-embedded-data")}</button> : null}{exifStatus === 'failed' || exifStatus === 'canceled' ? <button className="button button-secondary" type="button" onClick={() => rerunExifTool(fullImageScan ? IMAGE_FULL_SCAN_MODE : exifMode)}><Icon icon={scanIcon} width="16" />{fullImageScan ? t("retry-full-scan") : t("retry-exiftool")}</button> : null}</div>
       </section>
 
-      {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t("parser-warnings")}><Icon icon={warningIcon} width="22" /> <div><strong>{t("warning-count", { count: report.warnings.length })}</strong>{report.warnings.map((warning) => <p key={`${warning.code}-${warning.message}`}><b>{warning.code}</b> {warning.message}</p>)}</div></section> : null}
-
-      {gps ? <aside className="map-action report-map-action" aria-label={t("gps-metadata-location")}>
-        <div><Icon icon={mapIcon} width="23" aria-hidden="true" /><span><strong>{t("gps-location-found")}</strong><small>{t("coordinates-stored-in-this-file")}</small><code>{gps.text}</code><span id="report-map-disclosure" className="map-disclosure">{t("map-disclosure")}</span></span></div>
-        <a href={gps.mapUrl} target="_blank" rel="noopener noreferrer" aria-describedby="report-map-disclosure">{t("open-map")}</a>
-      </aside> : null}
+      {report.warnings.length > 0 ? <section className="report-warnings" aria-label={t("parser-warnings")}><Icon icon={warningIcon} width="22" /> <div><strong>{t("warning-count", { count: report.warnings.length })}</strong>{report.warnings.map((warning) => {
+        const message = reportDisplay(locale, warning.message);
+        const original = locale !== 'en' && message === warning.message;
+        return <div key={`${warning.code}-${warning.message}`}><p><b>{warning.code}</b> {original ? t('parser-note') : message}</p>{original ? <details className="report-original-diagnostic"><summary className="disclosure-summary"><span>{t('original-diagnostic')}</span><DisclosureChevron /></summary><p>{warning.message}</p></details> : null}</div>;
+      })}</div></section> : null}
 
       {report.category === 'image' ? <section className={`report-privacy ${sensitiveFields.length ? 'has-signals' : ''}`}>
         <div><span className="eyebrow">{t("privacy-pass")}</span><strong>{sensitiveFields.length ? (t("sensitive-count", { count: sensitiveFields.length })) : t("no-common-sensitive-fields-in-the-readable-set")}</strong><p>{t("metadata-is-editable-and-pixels-can-still-reveal-people-signs-addresses-and-landmarks")}</p></div>
-        <div className="button-row"><a className="button button-secondary" href={localizePath('/image-privacy-checker/', locale)}>{t("open-privacy-checker")}</a><a className="button button-primary" href={localizePath('/image-metadata-remover/', locale)}>{t("remove-image-metadata")}</a></div>
+        {file && <div><div className="tool-next-step-actions">{['jpeg', 'png', 'webp'].includes(report.file.detectedType) && <ToolFileLink file={file} href={localizePath('/image-privacy-checker/', locale)}>{t('open-privacy-checker')}</ToolFileLink>}<ToolFileLink file={file} href={localizePath('/image-metadata-remover/', locale)} className="button button-primary">{t('remove-image-metadata')}</ToolFileLink><ToolFileLink file={file} href={localizePath('/c2pa-viewer/', locale)}>{toolHandoffText(locale, 'c2pa')}</ToolFileLink></div><p className="tool-handoff-note">{toolHandoffText(locale, 'note')}</p></div>}
       </section> : null}
+
+      {file && report.category !== 'image' && <ToolNextSteps><ToolFileLink file={file} href={localizePath('/metadata-remover/', locale)}>{toolHandoffText(locale, 'remove')}</ToolFileLink></ToolNextSteps>}
 
       <section className="report-ledger" aria-labelledby="metadata-results-heading">
         <div className="report-ledger-head">
@@ -523,8 +577,8 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
           <strong>{t("found-count", { count: number(matchingFields.length) })}</strong>
         </div>
         <div className="report-ledger-body">
-          <nav className="report-chapters" aria-label={t("report-chapters")}><span>{t("loaded-chapters")}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`}><i>{String(index + 1).padStart(2, '0')}</i>{section.title}<b>{section.fields.length}</b></a>)}</nav>
-          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || view === 'readable'}><summary className="disclosure-summary"><span className="disclosure-label"><strong>{section.title}</strong><small>{section.note}</small></span><span className="report-section-controls"><b>{section.fields.length}</b><DisclosureChevron /></span></summary><FieldRows locale={locale} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, t("copy-field", { name: field.label }))} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t("no-matching-fields")}</strong><p>{t("clear-the-search-or-switch-the-source-filter")}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t("clear-filters")}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t("load-250-more-rows")}</b><span>{t("render-count", { count: number(renderedCount), total: number(matchingFields.length) })}</span></button> : null}</div>
+          <nav className="report-chapters" aria-label={t("report-chapters")}><span>{t("loaded-chapters")}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`} onClick={() => { const target = document.getElementById(section.id); if (target instanceof HTMLDetailsElement) target.open = true; }}><i>{String(index + 1).padStart(2, '0')}</i>{reportDisplay(locale, section.title)}<b>{section.fields.length}</b></a>)}</nav>
+          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || Boolean(deferredQuery.trim()) || source !== 'all'}><summary className="disclosure-summary"><span className="disclosure-label"><strong>{reportDisplay(locale, section.title)}</strong><small>{reportDisplay(locale, section.note)}</small></span><span className="report-section-controls"><b>{section.fields.length}</b><DisclosureChevron /></span></summary><FieldRows locale={locale} readable={view === 'readable'} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, t("copy-field", { name: field.label }))} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t("no-matching-fields")}</strong><p>{t("clear-the-search-or-switch-the-source-filter")}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t("clear-filters")}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t("load-250-more-rows")}</b><span>{t("render-count", { count: number(renderedCount), total: number(matchingFields.length) })}</span></button> : null}</div>
         </div>
       </section>
 
@@ -533,16 +587,6 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <details open={openRaw} onToggle={(event) => setOpenRaw((event.currentTarget as HTMLDetailsElement).open)}><summary className="disclosure-summary"><span className="disclosure-label">{t("raw-safe-json")}<small>{t("binary-values-are-summaries-size-and-depth-caps-remain-active")}</small></span><DisclosureChevron /></summary><pre className="report-raw-json">{openRaw ? JSON.stringify(report.raw, null, 2) : ''}</pre></details>
       </section>
 
-      <footer className="report-export">
-        <div><span className="eyebrow">{t("take-the-receipt")}</span><h3>{t("complete-json-readable-pdf-or-a-quick-copy")}</h3><p>{exifRunning ? t("export-wait") : t("pdf-deliberately-trims-giant-fields-json-is-the-complete-safe-record-and-never-includes-file-bytes-or-preview-urls")}</p></div>
-        <div className="report-export-buttons">
-          <button className="button button-ghost" type="button" disabled={exifRunning} onClick={() => void copied(linesFor(allFields), t("all-readable-and-native-fields-copied"))}><Icon icon={copyIcon} width="16" />{t("copy-all")}</button>
-          <button className="button button-ghost" type="button" disabled={!matchingFields.length} onClick={() => void copied(linesFor(matchingFields), t("visible-copied", { count: matchingFields.length }))}><Icon icon={copyIcon} width="16" />{t("copy-visible")}</button>
-          <button className="button button-secondary" type="button" disabled={exifRunning} onClick={() => downloadJson()}><Icon icon={jsonIcon} width="16" />{t("complete-json")}</button>
-          <button className="button button-secondary" type="button" onClick={() => void downloadPdf()} disabled={exportingPdf || exifRunning}><Icon icon={pdfIcon} width="16" />{exportingPdf ? t("building-pdf") : t("readable-pdf")}</button>
-          <button className="button button-primary" type="button" disabled={exifRunning} onClick={() => downloadJson(true)}><Icon icon={downloadIcon} width="16" />{t("raw-json")}</button>
-        </div>
-      </footer>
     </div> : null}
   </section>;
 }

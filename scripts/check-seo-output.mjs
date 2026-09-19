@@ -34,7 +34,7 @@ for (const file of htmlFiles) {
   const canonical = match(html, /<link rel="canonical" href="([^"]+)"/);
   const ogUrl = match(html, /<meta property="og:url" content="([^"]+)"/);
   const robots = match(html, /<meta name="robots" content="([^"]+)"/);
-  const htmlLang = match(html, /<html lang="([^"]+)"/);
+  const htmlLang = match(html, /<html\b[^>]*\slang="([^"]+)"/i);
   const h1Count = (html.match(/<h1(?:\s|>)/g) ?? []).length;
 
   if (!title) failures.push(`${relativeFile}: missing title`);

@@ -1,7 +1,7 @@
 import { outputCheckText } from '../i18n/workbench-checks';
 import { downloadBlob } from '../lib/browser/download';
 import { scanReport, matchingFacts } from '../lib/metadata-removal/scan-report';
-import { removalTranslator } from '../i18n/workbench-removal';
+import { removalErrorText, removalTranslator, removalWarningText } from '../i18n/workbench-removal';
 import { Icon } from '@iconify/react';
 import checkIcon from '@iconify-icons/lucide/shield-check';
 import uploadIcon from '@iconify-icons/lucide/upload-cloud';
@@ -21,9 +21,17 @@ import { createCleanupReceipt } from '../lib/metadata-removal/receipt';
 import type { MetadataCleanupResult, MetadataCleanupStatus, MetadataRemovalScope, MetadataWorkerCleanup } from '../lib/metadata-removal/types';
 import { MetadataRemovalCanceledError, MetadataRemovalWorkerClient } from '../lib/metadata-removal/worker-client';
 import { type WorkerTask } from '../lib/worker-client';
-import type { Locale } from '../i18n/core';
+import { localizePath, type Locale } from '../i18n/core';
 import { LocaleProvider, useLocale } from '../i18n/react';
 import { DisclosureChevron } from './DisclosureChevron';
+import { useSampleImage } from '../lib/samples/use-sample-image';
+import { SampleImageBar, SampleImageBadge } from './SampleImage';
+import { ResultActionBar } from './ResultActionBar';
+import { ToolFileLink } from './ToolFileLink';
+import { ToolNextSteps } from './ToolNextSteps';
+import { toolHandoffText } from '../i18n/tool-handoff';
+import { useIncomingToolFile } from '../lib/tool-handoff/use-incoming-tool-file';
+import { discardToolFile } from '../lib/tool-handoff/store';
 
 interface Props {
   scope: MetadataRemovalScope;
@@ -57,6 +65,7 @@ export default function MetadataRemovalWorkbench({ locale = 'en', ...props }: Pr
 
 function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes }: Omit<Props, 'locale'>) {
   const locale = useLocale();
+  const sample = useSampleImage('metadata');
   const t = removalTranslator(locale);
   const chooseLabel = scope === 'image' ? t("choose-an-image") : t("choose-a-file");
   const input = useRef<HTMLInputElement>(null);
@@ -75,11 +84,14 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const [signaturePrompt, setSignaturePrompt] = useState(false);
+  const [exportNotice, setExportNotice] = useState('');
+  const outputFile = useMemo(() => result && result.status !== 'blocked' ? new File([result.blob], result.fileName, { type: result.blob.type || file?.type || '' }) : null, [result, file]);
 
   const busy = ['inspecting', 'cleaning', 'verifying'].includes(status);
   const baseline = useMemo(() => before ? createRemovalBaseline(before, likelyCleanupEngine(before.file.detectedType)) : null, [before]);
 
   const stop = () => {
+    sample.cancel();
     runId.current += 1;
     task.current?.cancel(); task.current = null;
     exif.current?.cancel(); exif.current = null;
@@ -87,6 +99,8 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   };
 
   const clear = () => {
+    discardToolFile();
+    setExportNotice('');
     stop(); setFile(null); setBefore(null); setResult(null); setError(null); setStatus('idle'); setDetail(t("nothing-is-uploaded")); setBaselineComplete(false); setSignaturePrompt(false);
     if (input.current) input.current.value = '';
     window.requestAnimationFrame(() => dropzone.current?.focus());
@@ -109,7 +123,9 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   }, [result]);
 
   const inspect = async (selected: File) => {
+    discardToolFile();
     stop();
+    setExportNotice('');
     const id = runId.current + 1; runId.current = id;
     setFile(selected); setBefore(null); setResult(null); setError(null); setStatus('inspecting'); setDetail(t("checking-the-real-format-before-a-cleanup-engine-starts")); setBaselineComplete(false); setSignaturePrompt(false);
     const typeHint = selected.name.split('.').pop()?.toLowerCase();
@@ -117,7 +133,19 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     const limit = imageHint ? IMAGE_LIMIT : UNIVERSAL_LIMIT;
     if (selected.size > limit) { setStatus('failed'); setError(t("size-limit", { limit: Math.round(limit / 1024 / 1024) })); return; }
     try {
-      const scanned = await scanReport(selected, allowedTypes, locale, setDetail, (current) => { task.current = current; }, (current) => { exif.current = current; });
+      const scanned = await scanReport(selected, allowedTypes, locale,
+        (message) => { if (runId.current === id) setDetail(message); },
+        (current) => {
+          if (runId.current === id) task.current = current;
+          else current?.cancel();
+        },
+        (current) => {
+          if (runId.current === id) exif.current = current;
+          else if (current) {
+            current.cancel();
+            throw new ExifToolCancellationError();
+          }
+        });
       if (runId.current !== id) return;
       setBefore(scanned.report); setBaselineComplete(scanned.complete); setStatus('ready');
       const eligible = createRemovalBaseline(scanned.report, likelyCleanupEngine(scanned.report.file.detectedType)).eligible;
@@ -125,14 +153,17 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     } catch (caught) {
       if (runId.current !== id) return;
       if (caught instanceof ExifToolCancellationError) { setStatus('canceled'); setDetail(t("the-scan-was-canceled")); return; }
-      setStatus('failed'); setError(caught instanceof Error ? caught.message : t("the-file-could-not-be-inspected-safely"));
+      setStatus('failed'); setError(removalErrorText(caught, locale, 'the-file-could-not-be-inspected-safely'));
     }
   };
 
-  const picker = () => { if (busy) return; if (input.current) { input.current.value = ''; input.current.click(); } };
+  const picker = () => { if (busy) return; sample.cancel(); if (input.current) { input.current.value = ''; input.current.click(); } };
+
+  useIncomingToolFile((selected) => void inspect(selected));
 
   const clean = async (confirmed = false) => {
     if (!file || !before || busy) return;
+    setExportNotice('');
     if (baseline?.signed && !confirmed) { setSignaturePrompt(true); return; }
     setSignaturePrompt(false); setResult(null); setError(null); setStatus('cleaning'); setDetail(t("preparing-a-metadata-only-copy-content-checks-run-after-cleanup"));
     const id = runId.current;
@@ -177,18 +208,24 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     } catch (caught) {
       if (runId.current !== id) return;
       if (caught instanceof MetadataRemovalCanceledError || caught instanceof ExifToolCancellationError) { setStatus('canceled'); setDetail(t("cleanup-was-canceled-the-source-file-is-unchanged")); return; }
-      setStatus('failed'); setError(caught instanceof Error ? caught.message : t("metadata-cleanup-failed-safely")); setDetail(t("no-downloadable-copy-was-accepted"));
+      setStatus('failed'); setError(removalErrorText(caught, locale, 'metadata-cleanup-failed-safely')); setDetail(t("no-downloadable-copy-was-accepted"));
     }
   };
 
   const receipt = result && before ? createCleanupReceipt(result, { name: before.file.safeName, type: before.file.detectedType, size: before.file.size }) : null;
+  const downloadNote = !result || result.status === 'verified' ? null
+    : result.status === 'verified-residual' ? t('download-residual-note', { count: result.residual.length.toLocaleString(locale) })
+      : result.status === 'incomplete' ? t('download-incomplete-note') : t('result-blocked');
 
-  return <section className={`workbench removal-workbench removal-${scope}`} aria-busy={busy}>
+  return <section className={`workbench removal-workbench removal-${scope}`} aria-busy={busy || sample.loading}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>{t("your-file-stays-on-this-device")}</span></div><span className="status-line" role="status" aria-live="polite"><i className={busy ? 'is-live' : ''}></i>{t(`status-${status}`)}</span></div>
     <input ref={input} className="sr-only" type="file" tabIndex={-1} aria-hidden="true" accept={accept} onChange={(event) => { const selected = event.target.files?.item(0); if (selected) void inspect(selected); }} />
     {!before ? <div ref={dropzone} className={`removal-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={busy ? -1 : 0} aria-label={chooseLabel} aria-describedby={`removal-drop-help-${scope}`} aria-disabled={busy} onClick={picker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); picker(); } }} onDragOver={(event) => { event.preventDefault(); if (!busy) setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); const selected = event.dataTransfer.files.item(0); if (selected && !busy) void inspect(selected); }}>
       <div className="removal-drop-icon"><Icon icon={uploadIcon} width="38" /></div><div><span className="eyebrow">{t("one-file-metadata-only")}</span><h2>{t(scope === "image" ? "drop-image" : "drop-file")}</h2><p id={`removal-drop-help-${scope}`}>{formats} · {scope === 'image' ? t("up-to-50-mb") : t("up-to-100-mb")}</p><span className="button button-primary removal-pick-label">{chooseLabel}</span></div><aside><strong>{t("no-re-encoding")}</strong><span>{t("content-checks-included")}</span><small>{t("nothing-is-uploaded")}</small></aside>
     </div> : null}
+    {!file && allowedTypes.includes('jpeg') ? <SampleImageBar sample={sample} onSelect={(selected) => void inspect(selected)} locale={locale} /> : null}
+    {sample.isSample(file) ? <SampleImageBadge sampleId={sample.sampleId(file) ?? sample.id} locale={locale} /> : null}
+    {!before && busy ? <div className="removal-progress" role="status"><i></i><span>{detail}</span><button type="button" onClick={clear}>{t("cancel")}</button></div> : null}
     {error ? <div className="removal-error" role="alert"><Icon icon={warningIcon} width="20" /><div><strong>{t("could-not-finish-this-file")}</strong><p>{error}</p></div><button type="button" onClick={clear}>{t("choose-another-file")}</button></div> : null}
     {before ? <div className="removal-report">
       <header className="removal-file-head"><div><span className="eyebrow">{t("cleanup-desk")}</span><h2>{before.file.name}</h2><p>{detail}</p></div><div className="removal-file-actions"><button className="button button-secondary" type="button" onClick={picker} disabled={busy}><Icon icon={replaceIcon} width="16" />{t("replace")}</button><button className="button button-ghost" type="button" onClick={clear} disabled={busy}><Icon icon={trashIcon} width="16" />{t("clear")}</button></div></header>
@@ -202,17 +239,25 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
             <span className="eyebrow">{t("verification-result")}</span>
             <h3 id="removal-result-title" ref={resultHeading} tabIndex={-1}>{result.status === 'verified' ? t("verified") : result.status === 'verified-residual' ? t("verified-with-residual-metadata") : result.status === 'blocked' ? t("output-blocked") : t("verification-incomplete")}</h3>
             <p>{formatBytes(result.beforeSize)} → {formatBytes(result.afterSize)} · {result.engine}</p>
-            <div className="removal-result-actions">
-              <button className="button button-primary" type="button" disabled={result.status === 'blocked'} onClick={() => downloadBlob(result.blob, result.fileName)}><Icon icon={downloadIcon} width="17" />{t("download-clean-copy")}</button>
-              <button className="button button-secondary" type="button" onClick={() => receipt && downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `${sanitizeFilename(result.fileName, '')}.metadata-cleanup.json`)}><Icon icon={receiptIcon} width="17" />{t("download-receipt")}</button>
-              <button className="button button-ghost" type="button" onClick={() => { setResult(null); setStatus('ready'); setDetail(t("the-original-report-is-ready-for-another-local-cleanup")); }}>{t("start-over")}</button>
-            </div>
+            <ResultActionBar label={t('cleanup-downloads')} className="removal-result-actions">
+              {downloadNote ? <p id="removal-download-note" className="result-action-note">{downloadNote}</p> : null}
+              <button className="button button-primary" type="button" disabled={result.status === 'blocked'} aria-describedby={downloadNote ? 'removal-download-note' : undefined} onClick={() => { downloadBlob(result.blob, result.fileName); setExportNotice(t('copy-download-started')); }}><Icon icon={downloadIcon} width="17" />{t(result.status === 'verified-residual' || result.status === 'incomplete' ? 'download-processed-copy' : 'download-clean-copy')}</button>
+              <details className="result-export-menu">
+                <summary className="disclosure-summary"><span className="disclosure-label">{t('more-exports')}</span><DisclosureChevron /></summary>
+                <div className="result-export-options">
+                  <button className="button button-secondary" type="button" onClick={() => { if (!receipt) return; downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `${sanitizeFilename(result.fileName, '')}.metadata-cleanup.json`); setExportNotice(t('receipt-download-started')); }}><Icon icon={receiptIcon} width="17" />{t("download-receipt")}</button>
+                  <button className="button button-ghost" type="button" onClick={() => { setResult(null); setStatus('ready'); setDetail(t("the-original-report-is-ready-for-another-local-cleanup")); }}>{t("start-over")}</button>
+                </div>
+              </details>
+              <span className="result-action-feedback" role="status" aria-live="polite">{exportNotice}</span>
+            </ResultActionBar>
           </div>
           <div className="removal-counts"><b><strong>{result.removed.length}</strong>{t("removed")}</b><b><strong>{result.preserved.length}</strong>{t("preserved")}</b><b><strong>{result.residual.length}</strong>{t("residual")}</b></div>
         </header>
+        {outputFile && <ToolNextSteps output><ToolFileLink file={outputFile} href={localizePath(before.category === 'image' ? '/image-metadata-viewer/' : '/metadata-viewer/', locale)}>{toolHandoffText(locale, 'metadata')}</ToolFileLink>{['jpeg', 'png', 'webp'].includes(before.file.detectedType) && <ToolFileLink file={outputFile} href={localizePath('/image-privacy-checker/', locale)}>{toolHandoffText(locale, 'privacy')}</ToolFileLink>}</ToolNextSteps>}
         <div className="removal-checks">{result.checks.map((check) => <article key={check.id} className={`is-${check.status}`}><i></i><div><strong>{outputCheckText(check, locale).label}</strong><span>{outputCheckText(check, locale).message}</span></div></article>)}</div>
-        {result.warnings.length ? <div className="removal-warnings">{result.warnings.map((warning) => <p key={warning}><Icon icon={warningIcon} width="15" />{warning}</p>)}</div> : null}
-        <div className="removal-diff-grid"><details open><summary className="disclosure-summary"><span className="disclosure-label">{t("removed-fields")}</span><span className="disclosure-controls"><b>{result.removed.length}</b><DisclosureChevron /></span></summary>{result.removed.length ? result.removed.slice(0, 120).map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-fields-were-present-in-the-source-report")}</p>}</details><details><summary className="disclosure-summary"><span className="disclosure-label">{t("intentionally-preserved")}</span><span className="disclosure-controls"><b>{result.preserved.length}</b><DisclosureChevron /></span></summary>{result.preserved.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.reason}</span></div>)}</details><details open={result.residual.length > 0}><summary className="disclosure-summary"><span className="disclosure-label">{t("residual-metadata")}</span><span className="disclosure-controls"><b>{result.residual.length}</b><DisclosureChevron /></span></summary>{result.residual.length ? result.residual.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-residual-fields-were-found")}</p>}</details></div>
+        {result.warnings.length ? <div className="removal-warnings">{result.warnings.map((warning) => <p key={warning}><Icon icon={warningIcon} width="15" />{removalWarningText(warning, locale)}</p>)}</div> : null}
+        <div className="removal-diff-grid"><details><summary className="disclosure-summary"><span className="disclosure-label">{t("removed-fields")}</span><span className="disclosure-controls"><b>{result.removed.length}</b><DisclosureChevron /></span></summary>{result.removed.length ? result.removed.slice(0, 120).map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-fields-were-present-in-the-source-report")}</p>}</details><details><summary className="disclosure-summary"><span className="disclosure-label">{t("intentionally-preserved")}</span><span className="disclosure-controls"><b>{result.preserved.length}</b><DisclosureChevron /></span></summary>{result.preserved.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.reason}</span></div>)}</details><details><summary className="disclosure-summary"><span className="disclosure-label">{t("residual-metadata")}</span><span className="disclosure-controls"><b>{result.residual.length}</b><DisclosureChevron /></span></summary>{result.residual.length ? result.residual.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-residual-fields-were-found")}</p>}</details></div>
       </section> : null}
     </div> : null}
   </section>;

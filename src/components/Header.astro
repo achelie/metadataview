@@ -7,6 +7,9 @@ const pathname = Astro.url.pathname;
 interface Props { locale?: Locale; translated?: boolean }
 const { locale = 'en', translated = false } = Astro.props;
 const copy = getMessages(locale);
+const desktopLabels = locale === 'fr'
+  ? { viewMetadata: 'Métadonnées', checkPrivacy: 'Confidentialité', removeMetadata: 'Supprimer' }
+  : copy;
 const basePath = stripLocale(pathname);
 const hrefFor = (href: string) => localizePath(href, locale);
 const viewItems = [
@@ -44,14 +47,14 @@ const languageHref = (target: Locale) => translated ? localizePath(basePath, tar
     </a>
     <nav class="desktop-nav" aria-label={copy.mainNavigation}>
       <div class="nav-dropdown" data-nav-dropdown data-open="false">
-        <button class:list={['nav-dropdown-trigger', { 'is-current': viewCurrent }]} type="button" aria-expanded="false">{copy.viewMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
+        <button class:list={['nav-dropdown-trigger', { 'is-current': viewCurrent }]} type="button" aria-label={copy.viewMetadata} aria-expanded="false">{desktopLabels.viewMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
         <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label={copy.viewMetadata} aria-hidden="true" inert>
           {viewItems.map((item) => <a href={hrefFor(item.href)} aria-current={isViewItemCurrent(item) ? 'page' : undefined}>{item.label}</a>)}
         </div>
       </div>
-      <a href={hrefFor('/image-privacy-checker/')} aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>{copy.checkPrivacy}</a>
+      <a href={hrefFor('/image-privacy-checker/')} aria-label={copy.checkPrivacy} aria-current={isCurrent('/image-privacy-checker/') ? 'page' : undefined}>{desktopLabels.checkPrivacy}</a>
       <div class="nav-dropdown" data-nav-dropdown data-open="false">
-        <button class:list={['nav-dropdown-trigger', { 'is-current': removeCurrent }]} type="button" aria-expanded="false">{copy.removeMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
+        <button class:list={['nav-dropdown-trigger', { 'is-current': removeCurrent }]} type="button" aria-label={copy.removeMetadata} aria-expanded="false">{desktopLabels.removeMetadata} <span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={15} /></span></button>
         <div class="nav-dropdown-panel t-dropdown" data-origin="top-left" aria-label={copy.removeMetadata} aria-hidden="true" inert>
           {removeItems.map((item) => <a href={hrefFor(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>)}
         </div>
@@ -108,112 +111,157 @@ const languageHref = (target: Locale) => translated ? localizePath(basePath, tar
 </div>
 
 <script>
-  const dropdowns = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-dropdown]'));
-  const dropdownCloseMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dropdown-close-dur')) || 150;
-  const dropdownTimers = new WeakMap<HTMLElement, number>();
-  const mobileTrigger = document.querySelector<HTMLButtonElement>('[data-mobile-menu-trigger]');
-  const mobileLayer = document.querySelector<HTMLElement>('[data-mobile-menu-layer]');
-  const mobileDrawer = document.querySelector<HTMLElement>('#mobile-navigation-drawer');
-  const mobileBackdrop = document.querySelector<HTMLButtonElement>('[data-mobile-menu-backdrop]');
-  const mobileAccordions = Array.from(document.querySelectorAll<HTMLElement>('[data-mobile-accordion]'));
+  function initializeHeader(): () => void {
+    const controller = new AbortController();
+    const { signal } = controller;
+    const body = document.body;
+    let mobileFocusTimer: number | undefined;
+    const dropdowns = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-dropdown]'));
+    const dropdownCloseMs = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dropdown-close-dur')) || 150;
+    const dropdownTimers = new Map<HTMLElement, number>();
+    const mobileTrigger = document.querySelector<HTMLButtonElement>('[data-mobile-menu-trigger]');
+    const mobileLayer = document.querySelector<HTMLElement>('[data-mobile-menu-layer]');
+    const mobileDrawer = document.querySelector<HTMLElement>('#mobile-navigation-drawer');
+    const mobileBackdrop = document.querySelector<HTMLButtonElement>('[data-mobile-menu-backdrop]');
+    const mobileAccordions = Array.from(document.querySelectorAll<HTMLElement>('[data-mobile-accordion]'));
 
-  function closeDropdown(dropdown: HTMLElement) {
-    if (dropdown.dataset.open !== 'true') return;
-    const trigger = dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger');
-    const panel = dropdown.querySelector<HTMLElement>('.t-dropdown');
-    const timer = dropdownTimers.get(dropdown);
-    if (timer) window.clearTimeout(timer);
-    dropdown.dataset.open = 'false';
-    trigger?.setAttribute('aria-expanded', 'false');
-    panel?.setAttribute('aria-hidden', 'true');
-    if (panel) panel.inert = true;
-    panel?.classList.remove('is-open');
-    panel?.classList.add('is-closing');
-    dropdownTimers.set(dropdown, window.setTimeout(() => panel?.classList.remove('is-closing'), dropdownCloseMs));
-  }
-
-  function openDropdown(dropdown: HTMLElement) {
-    for (const other of dropdowns) if (other !== dropdown) closeDropdown(other);
-    const trigger = dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger');
-    const panel = dropdown.querySelector<HTMLElement>('.t-dropdown');
-    const timer = dropdownTimers.get(dropdown);
-    if (timer) window.clearTimeout(timer);
-    panel?.classList.remove('is-closing');
-    panel?.classList.add('is-open');
-    panel?.setAttribute('aria-hidden', 'false');
-    if (panel) panel.inert = false;
-    trigger?.setAttribute('aria-expanded', 'true');
-    dropdown.dataset.open = 'true';
-  }
-
-  for (const dropdown of dropdowns) dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger')?.addEventListener('click', () => dropdown.dataset.open === 'true' ? closeDropdown(dropdown) : openDropdown(dropdown));
-
-  function setMobileOpen(open: boolean, restoreFocus = true) {
-    if (!mobileLayer || !mobileDrawer || !mobileTrigger) return;
-    mobileLayer.dataset.open = String(open);
-    mobileDrawer.dataset.open = String(open);
-    mobileLayer.setAttribute('aria-hidden', String(!open));
-    mobileLayer.inert = !open;
-    mobileTrigger.setAttribute('aria-expanded', String(open));
-    mobileTrigger.setAttribute('aria-label', open ? mobileTrigger.dataset.closeLabel || 'Close navigation' : mobileTrigger.dataset.openLabel || 'Open navigation');
-    mobileTrigger.querySelector<HTMLElement>('.t-icon-swap')?.setAttribute('data-state', open ? 'b' : 'a');
-    document.body.classList.toggle('nav-drawer-open', open);
-    if (open) window.setTimeout(() => mobileDrawer.querySelector<HTMLButtonElement>('.mobile-language-dropdown .nav-dropdown-trigger')?.focus(), 50);
-    else {
-      for (const dropdown of dropdowns) if (mobileDrawer.contains(dropdown)) closeDropdown(dropdown);
-      if (restoreFocus) mobileTrigger.focus();
+    function closeDropdown(dropdown: HTMLElement) {
+      if (dropdown.dataset.open !== 'true') return;
+      const trigger = dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger');
+      const panel = dropdown.querySelector<HTMLElement>('.t-dropdown');
+      const timer = dropdownTimers.get(dropdown);
+      if (timer) window.clearTimeout(timer);
+      dropdown.dataset.open = 'false';
+      trigger?.setAttribute('aria-expanded', 'false');
+      panel?.setAttribute('aria-hidden', 'true');
+      if (panel) panel.inert = true;
+      panel?.classList.remove('is-open');
+      panel?.classList.add('is-closing');
+      dropdownTimers.set(dropdown, window.setTimeout(() => {
+        panel?.classList.remove('is-closing');
+        dropdownTimers.delete(dropdown);
+      }, dropdownCloseMs));
     }
-  }
 
-  mobileTrigger?.addEventListener('click', () => setMobileOpen(mobileTrigger.getAttribute('aria-expanded') !== 'true'));
-  mobileBackdrop?.addEventListener('click', () => setMobileOpen(false));
+    function openDropdown(dropdown: HTMLElement) {
+      for (const other of dropdowns) if (other !== dropdown) closeDropdown(other);
+      const trigger = dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger');
+      const panel = dropdown.querySelector<HTMLElement>('.t-dropdown');
+      const timer = dropdownTimers.get(dropdown);
+      if (timer) window.clearTimeout(timer);
+      panel?.classList.remove('is-closing');
+      panel?.classList.add('is-open');
+      panel?.setAttribute('aria-hidden', 'false');
+      if (panel) panel.inert = false;
+      trigger?.setAttribute('aria-expanded', 'true');
+      dropdown.dataset.open = 'true';
+    }
 
-  for (const accordion of mobileAccordions) {
-    const head = accordion.querySelector<HTMLButtonElement>('.t-acc-head');
-    head?.addEventListener('click', () => {
-      const open = accordion.dataset.open === 'true';
-      for (const other of mobileAccordions) {
-        if (other === accordion) continue;
-        other.dataset.open = 'false';
-        other.querySelector<HTMLButtonElement>('.t-acc-head')?.setAttribute('aria-expanded', 'false');
-        const otherPanel = other.querySelector<HTMLElement>('.t-acc-panel');
-        otherPanel?.setAttribute('aria-hidden', 'true');
-        if (otherPanel) otherPanel.inert = true;
+    for (const dropdown of dropdowns) dropdown.querySelector<HTMLButtonElement>('.nav-dropdown-trigger')?.addEventListener('click', () => dropdown.dataset.open === 'true' ? closeDropdown(dropdown) : openDropdown(dropdown), { signal });
+
+    function setMobileOpen(open: boolean, restoreFocus = true) {
+      if (!mobileLayer || !mobileDrawer || !mobileTrigger) return;
+      if (mobileFocusTimer !== undefined) {
+        window.clearTimeout(mobileFocusTimer);
+        mobileFocusTimer = undefined;
       }
-      accordion.dataset.open = String(!open);
-      head.setAttribute('aria-expanded', String(!open));
-      const panel = accordion.querySelector<HTMLElement>('.t-acc-panel');
-      panel?.setAttribute('aria-hidden', String(open));
-      if (panel) panel.inert = open;
-    });
-  }
+      mobileLayer.dataset.open = String(open);
+      mobileDrawer.dataset.open = String(open);
+      mobileLayer.setAttribute('aria-hidden', String(!open));
+      mobileLayer.inert = !open;
+      mobileTrigger.setAttribute('aria-expanded', String(open));
+      mobileTrigger.setAttribute('aria-label', open ? mobileTrigger.dataset.closeLabel || 'Close navigation' : mobileTrigger.dataset.openLabel || 'Open navigation');
+      mobileTrigger.querySelector<HTMLElement>('.t-icon-swap')?.setAttribute('data-state', open ? 'b' : 'a');
+      body.classList.toggle('nav-drawer-open', open);
+      if (open) mobileFocusTimer = window.setTimeout(() => {
+        mobileFocusTimer = undefined;
+        mobileDrawer.querySelector<HTMLButtonElement>('.mobile-language-dropdown .nav-dropdown-trigger')?.focus();
+      }, 50);
+      else {
+        for (const dropdown of dropdowns) if (mobileDrawer.contains(dropdown)) closeDropdown(dropdown);
+        if (restoreFocus) mobileTrigger.focus();
+      }
+    }
 
-  document.addEventListener('click', (event) => {
-    if (!(event.target instanceof Node)) return;
-    for (const dropdown of dropdowns) if (dropdown.dataset.open === 'true' && !dropdown.contains(event.target)) closeDropdown(dropdown);
-  });
+    mobileTrigger?.addEventListener('click', () => setMobileOpen(mobileTrigger.getAttribute('aria-expanded') !== 'true'), { signal });
+    mobileBackdrop?.addEventListener('click', () => setMobileOpen(false), { signal });
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      if (mobileTrigger?.getAttribute('aria-expanded') === 'true') {
-        setMobileOpen(false);
+    for (const accordion of mobileAccordions) {
+      const head = accordion.querySelector<HTMLButtonElement>('.t-acc-head');
+      head?.addEventListener('click', () => {
+        const open = accordion.dataset.open === 'true';
+        for (const other of mobileAccordions) {
+          if (other === accordion) continue;
+          other.dataset.open = 'false';
+          other.querySelector<HTMLButtonElement>('.t-acc-head')?.setAttribute('aria-expanded', 'false');
+          const otherPanel = other.querySelector<HTMLElement>('.t-acc-panel');
+          otherPanel?.setAttribute('aria-hidden', 'true');
+          if (otherPanel) otherPanel.inert = true;
+        }
+        accordion.dataset.open = String(!open);
+        head.setAttribute('aria-expanded', String(!open));
+        const panel = accordion.querySelector<HTMLElement>('.t-acc-panel');
+        panel?.setAttribute('aria-hidden', String(open));
+        if (panel) panel.inert = open;
+      }, { signal });
+    }
+
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Node)) return;
+      for (const dropdown of dropdowns) if (dropdown.dataset.open === 'true' && !dropdown.contains(event.target)) closeDropdown(dropdown);
+    }, { signal });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (mobileTrigger?.getAttribute('aria-expanded') === 'true') {
+          setMobileOpen(false);
+          return;
+        }
+        const open = [...dropdowns].reverse().find((dropdown) => dropdown.dataset.open === 'true');
+        if (open) {
+          closeDropdown(open);
+          open.querySelector<HTMLButtonElement>('.nav-dropdown-trigger')?.focus();
+        }
         return;
       }
-      const open = [...dropdowns].reverse().find((dropdown) => dropdown.dataset.open === 'true');
-      if (open) {
-        closeDropdown(open);
-        open.querySelector<HTMLButtonElement>('.nav-dropdown-trigger')?.focus();
+      if (event.key === 'Tab' && mobileTrigger?.getAttribute('aria-expanded') === 'true' && mobileLayer) {
+        const focusable = [mobileTrigger, ...Array.from(mobileLayer.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))].filter((element) => (!element.hasAttribute('tabindex') || element.tabIndex >= 0) && !element.closest('[inert]'));
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
-      return;
-    }
-    if (event.key === 'Tab' && mobileTrigger?.getAttribute('aria-expanded') === 'true' && mobileLayer) {
-      const focusable = [mobileTrigger, ...Array.from(mobileLayer.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))].filter((element) => (!element.hasAttribute('tabindex') || element.tabIndex >= 0) && !element.closest('[inert]'));
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
-    }
-  });
+    }, { signal });
 
-  window.addEventListener('resize', () => { if (window.innerWidth > 900 && mobileTrigger?.getAttribute('aria-expanded') === 'true') setMobileOpen(false, false); });
+    window.addEventListener('resize', () => { if (mobileTrigger?.getAttribute('aria-expanded') === 'true' && getComputedStyle(mobileTrigger).display === 'none') setMobileOpen(false, false); }, { signal });
+
+    return () => {
+      controller.abort();
+      for (const timer of dropdownTimers.values()) window.clearTimeout(timer);
+      dropdownTimers.clear();
+      if (mobileFocusTimer !== undefined) window.clearTimeout(mobileFocusTimer);
+      body.classList.remove('nav-drawer-open');
+    };
+  }
+
+  let cleanupHeader: (() => void) | undefined;
+  function mountHeader() {
+    cleanupHeader?.();
+    cleanupHeader = initializeHeader();
+  }
+  function unmountHeader() {
+    cleanupHeader?.();
+    cleanupHeader = undefined;
+  }
+
+  // Bundled scripts run once; each swapped header needs its own DOM listeners.
+  document.addEventListener('astro:page-load', mountHeader);
+  document.addEventListener('astro:before-swap', unmountHeader);
+  mountHeader();
+
+  if (import.meta.hot) import.meta.hot.dispose(() => {
+    unmountHeader();
+    document.removeEventListener('astro:page-load', mountHeader);
+    document.removeEventListener('astro:before-swap', unmountHeader);
+  });
 </script>
