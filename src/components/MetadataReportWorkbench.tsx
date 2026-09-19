@@ -18,6 +18,7 @@ import xIcon from '@iconify-icons/lucide/x';
 import cpuIcon from '@iconify-icons/lucide/cpu';
 import scanIcon from '@iconify-icons/lucide/scan-search';
 import mapIcon from '@iconify-icons/lucide/map-pin';
+import { DisclosureChevron } from './DisclosureChevron';
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ExifToolCancellationError, ExifToolWorkerClient } from '../lib/exiftool-worker-client';
 import { IMAGE_LIMITS } from '../lib/metadata/limits';
@@ -189,8 +190,8 @@ function FieldRows({ section, expanded, onExpand, onCopy, locale }: {
           <code>{shown}</code>
           {showNumeric ? <small className="report-raw-number">{t("raw-value")}: {numeric}</small> : null}
           {field.binarySummary ? <small className="report-binary-note">{field.binarySummary.note}</small> : null}
-          {long ? <button className="report-text-button" type="button" onClick={() => onExpand(field.id)}>{open ? t("show-less") : t("show-all", { count: number(field.displayValue.length) })}</button> : null}
-          {field.alternates?.length ? <details className="report-alternates"><summary>{t("alternates", { count: field.alternates.length })}</summary>{field.alternates.map((alternate) => <div key={`${alternate.path}-${alternate.displayValue}`}><b>{alternate.source}</b><code>{alternate.displayValue}</code><small>{alternate.path}</small></div>)}</details> : null}
+          {long ? <button className="report-text-button disclosure-toggle" type="button" aria-expanded={open} onClick={() => onExpand(field.id)}><span>{open ? t("show-less") : t("show-all", { count: number(field.displayValue.length) })}</span><DisclosureChevron /></button> : null}
+          {field.alternates?.length ? <details className="report-alternates"><summary className="disclosure-summary"><span className="disclosure-label">{t("alternates", { count: field.alternates.length })}</span><DisclosureChevron /></summary>{field.alternates.map((alternate) => <div key={`${alternate.path}-${alternate.displayValue}`}><b>{alternate.source}</b><code>{alternate.displayValue}</code><small>{alternate.path}</small></div>)}</details> : null}
         </div>
         <div className="report-field-origin">
           <span>{field.source}</span>
@@ -523,13 +524,13 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         </div>
         <div className="report-ledger-body">
           <nav className="report-chapters" aria-label={t("report-chapters")}><span>{t("loaded-chapters")}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`}><i>{String(index + 1).padStart(2, '0')}</i>{section.title}<b>{section.fields.length}</b></a>)}</nav>
-          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || view === 'readable'}><summary><span><strong>{section.title}</strong><small>{section.note}</small></span><b>{section.fields.length}</b></summary><FieldRows locale={locale} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, t("copy-field", { name: field.label }))} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t("no-matching-fields")}</strong><p>{t("clear-the-search-or-switch-the-source-filter")}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t("clear-filters")}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t("load-250-more-rows")}</b><span>{t("render-count", { count: number(renderedCount), total: number(matchingFields.length) })}</span></button> : null}</div>
+          <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || view === 'readable'}><summary className="disclosure-summary"><span className="disclosure-label"><strong>{section.title}</strong><small>{section.note}</small></span><span className="report-section-controls"><b>{section.fields.length}</b><DisclosureChevron /></span></summary><FieldRows locale={locale} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, t("copy-field", { name: field.label }))} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t("no-matching-fields")}</strong><p>{t("clear-the-search-or-switch-the-source-filter")}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t("clear-filters")}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t("load-250-more-rows")}</b><span>{t("render-count", { count: number(renderedCount), total: number(matchingFields.length) })}</span></button> : null}</div>
         </div>
       </section>
 
       <section className="report-evidence">
-        <details><summary><span>{t("header-count", { count: report.evidence.headerBytes.length })}</span><small>{t("offset-hexadecimal-and-printable-ascii")}</small></summary><HeaderHex bytes={report.evidence.headerBytes} locale={locale} /></details>
-        <details open={openRaw} onToggle={(event) => setOpenRaw((event.currentTarget as HTMLDetailsElement).open)}><summary><span>{t("raw-safe-json")}</span><small>{t("binary-values-are-summaries-size-and-depth-caps-remain-active")}</small></summary><pre className="report-raw-json">{openRaw ? JSON.stringify(report.raw, null, 2) : ''}</pre></details>
+        <details><summary className="disclosure-summary"><span className="disclosure-label">{t("header-count", { count: report.evidence.headerBytes.length })}<small>{t("offset-hexadecimal-and-printable-ascii")}</small></span><DisclosureChevron /></summary><HeaderHex bytes={report.evidence.headerBytes} locale={locale} /></details>
+        <details open={openRaw} onToggle={(event) => setOpenRaw((event.currentTarget as HTMLDetailsElement).open)}><summary className="disclosure-summary"><span className="disclosure-label">{t("raw-safe-json")}<small>{t("binary-values-are-summaries-size-and-depth-caps-remain-active")}</small></span><DisclosureChevron /></summary><pre className="report-raw-json">{openRaw ? JSON.stringify(report.raw, null, 2) : ''}</pre></details>
       </section>
 
       <footer className="report-export">

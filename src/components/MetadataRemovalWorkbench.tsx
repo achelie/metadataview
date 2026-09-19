@@ -23,6 +23,7 @@ import { MetadataRemovalCanceledError, MetadataRemovalWorkerClient } from '../li
 import { type WorkerTask } from '../lib/worker-client';
 import type { Locale } from '../i18n/core';
 import { LocaleProvider, useLocale } from '../i18n/react';
+import { DisclosureChevron } from './DisclosureChevron';
 
 interface Props {
   scope: MetadataRemovalScope;
@@ -60,6 +61,7 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   const chooseLabel = scope === 'image' ? t("choose-an-image") : t("choose-a-file");
   const input = useRef<HTMLInputElement>(null);
   const dropzone = useRef<HTMLDivElement>(null);
+  const resultHeading = useRef<HTMLHeadingElement>(null);
   const task = useRef<WorkerTask<MetadataReport> | null>(null);
   const exif = useRef<ExifToolWorkerClient | null>(null);
   const removal = useRef<MetadataRemovalWorkerClient | null>(null);
@@ -91,6 +93,20 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   };
 
   useEffect(() => () => stop(), []);
+
+  useEffect(() => {
+    if (!result) return;
+    const frame = window.requestAnimationFrame(() => {
+      const heading = resultHeading.current;
+      if (!heading) return;
+      heading.focus({ preventScroll: true });
+      heading.closest('.removal-result')?.scrollIntoView({
+        block: 'start',
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [result]);
 
   const inspect = async (selected: File) => {
     stop();
@@ -180,12 +196,23 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
       {signaturePrompt ? <section className="signature-warning" role="alert"><Icon icon={warningIcon} width="24" /><div><h3>{t("this-file-carries-a-signature")}</h3><p>{t("changing-metadata-invalidates-c2pa-or-document-signatures-the-original-remains-untouched-but-the-new-copy-cannot-keep-the-old-proof")}</p><div className="button-row"><button className="button button-primary" type="button" onClick={() => void clean(true)}>{t("i-understand-clean-a-copy")}</button><button className="button button-ghost" type="button" onClick={() => setSignaturePrompt(false)}>{t("cancel")}</button></div></div></section> : null}
       {!result ? <section className="removal-action"><div><span className="eyebrow">{t("content-preserving-policy")}</span><h3>{t("remove-labels-keep-the-actual-file")}</h3><p>{t("descriptive-identity-location-software-date-and-custom-fields-are-targeted-cover-art-chapters-subtitles-attachments-comments-revisions-icc-color-orientation-and-media-tracks-stay")}</p></div><button className="button button-primary" type="button" disabled={busy} onClick={() => void clean()}><Icon icon={eraseIcon} width="18" />{busy ? t(`status-${status}`) : t("create-and-verify-clean-copy")}</button></section> : null}
       {busy ? <div className="removal-progress"><i></i><span>{detail}</span><button type="button" onClick={() => { stop(); setStatus('canceled'); setDetail(t("canceled-the-source-file-is-unchanged")); }}>{t("cancel")}</button></div> : null}
-      {result ? <section className={`removal-result is-${result.status}`}>
-        <header><div><span className="eyebrow">{t("verification-result")}</span><h3>{result.status === 'verified' ? t("verified") : result.status === 'verified-residual' ? t("verified-with-residual-metadata") : result.status === 'blocked' ? t("output-blocked") : t("verification-incomplete")}</h3><p>{formatBytes(result.beforeSize)} → {formatBytes(result.afterSize)} · {result.engine}</p></div><div className="removal-counts"><b><strong>{result.removed.length}</strong>{t("removed")}</b><b><strong>{result.preserved.length}</strong>{t("preserved")}</b><b><strong>{result.residual.length}</strong>{t("residual")}</b></div></header>
+      {result ? <section className={`removal-result is-${result.status}`} aria-labelledby="removal-result-title">
+        <header>
+          <div className="removal-result-summary">
+            <span className="eyebrow">{t("verification-result")}</span>
+            <h3 id="removal-result-title" ref={resultHeading} tabIndex={-1}>{result.status === 'verified' ? t("verified") : result.status === 'verified-residual' ? t("verified-with-residual-metadata") : result.status === 'blocked' ? t("output-blocked") : t("verification-incomplete")}</h3>
+            <p>{formatBytes(result.beforeSize)} → {formatBytes(result.afterSize)} · {result.engine}</p>
+            <div className="removal-result-actions">
+              <button className="button button-primary" type="button" disabled={result.status === 'blocked'} onClick={() => downloadBlob(result.blob, result.fileName)}><Icon icon={downloadIcon} width="17" />{t("download-clean-copy")}</button>
+              <button className="button button-secondary" type="button" onClick={() => receipt && downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `${sanitizeFilename(result.fileName, '')}.metadata-cleanup.json`)}><Icon icon={receiptIcon} width="17" />{t("download-receipt")}</button>
+              <button className="button button-ghost" type="button" onClick={() => { setResult(null); setStatus('ready'); setDetail(t("the-original-report-is-ready-for-another-local-cleanup")); }}>{t("start-over")}</button>
+            </div>
+          </div>
+          <div className="removal-counts"><b><strong>{result.removed.length}</strong>{t("removed")}</b><b><strong>{result.preserved.length}</strong>{t("preserved")}</b><b><strong>{result.residual.length}</strong>{t("residual")}</b></div>
+        </header>
         <div className="removal-checks">{result.checks.map((check) => <article key={check.id} className={`is-${check.status}`}><i></i><div><strong>{outputCheckText(check, locale).label}</strong><span>{outputCheckText(check, locale).message}</span></div></article>)}</div>
         {result.warnings.length ? <div className="removal-warnings">{result.warnings.map((warning) => <p key={warning}><Icon icon={warningIcon} width="15" />{warning}</p>)}</div> : null}
-        <div className="removal-diff-grid"><details open><summary>{t("removed-fields")} <b>{result.removed.length}</b></summary>{result.removed.length ? result.removed.slice(0, 120).map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-fields-were-present-in-the-source-report")}</p>}</details><details><summary>{t("intentionally-preserved")} <b>{result.preserved.length}</b></summary>{result.preserved.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.reason}</span></div>)}</details><details open={result.residual.length > 0}><summary>{t("residual-metadata")} <b>{result.residual.length}</b></summary>{result.residual.length ? result.residual.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-residual-fields-were-found")}</p>}</details></div>
-        <footer><button className="button button-primary" type="button" disabled={result.status === 'blocked'} onClick={() => downloadBlob(result.blob, result.fileName)}><Icon icon={downloadIcon} width="17" />{t("download-clean-copy")}</button><button className="button button-secondary" type="button" onClick={() => receipt && downloadBlob(new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' }), `${sanitizeFilename(result.fileName, '')}.metadata-cleanup.json`)}><Icon icon={receiptIcon} width="17" />{t("download-receipt")}</button><button className="button button-ghost" type="button" onClick={() => { setResult(null); setStatus('ready'); setDetail(t("the-original-report-is-ready-for-another-local-cleanup")); }}>{t("start-over")}</button></footer>
+        <div className="removal-diff-grid"><details open><summary className="disclosure-summary"><span className="disclosure-label">{t("removed-fields")}</span><span className="disclosure-controls"><b>{result.removed.length}</b><DisclosureChevron /></span></summary>{result.removed.length ? result.removed.slice(0, 120).map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-fields-were-present-in-the-source-report")}</p>}</details><details><summary className="disclosure-summary"><span className="disclosure-label">{t("intentionally-preserved")}</span><span className="disclosure-controls"><b>{result.preserved.length}</b><DisclosureChevron /></span></summary>{result.preserved.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.reason}</span></div>)}</details><details open={result.residual.length > 0}><summary className="disclosure-summary"><span className="disclosure-label">{t("residual-metadata")}</span><span className="disclosure-controls"><b>{result.residual.length}</b><DisclosureChevron /></span></summary>{result.residual.length ? result.residual.map((field) => <div key={`${field.id}-${field.path}`}><strong>{field.label}</strong><code>{field.path}</code><span>{field.displayValue}</span></div>) : <p>{t("no-eligible-residual-fields-were-found")}</p>}</details></div>
       </section> : null}
     </div> : null}
   </section>;

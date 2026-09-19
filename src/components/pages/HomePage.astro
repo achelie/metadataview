@@ -40,7 +40,9 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
     </nav>
 
     <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
-      <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><div><h2 id="home-exif-title">{copy.exifTitle}</h2><p>{copy.exifIntro}</p></div></header>
+      <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><h2 id="home-exif-title">{copy.exifTitle}</h2></header>
+      <div class:list={['home-exif-body', { 'home-exif-with-checks': locale === 'en' }]}>
+      <p class="home-exif-intro">{copy.exifIntro}</p>
       {locale === 'en' && <nav class="home-exif-checks" aria-label="Popular EXIF checks">
         <span>Popular EXIF checks</span>
         <a href="/image-metadata-viewer/"><strong>Find photo GPS location</strong><small>Read stored coordinates and open the map only when you choose.</small></a>
@@ -49,6 +51,7 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
         <a href="/image-privacy-checker/"><strong>Check photo privacy</strong><small>Review GPS, identity, device, and hidden preview risks.</small></a>
         <a href="/image-metadata-remover/"><strong>Remove EXIF metadata</strong><small>Create a cleaner copy and verify what remains.</small></a>
       </nav>}
+      </div>
     </section>
 
     <section class="home-benefits" aria-labelledby="home-benefits-title">
@@ -65,3 +68,26 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
     <section class="home-faq expanded-faq" aria-labelledby="home-faq-title"><div class="expanded-faq-inner"><h2 id="home-faq-title">{copy.faqTitle}</h2><div class="expanded-faq-list">{copy.faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section>
   </div>
 </BaseLayout>
+
+<style>
+  .home-exif-showcase .home-section-heading { margin-bottom: .75rem; }
+  .home-exif-body { min-width: 0; }
+  .home-exif-with-checks {
+    display: grid;
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: var(--layout-gap);
+  }
+  .home-exif-intro { max-width: var(--prose-width); margin: 0; font-size: 16px; line-height: 1.7; }
+  .home-exif-with-checks .home-exif-checks { border-top: 0; }
+  .home-exif-with-checks .home-exif-checks > span { padding-top: 0; }
+  .home-exif-with-checks .home-exif-checks a { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  @media (max-width: 900px) {
+    .home-exif-with-checks { grid-template-columns: minmax(0, 1fr); }
+    .home-exif-with-checks .home-exif-checks { border-top: 1px solid var(--ink); }
+    .home-exif-with-checks .home-exif-checks > span { padding-top: .75rem; }
+  }
+  @media (max-width: 680px) {
+    .home-exif-with-checks .home-exif-checks a { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

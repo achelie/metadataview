@@ -14,8 +14,9 @@ const paths = ['how-to-find-where-a-photo-was-taken', 'how-to-tell-when-a-photo-
   <ul>{paths.map((slug, i) => <li><a href={`/blog/${slug}/`} hreflang="en">{labels[i + 1]}</a></li>)}</ul>
 </nav>
 <style>
-  .reading-routes { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2rem; margin: 3rem 0; padding: 1.5rem 0; border-block: 1px solid currentColor; }
-  h2 { font-size: clamp(1.25rem, 3vw, 1.8rem); margin: 0 0 .75rem; }
+  .reading-routes { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--layout-gap); margin: var(--section-space) 0; padding: var(--layout-gap) 0; border-block: 1px solid currentColor; }
+  :global(.blog-index) > .reading-routes { margin-block: 0; padding-top: 0; border-top: 0; }
+  h2 { font-size: var(--text-card); margin: 0 0 .75rem; }
   p { line-height: 1.65; margin: 0; }
   ul { margin: 0; padding-left: 1.25rem; }
   li { margin: .6rem 0; }
