@@ -4,6 +4,7 @@ import { PRESERVE_ENCODING_CLEANUP_ARGS } from '../lib/image/privacy-cleanup';
 import { createPrivacyDeepInspection } from '../lib/privacy/create-privacy-report';
 import type { ExifToolWorkerRequest, ExifToolWorkerResponse } from './exiftool-protocol';
 import type { MetadataWorkerCleanup } from '../lib/metadata-removal/types';
+import { verifyEncodedPayload } from '../lib/metadata-removal/content-integrity';
 import zeroPerlWasmUrl from '@colorhythm/exiftool-wasm/dist/esm/zeroperl-mqcadjqm.wasm?url';
 
 const send = (response: ExifToolWorkerResponse, transfer?: Transferable[]) => self.postMessage(response, transfer ?? []);
@@ -50,6 +51,7 @@ self.onmessage = async (event: MessageEvent<ExifToolWorkerRequest>) => {
       const result = await writeMetadata(virtualFile(request.file), {}, { args: metadataCleanupArgs(request.family), fetch: wasmFetch });
       if (!result.success) throw new Error(result.error || `ExifTool cleanup stopped with exit code ${result.exitCode ?? 'unknown'}.`);
       const cleanup: MetadataWorkerCleanup = {
+        contentChecks: [await verifyEncodedPayload(request.file, new Blob([result.data]))],
         data: result.data,
         mime: genericMime(request.file, request.family),
         engine: 'exiftool',

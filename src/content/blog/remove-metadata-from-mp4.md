@@ -10,7 +10,7 @@ tags:
   - video metadata remover
   - QuickTime GPS
 publishedAt: 2026-08-24
-updatedAt: 2026-08-24
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/remove-metadata-from-mp4.webp"
@@ -40,8 +40,6 @@ To remove metadata from MP4, make a cleaned copy that rewrites the container wit
 
 ## What is the safest way to remove metadata from MP4?
 
-Create a separate metadata-cleaned copy, verify its tracks and duration, then scan it for residual fields.
-
 Open the video in the [Video Metadata Remover](/video-metadata-remover/). ViewExif first reads the original, then creates a new MP4 with removable descriptive metadata cleared. It checks the output against the source before enabling a verified download.
 
 That order matters. If a cleanup damages the container, drops audio, changes rotation, or leaves a location tag behind, you want to know before deleting the original. A name such as `holiday-clean.mp4` also makes it harder to attach the wrong file later.
@@ -63,7 +61,7 @@ People often call all of this "video EXIF," but MP4 files usually use QuickTime-
 | Rotation, dimensions, and codec | How the player should display the file | Keep as structure |
 | Timed GPS or telemetry tracks | A route, speed, altitude, or device data | May need a deeper scan |
 
-ExifTool's [QuickTime tag reference](https://exiftool.org/TagNames/QuickTime.html) lists ordinary location fields and many forms of timed GPS data. That variety explains why a one-field cleanup can appear successful while another reader still finds a location.
+ExifTool's [QuickTime tag reference](https://github.com/exiftool/exiftool/blob/master/html/TagNames/QuickTime.html) lists ordinary location fields and many forms of timed GPS data. That variety explains why a one-field cleanup can appear successful while another reader still finds a location.
 
 ## Can you remove MP4 metadata without re-encoding?
 
@@ -108,6 +106,12 @@ No. Platforms can compare the media itself, so changing tags or the file hash do
 An [r/shutterencoder discussion about bulk video metadata removal](https://www.reddit.com/r/shutterencoder/comments/1m1upec/how_to_bulk_remove_metadata_from_videos_without/) started with a creator trying to avoid Instagram and TikTok treating videos as reused content. Replies pushed back on the premise. A platform can compare frames, audio, timing, or account history without relying on a QuickTime title.
 
 Remove metadata for privacy or tidy delivery, not to disguise ownership. If you are preparing social uploads, the [Instagram EXIF guide](/blog/does-instagram-remove-exif-data/) explains why the public copy and the service's own upload signals are separate issues.
+
+## Single location tags and timed telemetry need different checks
+
+A single location string can describe a clip, while a telemetry track can record changing positions throughout it. Clearing a visible container label does not establish that an embedded track has been removed. Read the remaining native groups and output warnings.
+
+ViewExif preserves media tracks and playback structure under its cleanup policy. If the report finds residual telemetry, use a workflow that explicitly supports that track before sharing the file. Matching duration and dimensions are useful structural checks, but they do not certify the absence of every location record. Keep the original and verify playback of the exact downloaded output.
 
 ## How do you verify the cleaned MP4?
 

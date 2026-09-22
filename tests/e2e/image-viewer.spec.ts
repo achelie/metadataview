@@ -47,7 +47,7 @@ test('reads a baseline PNG with dimensions, hashes, and its file header',async({
 test('reads PNG text and exposes friendly plus native source/path fields',async({page})=>{ await open(page); await upload(page,'author.png',png([['tEXt','Artist','Ada Example']]),'image/png'); await ready(page); await expect(page.getByText(/potentially sensitive field/)).toBeVisible(); await expect(page.locator('[data-field-path="png.text.Artist"]')).toContainText('Ada Example'); await page.getByRole('button',{name:/All native fields/}).click(); await expect(page.locator('.report-sections')).toContainText('Artist'); });
 test('keeps compressed PNG parameters as native data without special interpretation',async({page})=>{ await open(page); await upload(page,'generated.png',png([['zTXt','parameters','orange cat\nSteps: 12, Seed: 42']]),'image/png'); await ready(page); await page.getByPlaceholder(/Search value/).fill('orange cat'); await expect(page.locator('.report-sections')).toContainText('orange cat'); await expect(page.getByText('AI generation data',{exact:true})).toHaveCount(0); await page.getByRole('button',{name:/All native fields/}).click(); await expect(page.locator('.report-sections')).toContainText('parameters'); });
 test('keeps unknown UTF-8 iTXt fields searchable',async({page})=>{ await open(page); await upload(page,'unicode.png',png([['iTXt','odd-field','你好 from metadata']]),'image/png'); await ready(page); await page.getByPlaceholder(/Search value/).fill('你好'); await expect(page.locator('.report-sections')).toContainText('你好 from metadata'); });
-test('reads real JPEG EXIF camera, date, serial, orientation, and GPS',async({page})=>{ await open(page); await upload(page,'camera.jpg',withExif(await canvasImage(page,'image/jpeg')),'image/jpeg'); await ready(page); await expect(page.locator('.report-sections')).toContainText('Pocket Camera'); await expect(page.locator('.report-sections')).toContainText('DeskCam 42'); await expect(page.getByText('GPS location found')).toBeVisible(); await expect(page.locator('.report-map-action code')).toHaveText('37.775000, -122.419444'); await expect(page.getByRole('link',{name:'Open map'})).toHaveAttribute('href',/openstreetmap\.org\/\?mlat=37\.775/); await page.getByRole('button',{name:/All native fields/}).click(); await page.getByPlaceholder(/Search value/).fill('BODY-12345'); await expect(page.locator('.report-sections')).toContainText('BODY-12345'); await expect(page.getByRole('link',{name:'Open Privacy Checker'})).toBeVisible(); });
+test('reads real JPEG EXIF camera, date, serial, orientation, and GPS',async({page})=>{ await open(page); await upload(page,'camera.jpg',withExif(await canvasImage(page,'image/jpeg')),'image/jpeg'); await ready(page); await expect(page.locator('.report-sections')).toContainText('Pocket Camera'); await expect(page.locator('.report-sections')).toContainText('DeskCam 42'); await expect(page.getByText('GPS location found')).toBeVisible(); await expect(page.locator('.report-map-action code')).toHaveText('37.775000, -122.419444'); await expect(page.getByRole('link',{name:'View on OpenStreetMap'})).toHaveAttribute('href',/openstreetmap\.org\/\?mlat=37\.775/); await page.getByRole('button',{name:/All native fields/}).click(); await page.getByPlaceholder(/Search value/).fill('BODY-12345'); await expect(page.locator('.report-sections')).toContainText('BODY-12345'); await expect(page.getByRole('link',{name:'Open Privacy Checker'})).toBeVisible(); });
 test('reads a browser-encoded WebP',async({page})=>{ await open(page); await upload(page,'pixel.webp',await canvasImage(page,'image/webp'),'image/webp'); await ready(page); await expect(page.getByText('WEBP',{exact:true}).first()).toBeVisible(); await expect(page.getByText('3 × 2 px')).toBeVisible(); });
 test('reads HEIC spatial properties even when Chromium cannot preview the pixels',async({page})=>{ await open(page); await upload(page,'photo.heic',Buffer.from(heicFixture(640,480)),'image/heic'); await ready(page,/photo\.heic metadata report/); await expect(page.getByText('HEIC',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-facts')).toContainText(/640.*480 px/); });
 test('reads TIFF image directories and falls back cleanly when preview decoding is unavailable',async({page})=>{ await open(page); await upload(page,'scan.tiff',Buffer.from(tiffFixture(320,240)),'image/tiff'); await ready(page,/scan\.tiff metadata report/); await expect(page.getByText('TIFF',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-facts')).toContainText(/320.*240 px/); await expect(page.locator('.report-sections')).toContainText(/little-endian/i); });
@@ -65,3 +65,78 @@ test('rapid replacement ignores stale results and shows the newest file',async({
 test('keyboard activation, result focus, replace, and clear work',async({page})=>{ await open(page); const chooser=page.waitForEvent('filechooser'); await page.getByRole('button',{name:'Choose an image'}).press('Enter'); await (await chooser).setFiles({name:'keyboard.png',buffer:png(),mimeType:'image/png'}); const heading=page.getByRole('heading',{name:/keyboard\.png metadata report/}); await expect(heading).toBeVisible({timeout:20_000}); await expect(heading).toBeFocused(); const replacement=page.waitForEvent('filechooser'); await page.getByRole('button',{name:'Replace'}).click(); await (await replacement).setFiles({name:'replacement.png',buffer:png(),mimeType:'image/png'}); await ready(page,/replacement\.png metadata report/); await page.getByRole('button',{name:'Clear'}).click(); const choose=page.getByRole('button',{name:'Choose an image'}); await expect(choose).toBeVisible(); await expect(choose).toBeFocused(); });
 test('selection sends no filename, hash input, or metadata values over the network',async({page})=>{ await open(page); const unsafe:string[]=[]; page.on('request',(request)=>{ if(request.method()!=='GET'||/secret-local-name|Private/.test(request.postData()??'')) unsafe.push(`${request.method()} ${request.url()}`); }); await upload(page,'secret-local-name.png',png([['tEXt','Artist','Private']]),'image/png'); await ready(page); expect(unsafe).toEqual([]); });
 test('390px result has no page overflow and long values stay contained',async({page})=>{ await page.setViewportSize({width:390,height:844}); await open(page); await upload(page,'mobile.png',png([['iTXt','Description','x'.repeat(8_000)]]),'image/png'); await ready(page); const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})); expect(width.scroll).toBeLessThanOrEqual(width.client+1); });
+
+const mapLocales = [
+  { prefix: '', label: 'View on OpenStreetMap', disclosure: /coordinates.*IP address.*not uploaded/ },
+  { prefix: '/de', label: 'Auf OpenStreetMap ansehen', disclosure: /Koordinaten.*IP-Adresse.*nicht hochgeladen/ },
+  { prefix: '/fr', label: 'Voir sur OpenStreetMap', disclosure: /coordonnées.*adresse IP.*reste dans votre navigateur/ },
+  { prefix: '/zh-cn', label: '在 OpenStreetMap 查看', disclosure: /此坐标及 IP 地址.*原文件不会上传/ },
+];
+
+for (const locale of mapLocales) test(`map disclosure and click-only data flow ${locale.prefix || 'en'}`, async ({ page, context }) => {
+  test.setTimeout(90_000);
+  const mapRequests: { url: string; method: string; body: string | null; referrer?: string }[] = [];
+  const otherExternalRequests: string[] = [];
+  // Intercept every external request, including popup navigation: no test location leaves this browser.
+  await context.route('**/*', async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    if (['127.0.0.1', 'localhost'].includes(url.hostname)) return route.continue();
+    if (url.hostname === 'www.openstreetmap.org') {
+      mapRequests.push({ url: request.url(), method: request.method(), body: request.postData(), referrer: request.headers().referer });
+    } else otherExternalRequests.push(`${request.url()} ${request.postData() ?? ''}`);
+    await route.fulfill({ status: 200, contentType: 'text/plain', body: 'External request intercepted by test.' });
+  });
+  await page.goto(`${locale.prefix}/`);
+  await page.locator('astro-island:not([ssr])').waitFor({ state: 'attached' });
+  const links = page.getByRole('link', { name: locale.label, exact: true });
+  await expect(links).toHaveCount(0);
+  await upload(page, 'synthetic-private-location.jpg', withExif(await canvasImage(page, 'image/jpeg')), 'image/jpeg');
+  await expect(page.locator('.report-engine.is-complete')).toBeVisible({ timeout: 45_000 });
+  await expect(links).toHaveCount(2);
+  expect(mapRequests).toEqual([]);
+  expect(otherExternalRequests.join('\n')).not.toMatch(/37\.775|-122\.419|synthetic-private-location|BODY-12345|Ada%20Example/);
+
+  for (const width of [1440, 390, 239]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const link of await links.all()) {
+      const id = await link.getAttribute('aria-describedby');
+      expect(id).toBeTruthy();
+      await expect(page.locator(`[id="${id}"]`)).toBeVisible();
+      await expect(page.locator(`[id="${id}"]`)).toHaveText(locale.disclosure);
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    }
+    const size = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+    expect(size.scroll, `${locale.prefix} at ${width}px`).toBeLessThanOrEqual(size.client + 1);
+    if (!locale.prefix) {
+      await page.screenshot({ path: `output/playwright/adsense-map-${width}.png`, fullPage: true });
+      await page.locator('.home-exif-summary').screenshot({ path: `output/playwright/adsense-map-summary-${width}.png` });
+      await page.locator('.report-map-action').screenshot({ path: `output/playwright/adsense-map-report-${width}.png` });
+    }
+  }
+
+  for (let index = 0; index < 2; index++) {
+    const popupEvent = context.waitForEvent('page');
+    await links.nth(index).click();
+    const popup = await popupEvent;
+    await popup.waitForLoadState();
+    expect(await popup.evaluate(() => window.opener === null)).toBe(true);
+    await popup.close();
+    expect(mapRequests).toHaveLength(index + 1);
+    const outbound = mapRequests[index];
+    if (!outbound) throw new Error('Expected an intercepted map navigation');
+    const url = new URL(outbound.url);
+    expect(url.origin).toBe('https://www.openstreetmap.org');
+    expect(url.pathname).toBe('/');
+    expect([...url.searchParams]).toEqual([['mlat', '37.775'], ['mlon', '-122.41944444444445']]);
+    expect(outbound.method).toBe('GET');
+    expect(outbound.body).toBeNull();
+    expect(outbound.referrer).toBeUndefined();
+  }
+  await upload(page, 'no-gps.png', png(), 'image/png');
+  await expect(page.locator('.report-engine.is-complete')).toBeVisible({ timeout: 45_000 });
+  await expect(links).toHaveCount(0);
+  await expect(page.locator('.map-disclosure')).toHaveCount(0);
+  expect(mapRequests).toHaveLength(2);
+});

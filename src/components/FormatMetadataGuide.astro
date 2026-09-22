@@ -1,5 +1,6 @@
 ---
 import { IconGlyph } from './IconGlyph';
+import StaticIcon from './StaticIcon.astro';
 import type { FormatGuide } from '../content/tools';
 import type { Locale } from '../i18n/core';
 
@@ -44,7 +45,7 @@ const t = (en: string, zhText: string, deText: string, frText: string) => zh ? z
     </ol>
     <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>{t('What this report cannot prove', '这份报告不能证明什么', 'Was dieser Bericht nicht beweist', 'Ce que ce rapport ne peut pas prouver')}</summary>
+      <summary class="disclosure-summary"><span class="disclosure-label">{t('What this report cannot prove', '这份报告不能证明什么', 'Was dieser Bericht nicht beweist', 'Ce que ce rapport ne peut pas prouver')}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary>
       <ul>{limitations.map((item) => <li>{item}</li>)}</ul>
     </details>
   </div>

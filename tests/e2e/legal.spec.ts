@@ -4,6 +4,7 @@ const ADSENSE_ACCOUNT_ID = 'ca-pub-7443237558968985';
 const ADS_TXT_LINE = 'google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0';
 const PUBLIC_EMAIL = 'contact@viewexif.com';
 const POLICY_EFFECTIVE_DATE = '2026-08-23';
+const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-09-18';
 const GOOGLE_AD_REQUEST = /(?:googlesyndication\.com|doubleclick\.net|fundingchoicesmessages\.google\.com)/i;
 
 const legalKinds = ['about', 'privacy', 'contact', 'terms'] as const;
@@ -103,7 +104,12 @@ test('localized privacy pages disclose processing, advertising controls and prov
     const path = route(locale.prefix, 'privacy');
     await page.goto(path);
     const main = page.locator('main');
-    await expect(main).toContainText(POLICY_EFFECTIVE_DATE);
+    await expect(main.locator('time')).toHaveAttribute('datetime', PRIVACY_POLICY_EFFECTIVE_DATE);
+    await expect(main.locator('time')).toHaveText(PRIVACY_POLICY_EFFECTIVE_DATE);
+    await expect(main.locator('section#maps')).toContainText('OpenStreetMap');
+    await expect(main.locator('section#maps')).toContainText(/IP/);
+    await expect(main.locator('section#maps a')).toHaveAttribute('href', 'https://osmfoundation.org/wiki/Privacy_Policy');
+    await expect(main.locator('nav a[href="#maps"]')).toBeVisible();
     await expect(main).toContainText(PUBLIC_EMAIL);
     await expect(main).toContainText('Ahrefs');
     await expect(main).toContainText('Cloudflare');

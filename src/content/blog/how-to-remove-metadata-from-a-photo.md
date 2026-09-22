@@ -10,7 +10,7 @@ tags:
   - EXIF removal
   - photo privacy
 publishedAt: 2026-08-23
-updatedAt: 2026-08-23
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-remove-metadata-from-a-photo.webp"
@@ -42,8 +42,6 @@ Keep the original if its capture date and camera settings matter to your photo l
 
 ## What is the safest way to remove metadata from a photo?
 
-Create a clean copy locally, verify it, and send only that file.
-
 The order matters. If you upload first and hope the destination strips metadata, the service has already received the original. A local workflow gives you a file that can be checked before it leaves your browser tab.
 
 1. Inspect the original so you know what it contains.
@@ -74,9 +72,9 @@ The distinction between EXIF and the wider metadata report is explained in [What
 
 ## How do you remove photo metadata with ViewExif?
 
-Open the image remover, choose a cleanup mode, create the copy, and wait for its verification report.
+Open the image remover, choose your file, create the copy, and wait for its verification report.
 
-The [Image Metadata Remover](/image-metadata-remover/) works locally in the browser and leaves the original file alone. For a static JPEG, PNG, or WebP, the privacy-first option rebuilds the visible image without copying the original metadata. Preserve-encoding cleanup keeps the compressed image structure and removes writable metadata while retaining display details such as orientation and color information where needed.
+The [Image Metadata Remover](/image-metadata-remover/) uses local ExifTool cleanup for JPEG, PNG, WebP, HEIC, TIFF and GIF. It removes writable metadata without re-encoding the image and leaves the original file alone. Required orientation and color information may remain. It does not offer a pixel-rebuild mode on that page; the separate privacy checker's cleanup workflow offers privacy-first rebuilding for supported static JPEG, PNG and WebP images.
 
 The result page scans the cleaned copy again. Read the Removed and Residual sections rather than stopping at the download button. A valid image can still have a field that the selected format or cleanup mode preserved.
 
@@ -114,7 +112,7 @@ Metadata-only removal can preserve the existing image data, while a privacy-firs
 
 JPEG and WebP are often lossy formats. Re-encoding them can introduce a small quality change even at a high setting. PNG can be rebuilt without losing pixel values, though the output size may differ. Animated images need extra care because a simple canvas export can keep only one frame.
 
-Choose preserve-encoding when keeping the media structure matters and you are comfortable retaining required display fields. Choose privacy-first for a static image when broad metadata removal matters more than keeping the exact compressed bytes. Whichever mode you use, compare the cleaned dimensions, orientation, animation state, and file type with the original.
+Use the image remover when keeping the encoded media structure matters and you accept retaining required display fields. In the privacy checker's cleanup workflow, privacy-first is a separate option for supported static images, not a promise of identical pixels or bytes. In either workflow, compare the cleaned dimensions, orientation, animation state, and file type with the original.
 
 ## How do you verify that the metadata is gone?
 
@@ -125,6 +123,12 @@ Drop the output into the [Image Metadata Viewer](/image-metadata-viewer/) and se
 Check the file after any later edit too. An editor can write its software name, copy old XMP, or export a new date. If you download your own post from a platform, inspect that downloaded copy separately. It is a different file and says nothing certain about what the service received during upload.
 
 Email deserves special caution because attachments are meant to remain intact. The [Gmail EXIF guide](/blog/does-gmail-remove-exif-data/) explains why attaching a clean copy is safer than expecting the mail provider to strip the original.
+
+## Read the cleanup result before choosing the attachment
+
+A removed field means the output scan did not find the same targeted value. A preserved field can be required image structure or content. A residual field needs review; it is not automatically safe because the download succeeded.
+
+Check the actual output format, warnings and appearance. Broad metadata removal can also remove useful dates, attribution or editing context. Keep the original if those matter. If verification is incomplete, do not describe the copy as fully cleaned. The next step is to understand the failed check or use a compatible workflow, rather than repeatedly running the same file until its name looks different.
 
 ## What can metadata removal not hide?
 

@@ -1,9 +1,10 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { siteIdentity } from '../config/site';
 import { canonicalUrl } from '../lib/seo';
-import { getAlternatePaths, type Locale } from '../i18n/core';
+import { getAlternatePaths, stripLocale, type Locale } from '../i18n/core';
 import { getMessages } from '../i18n/messages';
 import '../styles/global.css';
 
@@ -44,15 +45,23 @@ const alternateUrls = alternatePaths ? Object.fromEntries(Object.entries(alterna
 const ogLocales: Record<Locale, string> = { en: 'en_US', de: 'de_DE', fr: 'fr_FR', 'zh-CN': 'zh_CN' };
 const ogLocale = ogLocales[locale];
 const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key]) => key !== locale).map(([, value]) => value) : [];
+const basePath = stripLocale(Astro.url.pathname);
+const toolRouterEnabled = basePath === '/'
+  || /^\/(?:metadata-(?:viewer|remover)|(?:image|video|audio|document)-metadata-(?:viewer|remover)|image-privacy-checker|c2pa-viewer)\/?$/.test(basePath);
 ---
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#171815" />
     <meta name="google-adsense-account" content={siteIdentity.adsenseAccountId} />
+    {toolRouterEnabled && <ClientRouter fallback="swap" />}
+    <script>
+      import { installLimitedToolRouting } from '../lib/tool-handoff/router-lifecycle';
+      installLimitedToolRouting();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

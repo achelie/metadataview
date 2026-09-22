@@ -10,7 +10,7 @@ tags:
   - remove ID3 tags
   - audio metadata
 publishedAt: 2026-08-25
-updatedAt: 2026-08-25
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/remove-metadata-from-mp3.webp"
@@ -36,11 +36,9 @@ related:
   - does-gmail-remove-exif-data
 ---
 
-To remove metadata from MP3, create a cleaned copy that clears unwanted ID3 and other tag fields without re-encoding the audio, then inspect that copy before sharing it. This can remove names, comments, dates, software, links, lyrics, and custom fields while leaving the sound untouched. Do not start by wiping every tag. Album, artist, track number, and cover art may be useful content rather than a privacy problem.
+To remove metadata from MP3, create a cleaned copy that clears unwanted ID3 and other tag fields without re-encoding the audio, then inspect that copy before sharing it. This targets supported names, comments, dates, software, links and custom fields without another audio encoding pass; read the output report for what remains. Do not start by wiping every tag. Album, artist, track number, and cover art may be useful content rather than a privacy problem.
 
 ## What is the safest way to remove metadata from MP3?
-
-Inspect the original, clean a separate copy, then scan the output before you delete or share anything.
 
 Start with the [Audio Metadata Viewer](/audio-metadata-viewer/) and look beyond the filename. Search for names, comments, URLs, dates, software, encoded-by fields, lyrics, and custom tags. Decide which details are unwanted and which ones keep the file usable in your music library.
 
@@ -105,13 +103,19 @@ Metadata removal is useful for stopping accidental tag disclosure. It is not a p
 
 ## How do you remove MP3 metadata with ViewExif?
 
-Upload the MP3, wait for the baseline scan, create the cleaned copy, and download only after the verification result appears.
+Choose the MP3 locally, wait for the baseline scan, create the cleaned copy, and read the verification result before downloading.
 
 Open the [Audio Metadata Remover](/audio-metadata-remover/) and choose your MP3. The browser processes the file locally. The baseline report separates removable metadata from playback structure and preserved content, including cover art.
 
-Create the cleaned copy and let the same scanner inspect it. The result lists Removed, Preserved, and Residual fields. `Verified` means the output opens correctly and the removable fields are gone. `Verified with residual metadata` means the file still contains something that could not or should not be stripped. `Verification incomplete` means you can download the copy, but you should not call it clean yet.
+Create the cleaned copy and let the same scanner inspect it. The result lists Removed, Preserved, and Residual fields. `Verified` means the implemented checks passed and the output scan found no residual eligible fields; it does not certify every possible hidden record. `Verified with residual metadata` means the file still contains something that could not or should not be stripped. `Verification incomplete` means you can download the copy, but you should not call it clean yet.
 
 If you have several file types, the [All Formats Metadata Remover](/metadata-remover/) follows the same pattern. Video needs a different container cleanup path, explained in the guide to [removing metadata from MP4](/blog/remove-metadata-from-mp4/).
+
+## Choose privacy cleanup or music-library editing
+
+ViewExif's cleaner follows a removal policy; it is not an editor with a keep/remove switch for each artist, album or track label. If you need to preserve selected text tags for a music library, use a tag editor that supports that selection and inspect its output.
+
+Cover art is treated as preserved content, so review the image itself before sharing a private recording. A cleaned file with retained artwork is not anonymous. Likewise, a verification check of duration, channels and bitrate does not prove that nobody can recognize a voice or match the recording. Listen to the output as well as reading its tags.
 
 ## How do you verify the cleaned MP3?
 

@@ -1,5 +1,7 @@
 # ViewExif AdSense Ready 审计（申请版生产复审）
 
+> 历史快照，不代表当前审核状态。2026-09-03 后台已返回低价值内容拒绝；最新整改与完整审计见 [2026-09-05 报告](adsense-content-audit-2026-09-05.md)。
+
 审计日期：2026-08-23
 
 目标：`https://www.viewexif.com` 与提交 `a19baa9`（Cloudflare Pages 部署 `ec8438ca`）

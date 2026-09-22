@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { localizePath, type Locale } from '../../i18n/core';
-import { POLICY_EFFECTIVE_DATE, SITE_BRAND, SITE_CONTACT_EMAIL } from '../../config/site';
+import { POLICY_EFFECTIVE_DATE, PRIVACY_POLICY_EFFECTIVE_DATE, SITE_BRAND, SITE_CONTACT_EMAIL } from '../../config/site';
 
 type ContentPageKind = 'about' | 'privacy' | 'contact' | 'terms';
 interface Props { locale?: Locale; kind: ContentPageKind }
@@ -20,6 +20,7 @@ const GOOGLE_PARTNER_SITES = 'https://policies.google.com/technologies/partner-s
 const GOOGLE_AD_SETTINGS = 'https://adssettings.google.com/';
 const AHREFS_PRIVACY = 'https://ahrefs.com/privacy-policy';
 const CLOUDFLARE_PRIVACY = 'https://www.cloudflare.com/privacypolicy/';
+const OPENSTREETMAP_PRIVACY = 'https://osmfoundation.org/wiki/Privacy_Policy';
 const p = (text: string, links: ContentLink[] = []): LinkedParagraph => ({ text, links });
 const s = (id: string, label: string, title: string, ...paragraphs: LinkedParagraph[]): LegalSection => ({ id, label, title, paragraphs });
 const link = (label: string, href: string): ContentLink => ({ label, href });
@@ -143,11 +144,14 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} is independently operated by an individual. Privacy questions go to ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Files', 'Your file is processed in this browser',
-        p('Supported files are read from browser memory. Parsing usually runs in a Web Worker; image cleanup uses browser decoding and Canvas re-encoding; C2PA verification loads its browser library only on the relevant tool page.'),
+        p('Supported files are read from browser memory. Parsing and format-specific metadata cleanup run locally, generally in Web Workers. Some image privacy workflows also use browser decoding and Canvas re-encoding; the result explains the operation used. C2PA verification loads its browser library only on the relevant tool page.'),
         p('Selected files, filenames, generated hashes, local paths, and extracted metadata values are not uploaded to a ViewExif server. They are not intentionally placed in analytics or future advertising requests.')),
       s('memory', 'Memory', 'Results are short-lived',
-        p('The selected file and its result live in the current page session. ViewExif does not store them in local storage (localStorage), IndexedDB, a URL, or a Cookie. Refreshing or closing the tab clears that working state.'),
+        p('The selected file and its result live in the current page session. ViewExif does not store them in local storage (localStorage), IndexedDB, a ViewExif URL, or a Cookie. Refreshing or closing the tab clears that working state. If you choose to open a map, coordinates enter the third-party link described below.'),
         p('Temporary Object URLs used for previews or downloads are revoked after use. Workers terminate when their task ends or the page unmounts.')),
+      s('maps', 'Maps', 'Opening a location on OpenStreetMap',
+        p('ViewExif reads GPS coordinates from your file locally. It does not request your browser location or automatically load a map. Only clicking “View on OpenStreetMap” opens that service to display the stored location.'),
+        p('OpenStreetMap receives the coordinates in the link URL and normal network request information, including your IP address and browser details. ViewExif does not send the original file, its name, hash, or other metadata through this link. If you do not click, no map request is made.', [link('OpenStreetMap Foundation privacy policy', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Aggregate traffic statistics',
         p('ViewExif uses Ahrefs Web Analytics to understand page traffic and basic interaction patterns. Ahrefs may process the page URL, referrer, browser and device details, language, city-level location derived from the request, and page interaction signals.'),
         p('Ahrefs describes this service as Cookie-free by default. It says raw IP addresses are not stored and that an IP address plus User-Agent is used to create a daily rotating hash. The script does not receive selected file bytes, filenames, local paths, hashes, or extracted metadata from ViewExif.', [link('Ahrefs privacy policy', AHREFS_PRIVACY)])),
@@ -177,11 +181,14 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} wird unabhängig von einer Einzelperson betrieben. Datenschutzfragen gehen an ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Dateien', 'Deine Datei wird in diesem Browser verarbeitet',
-        p('Unterstützte Dateien werden aus dem Browserspeicher gelesen. Die Analyse läuft meist in einem Web Worker; die Bildbereinigung nutzt Browser-Decoding und Canvas-Neucodierung; C2PA lädt seine Browser-Bibliothek nur auf der passenden Werkzeugseite.'),
+        p('Unterstützte Dateien werden aus dem Browserspeicher gelesen. Analyse und formatspezifische Metadatenbereinigung laufen lokal, meist in Web Workern. Einige Bild-Datenschutzabläufe verwenden auch Browser-Decoding und Canvas-Neucodierung; das Ergebnis beschreibt den verwendeten Vorgang. C2PA lädt seine Bibliothek nur auf der passenden Werkzeugseite.'),
         p('Ausgewählte Dateien, Dateinamen, erzeugte Hashes, lokale Pfade und extrahierte Metadatenwerte werden nicht an einen ViewExif-Server hochgeladen. Sie werden auch nicht absichtlich in Analyse- oder künftige Werbeanfragen eingefügt.')),
       s('memory', 'Speicher', 'Ergebnisse bleiben nur kurz',
-        p('Datei und Ergebnis existieren in der aktuellen Seitensitzung. ViewExif speichert sie nicht im lokalen Speicher (local storage oder localStorage), in IndexedDB, einer URL oder einem Cookie. Neuladen oder Schließen des Tabs löscht diesen Arbeitszustand.'),
+        p('Datei und Ergebnis existieren in der aktuellen Seitensitzung. ViewExif speichert sie nicht im lokalen Speicher (local storage oder localStorage), in IndexedDB, einer ViewExif-URL oder einem Cookie. Neuladen oder Schließen des Tabs löscht diesen Arbeitszustand. Öffnest du eine Karte, enthält der unten beschriebene externe Link die Koordinaten.'),
         p('Temporäre Object URLs für Vorschau und Download werden nach Gebrauch widerrufen. Worker enden nach ihrer Aufgabe oder wenn die Seite verlassen wird.')),
+      s('maps', 'Karten', 'Einen Ort auf OpenStreetMap öffnen',
+        p('ViewExif liest GPS-Koordinaten lokal aus deiner Datei. Es fragt nicht nach deinem Browserstandort und lädt keine Karte automatisch. Erst ein Klick auf „Auf OpenStreetMap ansehen“ öffnet den Dienst, um den gespeicherten Ort anzuzeigen.'),
+        p('OpenStreetMap erhält die Koordinaten in der Link-URL und normale Angaben zur Netzwerkanfrage, darunter deine IP-Adresse und Browserdetails. ViewExif sendet über diesen Link weder die Originaldatei noch ihren Namen, Hash oder andere Metadaten. Ohne Klick gibt es keine Kartenanfrage.', [link('Datenschutzerklärung der OpenStreetMap Foundation', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Zusammengefasste Verkehrsstatistik',
         p('ViewExif verwendet Ahrefs Web Analytics, um Seitenaufrufe und grundlegende Interaktionen zu verstehen. Ahrefs kann Seiten-URL, Referrer, Browser- und Gerätedaten, Sprache, einen aus der Anfrage abgeleiteten Standort auf Stadtebene und Interaktionssignale verarbeiten.'),
         p('Ahrefs beschreibt den Dienst standardmäßig als Cookie-frei. Rohe IP-Adressen werden laut Ahrefs nicht gespeichert; aus IP-Adresse und User-Agent entsteht ein täglich wechselnder Hash. Das Skript erhält von ViewExif keine Dateibytes, Namen, lokalen Pfade, Hashes oder extrahierten Metadaten.', [link('Datenschutzerklärung von Ahrefs', AHREFS_PRIVACY)])),
@@ -211,11 +218,14 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} est exploité de façon indépendante par une personne. Les questions de confidentialité vont à ${SITE_CONTACT_EMAIL}.`,
     sections: [
       s('files', 'Fichiers', 'Votre fichier est traité dans ce navigateur',
-        p('Les fichiers pris en charge sont lus depuis la mémoire du navigateur. L’analyse s’exécute généralement dans un Web Worker ; le nettoyage d’image utilise le décodage du navigateur et le réencodage Canvas ; C2PA charge sa bibliothèque uniquement sur la page concernée.'),
+        p('Les fichiers pris en charge sont lus depuis la mémoire du navigateur. L’analyse et le nettoyage des métadonnées selon le format s’exécutent localement, généralement dans des Web Workers. Certaines opérations de confidentialité des images utilisent aussi le décodage et le réencodage Canvas ; le résultat précise l’opération utilisée. C2PA charge sa bibliothèque uniquement sur la page concernée.'),
         p('Les fichiers choisis, noms de fichier, empreintes générées, chemins locaux et métadonnées extraites ne sont pas envoyés à un serveur ViewExif. Ils ne sont pas volontairement ajoutés aux requêtes de statistiques ou de publicité future.')),
       s('memory', 'Mémoire', 'Les résultats sont éphémères',
-        p('Le fichier et son résultat vivent dans la session de la page. ViewExif ne les stocke ni dans local storage (localStorage), ni dans IndexedDB, ni dans une URL, ni dans un Cookie. Actualiser ou fermer l’onglet efface cet état de travail.'),
+        p('Le fichier et son résultat vivent dans la session de la page. ViewExif ne les stocke ni dans local storage (localStorage), ni dans IndexedDB, ni dans une URL ViewExif, ni dans un Cookie. Actualiser ou fermer l’onglet efface cet état de travail. Si vous ouvrez une carte, les coordonnées entrent dans le lien tiers décrit ci-dessous.'),
         p('Les Object URLs temporaires de prévisualisation ou de téléchargement sont révoquées après usage. Les Workers s’arrêtent à la fin de leur tâche ou au démontage de la page.')),
+      s('maps', 'Cartes', 'Ouvrir un lieu sur OpenStreetMap',
+        p('ViewExif lit localement les coordonnées GPS de votre fichier. Il ne demande pas votre position au navigateur et ne charge aucune carte automatiquement. Seul un clic sur « Voir sur OpenStreetMap » ouvre ce service pour afficher le lieu enregistré.'),
+        p('OpenStreetMap reçoit les coordonnées dans l’URL du lien et les informations habituelles de requête réseau, dont votre adresse IP et les détails du navigateur. ViewExif ne transmet par ce lien ni le fichier original, ni son nom, son empreinte ou ses autres métadonnées. Sans clic, aucune requête de carte ne part.', [link('Politique de confidentialité de la fondation OpenStreetMap', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Statistiques de trafic agrégées',
         p('ViewExif utilise Ahrefs Web Analytics pour comprendre les pages consultées et les interactions de base. Ahrefs peut traiter l’URL, le référent, le navigateur, l’appareil, la langue, une localisation au niveau de la ville déduite de la requête et des signaux d’interaction.'),
         p('Ahrefs décrit ce service comme sans Cookie par défaut. Il indique ne pas stocker les adresses IP brutes et combiner l’IP et le User-Agent dans une empreinte renouvelée chaque jour. Le script ne reçoit de ViewExif ni octets, noms, chemins locaux, empreintes de fichier ou métadonnées extraites.', [link('Politique de confidentialité Ahrefs', AHREFS_PRIVACY)])),
@@ -244,11 +254,14 @@ const privacyCopy = {
     operatorNote: `${SITE_BRAND} 由个人独立运营。隐私问题请发到 ${SITE_CONTACT_EMAIL}。`,
     sections: [
       s('files', '文件', '文件只在这个浏览器里处理',
-        p('支持的文件从浏览器内存读取。解析通常在 Web Worker 中运行；图片清理使用浏览器解码和 Canvas 重新编码；C2PA 只在对应工具页加载浏览器库。'),
+        p('支持的文件从浏览器内存读取。解析和按格式处理的元数据清理都在本地完成，通常由 Web Worker 执行。部分图片隐私处理也会使用浏览器解码和 Canvas 重新编码，结果会说明采用的操作。C2PA 只在对应工具页加载浏览器库。'),
         p('你选择的文件、文件名、生成的哈希、本地路径和提取出的元数据值都不会上传到 ViewExif 服务器，也不会被有意放进统计请求或未来的广告请求。')),
       s('memory', '内存', '结果只短暂停留',
-        p('文件和结果只存在于当前页面会话。ViewExif 不会把它们写进 local storage（localStorage）、IndexedDB、URL 或 Cookie。刷新或关闭标签页，工作状态就会消失。'),
+        p('文件和结果只存在于当前页面会话。ViewExif 不会把它们写进 local storage（localStorage）、IndexedDB、ViewExif 的 URL 或 Cookie。刷新或关闭标签页，工作状态就会消失。如果你主动打开地图，坐标会进入下面说明的第三方链接。'),
         p('预览或下载用的临时 Object URL 会在使用后撤销；任务结束或页面卸载时，Worker 也会终止。')),
+      s('maps', '地图', '在 OpenStreetMap 打开文件中的位置',
+        p('ViewExif 在本地读取文件里的 GPS 坐标，不会向浏览器申请你的当前位置，也不会自动加载地图。只有点击“在 OpenStreetMap 查看”，才会打开该服务来显示文件中记录的位置。'),
+        p('OpenStreetMap 会收到链接 URL 中的坐标，以及 IP 地址、浏览器信息等正常网络请求信息。ViewExif 不会通过这个链接发送原文件、文件名、哈希或其他元数据。不点击就不会发起地图请求。', [link('OpenStreetMap 基金会隐私政策', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', '汇总后的流量统计',
         p('ViewExif 使用 Ahrefs Web Analytics 了解页面流量和基础交互。Ahrefs 可能处理页面 URL、来源页、浏览器和设备信息、语言、从请求推断的城市级位置以及页面交互信号。'),
         p('Ahrefs 称这项服务默认不使用 Cookie，不保存原始 IP；IP 地址和 User-Agent 仅用于生成每天轮换的哈希。ViewExif 不会把文件字节、文件名、本地路径、文件哈希或提取出的元数据交给该脚本。', [link('Ahrefs 隐私政策', AHREFS_PRIVACY)])),
@@ -456,7 +469,7 @@ const legal = kind === 'privacy' ? privacy : terms;
     <header>
       <span class="eyebrow">{legal.eyebrow}</span>
       <h1>{legal.heading}</h1>
-      <div class="legal-intro"><p>{legal.intro}</p><p class="policy-date"><strong>{legal.effectiveLabel}</strong><time datetime={POLICY_EFFECTIVE_DATE}>{POLICY_EFFECTIVE_DATE}</time></p></div>
+      <div class="legal-intro"><p>{legal.intro}</p><p class="policy-date"><strong>{legal.effectiveLabel}</strong><time datetime={kind === 'privacy' ? PRIVACY_POLICY_EFFECTIVE_DATE : POLICY_EFFECTIVE_DATE}>{kind === 'privacy' ? PRIVACY_POLICY_EFFECTIVE_DATE : POLICY_EFFECTIVE_DATE}</time></p></div>
     </header>
     <div class="content-grid legal-grid">
       <nav aria-label={legal.navLabel}>{legal.sections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}</nav>

@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import BlogToolStrip from '../../components/BlogToolStrip.astro';
+import StaticIcon from '../../components/StaticIcon.astro';
 import { blogPath, formatBlogDate, getReadingTime, resolveRelatedPosts, sortBlogPosts, validateBlogRelationships } from '../../lib/blog';
 import '../../styles/blog.css';
 
@@ -80,7 +81,7 @@ const schemas = [
       <div class="blog-byline" aria-label="Article details">
         <div class="blog-byline__person">
           <span class="blog-byline__brand" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span><small>Written by</small><strong>{post.data.author}</strong></span>
+          <span><small>Written by</small><strong><a href="/about/" rel="author">{post.data.author}</a></strong></span>
         </div>
         <div class="blog-byline__date">
           <span>Last edited <time datetime={updatedIso}>{formatBlogDate(post.data.updatedAt)}</time></span>
@@ -94,7 +95,7 @@ const schemas = [
     </figure>
 
     <details class="blog-toc-mobile">
-      <summary>On this page <span aria-hidden="true">↓</span></summary>
+      <summary class="disclosure-summary"><span class="disclosure-label">On this page</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary>
       <nav aria-label="Article contents">{tocItems.map((item, index) => <a href={`#${item.slug}`}><span>{String(index + 1).padStart(2, '0')}</span>{item.text}</a>)}</nav>
     </details>
 

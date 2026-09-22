@@ -10,7 +10,7 @@ tags:
   - photo metadata iPhone
   - GPS metadata
 publishedAt: 2026-08-19
-updatedAt: 2026-08-19
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-view-exif-data-on-iphone.webp"
@@ -39,8 +39,6 @@ To view EXIF data on iPhone, open Photos, choose a picture, then swipe up or tap
 What you see depends on the file. An original camera photo usually has more iPhone photo metadata than a screenshot, edited export, or image saved from a chat. If you need the complete EXIF, XMP, IPTC, or GPS report, inspect the actual file in a full metadata viewer.
 
 ## How do you view photo information in iPhone Photos?
-
-Open the picture, swipe up, or tap the Info button at the bottom of the screen.
 
 The built-in steps are short:
 
@@ -121,6 +119,12 @@ Open the photo, tap the **More** button, then choose **Adjust Date & Time** or *
 This is handy when an old camera clock was wrong or scanned family photos arrived with today's date. It also shows why metadata should be treated as editable context. A map and timestamp can be corrected, mistyped, or deliberately changed.
 
 Library information and embedded file information are not always identical after an export. If the result matters, save or export the version you plan to use, then inspect that final file rather than assuming the Photos screen and attachment contain the same fields.
+
+## Which file should you choose in the browser?
+
+A photo-library item, a file saved in Files and an image downloaded from a message may represent different copies. If your question concerns an attachment, select that saved attachment. If it concerns a camera original, avoid a screenshot or a web preview in its place.
+
+Compare the chosen file's type and dimensions with the item you expected. A HEIC-to-JPEG export can change both metadata and file identity. An Info panel's adjusted date or location may describe the library item rather than every later export. Use Apple's [photo information guide](https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios) for the panel controls; read the exported file when deciding what a recipient will receive.
 
 ## How do you remove EXIF and GPS before sharing?
 

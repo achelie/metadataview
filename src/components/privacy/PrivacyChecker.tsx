@@ -17,7 +17,18 @@ import { recordPrivacyScanFailure } from '../../lib/privacy/create-privacy-repor
 import { createAndVerifyPrivacyCleanup } from '../../lib/privacy/cleanup-workflow';
 import { createSafeCleanupReceipt, privacyCleanupReceiptFilename } from '../../lib/privacy/safe-report-export';
 import type { PrivacyCleanupMode, PrivacyCleanupResult, PrivacyReport } from '../../lib/privacy/types';
+import { useSampleImage } from '../../lib/samples/use-sample-image';
 import type { ExifToolProgressStage } from '../../workers/exiftool-protocol';
+import { SampleImageBar, SampleImageBadge } from '../SampleImage';
+import { DisclosureChevron } from '../DisclosureChevron';
+import { localizePrivacyDiagnostic, privacyCleanupText } from '../../i18n/privacy-cleanup';
+import { reportErrors } from '../../i18n/workbench-report';
+import { ToolFileLink } from '../ToolFileLink';
+import { ToolNextSteps } from '../ToolNextSteps';
+import { toolHandoffText } from '../../i18n/tool-handoff';
+import { localizePath } from '../../i18n/core';
+import { useIncomingToolFile } from '../../lib/tool-handoff/use-incoming-tool-file';
+import { discardToolFile } from '../../lib/tool-handoff/store';
 import { DetectedData } from './DetectedData';
 import { PrivacyCleanupPanel } from './PrivacyCleanupPanel';
 import { PrivacyReportActions } from './PrivacyReportActions';
@@ -46,6 +57,7 @@ export default function PrivacyChecker({ locale = 'en' }: { locale?: Locale }) {
 
 function PrivacyCheckerContent() {
   const locale = useLocale();
+  const sample = useSampleImage('metadata');
   const zh = locale === 'zh-CN';
   const de = locale === 'de';
   const fr = locale === 'fr';
@@ -82,7 +94,7 @@ function PrivacyCheckerContent() {
   const [dragging, setDragging] = useState(false);
   const [quickBusy, setQuickBusy] = useState(false);
   const [deepPending, setDeepPending] = useState(false);
-  const [, setDeepStage] = useState<ExifToolProgressStage | null>(null);
+  const [deepStage, setDeepStage] = useState<ExifToolProgressStage | null>(null);
   const [status, setStatus] = useState(t('Waiting for a JPEG, PNG, or WebP', '等待 JPEG、PNG 或 WebP', 'Warte auf JPEG, PNG oder WebP'));
   const [source, setSource] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -105,6 +117,7 @@ function PrivacyCheckerContent() {
     downloadUrl.current = null;
   };
   const openPicker = () => {
+    sample.cancel();
     if (!picker.current) return;
     picker.current.value = '';
     picker.current.click();
@@ -123,6 +136,8 @@ function PrivacyCheckerContent() {
   }, []);
 
   const clearState = () => {
+    discardToolFile();
+    sample.cancel();
     request.current += 1;
     quickClient.current?.cancel();
     exifClient.current?.cancel();
@@ -164,7 +179,9 @@ function PrivacyCheckerContent() {
     setDeepStage('loading');
     setStatus(t('Scanning every metadata field locally', '正在本地扫描所有元数据字段', 'Alle Metadatenfelder werden lokal gescannt'));
     try {
-      const inspection = await exifClient.current!.inspectPrivacy(file, parsed, previous, IMAGE_FULL_SCAN_MODE, setDeepStage, IMAGE_FULL_SCAN_TIMEOUT_MS);
+      const inspection = await exifClient.current!.inspectPrivacy(file, parsed, previous, IMAGE_FULL_SCAN_MODE, (stage) => {
+        if (request.current === current) setDeepStage(stage);
+      }, IMAGE_FULL_SCAN_TIMEOUT_MS);
       if (request.current !== current) return;
       setReport(inspection.report);
       setStatus(fr ? `Analyse complète terminée · ${inspection.report.risks.length.toLocaleString(locale)} risque(s) pris en charge` : t(`Full scan complete · ${inspection.report.risks.length} supported risks`, `完整扫描完成 · ${inspection.report.risks.length} 项支持的风险`, `Vollscan abgeschlossen · ${inspection.report.risks.length.toLocaleString(locale)} unterstützte Risiken`));
@@ -182,6 +199,8 @@ function PrivacyCheckerContent() {
   };
 
   const inspect = async (files: FileList | File[]) => {
+    discardToolFile();
+    sample.cancel();
     const selected = Array.from(files);
     if (!selected.length) return;
     const file = selected[0]!;
@@ -191,11 +210,18 @@ function PrivacyCheckerContent() {
     exifClient.current?.cancel();
     revokePreview();
     revokeDownload();
+    setDragging(false);
+    setQuickBusy(false);
+    setDeepPending(false);
+    setDeepStage(null);
     setSource(file);
     previewUrl.current = URL.createObjectURL(file);
     setPreview(previewUrl.current);
     setMetadata(null);
     setReport(null);
+    setCleanupMode('privacy-first');
+    setCleanupPending(false);
+    setCleanupStage(null);
     setCleanupResult(null);
     setCleanupError(null);
     setError(null);
@@ -227,15 +253,19 @@ function PrivacyCheckerContent() {
     }
   };
 
+  useIncomingToolFile((selected) => void inspect([selected]));
+
   const runCleanup = async () => {
-    if (!source || !metadata || !report || cleanupPending) return;
+    if (!source || !metadata || !report || cleanupPending || deepPending) return;
     const current = request.current;
     setCleanupPending(true);
     setCleanupResult(null);
     setCleanupError(null);
-    setCleanupStage(cleanupMode === 'privacy-first' ? t('Re-encoding pixels', '正在重新编码像素', 'Pixel werden neu codiert') : t('Loading engine', '正在加载引擎', 'Engine wird geladen'));
+    setCleanupStage(cleanupMode === 'privacy-first' ? 'Re-encoding pixels' : 'Loading cleanup engine');
     try {
-      const result = await createAndVerifyPrivacyCleanup({ source, metadata, beforeReport: report, mode: cleanupMode, quickClient: quickClient.current!, exifClient: exifClient.current!, onStage: setCleanupStage });
+      const result = await createAndVerifyPrivacyCleanup({ source, metadata, beforeReport: report, mode: cleanupMode, quickClient: quickClient.current!, exifClient: exifClient.current!, onStage: (stage) => {
+        if (request.current === current) setCleanupStage(stage);
+      } });
       if (request.current !== current) return;
       setCleanupResult(result);
       setCleanupStage(null);
@@ -249,7 +279,7 @@ function PrivacyCheckerContent() {
   };
 
   const downloadClean = () => {
-    if (!cleanupResult) return;
+    if (!cleanupResult || cleanupResult.verificationStatus === 'failed') return;
     revokeDownload();
     downloadUrl.current = URL.createObjectURL(cleanupResult.blob);
     const anchor = document.createElement('a');
@@ -265,30 +295,42 @@ function PrivacyCheckerContent() {
   };
 
   const selection = Boolean(source);
-  return <section id="privacy-checker-workbench" className="workbench privacy-checker" aria-busy={quickBusy || deepPending || cleanupPending}>
+  const translatedError = error && reportErrors[locale][error.code];
+  const errorDiagnostic = error
+    ? error.code === 'FILE_TOO_LARGE'
+      ? { message: error.message, original: undefined }
+      : translatedError
+        ? { message: translatedError, original: error.message }
+        : localizePrivacyDiagnostic(error.message, locale, 'error')
+    : null;
+  const originalDetails = (original: string) => <details className="privacy-original-diagnostic"><summary className="disclosure-summary"><span className="disclosure-label">{privacyCleanupText(locale, 'originalDiagnostic')}</span><DisclosureChevron /></summary><p>{original}</p></details>;
+  return <section id="privacy-checker-workbench" className="workbench privacy-checker" aria-busy={sample.loading || quickBusy || deepPending || cleanupPending}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>{t('Your files never leave your device.', '文件不会离开你的设备。', 'Deine Dateien verlassen dein Gerät nicht.')}</span></div><span className="status-line" aria-live="polite"><i className={quickBusy || deepPending || cleanupPending ? 'pulse' : ''} />{status}</span></div>
     <input ref={picker} className="sr-only" type="file" accept={ACCEPT} multiple tabIndex={-1} aria-hidden="true" onChange={(event) => { if (event.currentTarget.files) void inspect(event.currentTarget.files); }} />
 
     {!selection && <div ref={chooseButton} className={`privacy-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={0} aria-label={t('Choose an image', '选择图片', 'Bild auswählen')} aria-describedby="privacy-drop-help" onClick={openPicker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPicker(); } }} onDragEnter={(event) => { event.preventDefault(); setDragging(true); }} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); void inspect(event.dataTransfer.files); }}>
       <span className="privacy-drop-icon" aria-hidden="true"><Icon icon={uploadIcon} width="34" /></span><div className="privacy-drop-copy"><span className="eyebrow">{t('Before you post it', '发出去之前', 'Bevor du es teilst')}</span><strong>{t('Drop an image here', '把图片拖到这里', 'Bild hier ablegen')}</strong><p id="privacy-drop-help">JPEG · PNG · WebP · {t('up to 50 MB', '最大 50 MB', 'bis 50 MB')}</p><span className="button button-primary privacy-pick-label" aria-hidden="true">{t('Choose an image', '选择图片', 'Bild auswählen')}</span></div><p className="privacy-check-scope">{t('Checks GPS, names, device IDs, editing history, thumbnails, and nested image records.', '检查 GPS、姓名、设备 ID、编辑历史、缩略图和嵌套图片记录。', 'Prüft GPS, Namen, Geräte-IDs, Bearbeitungsverlauf, Vorschaubilder und verschachtelte Bilddatensätze.')}</p><small>{t('The initial result appears fast, then one automatic full scan finishes the job.', '初步结果很快出现，随后自动完整扫描把事情做完。', 'Das erste Ergebnis erscheint schnell; danach beendet ein automatischer Vollscan die Prüfung.')}</small>
     </div>}
+    {!selection && <SampleImageBar sample={sample} onSelect={(selected) => void inspect([selected])} locale={locale} />}
 
-    {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={imageIcon} width="26" /></span><div><strong>{t('Reading the image structure', '正在读取图片结构', 'Bildstruktur wird gelesen')}</strong><p>{t('The first usable result appears before the automatic full scan finishes.', '自动完整扫描结束前，先给你一个能用的初步结果。', 'Ein erstes nutzbares Ergebnis erscheint, bevor der automatische Vollscan fertig ist.')}</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />{t('Cancel', '取消', 'Abbrechen')}</button></div>}
+    {quickBusy && <div className="privacy-processing" role="status"><span className="privacy-processing-mark"><Icon icon={imageIcon} width="26" /></span><div>{sample.isSample(source) && <SampleImageBadge sampleId={sample.sampleId(source) ?? sample.id} locale={locale} />}<strong>{t('Reading the image structure', '正在读取图片结构', 'Bildstruktur wird gelesen')}</strong><p>{t('The first usable result appears before the automatic full scan finishes.', '自动完整扫描结束前，先给你一个能用的初步结果。', 'Ein erstes nutzbares Ergebnis erscheint, bevor der automatische Vollscan fertig ist.')}</p></div><button className="button button-secondary" type="button" onClick={clearState}><Icon icon={cancelIcon} width="16" />{t('Cancel', '取消', 'Abbrechen')}</button></div>}
     {notice && <p className="image-notice" role="status">{notice}</p>}
-    {error && <div className="image-error" role="alert"><Icon icon={alertIcon} width="26" /><div><span>{error.code}</span><strong>{t('We stopped without keeping a report.', '已经停止，没有保留报告。', 'Der Vorgang wurde ohne Bericht gestoppt.')}</strong><p>{error.message}</p><button className="button button-secondary" type="button" onClick={clearState}>{t('Choose another image', '换一张图片', 'Anderes Bild auswählen')}</button></div></div>}
+    {error && errorDiagnostic && <div className="image-error" role="alert"><Icon icon={alertIcon} width="26" /><div><strong>{t('We stopped without keeping a report.', '已经停止，没有保留报告。', 'Der Vorgang wurde ohne Bericht gestopft.')}</strong><p>{errorDiagnostic.message}</p>{originalDetails(`${error.code}: ${errorDiagnostic.original ?? error.message}`)}<button className="button button-secondary" type="button" onClick={clearState}>{t('Choose another image', '换一张图片', 'Anderes Bild auswählen')}</button></div></div>}
 
-    {selection && !quickBusy && <div className="privacy-result-actions"><div><span className="eyebrow">{t('Local privacy receipt', '本地隐私收据', 'Lokaler Datenschutzbeleg')}</span><h2 ref={resultHeading} tabIndex={-1}>{report ? (fr ? `Rapport de confidentialité pour ${report.file.name}` : t(`${report.file.name} privacy report`, `${report.file.name} 隐私报告`, `Datenschutzbericht für ${report.file.name}`)) : t('No report was created', '没有生成报告', 'Kein Bericht erstellt')}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={() => { if (picker.current) { picker.current.value = ''; picker.current.click(); } }}><Icon icon={rotateIcon} width="16" />{t('Replace image', '替换图片', 'Bild ersetzen')}</button><button className="button button-ghost" type="button" onClick={clearState}>{t('Clear', '清除', 'Löschen')}</button></div></div>}
+    {selection && !quickBusy && <div className="privacy-result-actions"><div>{sample.isSample(source) && <SampleImageBadge sampleId={sample.sampleId(source) ?? sample.id} locale={locale} />}<span className="eyebrow">{t('Local privacy receipt', '本地隐私收据', 'Lokaler Datenschutzbeleg')}</span><h2 ref={resultHeading} tabIndex={-1}>{report ? (fr ? `Rapport de confidentialité pour ${report.file.name}` : t(`${report.file.name} privacy report`, `${report.file.name} 隐私报告`, `Datenschutzbericht für ${report.file.name}`)) : t('No report was created', '没有生成报告', 'Kein Bericht erstellt')}</h2></div><div className="button-row"><button className="button button-secondary" type="button" onClick={openPicker}><Icon icon={rotateIcon} width="16" />{t('Replace image', '替换图片', 'Bild ersetzen')}</button><button className="button button-ghost" type="button" onClick={clearState}>{t('Clear', '清除', 'Löschen')}</button></div></div>}
+
+    {report && !quickBusy && <PrivacyReportActions locale={locale} report={report} deepPending={deepPending} />}
 
     {report && metadata && source && <div className="privacy-result-shell">
       <section className="privacy-file-overview" aria-label={t('Checked image summary', '已检查图片摘要', 'Zusammenfassung des geprüften Bildes')}>{preview && <figure><img src={preview} alt={t('Local preview of the selected image', '所选图片的本地预览', 'Lokale Vorschau des ausgewählten Bildes')} /><figcaption>{t('Local preview · never uploaded', '本地预览 · 从未上传', 'Lokale Vorschau · nie hochgeladen')}</figcaption></figure>}<div className="privacy-file-strip"><div><span>{t('File', '文件', 'Datei')}</span><strong title={metadata.file.name}>{metadata.file.name}</strong></div><div><span>{t('Actual format', '真实格式', 'Echtes Format')}</span><strong>{metadata.file.actualFormat.toUpperCase()}</strong></div><div><span>{t('Size', '大小', 'Größe')}</span><strong>{formatBytes(metadata.file.size)}</strong></div><div><span>{t('Dimensions', '尺寸', 'Abmessungen')}</span><strong>{metadata.file.width} × {metadata.file.height}</strong></div><div><span>{t('Animation', '动画', 'Animation')}</span><strong>{metadata.file.animated ? t('Animated', '动态', 'Animiert') : t('Static', '静态', 'Statisch')}</strong></div><div><span>{t('Browser fields', '浏览器字段', 'Browser-Felder')}</span><strong>{metadata.file.metadataFieldCount}</strong></div></div></section>
-      {[...report.warnings, ...report.scanWarnings].length > 0 && <div className="warning-list privacy-rule-warnings">{[...new Set([...report.warnings, ...report.scanWarnings])].map((warning, index) => <p key={`${warning}-${index}`}><strong>SCAN_NOTE</strong> {warning}</p>)}</div>}
-      <PrivacyScanStatus locale={locale} report={report} pending={deepPending} onCancel={() => exifClient.current?.cancel()} onRetry={() => void runFullScan(source, metadata, report, request.current)} />
+      {[...report.warnings, ...report.scanWarnings].length > 0 && <div className="warning-list privacy-rule-warnings">{[...new Set([...report.warnings, ...report.scanWarnings])].map((warning, index) => { const copy = localizePrivacyDiagnostic(warning, locale); return <div className="privacy-rule-warning" key={`${warning}-${index}`}><p><strong>{privacyCleanupText(locale, 'scanNote')}</strong> {copy.message}</p>{copy.original && originalDetails(copy.original)}</div>; })}</div>}
+      <PrivacyScanStatus locale={locale} report={report} pending={deepPending} stage={deepStage} onCancel={() => exifClient.current?.cancel()} onRetry={() => void runFullScan(source, metadata, report, request.current)} />
       <PrivacyScore locale={locale} report={report} pending={deepPending} />
       <PrivacySummary locale={locale} report={report} />
-      <PrivacyCleanupPanel locale={locale} report={report} metadata={metadata} mode={cleanupMode} pending={cleanupPending} baselinePending={deepPending} stage={cleanupStage} error={cleanupError} result={cleanupResult} onMode={setCleanupMode} onClean={() => void runCleanup()} onDownload={downloadClean} onReceipt={downloadReceipt} />
+      <ToolNextSteps><ToolFileLink file={source} href={localizePath('/image-metadata-viewer/', locale)}>{toolHandoffText(locale, 'metadata')}</ToolFileLink><ToolFileLink file={source} href={localizePath('/image-metadata-remover/', locale)}>{toolHandoffText(locale, 'remove')}</ToolFileLink></ToolNextSteps>
+      <PrivacyCleanupPanel sourceFile={source} locale={locale} report={report} metadata={metadata} mode={cleanupMode} pending={cleanupPending} baselinePending={deepPending} stage={cleanupStage} error={cleanupError} result={cleanupResult} onMode={setCleanupMode} onClean={() => void runCleanup()} onDownload={downloadClean} onReceipt={downloadReceipt} onReset={() => { setCleanupResult(null); setCleanupError(null); setCleanupStage(null); }} />
       <PrivacyRiskList locale={locale} report={report} />
-      <DetectedData locale={locale} report={report} />
-      <PrivacyReportActions locale={locale} report={report} deepPending={deepPending} />
+      <DetectedData locale={locale} report={report} file={source} />
       <aside className="privacy-honest-limit"><Icon icon={alertIcon} width="22" /><div><strong>{t('This tool checks embedded metadata only. It does not analyze visible image content.', '这个工具只检查内嵌元数据，不分析可见画面。', 'Dieses Tool prüft nur eingebettete Metadaten und analysiert keine sichtbaren Bildinhalte.')}</strong><p>{t('Faces, text, addresses, license plates, reflections, screens, uniforms, and landmarks in the image pixels can still reveal personal information.', '图片像素里的人脸、文字、地址、车牌、倒影、屏幕、制服和地标仍可能暴露个人信息。', 'Gesichter, Texte, Adressen, Kennzeichen, Spiegelungen, Bildschirme, Uniformen und Wahrzeichen in den Pixeln können weiterhin persönliche Informationen verraten.')}</p></div></aside><p className="privacy-disclaimer">{fr ? 'Ce score couvre uniquement les métadonnées cachées prises en charge. Il ne garantit pas que l’image soit anonyme ni que les métadonnées soient vraies.' : t(report.disclaimer, '这个分数只覆盖受支持的隐藏元数据，不代表画面本身匿名，也不证明元数据真实。', 'Dieser Wert deckt nur unterstützte versteckte Metadaten ab. Er bedeutet weder, dass das Bild anonym ist, noch dass die Metadaten wahr sind.')}</p>
     </div>}
   </section>;

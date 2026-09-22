@@ -1,0 +1,6 @@
+Noto Sans SC Regular (static TrueType)
+Source: https://github.com/notofonts/noto-cjk/tree/f8d157532fbfaeda587e826d4cd5b21a49186f7c
+Input: Sans/Variable/TTF/Subset/NotoSansSC-VF.ttf
+Generated with fontTools 4.64.0: python -m fontTools.varLib.instancer NotoSansSC-VF.ttf wght=400 --output NotoSansSC-Regular.ttf
+License: SIL Open Font License 1.1 (OFL.txt)
+Loaded only for local Unicode PDF export.

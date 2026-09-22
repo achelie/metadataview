@@ -20,7 +20,9 @@ export default defineConfig({
     // development; production still receives the normal lazy worker chunk.
     optimizeDeps: {
       include: ['hash-wasm'],
-      exclude: ['@colorhythm/exiftool-wasm'],
+      // Each icon is a standalone ESM object. Serve it directly so a newly
+      // visited tool cannot lose hydration to an outdated optimized icon URL.
+      exclude: ['@colorhythm/exiftool-wasm', '@iconify-icons/lucide'],
     },
     worker: { format: 'es' },
   },

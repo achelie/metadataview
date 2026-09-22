@@ -1,4 +1,4 @@
-import { readdir, stat } from 'node:fs/promises';
+import { readdir, stat, writeFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -28,4 +28,14 @@ if (!exifToolWasm) throw new Error('The standalone ExifTool/ZeroPerl WASM asset 
 
 const largest = wasm.reduce((current, file) => file.size > current.size ? file : current, wasm[0]);
 const margin = cloudflareFileLimit - largest.size;
+const nearLimit = files.filter((file) => file.size > cloudflareFileLimit * 0.9);
+for (const file of nearLimit) console.warn(`ASSET HEADROOM WARNING: ${relative(outputDirectory, file.path)} has only ${((cloudflareFileLimit - file.size) / 1024).toFixed(1)} KiB remaining. Check the upstream engine size before upgrading.`);
+// Prevent unnoticed engine growth even while it still fits the hosting limit.
+const exifBudget = 26_150_000;
+if (exifToolWasm.size > exifBudget) throw new Error(`ExifTool exceeds its reviewed ${exifBudget} byte budget. Review cold-load performance and hosting headroom before changing this budget.`);
+await writeFile(join(outputDirectory, 'asset-budget.json'), JSON.stringify({
+  hostingLimit: cloudflareFileLimit,
+  exifToolBudget: exifBudget,
+  files: files.filter((file) => file.size > 500_000).map((file) => ({ path: relative(outputDirectory, file.path).replaceAll('\\', '/'), bytes: file.size, headroom: cloudflareFileLimit - file.size })),
+}, null, 2));
 console.log(`Cloudflare asset check: ${wasm.length} WASM files; largest ${largest.size.toLocaleString('en-US')} bytes; ${margin.toLocaleString('en-US')} bytes below the 25 MiB limit.`);

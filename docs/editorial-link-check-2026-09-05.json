@@ -1,0 +1,778 @@
+{
+  "checkedAt": "2026-09-05T07:38:17.435Z",
+  "results": [
+    {
+      "url": "https://ai.meta.com/tools/system-cards/instagram-feed-ranking/",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://developer.adobe.com/xmp/docs/xmp-specifications/",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://developer.adobe.com/xmp/docs/xmp-specifications/",
+      "result": "reachable"
+    },
+    {
+      "url": "https://doi.org/10.70322/plfs.2025.10006",
+      "articles": [
+        "does-whatsapp-remove-exif-data.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.sciepublish.com/article/pii/567",
+      "result": "reachable"
+    },
+    {
+      "url": "https://exiftool.org/TagNames/PDF.html",
+      "articles": [
+        "remove-metadata-from-pdf.md"
+      ],
+      "status": 404,
+      "finalUrl": "https://exiftool.org/TagNames/PDF.html",
+      "result": "broken"
+    },
+    {
+      "url": "https://exiftool.org/TagNames/QuickTime.html",
+      "articles": [
+        "remove-metadata-from-mp4.md"
+      ],
+      "status": 404,
+      "finalUrl": "https://exiftool.org/TagNames/QuickTime.html",
+      "result": "broken"
+    },
+    {
+      "url": "https://exiftool.org/TagNames/XMP.html",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": 404,
+      "finalUrl": "https://exiftool.org/TagNames/XMP.html",
+      "result": "broken"
+    },
+    {
+      "url": "https://helpx.adobe.com/uk/lightroom-classic/desktop/organize-photos-in-lightroom-classic/create-xmp-acr-files.html",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://helpx.adobe.com/uk/lightroom-classic/desktop/organize-photos-in-lightroom-classic/create-xmp-acr-files.html",
+      "result": "reachable"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/wic/-wic-photoprop-system-photo-datetaken",
+      "articles": [
+        "how-to-view-exif-data-on-windows-11.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://learn.microsoft.com/en-us/windows/win32/wic/-wic-photoprop-system-photo-datetaken",
+      "result": "reachable"
+    },
+    {
+      "url": "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios",
+      "articles": [
+        "how-to-view-exif-data-on-iphone.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://support.apple.com/guide/iphone/see-photo-and-video-information-iph0edb9c18f/ios",
+      "result": "reachable"
+    },
+    {
+      "url": "https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web",
+      "articles": [
+        "how-to-remove-gps-data-from-photos-before-sharing.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://support.apple.com/guide/personal-safety/manage-location-metadata-in-photos-ips0d7a5df82/web",
+      "result": "reachable"
+    },
+    {
+      "url": "https://support.google.com/mail/answer/6584?hl=en",
+      "articles": [
+        "does-gmail-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://support.google.com/mail/thread/122174064/image-file-tags-and-metadata-in-gmail?hl=en",
+      "articles": [
+        "does-gmail-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://support.google.com/photos/answer/6128850?co=GENIE.Platform%3DAndroid&hl=en",
+      "articles": [
+        "how-to-view-exif-data-on-android.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://support.google.com/photos/answer/6153599?co=GENIE.Platform%3DAndroid&hl=en",
+      "articles": [
+        "how-to-view-exif-data-on-android.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://support.microsoft.com/en-au/office/inspect-document-b0088a7a-d482-4b87-b762-7c94c7c71e23",
+      "articles": [
+        "remove-metadata-from-word-document.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://support.microsoft.com/en-au/office/inspect-document-b0088a7a-d482-4b87-b762-7c94c7c71e23",
+      "result": "reachable"
+    },
+    {
+      "url": "https://support.microsoft.com/en-US/Office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks",
+      "articles": [
+        "remove-metadata-from-word-document.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://support.microsoft.com/en-us/office/collab-files/remove-hidden-data-and-personal-information-by-inspecting-documents-presentations-or-workbooks",
+      "result": "reachable"
+    },
+    {
+      "url": "https://support.microsoft.com/en-us/windows/apps/photos/manage-photos-and-videos-with-microsoft-photos-app",
+      "articles": [
+        "how-to-view-exif-data-on-windows-11.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://support.microsoft.com/en-us/windows/apps/photos/manage-photos-and-videos-with-microsoft-photos-app",
+      "result": "reachable"
+    },
+    {
+      "url": "https://taglib.org/api/classTagLib_1_1MPEG_1_1File.html",
+      "articles": [
+        "remove-metadata-from-mp3.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://taglib.org/api/classTagLib_1_1MPEG_1_1File.html",
+      "result": "reachable"
+    },
+    {
+      "url": "https://telegram.org/blog/direct-to-channel-trim-voice-and-more",
+      "articles": [
+        "does-telegram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.embeddedmetadata.org/social-media-test-results.php",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.embeddedmetadata.org/social-media-test-results.php",
+      "result": "reachable"
+    },
+    {
+      "url": "https://www.facebook.com/help/instagram/1631821640426723",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.facebook.com/privacy/policy/",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/AnalogCommunity/comments/1u3libe/i_built_filmtag_an_opensource_tool_to_batchinject/",
+      "articles": [
+        "exif-metadata-definition-and-how-to-view.md",
+        "how-to-check-metadata-of-an-image.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Android/comments/7b1cb2/til_android_screenshots_dont_include_any_metadata/",
+      "articles": [
+        "do-screenshots-have-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/argentina/comments/1p5tge6/el_chiqui_mafia_public%C3%B3_en_el_sitio_de_la_afa_un/",
+      "articles": [
+        "how-to-view-pdf-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/AskPhotography/comments/1ht9puo/app_that_shows_you_what_camera_was_used_and_iso/",
+      "articles": [
+        "how-to-find-camera-settings-from-a-photo.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/AskPhotography/comments/ywbq8f/best_app_to_see_photo_data_iso_aperture_lens_etc/",
+      "articles": [
+        "how-to-find-camera-settings-from-a-photo.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/AskPhotography/comments/zbff05/looking_for_image_browser_that_shows_exif_info/",
+      "articles": [
+        "how-to-find-camera-settings-from-a-photo.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/AskTechnology/comments/1qpxwx0/is_it_possible_to_find_my_ip_if_i_post_my_picture/",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/DigitalAudioPlayer/comments/1sa9fl8/what_exactly_is_metadata/",
+      "articles": [
+        "remove-metadata-from-mp3.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/digitalforensics/comments/17w0a8w/metadata_from_emailed_image/",
+      "articles": [
+        "does-gmail-remove-exif-data.md",
+        "exif-vs-metadata.md",
+        "how-to-tell-when-a-photo-was-taken.md",
+        "what-is-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/12800f7/discord_is_stripping_metadata_out_of_png_images/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/1e5i7we/question_does_discord_remove_exif_data_from/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/foilna/does_discord_automatically_strip_exif_data/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/jzwite/psa_discord_does_not_strip_location_data_for/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/ll1kod/does_discord_remove_exif_data/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/discordapp/comments/sq9xwj/does_discord_strip_video_exif_data/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/GalaxyNote8/comments/7z0kdn/how_can_i_read_the_exif_metadata_on_the_photos_i/",
+      "articles": [
+        "how-to-view-exif-data-on-android.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/GMail/comments/p8s7rp/does_gmail_strip_images_of_metadata_before_being/",
+      "articles": [
+        "does-gmail-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/googlephotos/comments/16bt46n/how_to_preserve_upload_date_when_no_exif_data_is_present/",
+      "articles": [
+        "does-whatsapp-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/googlephotos/comments/1i8si0q/",
+      "articles": [
+        "how-to-view-exif-data-on-windows-11.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/googlephotos/comments/1qwdf0d/manual_tagging_of_location_of_photos_in_google/",
+      "articles": [
+        "how-to-find-where-a-photo-was-taken.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/googlephotos/comments/1r5lrdc/metadata_in_google_photos/",
+      "articles": [
+        "how-to-tell-when-a-photo-was-taken.md",
+        "how-to-view-exif-data-on-android.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/googlephotos/comments/1usf6nc/i_built_a_cli_tool_to_fix_google_photos_metadata/",
+      "articles": [
+        "exif-metadata-definition-and-how-to-view.md",
+        "how-to-check-metadata-of-an-image.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/help/comments/1dx53tz/does_reddit_still_remove_exif_data_when_i_upload/",
+      "articles": [
+        "does-reddit-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/iCloud/comments/1vnw3yd/pics_shared_with_me_lost_exif_data/",
+      "articles": [
+        "how-to-tell-when-a-photo-was-taken.md",
+        "how-to-view-exif-data-on-iphone.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/immich/comments/1n8gl4o/whatsapp_exif_date_changer_from_filename_exiftool/",
+      "articles": [
+        "does-whatsapp-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/immich/comments/1t8rs2d/xmp_metadata/",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/immich/comments/1ucdnw8/i_made_this_tool_to_fix_wrong_timeline_dates_by/",
+      "articles": [
+        "does-discord-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Instagram/comments/esbd10/question_about_instagram_and_exif_data/",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/ios/comments/1o390ce/exif_location_sharing_a_privacy_nightmare/",
+      "articles": [
+        "how-to-view-exif-data-on-iphone.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/iphone/comments/35a2w5/is_it_at_all_possible_to_get_exif_data_from_photos_sent_on_whatsapp/",
+      "articles": [
+        "does-whatsapp-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/LazyLibrarian/comments/1krjiy5/feature_request_autoreject_semiautoedit_filter/",
+      "articles": [
+        "how-to-view-pdf-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/LifeProTips/comments/1sb7ssk/lpt_before_posting_photos_online_check_if_they/",
+      "articles": [
+        "how-to-find-where-a-photo-was-taken.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Lightroom/comments/1rc8klz/lightroom_created_sidecar_xmp_now_complaining/",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/MacOS/comments/1e2hkvq/how_can_i_see_metadata_of_photos_and_videos_in/",
+      "articles": [
+        "how-to-view-photo-metadata-on-mac.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/MacOS/comments/1t50ycz/date_time_original/",
+      "articles": [
+        "how-to-view-photo-metadata-on-mac.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/MicrosoftWord/comments/1tprgty/retrieving_word_metadata/",
+      "articles": [
+        "remove-metadata-from-word-document.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/mp3players/comments/1suia4v/no_album_art_on_my_cason_mp3_player/",
+      "articles": [
+        "remove-metadata-from-mp3.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/msp/comments/mrgkum/software_to_auto_strip_metadata_from_word/",
+      "articles": [
+        "remove-metadata-from-word-document.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/musichoarder/comments/1urdj5o/how_can_i_delete_a_tag_from_all_songs_in_my/",
+      "articles": [
+        "remove-metadata-from-mp3.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/NextCloud/comments/1qri69p/nextcloud_android_app_exif_data/",
+      "articles": [
+        "exif-metadata-definition-and-how-to-view.md",
+        "how-to-check-metadata-of-an-image.md",
+        "how-to-view-exif-data-on-android.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/pdf/comments/1mopabc/remove_modified_metadata_not_change_to_the_same/",
+      "articles": [
+        "remove-metadata-from-pdf.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/pdf/comments/1p3a132/edit_digitally_signed_pdf/",
+      "articles": [
+        "remove-metadata-from-pdf.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/pdf/comments/1qlgf75/pdf_metadata/",
+      "articles": [
+        "remove-metadata-from-pdf.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/photography/comments/1mqay9o/exifiptc_metadata_or_xmp_sidecar_files/",
+      "articles": [
+        "what-is-xmp-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/1amghzo/does_screenshot_on_macos_scrub_exifmetadata/",
+      "articles": [
+        "do-screenshots-have-metadata.md",
+        "exif-vs-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/1cjxcez/removing_all_identifying_info_from_a_photo/",
+      "articles": [
+        "does-gmail-remove-exif-data.md",
+        "how-to-remove-gps-data-from-photos-before-sharing.md",
+        "how-to-remove-metadata-from-a-photo.md",
+        "what-is-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/1kfolnu/how_to_anonymize_a_video/",
+      "articles": [
+        "remove-metadata-from-mp4.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/1r7qv5h/best_way_to_clearobfuscatespoof_file_datametadata/",
+      "articles": [
+        "how-to-remove-gps-data-from-photos-before-sharing.md",
+        "how-to-remove-metadata-from-a-photo.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/1sg2fc1/how_do_i_remove_metadata_from_a_photo/",
+      "articles": [
+        "how-to-remove-gps-data-from-photos-before-sharing.md",
+        "how-to-remove-metadata-from-a-photo.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/7gkhwf/what_software_is_there_to_remove_metadata_from/",
+      "articles": [
+        "remove-metadata-from-word-document.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/ubrsu6/metadata_stored_on_filesjpegscreenshots/",
+      "articles": [
+        "do-screenshots-have-metadata.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/privacy/comments/wixm7w/does_reddit_erase_location_metadata_from_the/",
+      "articles": [
+        "does-reddit-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/ricohGR/comments/1o1xb7e/see_detailed_metadata_exif_data_in_jpg_files_on/",
+      "articles": [
+        "how-to-view-photo-metadata-on-mac.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/shutterencoder/comments/1hj7ib3/how_to_remove_gpslocation_metadata_from/",
+      "articles": [
+        "remove-metadata-from-mp4.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/shutterencoder/comments/1m1upec/how_to_bulk_remove_metadata_from_videos_without/",
+      "articles": [
+        "does-instagram-remove-exif-data.md",
+        "remove-metadata-from-mp4.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/techsupport/comments/khw8xj/is_there_a_possible_work_around_to_get_exif_data/",
+      "articles": [
+        "does-instagram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Telegram/comments/1l8zir0/is_it_true/",
+      "articles": [
+        "does-telegram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Telegram/comments/1sjflgf/media_upload_metadata_question/",
+      "articles": [
+        "does-telegram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/whatsapp/comments/1t5osx6/whatsapp_metadata_and_filename_logic/",
+      "articles": [
+        "does-whatsapp-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/Windows11/comments/1ki8rtz/",
+      "articles": [
+        "how-to-view-exif-data-on-windows-11.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.reddit.com/r/WindowsHelp/comments/1d76xmx/",
+      "articles": [
+        "how-to-view-exif-data-on-windows-11.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    },
+    {
+      "url": "https://www.telegram.org/privacy",
+      "articles": [
+        "does-telegram-remove-exif-data.md"
+      ],
+      "status": null,
+      "result": "unverified",
+      "error": "fetch failed"
+    }
+  ],
+  "note": "Initial automated snapshot before replacing three ExifTool links with official GitHub source; 403/timeouts are unverified. Google/Telegram primary references were separately opened with the web tool."
+}

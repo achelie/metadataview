@@ -1,5 +1,6 @@
 ---
 import { IconGlyph } from './IconGlyph';
+import StaticIcon from './StaticIcon.astro';
 import { localizePath, type Locale } from '../i18n/core';
 
 interface Props { locale?: Locale }
@@ -106,7 +107,7 @@ const privacyProcess = zh ? [
     </ol>
     <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?', 'Une image sous la main ?')}</span><a href="#privacy-checker-workbench">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen', 'Inspectez-la ci-dessus')} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
-      <summary>{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann', 'Ce que ce score ne peut pas voir')}</summary>
+      <summary class="disclosure-summary"><span class="disclosure-label">{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann', 'Ce que ce score ne peut pas voir')}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary>
       <ul>
         <li>{t('Faces, text, screens, reflections, plates, uniforms, and landmarks in the visible pixels are not analyzed.', '不会分析画面里可见的人脸、文字、屏幕、倒影、车牌、制服和地标。', 'Gesichter, Texte, Bildschirme, Spiegelungen, Kennzeichen, Uniformen und Wahrzeichen in sichtbaren Pixeln werden nicht analysiert.', 'Visages, textes, écrans, reflets, plaques, uniformes et monuments visibles ne sont pas analysés.')}</li>
         <li>{t('A low score means fewer supported metadata signals. It does not guarantee that sharing the image is safe.', '低分只表示受支持的元数据线索较少，不保证图片适合分享。', 'Ein niedriger Wert bedeutet nur weniger unterstützte Metadatenspuren. Er garantiert nicht, dass sich das Bild sicher teilen lässt.', 'Un score faible signifie moins d’indices de métadonnées pris en charge. Il ne garantit pas que le partage soit sans risque.')}</li>

@@ -10,7 +10,7 @@ tags:
   - photo metadata
   - GPS metadata
 publishedAt: 2026-08-18
-updatedAt: 2026-08-18
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/what-is-exif-data.webp"
@@ -43,8 +43,6 @@ EXIF stands for Exchangeable Image File Format. Despite the name, it is not a se
 EXIF is one kind of photo metadata. That distinction matters because a file may have XMP, IPTC, color profile, file system, or application data even when its EXIF section is empty.
 
 ## Is EXIF the same as photo metadata?
-
-No. Photo metadata is the broad category, while EXIF is one common way to store camera and capture information.
 
 Think of photo metadata as everything a file says about itself. EXIF may describe how the camera made the picture. IPTC can hold captions, credits, and contact details. XMP can store editing history, ratings, and fields copied between apps. An ICC profile tells software how to display color. Your operating system also shows a filename, size, and file dates that may not be embedded in the image at all.
 
@@ -121,6 +119,12 @@ Windows and macOS can show a short list through file properties or photo inspect
 Use the original file when possible. A thumbnail from a website, a screenshot, or an image copied from a document may be a different file with different metadata. Our [screenshot metadata guide](/blog/do-screenshots-have-metadata/) explains why a screenshot normally drops the source photo's camera EXIF even though the new image still has basic file information.
 
 When checking dates, compare `DateTimeOriginal` with the file system dates rather than assuming they describe the same event. When checking location, search for GPS, latitude, longitude, position, city, and country across the whole report.
+
+## Why orientation and color are different from a private note
+
+Some metadata helps software display a photo. Orientation can instruct an app to rotate or mirror the stored pixel grid. A color profile describes how color values should be interpreted. Removing such information indiscriminately can affect presentation even though the pixel data was not intentionally edited.
+
+Treat a cleanup report's preserved technical fields differently from residual GPS, names or comments. A useful report need not be empty. Check the fields that matter for the sharing decision, then open the output to confirm its appearance. This is also why a tool's readable field count is not a privacy score.
 
 ## How do you remove EXIF before sharing a photo?
 

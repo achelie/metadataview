@@ -10,7 +10,7 @@ tags:
   - remove Word author
   - DOCX properties
 publishedAt: 2026-08-27
-updatedAt: 2026-08-27
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/remove-metadata-from-word-document.webp"
@@ -132,6 +132,12 @@ Drop the cleaned file into the [Document Metadata Viewer](/document-metadata-vie
 Windows and macOS will give the cleaned file new local Created or Modified timestamps. Those file system dates describe that copy on that computer. They are not the same as dates embedded in the DOCX package.
 
 If you plan to email the file, attach only the cleaned copy. The [Gmail attachment guide](/blog/does-gmail-remove-exif-data/) is about images, but its practical point applies here too: email is transport, not a metadata cleaner.
+
+## Use the right order before the final send
+
+Finish the content review first: resolve comments and tracked changes in Word if the recipient should not see them. Then inspect and clean the remaining package properties. Finally open the cleaned copy to check its layout, and avoid saving it again unnecessarily before attaching it.
+
+A later save can repopulate authoring properties using the editor's account settings. If you do edit or save again, inspect that new version. A clean `docProps` report cannot certify comments or document text, and a PDF export introduces a separate properties record that needs its own review.
 
 ## Does removing Word metadata make the document anonymous?
 

@@ -10,7 +10,7 @@ tags:
   - check image EXIF data
   - photo metadata viewer
 publishedAt: 2026-08-29
-updatedAt: 2026-08-29
+updatedAt: 2026-09-05
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/how-to-check-metadata-of-an-image.webp"
@@ -126,6 +126,19 @@ A camera model, creator name, or copyright line may be useful context. None prov
 For signed provenance, check whether the file has valid C2PA Content Credentials. Even a valid credential proves the signed record is bound to that file without an undetected change. It does not prove that every statement or visible scene is true.
 
 When the stakes are higher than casual curiosity, keep the original bytes, record where the file came from, compare hashes, and avoid drawing a conclusion from one metadata field.
+
+## A report that is empty, incomplete or contradictory
+
+These results call for different actions:
+
+| Result | Interpretation | Next step |
+| --- | --- | --- |
+| Completed scan, no GPS fields found | No readable GPS in this copy | Look for an original if location is needed |
+| Parser warning or unsupported block | Coverage is limited | Keep the file and check the warning before relying on absence |
+| Summary blank, native field present | The summary omitted a readable value | Use the native tag name and source |
+| EXIF and XMP disagree | The file contains competing records | Preserve both values and check its editing history |
+
+A long report is not necessarily more accurate. The number of fields also does not measure how much personal information a file contains. One coordinate can matter more than dozens of playback or color properties.
 
 ## What should you do before sharing an image?
 

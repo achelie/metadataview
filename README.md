@@ -94,6 +94,8 @@ The site may load normal static assets and analytics, but file names, file bytes
 
 The project uses defensive limits for archive entries, XML properties, metadata strings, decompression, field counts, image dimensions, scan budgets, and Worker timeouts.
 
+Office cleanup caps each uncompressed entry at 64 MiB, total declared and actual decompression at 256 MiB, application-property XML at 2 MiB, and the output archive at 100 MiB. Streamed bytes are checked even if ZIP size declarations are incorrect. A truncated or partial metadata scan produces an incomplete cleanup verification rather than a verified result.
+
 ## Technology
 
 - [Astro](https://astro.build/) with static output
@@ -149,12 +151,18 @@ Open `http://localhost:4321`. No `.env` file or external parsing service is requ
 
 ```bash
 pnpm test
-pnpm exec playwright install chromium
-pnpm exec playwright test
-pnpm build
+pnpm exec playwright install chromium firefox webkit
+pnpm test:e2e
+pnpm verify:release
 ```
 
 `pnpm build` runs Astro diagnostics, generates the static site, rebuilds the sitemap, checks canonical and structured-data output, verifies that WebAssembly stays external, and rejects files above the Cloudflare Pages 25 MiB limit.
+
+Browser tests use the built site through `astro preview`, so development toolbar markup cannot affect assertions. `verify:release` runs all unit tests, a clean build, and the tagged release regressions in Chromium, Firefox and WebKit. The full legacy suite runs in Chromium; the new shared release suite runs in all three browsers. A Chromium cold-load check records elapsed time under 4× CPU throttling and an 8 Mbps connection. These emulations do not replace testing on physical low-memory devices.
+
+Asset checks warn at 90% of the hosting limit and reject ExifTool growth beyond its reviewed 26,150,000-byte budget. `dist/asset-budget.json` records large assets and remaining headroom. ExifTool is still close to the hosting limit; future upgrades need an explicit budget review.
+
+PDF exports retain Unicode values with a locally served, static Noto Sans SC font. It loads only when an export needs characters outside WinAnsi. The complete font is embedded to avoid CJK subset rendering defects; Unicode reports are consequently larger (about 6 MiB of font data). Unsupported glyphs stop export with a clear error instead of silently replacing the original value; JSON remains available.
 
 ## Deploy
 
@@ -173,7 +181,7 @@ pnpm build
 pnpm deploy:pages
 ```
 
-For a production release, push the intentional commit to GitHub first, then run `pnpm release` from that checkout. The release command rebuilds the static site, rechecks sitemap and indexability, and uploads `dist/` to the production Pages branch.
+For a production release, push the intentional commit to GitHub first, then run `pnpm release` from that checkout. The release command first runs `verify:release`; deployment starts only when unit tests, the build and browser regressions all pass.
 
 No server runtime or application secrets are required.
 
@@ -183,6 +191,7 @@ No server runtime or application secrets are required.
 - The privacy score checks supported hidden fields, not faces, text, addresses, plates, reflections, or landmarks visible in pixels.
 - Browser image preview support varies, especially for HEIC and TIFF. Metadata inspection can still work without a preview.
 - Metadata-only cleanup preserves fields required for rendering or structure, so the verified result may report residual metadata.
+- Metadata scan status, structural checks and content checks are separate. Office cleanup hashes every package file except the three rewritten property files. PNG, WebP, WAV and ISO-BMFF media payloads are compared by SHA-256; that does not certify rendering, ancillary data or track interpretation. Formats without payload verification explicitly report that content consistency is unverified. A content mismatch blocks download.
 - Removing metadata can invalidate C2PA credentials and document signatures.
 - C2PA validation checks a signed file binding. It does not certify that the content is true.
 - The toolkit processes one file at a time and keeps no cross-page history.

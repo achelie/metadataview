@@ -66,6 +66,24 @@ async function upload(page: Page, name: string, buffer: Buffer, mimeType = 'imag
   await input.setInputFiles({ name, mimeType, buffer });
 }
 
+async function expectDetectedFormat(page: Page, filename: string) {
+  const details = page.locator('details.report-file-details');
+  await expect(details).toBeAttached();
+  if (await details.getAttribute('open') === null) await details.locator(':scope > summary').click();
+  const extension = filename.split('.').at(-1)!;
+  const aliases: Record<string, string> = { jpg: 'JPEG', m4v: 'MP4', oga: 'OGG' };
+  const format = details.locator('.report-facts > div').filter({ has: page.locator('dt', { hasText: /^Format$/ }) }).locator('dd');
+  await expect(format).toHaveText(aliases[extension] ?? extension.toUpperCase());
+  await expect(format).toBeVisible();
+}
+
+async function removalDownload(page: Page) {
+  const result = page.locator('.removal-result');
+  const status = await result.getAttribute('class');
+  const label = /\bis-(verified-residual|incomplete)\b/.test(status ?? '') ? 'Download processed copy' : 'Download clean copy';
+  return result.locator('.result-action-bar').getByRole('button', { name: label, exact: true });
+}
+
 async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promise<Buffer> {
   const values = await page.evaluate(async (type) => {
     const canvas = document.createElement('canvas'); canvas.width = 3; canvas.height = 2;
@@ -135,7 +153,8 @@ test('home page directly parses all 28 promised file extensions', async ({ page 
     await page.goto('/');
     await upload(page, name, buffer, mimeType);
     await expect(page.getByRole('heading', { name: new RegExp(`${name.replace('.', '\\.')} metadata report`) })).toBeVisible({ timeout: 20_000 });
-    await expect(page.locator('.report-file-title')).toContainText(category);
+    await expectDetectedFormat(page, name);
+    await expect(page.locator('.home-exif-summary')).toHaveCount(category === 'image' ? 1 : 0);
   }
 });
 
@@ -143,13 +162,32 @@ test('shared report progressively merges the local ExifTool field set without up
   test.setTimeout(180_000);
   const requests: Array<{ method: string; url: string }> = [];
   page.on('request', (request) => requests.push({ method: request.method(), url: request.url() }));
+  let releaseEngine!: () => void;
+  const engineGate = new Promise<void>((resolve) => { releaseEngine = resolve; });
+  let engineRequested = false;
+  await page.route(/\/zeroperl[^/]*\.wasm(?:\?.*)?$/, async (route) => {
+    engineRequested = true;
+    await engineGate;
+    await route.continue();
+  });
   await page.goto('/image-metadata-viewer/');
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(false);
 
   const buffer = await canvasImage(page, 'image/jpeg');
   await upload(page, 'camera-profile.jpg', buffer, 'image/jpeg');
   await expect(page.getByRole('heading', { name: 'camera-profile.jpg metadata report' })).toBeVisible({ timeout: 20_000 });
+  const photoDetails = page.locator('.report-photo-details');
+  try {
+    await expect.poll(() => engineRequested).toBe(true);
+    await expect(page.locator('.report-engine')).not.toHaveClass(/is-complete/);
+    await expect(photoDetails).toHaveAttribute('open', '');
+    await photoDetails.locator(':scope > summary').click();
+    await expect(photoDetails).not.toHaveAttribute('open', '');
+  } finally {
+    releaseEngine();
+  }
   await expect(page.locator('.report-engine')).toHaveClass(/is-complete/, { timeout: 150_000 });
+  await expect(photoDetails).not.toHaveAttribute('open', '');
   await expect(page.locator('.report-engine-copy')).toContainText('Full scan complete');
   await expect(page.locator('.report-engine-stats')).toContainText(/ExifTool\s+\d/i);
   await expect(page.locator('.report-engine-stats')).toContainText(/\d+ fields/);
@@ -158,7 +196,7 @@ test('shared report progressively merges the local ExifTool field set without up
   const jfif = page.locator('details.report-section').filter({ hasText: 'JFIF' }).first();
   const jfifSummary = jfif.locator(':scope > summary');
   await expect(jfifSummary).toBeVisible();
-  await jfifSummary.click();
+  if (await jfif.getAttribute('open') === null) await jfifSummary.click();
   await expect(jfif.getByText('JFIF Version', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /Scan embedded data/i })).toHaveCount(0);
   await expect(page.locator('.report-engine ol')).toHaveCount(0);
@@ -166,6 +204,9 @@ test('shared report progressively merges the local ExifTool field set without up
   expect(requests.some((request) => request.method !== 'GET')).toBe(false);
   expect(requests.some((request) => request.url.includes('camera-profile') || request.url.includes('ExifTool author'))).toBe(false);
   expect(requests.some((request) => request.url.includes('zeroperl') || request.url.endsWith('.wasm'))).toBe(true);
+  await upload(page, 'replacement-profile.jpg', buffer, 'image/jpeg');
+  await expect(page.getByRole('heading', { name: 'replacement-profile.jpg metadata report' })).toBeVisible();
+  await expect(photoDetails).toHaveAttribute('open', '');
 });
 
 test('universal report parses all 28 promised file extensions through one workbench', async ({ page }) => {
@@ -200,7 +241,8 @@ test('universal report parses all 28 promised file extensions through one workbe
     await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
     await upload(page, name, buffer, mimeType);
     await expect(page.getByRole('heading', { name: new RegExp(`${name.replace('.', '\\.')} metadata report`) })).toBeVisible({ timeout: 20_000 });
-    await expect(page.locator('.report-file-title')).toContainText(category);
+    await expectDetectedFormat(page, name);
+    await expect(page.locator('.home-exif-summary')).toHaveCount(category === 'image' ? 1 : 0);
     await expect(page.getByText(expected, { exact: typeof expected === 'string' }).first()).toBeVisible();
     await expect(page.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/);
   }
@@ -276,7 +318,7 @@ test('privacy checker renders an explainable report', async ({ page }) => {
   await expect(page.getByText(/does not guarantee that an image is safe to share/i)).toBeVisible();
 });
 
-test('metadata remover creates a downloadable clean copy', async ({ page }) => {
+test('metadata remover creates a downloadable clean copy', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/metadata-remover/');
   await upload(page, 'private.png', png(['Artist', 'Ada Example']));
@@ -286,11 +328,11 @@ test('metadata remover creates a downloadable clean copy', async ({ page }) => {
   await expect(page.locator('.removal-result')).toBeVisible({ timeout: 45_000 });
   await expect(page.locator('.removal-result')).toContainText('Removed');
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  await (await removalDownload(page)).click();
   expect((await downloadPromise).suggestedFilename()).toMatch(/clean\.png$/);
 });
 
-test('PDF removal rewrites the file with qpdf and removes the old Info author', async ({ page }) => {
+test('PDF removal rewrites the file with qpdf and removes the old Info author', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/document-metadata-remover/');
   await upload(page, 'signed-off.pdf', pdf(), 'application/pdf');
@@ -301,7 +343,7 @@ test('PDF removal rewrites the file with qpdf and removes the old Info author', 
   await expect(result).toContainText('qpdf');
   await expect(result).not.toHaveClass(/is-blocked/);
   const downloadEvent = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  await (await removalDownload(page)).click();
   const pdfDownload = await downloadEvent;
   const pdfPath = await pdfDownload.path();
   const bytes = await readFile(pdfPath as string);
@@ -309,7 +351,7 @@ test('PDF removal rewrites the file with qpdf and removes the old Info author', 
   expect(bytes.toString('latin1')).not.toContain('Ada Example');
 });
 
-test('audio removal uses TagLib without re-encoding the stream container', async ({ page }) => {
+test('audio removal uses TagLib without re-encoding the stream container', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/audio-metadata-remover/');
   await upload(page, 'credits.mp3', mp3(), 'audio/mpeg');
@@ -318,10 +360,10 @@ test('audio removal uses TagLib without re-encoding the stream container', async
   const result = page.locator('.removal-result');
   await expect(result).toBeVisible({ timeout: 60_000 });
   await expect(result).toContainText('taglib');
-  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
+  await expect(await removalDownload(page)).toBeEnabled();
 });
 
-test('Office removal keeps body XML while clearing Core and Custom properties', async ({ page }) => {
+test('Office removal keeps body XML while clearing Core and Custom properties', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   const source = await ooxmlFixture('docx', { author: 'Ada Example', customName: 'Client', customValue: 'Secret Account', bodyText: 'BODY-STAYS-HERE' });
   await page.goto('/document-metadata-remover/');
@@ -330,7 +372,7 @@ test('Office removal keeps body XML while clearing Core and Custom properties', 
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   await expect(page.locator('.removal-result')).toContainText('ooxml-zip', { timeout: 60_000 });
   const downloadEvent = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Download clean copy' }).click();
+  await (await removalDownload(page)).click();
   const officeDownload = await downloadEvent;
   const officePath = await officeDownload.path();
   const output = await readFile(officePath as string);
@@ -347,14 +389,14 @@ test('Office removal keeps body XML while clearing Core and Custom properties', 
   await zip.close();
 });
 
-test('AVI removal keeps the RIFF container valid after the custom scrubber runs', async ({ page }) => {
+test('AVI removal keeps the RIFF container valid after the custom scrubber runs', { tag: '@release' }, async ({ page }) => {
   test.setTimeout(120_000);
   await page.goto('/video-metadata-remover/');
   await upload(page, 'clip.avi', Buffer.from(videoFixture('avi')), videoMime('avi'));
   await expect(page.getByText('Ready to create a clean copy')).toBeVisible({ timeout: 35_000 });
   await page.getByRole('button', { name: 'Create and verify clean copy' }).click();
   await expect(page.locator('.removal-result')).toContainText('riff', { timeout: 60_000 });
-  await expect(page.getByRole('button', { name: 'Download clean copy' })).toBeEnabled();
+  await expect(await removalDownload(page)).toBeEnabled();
 });
 
 test('metadata remover desktop and mobile result stay usable without console errors', async ({ page }, testInfo) => {
@@ -397,20 +439,18 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   for (const extension of ['.gif', '.heic', '.heif', '.avif', '.jxl', '.dng', '.arw', '.nef', '.svg', '.mov', '.avi', '.mp3', '.m4a', '.wav']) expect(accept).toContain(extension);
   await upload(page, 'unsigned.png', png());
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
-  await expect(page.getByText(/says nothing by itself about whether the content is authentic or fake/i)).toBeVisible();
-  await expect(page.locator('.c2pa-hash code')).toHaveText(/^[a-f0-9]{64}$/);
-  await expect(page.locator('.c2pa-checks').getByText('Not applicable', { exact: true })).toHaveCount(4);
-  await expect(page.locator('.c2pa-asset-copy').getByText('Not applicable', { exact: true })).toHaveCount(1);
-  await expect(page.locator('.c2pa-asset-card img')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Validation results' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Actions' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Provenance' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Embedded watermark' })).toBeVisible();
-  await expect(page.getByText('No watermark declaration found.')).toBeVisible();
-  await expect(page.getByText(/does not inspect pixels or audio samples/i)).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Create shareable report' })).toBeVisible();
+  await expect(page.locator('.c2pa-no-meaning')).toContainText('does not mean the content is fake');
+  await expect(page.locator('.c2pa-no-fingerprint code')).toHaveText(/^[a-f0-9]{64}$/);
+  await expect(page.locator('.c2pa-checks, .c2pa-asset-card, .c2pa-evidence-stack')).toHaveCount(0);
+  await expect(page.locator('.c2pa-no-preview img')).toBeVisible();
+  await expect(page.locator('.c2pa-no-diagnostics')).not.toHaveAttribute('open', '');
+  await page.locator('.c2pa-no-diagnostics > summary').click();
+  await expect(page.locator('.c2pa-no-diagnostics pre')).toContainText('not-found');
+  await page.locator('.c2pa-no-diagnostics > summary').click();
+  const reportDownload = page.locator('.c2pa-result-actions.result-action-bar').getByRole('button', { name: 'Download report', exact: true });
+  await expect(reportDownload).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Create shareable report' }).click();
+  await reportDownload.click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/c2pa-report\.json$/);
   const downloadPath = await download.path();
@@ -437,7 +477,8 @@ test('C2PA viewer sends a signature-checked SVG to the official local verifier',
   await page.goto('/c2pa-viewer/');
   await upload(page, 'unsigned.svg', Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><path d="M0 0h1v1z"/></svg>'), 'image/svg+xml');
   await expect(page.getByRole('heading', { name: 'No Content Credentials' })).toBeVisible({ timeout: 35_000 });
-  await expect(page.locator('.c2pa-file-receipt').getByText('SVG', { exact: true })).toBeVisible();
+  await expect(page.locator('.c2pa-no-file-details')).toContainText('SVG');
+  await expect(page.locator('.c2pa-no-next-actions a[data-tool-file-link]')).toHaveCount(0);
   expect(requests.some((request) => request.url.endsWith('.wasm'))).toBe(true);
   expect(requests.some((request) => !['GET', 'HEAD'].includes(request.method))).toBe(false);
 });
@@ -675,6 +716,9 @@ test('home image report puts an EXIF Summary before the full metadata ledger', a
   const summary = page.locator('.home-exif-summary');
   await expect(summary.getByRole('heading', { name: 'EXIF Summary' })).toBeVisible();
   await expect(summary.locator('[data-exif-summary="camera"]')).toContainText('Pocket Camera · DeskCam 42');
+  for (const id of ['camera', 'date', 'gps']) await expect(summary.locator(`[data-exif-summary="${id}"]`)).toBeVisible();
+  await expect(summary.locator('details.report-photo-details')).toHaveAttribute('open', '');
+  for (const id of ['lens', 'iso', 'aperture', 'shutter', 'focal', 'orientation']) await expect(summary.locator(`[data-exif-summary="${id}"]`)).toBeVisible();
   await expect(summary.locator('[data-exif-summary="lens"]')).toContainText('35mm Test Lens');
   await expect(summary.locator('[data-exif-summary="date"]')).toContainText('2024:03:12 14:05:06');
   await expect(summary.locator('[data-exif-summary="gps"]')).toContainText('37.775000, -122.419444');
@@ -683,7 +727,7 @@ test('home image report puts an EXIF Summary before the full metadata ledger', a
   await expect(summary.locator('[data-exif-summary="shutter"]')).toContainText('1/125');
   await expect(summary.locator('[data-exif-summary="focal"]')).toContainText('35 mm');
   await expect(summary.locator('[data-exif-summary="orientation"]')).toContainText('6');
-  await expect(summary.getByRole('link', { name: /EXIF · XMP · IPTC · ICC · File Information · Raw Metadata/ })).toHaveAttribute('href', '#metadata-results-heading');
+  await expect(summary.getByRole('link', { name: /View all metadata/ })).toHaveAttribute('href', '#metadata-results-heading');
   const summaryBox = await summary.boundingBox();
   const ledgerBox = await page.locator('.report-ledger').boundingBox();
   expect(summaryBox).not.toBeNull(); expect(ledgerBox).not.toBeNull();
@@ -803,12 +847,18 @@ test('metadata remover exposes file cleanup scope, verification steps, and type 
     return [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth].map(Number.parseFloat);
   });
   expect(formatBorders.every((width) => width > 0)).toBe(true);
+  const formatSectionBox = await formatSection.boundingBox();
   const formatHeaderBox = await formatSection.locator(':scope > header').boundingBox();
   const formatListBox = await page.locator('.metadata-remover-format-list').boundingBox();
+  expect(formatSectionBox).not.toBeNull();
   expect(formatHeaderBox).not.toBeNull();
   expect(formatListBox).not.toBeNull();
-  expect(Math.abs(formatHeaderBox!.x + formatHeaderBox!.width - formatListBox!.x)).toBeLessThanOrEqual(1);
-  expect(Math.abs(formatHeaderBox!.y - formatListBox!.y)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatHeaderBox!.y + formatHeaderBox!.height - formatListBox!.y)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatHeaderBox!.x - formatListBox!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatHeaderBox!.width - formatListBox!.width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(formatListBox!.x - (formatSectionBox!.x + formatBorders[3]!))).toBeLessThanOrEqual(1);
+  const formatContentWidth = formatSectionBox!.width - formatBorders[1]! - formatBorders[3]!;
+  expect(Math.abs(formatListBox!.width - formatContentWidth)).toBeLessThanOrEqual(1);
 
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import ToolHero from '../components/ToolHero.astro';
+import StaticIcon from '../components/StaticIcon.astro';
 import ToolWorkbench, { type ToolMode } from '../components/ToolWorkbench';
 import MetadataReportWorkbench from '../components/MetadataReportWorkbench';
 import FormatMetadataGuide from '../components/FormatMetadataGuide.astro';
@@ -14,6 +15,7 @@ import MetadataRemovalWorkbench from '../components/MetadataRemovalWorkbench';
 import C2paWorkbench from '../components/C2paWorkbench';
 import C2paEducation from '../components/C2paEducation.astro';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
+import ResultReadingGuide from '../components/ResultReadingGuide.astro';
 import { IconGlyph, type IconName } from '../components/IconGlyph';
 import { canonicalUrl } from '../lib/seo';
 import type { FormatGuide } from '../content/tools';
@@ -62,6 +64,7 @@ const schemas = [
     <nav class="breadcrumbs" aria-label={t('Breadcrumb', '面包屑导航', 'Brotkrümelnavigation', 'Fil d’Ariane')}><a href={localizePath('/', locale)}>{t('Home', '首页', 'Startseite', 'Accueil')}</a><span>/</span><span>{props.title}</span></nav>
     <ToolHero eyebrow={props.eyebrow} title={props.title} description={props.shortDescription} icon={props.icon} formats={props.formats} proof={props.heroProof} locale={locale} />
     {props.productionMetadataReport ? <MetadataReportWorkbench client:load placement="tool" locale={locale} scope={props.metadataReportScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionPrivacyChecker ? <PrivacyChecker client:load locale={locale} /> : props.productionMetadataRemover ? <MetadataRemovalWorkbench client:load locale={locale} scope={props.metadataRemovalScope ?? 'all'} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes ?? []} /> : props.productionC2paViewer ? <C2paWorkbench client:load locale={locale} formats={props.formats} accept={props.accept} /> : <ToolWorkbench client:load locale={locale} mode={props.mode} formats={props.formats} accept={props.accept} allowedTypes={props.allowedTypes} />}
+    <ResultReadingGuide locale={locale} path={props.path} kind={props.productionC2paViewer ? 'c2pa' : props.productionPrivacyChecker ? 'privacy' : props.productionMetadataRemover ? 'remover' : 'viewer'} />
     {props.productionC2paViewer ? <C2paEducation locale={locale} faqs={visibleFaqs} /> : <>
       {isImageSeoPage && <ImageMetadataSeo />}
       {isVideoSeoPage && <VideoMetadataSeo />}
@@ -71,9 +74,9 @@ const schemas = [
       {props.formatGuide ? <FormatMetadataGuide locale={locale} guide={props.formatGuide} limitations={props.limitations} /> : props.productionPrivacyChecker ? <PrivacyCheckerSeo locale={locale} /> : <section class="tool-notes" aria-labelledby="tool-notes-title">
         <header><span class="section-index">{t('WHAT IT CHECKS', '检查内容', 'WAS ES PRÜFT', 'CE QUI EST VÉRIFIÉ')}</span><h2 id="tool-notes-title">{t('Useful details, without the lecture.', '有用的细节，不上课。', 'Nützliche Details, ohne Vorlesung.', 'Les détails utiles, sans le cours magistral.')}</h2></header>
         <ul class="tool-highlight-list">{props.highlights.map((item) => <li>{item}</li>)}</ul>
-        <details class="tool-limitations"><summary>{t('What this result cannot prove', '这个结果不能证明什么', 'Was dieses Ergebnis nicht beweist', 'Ce que ce résultat ne peut pas prouver')}</summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
+        <details class="tool-limitations"><summary class="disclosure-summary"><span class="disclosure-label">{t('What this result cannot prove', '这个结果不能证明什么', 'Was dieses Ergebnis nicht beweist', 'Ce que ce résultat ne peut pas prouver')}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary><ul>{props.limitations.map((item) => <li>{item}</li>)}</ul></details>
       </section>}
-      {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen', 'Questions fréquentes')}</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>{t('Quick answers', '快速回答', 'Kurze Antworten', 'Réponses rapides')}</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>}
+      {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen', 'Questions fréquentes')}</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>{t('Quick answers', '快速回答', 'Kurze Antworten', 'Réponses rapides')}</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary class="disclosure-summary"><span class="disclosure-label">{faq.question}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary><p>{faq.answer}</p></details>)}</div></section>}
       {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">{t('KEEP GOING', '继续看看', 'WEITERGEHEN', 'POURSUIVRE')}</span><h2>{isImageSeoPage || isImageMetadataRemoverSeoPage ? 'Related image tools' : isVideoSeoPage || isVideoMetadataRemoverSeoPage ? 'Related video tools' : isMetadataRemoverSeoPage ? 'Metadata removal by file type' : t('Related tools', '相关工具', 'Verwandte Tools', 'Outils associés')}</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
     </>}
   </div>
