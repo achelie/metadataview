@@ -65,8 +65,14 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
     } else if (!['GET', 'HEAD'].includes(request.method())) {
       // Unexpected uploads should fail the assertions without uploading a fixture.
       await route.fulfill({ status: 204 });
-    } else if (local && url.origin === origin) {
-      const response = await route.fetch({ url: new URL(url.pathname + url.search, backend).href });
+    } else if (local && ['http:', 'https:'].includes(url.protocol) && url.origin === origin) {
+      // Firefox includes Host in routed request headers; retaining the synthetic
+      // browser host would make the local preview reject the request with 403.
+      // WebKit also routes blob: URLs: those must stay in the browser's blob store.
+      const response = await route.fetch({
+        url: new URL(url.pathname + url.search, backend).href,
+        headers: { ...captured.headers, host: backend.host },
+      });
       await route.fulfill({ response });
     } else {
       await route.continue();
