@@ -1683,8 +1683,9 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .home-exif-summary dt { color: var(--rust); font-size: .61rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
 .home-exif-summary dd { margin: .25rem 0 0; min-height: 1.35rem; overflow-wrap: anywhere; font-weight: 900; }
 .home-exif-summary dd > span { color: var(--muted); font-weight: 700; }
-.home-exif-summary dd a { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .4rem; color: var(--ink); }
-.home-exif-summary dd a:hover { color: var(--rust); }
+.home-exif-summary .map-open-button { display: flex; align-items: center; min-height: 44px; max-width: 100%; padding: .35rem 0; border: 0; background: transparent; color: var(--ink); font: inherit; text-align: left; text-decoration: underline; overflow-wrap: anywhere; cursor: pointer; }
+.home-exif-summary .map-open-button:hover { color: var(--rust); }
+.home-exif-summary .map-open-button:focus-visible { outline: 2px solid var(--rust); outline-offset: 3px; }
 .home-exif-summary dd small { color: var(--rust); font-size: .62rem; text-transform: uppercase; }
 .home-exif-summary footer { padding: .75rem .9rem; display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
 .home-exif-summary footer span { color: var(--muted); font-size: .67rem; font-weight: 900; text-transform: uppercase; }
@@ -2033,7 +2034,7 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 }
 
 /* Metadata removal desk */
-.removal-workbench { overflow: hidden; }
+.removal-workbench { overflow: hidden; scroll-margin-top: 6rem; }
 .removal-dropzone { min-height: 300px; margin: clamp(1rem,3vw,2.2rem); padding: clamp(1.3rem,4vw,3rem); display: grid; grid-template-columns: 76px minmax(0,1.35fr) minmax(180px,.52fr); gap: clamp(1rem,3vw,2.4rem); align-items: center; border: 2px dashed var(--line); cursor: pointer; background-image: radial-gradient(circle at 84% 18%,rgba(239,106,56,.11),transparent 12rem),repeating-linear-gradient(135deg,transparent 0 21px,rgba(23,24,21,.026) 21px 22px); transition: transform .36s var(--ease),border-color .36s var(--ease),background-color .36s var(--ease); }
 .removal-dropzone:hover,.removal-dropzone:focus-visible,.removal-dropzone.is-dragging { transform: translate(-3px,-3px); border-color: var(--ink); background-color: rgba(217,255,67,.12); }
 .removal-drop-icon { width: 62px; height: 62px; display: grid; place-items: center; border: 1px solid var(--ink); color: var(--ink); background: var(--acid); box-shadow: 5px 5px 0 var(--ink); transform: rotate(-2deg); }
@@ -2224,7 +2225,6 @@ body.nav-drawer-open .mobile-menu-trigger { border-color: transparent; color: va
 .home-exif-summary dt { font-size: .75rem; letter-spacing: .025em; }
 .home-exif-summary dd { font-size: .9rem; }
 .home-exif-summary .map-disclosure { font-weight: 400; font-size: .75rem; margin: .25rem 0 0; line-height: 1.5; }
-.home-exif-summary dd a { align-items: center; min-height: 44px; text-decoration: underline; }
 .home-exif-summary footer { justify-content: flex-end; padding: .35rem .9rem; }
 .home-exif-summary footer a { min-height: 44px; display: inline-flex; align-items: center; font-size: .8rem; }
 .report-photo-details > summary,.report-file-details > summary { padding: .65rem 1rem; min-height: 44px; color: var(--ink); font-size: .9rem; border-bottom: 1px solid var(--line); }

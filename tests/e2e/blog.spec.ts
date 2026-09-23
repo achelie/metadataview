@@ -149,7 +149,7 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.blog-pagination a[href="/blog/page/4/"]')).toHaveText('4');
   await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
   await expect(page.locator('.blog-feature').getByText('Image privacy', { exact: true })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'View image metadata' })).toHaveAttribute('href', '/image-metadata-viewer/');
+  await expect(page.getByRole('link', { name: 'View file metadata' })).toHaveAttribute('href', '/metadata-viewer/');
   await expect(page.locator('.desktop-nav > a[href="/blog/"]')).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));

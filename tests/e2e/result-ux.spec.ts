@@ -28,7 +28,8 @@ for (const locale of languages) {
     await expect(summary.locator('[data-exif-summary="iso"]')).toBeVisible();
     await expect(page.locator('.report-file-details')).not.toHaveAttribute('open', '');
     await expect(page.locator('.report-heading-preview img')).toBeVisible();
-    await expect(page.locator('a[href*="openstreetmap.org"]')).toHaveCount(1);
+    await expect(page.locator('.map-open-button')).toHaveCount(1);
+    await expect(page.locator('a[href*="openstreetmap.org"]')).toHaveCount(0);
     for (const width of [320, 375, 390, 430, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));

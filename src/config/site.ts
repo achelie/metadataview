@@ -2,7 +2,7 @@ export const SITE_BRAND = 'ViewExif';
 export const SITE_CONTACT_EMAIL = 'contact@viewexif.com';
 export const SITE_OPERATOR_MODEL = 'independent-individual';
 export const POLICY_EFFECTIVE_DATE = '2026-08-23';
-export const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-09-18';
+export const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-09-23';
 export const ADSENSE_PUBLISHER_ID = 'pub-7443237558968985';
 export const ADSENSE_ACCOUNT_ID = 'ca-pub-7443237558968985';
 
