@@ -111,7 +111,7 @@ function sensitiveReasons(request: CapturedRequest, fixture: SensitiveFixture, a
   const contains = (text: string, value: string) => [value, encodeURIComponent(value), Buffer.from(value).toString('base64'), Buffer.from(value).toString('base64url')]
     .some(token => text.includes(token.toLowerCase()));
   const reasons: string[] = [];
-  for (const [kind, value] of [['file-marker', 'c7d493ab'], ['filename', fixture.filename], ['author', fixture.author], ['sha256', fixture.sha256]]) {
+  for (const [kind, value] of [['file-marker', 'c7d493ab'], ['filename', fixture.filename], ['author', fixture.author], ['sha256', fixture.sha256]] as const) {
     if (contains(all, value)) reasons.push(kind);
   }
   const coordinateTraffic = authorizedMap ? details : all;
