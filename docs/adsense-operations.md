@@ -13,17 +13,17 @@
 
 当前版本维持无广告运行脚本状态，只保留所有权验证 meta 和 `ads.txt`。本检查表不执行后台提交、开启广告或发送联系测试邮件；提交审核和广告上线分别由运营者安排。
 
-本次复核进度与证据入口见 [2026-09-23 修复后复核报告](./adsense-remediation-2026-09-23.md)，修复前结论保留在 [同日原始审核](./adsense-audit-2026-09-23.md)。以修复后报告记录的最终生产 SHA 和验收结果为准；报告中的 Pending 或 Unknown 不等于通过，本清单不预先勾选最终发布门槛。
+本次申请前检查已完成，生产源码为 6384290、部署为 e094c704。完整结果见 [2026-09-23 修复后复核报告](./adsense-remediation-2026-09-23.md)，修复前结论保留在 [同日原始审核](./adsense-audit-2026-09-23.md)。申请准备度为 Ready；4 项无法独立核验的运营/后台事实仍为 Unknown，Google 是否批准单独记录。
 
 ## 申请前发布门槛
 
-- [ ] 生产环境的每个 HTML 页面恰好包含一个 `google-adsense-account=ca-pub-7443237558968985` meta；没有 `adsbygoogle.js`、广告位、Auto Ads 或 Funding Choices 标签。
-- [ ] `https://www.viewexif.com/ads.txt` 返回 200 和 `google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0`；裸域可到达同一内容。公开文件检查与后台 `Authorized` 状态分别记录。
-- [ ] About、Contact、Privacy、Terms 的英语、德语、法语和简体中文页面均可访问；公开邮箱为 `contact@viewexif.com`。邮箱实际收发测试由运营者自行留证，本轮未代发邮件。
+- [x] 生产环境的每个 HTML 页面恰好包含一个 `google-adsense-account=ca-pub-7443237558968985` meta；没有 `adsbygoogle.js`、广告位、Auto Ads 或 Funding Choices 标签。
+- [x] `https://www.viewexif.com/ads.txt` 返回 200 和 `google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0`；裸域可到达同一内容。公开文件检查与后台 `Authorized` 状态分别记录。
+- [x] About、Contact、Privacy、Terms 的英语、德语、法语和简体中文页面均可访问；公开邮箱为 `contact@viewexif.com`。邮箱实际收发测试由运营者自行留证，本轮未代发邮件。
 - [x] 2026-09-23 已取得本次申请者的年龄、账号唯一性、域名和 Publisher ID 控制确认；公开 account meta 和 `ads.txt` 使用相同 ID。付款信息和账号任务以运营者后台为准。
-- [ ] 对当前待发布版本运行相应单元测试、`pnpm build` 和浏览器回归，保存命令、版本 SHA、时间和结果。验证工具真实操作、GPS 外链、清理页 CTA、博客摘要/意图和移动导航；本地通过后仍要检查对应生产版本。
-- [ ] 抓取当前 sitemap 中所有 URL 及页面引用的图片，核对页面状态、title/H1/canonical、robots、account meta、广告脚本、站内链接及封面响应；数量从当前 sitemap 计算，不沿用旧的 100 页基线。
-- [ ] 使用 `adsense-site-auditor` 输出完整 73 行 ADS-* 表，并对照技能当前 requirements 实际数量复核。所有 Blocker 解决，High 风险修复或明确接受，适用的 Fail 有具体处置；账号后台暂不可见、尚未投放广告的 N/A 项与网站缺陷分开记录。
+- [x] 对当前待发布版本运行相应单元测试、`pnpm build` 和浏览器回归，保存命令、版本 SHA、时间和结果。验证工具真实操作、GPS 外链、清理页 CTA、博客摘要/意图和移动导航；本地通过后仍要检查对应生产版本。
+- [x] 抓取当前 sitemap 中所有 URL 及页面引用的图片，核对页面状态、title/H1/canonical、robots、account meta、广告脚本、站内链接及封面响应；数量从当前 sitemap 计算，不沿用旧的 100 页基线。
+- [x] 使用 `adsense-site-auditor` 输出完整 73 行 ADS-* 表，并对照技能当前 requirements 实际数量复核。所有 Blocker 解决，High 风险修复或明确接受，适用的 Fail 有具体处置；账号后台暂不可见、尚未投放广告的 N/A 项与网站缺陷分开记录。
 
 源文件封面哈希与 [台账](./blog-image-sources.md) 保持一致；仅补来源记录不重编码或替换现有图片。不要把缺少逐图原始链接直接写成已侵权，也不要把持有人确认写成逐图独立认证。
 
