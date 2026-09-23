@@ -16,8 +16,12 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
   const headerReads: Promise<void>[] = [];
   const actions: string[] = [];
   const blockedLeaks: Array<{ destination: string; reasons: string[] }> = [];
+  let downloadCount = 0;
   let fixture: SensitiveFixture | undefined;
   let permittedMaps = 0;
+  const observeDownloads = (page: Page) => page.on('download', () => { downloadCount++; });
+  context.pages().forEach(observeDownloads);
+  context.on('page', observeDownloads);
 
   // The real Ahrefs SDK skips localhost and webdriver. Use a non-local browser
   // origin and ordinary-visitor detection, while retaining the unmodified SDK.
@@ -88,6 +92,7 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
     origin, local, requests, pageviews, maps, rum, actions, blockedLeaks,
     registerFixture: (value: SensitiveFixture) => { fixture = value; actions.push('synthetic-fixture-registered-before-file-selection'); },
     fixtureHash: () => fixture?.sha256,
+    downloads: () => downloadCount,
     allowNextMap: (action: string) => { permittedMaps++; actions.push(`map:${action}`); },
     recordAction: (action: string) => actions.push(action),
     flush: () => Promise.all(headerReads),
@@ -204,10 +209,20 @@ async function finishOnPrivacyPage(page: Page, audit: NetworkAudit, fixture: Sen
     await expect.poll(() => audit.rum().length, { message: 'Production must exercise actual Cloudflare RUM, including its request payload, rather than silently skipping it.', timeout: 20_000 }).toBeGreaterThan(0);
   }
   await assertPrivateTraffic(audit, fixture);
+  expect(audit.downloads(), 'Map activation and file handoffs must never download automatically').toBe(0);
 }
 
 test.describe('Analytics keeps file-derived data local', { tag: '@release' }, () => {
   test.setTimeout(300_000);
+
+  test.beforeEach(({ browserName, baseURL }) => {
+    const mappedPreview = ['localhost', '127.0.0.1', '[::1]'].includes(new URL(baseURL!).hostname);
+    // Firefox does not route dedicated Worker dynamic imports through context.route.
+    // The synthetic DNS origin cannot resolve those imports. Keep these exact
+    // assertions mandatory on the real production origin for all three engines.
+    test.skip(browserName === 'firefox' && mappedPreview,
+      'Firefox Worker imports bypass synthetic-origin routing; run with PLAYWRIGHT_BASE_URL set to the real site.');
+  });
 
   test.afterEach(async ({}, testInfo) => {
     const audit = audits.get(testInfo.testId);
@@ -219,11 +234,12 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
         test: testInfo.title, status: testInfo.status, origin: audit.origin, localOriginMapping: audit.local,
         syntheticFixtureSha256: audit.fixtureHash(), actions: audit.actions,
         pageviews: audit.pageviews().length, cloudflareRum: audit.rum().length,
+        downloadCount: audit.downloads(),
         explicitlyOpenedMaps: audit.maps().filter(request => request.authorizedMap).length,
         sensitiveRequestDetected: audit.blockedLeaks.length > 0, blockedBeforeNetwork: audit.blockedLeaks,
         requests: audit.requests.map(request => {
           const url = new URL(request.url);
-          return { method: request.method, destination: `${url.origin}${url.pathname}`, queryKeys: [...url.searchParams.keys()], bodyBytes: Buffer.byteLength(request.body), blocked: Boolean(request.blocked), authorizedMap: Boolean(request.authorizedMap) };
+          return { method: request.method, protocol: url.protocol, destination: url.protocol === 'blob:' ? `blob:${url.origin}` : `${url.origin}${url.pathname}`, queryKeys: [...url.searchParams.keys()], bodyBytes: Buffer.byteLength(request.body), blocked: Boolean(request.blocked), authorizedMap: Boolean(request.authorizedMap) };
         }),
       }, null, 2)),
     });
@@ -272,8 +288,14 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
     await expect(page.locator('.map-open-button')).toHaveCount(0);
     expect(audit.maps()).toHaveLength(3);
     await upload(page, fixture.filename, fixture.bytes);
-    audit.recordAction('clear-gps-result');
-    await page.getByRole('button', { name: 'Clear', exact: true }).click();
+    audit.recordAction('clear-gps-result-with-keyboard-after-auxiliary-click');
+    // Firefox can suppress the next primary click after native middle-button
+    // auto-scroll, even after Escape. A real keyboard activation reaches Clear
+    // without relying on that browser pointer state; all empty-state checks stay.
+    const clear = page.getByRole('button', { name: 'Clear', exact: true });
+    await clear.focus();
+    await expect(clear).toBeFocused();
+    await clear.press('Enter');
     await expectEmptyViewer(page, fixture, true);
     const viewsBeforeReload = audit.pageviews().length;
     audit.recordAction('reload-cleared-page');

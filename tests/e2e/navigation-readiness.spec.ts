@@ -124,6 +124,41 @@ for (const path of ['/document-metadata-remover/', '/zh-cn/document-metadata-rem
 }
 
 for (const width of [320, 375, 390, 430]) {
+  test(`mobile navigation keeps submenu targets reachable at ${width}px and closes with Escape`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const trigger = page.locator('[data-mobile-menu-trigger]');
+    const layer = page.locator('[data-mobile-menu-layer]');
+    const drawer = page.getByRole('navigation', { name: 'Mobile navigation', exact: true });
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await expect(layer).toHaveAttribute('aria-hidden', 'false');
+
+    for (const name of ['View metadata', 'Remove metadata']) {
+      const group = drawer.locator('[data-mobile-accordion]').filter({
+        has: page.getByRole('button', { name, exact: true }),
+      });
+      await group.getByRole('button', { name, exact: true }).click();
+      const links = group.getByRole('link');
+      await expect(links).toHaveCount(5);
+      for (const link of await links.all()) {
+        await expect(link).toBeVisible();
+        await expect.poll(async () => (await link.boundingBox())?.height ?? 0,
+          { message: `${name}: ${await link.textContent()} at ${width}px` }).toBeGreaterThanOrEqual(44);
+        const box = (await link.boundingBox())!;
+        expect(box.width).toBeGreaterThanOrEqual(44);
+        expect(box.x).toBeGreaterThanOrEqual(0);
+        expect(box.x + box.width).toBeLessThanOrEqual(width);
+      }
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+    await page.keyboard.press('Escape');
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    await expect(layer).toHaveAttribute('aria-hidden', 'true');
+    await expect(layer).toHaveAttribute('inert', '');
+    await expect(trigger).toBeFocused();
+  });
+
   test(`two- and three-action recommendations fit a ${width}px viewport`, async ({ page }) => {
     await page.setViewportSize({ width, height: 850 });
     for (const slug of ['do-screenshots-have-metadata', 'remove-metadata-from-word-document', 'what-is-a-metadata-strategy']) {
