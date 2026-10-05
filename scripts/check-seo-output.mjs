@@ -6,6 +6,7 @@ const productionOrigin = 'https://www.viewexif.com';
 const legacyOrigin = 'https://www.screentesthub.com';
 const retiredOrigin = 'https://achelie-metadataview.pages.dev';
 const legacySitemaps = ['sitemap-index.xml', 'sitemap-0.xml'];
+const homepageFiles = new Set(['index.html', 'de/index.html', 'fr/index.html', 'zh-cn/index.html']);
 
 async function filesUnder(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -20,11 +21,140 @@ function match(html, pattern) {
   return html.match(pattern)?.[1] ?? '';
 }
 
+// Astro escapes these named entities; decode numeric references in one pass too.
+// A second pass would incorrectly turn literal text such as "&lt;" into markup.
+function decodeHtml(value) {
+  const named = { amp: '&', AMP: '&', lt: '<', LT: '<', gt: '>', GT: '>', quot: '"', QUOT: '"', apos: "'", nbsp: '\u00a0' };
+  return value.replace(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (entity, code) => {
+    if (!code.startsWith('#')) return named[code] ?? entity;
+    const point = /^#x/i.test(code) ? Number.parseInt(code.slice(2), 16) : Number.parseInt(code.slice(1), 10);
+    return !point || point > 0x10ffff || (point >= 0xd800 && point <= 0xdfff) ? '\ufffd' : String.fromCodePoint(point);
+  });
+}
+
+function attributes(source) {
+  return new Map([...source.matchAll(/([^\s=/"'<>]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)]
+    .map((entry) => [entry[1].toLowerCase(), decodeHtml(entry[2] ?? entry[3] ?? entry[4])]));
+}
+
+function normalizeText(value) {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function visibleText(html) {
+  return normalizeText(decodeHtml(html.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ')));
+}
+
 const failures = [];
+const assetCache = new Map();
+const homeImageRecords = [];
 const htmlFiles = (await filesUnder(distDir)).filter((file) => file.endsWith('.html'));
 const indexableCanonicals = [];
 const titles = [];
 const pageRecords = [];
+
+async function pngDimensions(url, relativeFile, label) {
+  const assetPath = path.resolve(distDir, `.${decodeURIComponent(url.pathname)}`);
+  if (!assetPath.startsWith(`${distDir}${path.sep}`)) {
+    failures.push(`${relativeFile}: ${label} is outside dist`);
+    return;
+  }
+  if (!assetCache.has(assetPath)) assetCache.set(assetPath, readFile(assetPath));
+  let bytes;
+  try {
+    bytes = await assetCache.get(assetPath);
+  } catch {
+    failures.push(`${relativeFile}: ${label} asset is missing: ${url.pathname}`);
+    return;
+  }
+  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  if (bytes.length < 33 || !bytes.subarray(0, 8).equals(signature)
+    || bytes.readUInt32BE(8) !== 13 || bytes.toString('ascii', 12, 16) !== 'IHDR') {
+    failures.push(`${relativeFile}: ${label} must have a valid PNG signature and IHDR`);
+    return;
+  }
+  const width = bytes.readUInt32BE(16);
+  const height = bytes.readUInt32BE(20);
+  if (!width || !height) {
+    failures.push(`${relativeFile}: ${label} has invalid PNG dimensions`);
+    return;
+  }
+  return { width, height };
+}
+
+function productionImageUrl(value, relativeFile, label) {
+  try {
+    const url = new URL(value);
+    if (url.origin !== productionOrigin || url.username || url.password || url.search || url.hash) throw new Error();
+    // Check percent escapes before resolving an asset on the filesystem.
+    decodeURIComponent(url.pathname);
+    return url;
+  } catch {
+    failures.push(`${relativeFile}: ${label} must be an absolute production asset URL`);
+  }
+}
+
+async function checkHomepage(relativeFile, html, schemas, locale) {
+  const meta = new Map([...html.matchAll(/<meta\b([^>]*)>/g)].map((entry) => {
+    const props = attributes(entry[1]);
+    return [props.get('property') ?? props.get('name'), props.get('content') ?? ''];
+  }));
+  const socialImage = productionImageUrl(meta.get('og:image') ?? '', relativeFile, 'og:image');
+  const twitterImage = productionImageUrl(meta.get('twitter:image') ?? '', relativeFile, 'twitter:image');
+  if (socialImage && twitterImage && socialImage.href !== twitterImage.href) failures.push(`${relativeFile}: OG and Twitter images must use the same asset`);
+  if (meta.get('twitter:card') !== 'summary_large_image') failures.push(`${relativeFile}: homepage requires summary_large_image`);
+  if (meta.get('og:image:width') !== '1200' || meta.get('og:image:height') !== '630') failures.push(`${relativeFile}: social image metadata must declare 1200 × 630`);
+  const socialAlt = normalizeText(meta.get('og:image:alt') ?? '');
+  if (!socialAlt || socialAlt !== normalizeText(meta.get('twitter:image:alt') ?? '')) failures.push(`${relativeFile}: OG and Twitter require matching nonempty localized alt text`);
+  if (socialImage) {
+    const dimensions = await pngDimensions(socialImage, relativeFile, 'social image');
+    if (dimensions && (dimensions.width !== 1200 || dimensions.height !== 630)) failures.push(`${relativeFile}: social PNG must actually be 1200 × 630`);
+  }
+
+  const images = [...html.matchAll(/<img\b([^>]*)>/g)].map((entry) => attributes(entry[1]));
+  const screenshots = images.filter((image) => (image.get('src') ?? '').startsWith('/seo/'));
+  if (!screenshots.length) failures.push(`${relativeFile}: missing independent /seo/ example screenshot`);
+  const screenshotAlts = [];
+  for (const image of screenshots) {
+    const source = image.get('src');
+    const screenshot = productionImageUrl(`${productionOrigin}${source}`, relativeFile, 'example screenshot');
+    if (!screenshot || !screenshot.pathname.startsWith('/seo/') || screenshot.pathname.includes('/samples/')) {
+      failures.push(`${relativeFile}: example screenshot must use an independent /seo/ asset`);
+      continue;
+    }
+    if (socialImage && screenshot.pathname === socialImage.pathname) failures.push(`${relativeFile}: example screenshot must be independent from the social image`);
+    const alt = normalizeText(image.get('alt') ?? '');
+    if (!alt) failures.push(`${relativeFile}: example screenshot is missing localized alt text`);
+    screenshotAlts.push(alt);
+    const width = Number(image.get('width'));
+    const height = Number(image.get('height'));
+    if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) failures.push(`${relativeFile}: example screenshot needs explicit positive width and height`);
+    if (image.get('loading') !== 'lazy' || image.get('decoding') !== 'async') failures.push(`${relativeFile}: example screenshot requires lazy loading and async decoding`);
+    const dimensions = await pngDimensions(screenshot, relativeFile, 'example screenshot');
+    if (dimensions && (width !== dimensions.width || height !== dimensions.height)) failures.push(`${relativeFile}: screenshot width and height do not match its PNG`);
+  }
+  homeImageRecords.push({ relativeFile, socialImage: socialImage?.href, socialAlt, screenshotAlts });
+
+  const faqSections = [...html.matchAll(/<section\b([^>]*)>([\s\S]*?)<\/section>/g)]
+    .filter((entry) => (attributes(entry[1]).get('class') ?? '').split(/\s+/).includes('home-faq'));
+  const faqSchemas = schemas.filter((schema) => schema['@type'] === 'FAQPage');
+  if (faqSections.length !== 1 || faqSchemas.length !== 1) {
+    failures.push(`${relativeFile}: expected one visible .home-faq and one FAQPage schema`);
+    return;
+  }
+  const visibleFaqs = [...faqSections[0][2].matchAll(/<article\b[^>]*>([\s\S]*?)<\/article>/g)].map((entry) => ({
+    question: visibleText(match(entry[1], /<h3\b[^>]*>([\s\S]*?)<\/h3>/)),
+    answer: visibleText(match(entry[1], /<p\b[^>]*>([\s\S]*?)<\/p>/)),
+  }));
+  const faq = faqSchemas[0];
+  if (faq.inLanguage !== locale) failures.push(`${relativeFile}: FAQPage uses the wrong language`);
+  const structuredFaqs = Array.isArray(faq.mainEntity) ? faq.mainEntity.map((entry) => ({
+    question: normalizeText(typeof entry?.name === 'string' ? entry.name : ''),
+    answer: normalizeText(typeof entry?.acceptedAnswer?.text === 'string' ? entry.acceptedAnswer.text : ''),
+  })) : [];
+  if (!visibleFaqs.length || visibleFaqs.some((entry) => !entry.question || !entry.answer)
+    || JSON.stringify(visibleFaqs) !== JSON.stringify(structuredFaqs)) failures.push(`${relativeFile}: FAQPage questions and answers must match visible FAQs in order`);
+}
 
 for (const file of htmlFiles) {
   const relativeFile = path.relative(distDir, file).replaceAll('\\', '/');
@@ -46,9 +176,10 @@ for (const file of htmlFiles) {
   if (html.includes(retiredOrigin)) failures.push(`${relativeFile}: still references the retired pages.dev origin`);
   if (html.includes(legacyOrigin)) failures.push(`${relativeFile}: still references the previous production origin`);
 
+  const schemas = [];
   for (const block of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) {
     try {
-      JSON.parse(block[1]);
+      schemas.push(JSON.parse(block[1]));
     } catch {
       failures.push(`${relativeFile}: invalid JSON-LD`);
     }
@@ -74,10 +205,16 @@ for (const file of htmlFiles) {
   indexableCanonicals.push(canonical);
   titles.push(title);
   pageRecords.push({ relativeFile, html, canonical });
+  if (homepageFiles.has(relativeFile)) await checkHomepage(relativeFile, html, schemas, expectedLang);
 }
 
 if (new Set(titles).size !== titles.length) failures.push('Indexable page titles are not unique');
 if (new Set(indexableCanonicals).size !== indexableCanonicals.length) failures.push('Indexable canonicals are not unique');
+for (const homepage of homepageFiles) {
+  if (!homeImageRecords.some((entry) => entry.relativeFile === homepage)) failures.push(`${homepage}: missing indexable homepage`);
+}
+if (new Set(homeImageRecords.map((entry) => entry.socialAlt)).size !== homeImageRecords.length) failures.push('Homepage social image alt text must be localized in all four languages');
+if (new Set(homeImageRecords.map((entry) => JSON.stringify(entry.screenshotAlts))).size !== homeImageRecords.length) failures.push('Homepage example screenshot alt text must be localized in all four languages');
 
 const canonicalSet = new Set(indexableCanonicals);
 for (const { relativeFile, html, canonical } of pageRecords) {

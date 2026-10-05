@@ -14,44 +14,57 @@ const copy = homeCopy[locale];
 const hrefFor = (href: string) => localizePath(href, locale);
 const homePath = hrefFor('/');
 const homeUrl = canonicalUrl(homePath, Astro.site);
+const imageLocale = locale.toLowerCase();
+const exampleImage = `/seo/exif-report-${imageLocale}-v1.png`;
+const socialImage = { src: `/seo/exif-viewer-${imageLocale}-v1.png`, alt: copy.socialAlt, width: 1200, height: 630 };
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'ViewExif', url: 'https://www.viewexif.com/', description: copy.description, inLanguage: locale },
-  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: locale === 'zh-CN' ? '元数据查看器' : locale === 'de' ? 'Metadaten-Viewer' : locale === 'fr' ? 'Visionneuse de métadonnées' : 'Metadata Viewer', applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : locale === 'fr' ? 'Tout navigateur moderne' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: locale === 'zh-CN' ? ['读取 28 种常见文件格式', '搜索原生元数据字段', '导出 JSON 与 PDF 报告', '只在浏览器本地处理文件'] : locale === 'de' ? ['28 gängige Dateiformate lesen', 'Native Metadatenfelder durchsuchen', 'JSON- und PDF-Berichte exportieren', 'Dateien lokal im Browser verarbeiten'] : locale === 'fr' ? ['Lire 28 formats de fichier courants', 'Rechercher les champs de métadonnées natifs', 'Exporter des rapports JSON et PDF', 'Traiter les fichiers localement dans le navigateur'] : ['Read 28 common file formats', 'Search native metadata fields', 'Export JSON and PDF reports', 'Process files locally in the browser'] },
+  { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: copy.appName, applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : locale === 'fr' ? 'Tout navigateur moderne' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: copy.appFeatures },
   { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: copy.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
 const formatHrefs = ['/image-metadata-viewer/', '/video-metadata-viewer/', '/document-metadata-viewer/', '/audio-metadata-viewer/'];
 const benefitHrefs = ['/image-privacy-checker/', '/c2pa-viewer/', '/metadata-remover/'];
 const benefitIcons = ['shield', 'badge', 'eraser'] as const;
+const exifCheckHrefs = ['/image-metadata-viewer/', '/image-metadata-viewer/', '/image-metadata-viewer/', '/image-privacy-checker/', '/image-metadata-remover/'];
 ---
-<BaseLayout title={copy.title} description={copy.description} path={homePath} schemas={schemas} locale={locale} translated>
+<BaseLayout title={copy.title} description={copy.description} path={homePath} schemas={schemas} image={socialImage} locale={locale} translated>
   <div class="home-shell home-tool-first">
     <section class="home-tool-intro" aria-labelledby="home-title">
       <div class="home-intro-rail"><span>{copy.rail}</span><i></i></div>
       <div><span class="eyebrow">{copy.eyebrow}</span><h1 id="home-title">{copy.heading}</h1><p>{copy.intro}</p></div>
-      <aside><strong>100 MB</strong><span>{copy.limit}</span></aside>
+      <aside class="home-file-limits"><p>{copy.fileLimits}</p></aside>
     </section>
 
     <MetadataReportWorkbench client:load placement="home" scope="all" locale={locale} formats={locale === 'zh-CN' ? '图片 · 视频 · 文档 · 音频' : locale === 'de' ? 'Bilder · Videos · Dokumente · Audio' : locale === 'fr' ? 'Images · Vidéos · Documents · Audio' : 'Images · Videos · Documents · Audio'} accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
 
     <ResultReadingGuide locale={locale} />
-    <nav class="home-format-links" aria-label={locale === 'zh-CN' ? '按文件格式选择元数据查看器' : locale === 'de' ? 'Metadaten-Viewer nach Dateiformat' : locale === 'fr' ? 'Visionneuses de métadonnées par format' : 'Metadata viewers by file format'}>
-      <span class="section-index">{copy.formatsLabel}</span>
-      {copy.formats.map((item, index) => <a href={hrefFor(formatHrefs[index] ?? '/')}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}</small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
-    </nav>
-
     <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
-      <header class="home-section-heading"><span class="section-index">EXIF DETAILS</span><h2 id="home-exif-title">{copy.exifTitle}</h2></header>
-      <div class:list={['home-exif-body', { 'home-exif-with-checks': locale === 'en' }]}>
+      <header class="home-section-heading"><span class="section-index">{copy.exifLabel}</span><h2 id="home-exif-title">{copy.exifTitle}</h2></header>
       <p class="home-exif-intro">{copy.exifIntro}</p>
-      {locale === 'en' && <nav class="home-exif-checks" aria-label="Popular EXIF checks">
-        <span>Popular EXIF checks</span>
-        <a href="/image-metadata-viewer/"><strong>Find photo GPS location</strong><small>Read stored coordinates and open the map only when you choose.</small></a>
-        <a href="/image-metadata-viewer/"><strong>Check camera &amp; lens</strong><small>See the recorded camera model, lens, and capture settings.</small></a>
-        <a href="/image-metadata-viewer/"><strong>Find date taken</strong><small>Look for DateTimeOriginal and related photo timestamps.</small></a>
-        <a href="/image-privacy-checker/"><strong>Check photo privacy</strong><small>Review GPS, identity, device, and hidden preview risks.</small></a>
-        <a href="/image-metadata-remover/"><strong>Remove EXIF metadata</strong><small>Create a cleaner copy and verify what remains.</small></a>
-      </nav>}
+      <p class="home-exif-reference"><a href="https://www.cipa.jp/e/std/std-sec.html">{copy.exifReferenceLabel}</a></p>
+      <div class="home-exif-body home-exif-with-checks">
+        <div class="home-exif-explanations">{copy.exifExtra.map((item) => <article><h3>{item.label}</h3><p>{item.note}</p></article>)}</div>
+        <nav class="home-exif-checks" aria-label={copy.exifChecksLabel}>
+          <span>{copy.exifChecksLabel}</span>
+          {copy.exifChecks.map((item, index) => <a href={hrefFor(exifCheckHrefs[index] ?? '/image-metadata-viewer/')}><strong>{item.label}</strong><small>{item.note}</small></a>)}
+        </nav>
       </div>
+    </section>
+
+    <section class="home-example" aria-labelledby="home-example-title">
+      <header class="home-section-heading"><h2 id="home-example-title">{copy.exampleTitle}</h2><p>{copy.exampleIntro}</p></header>
+      <figure>
+        <img src={exampleImage} alt={copy.exampleAlt} width="1200" height="720" loading="lazy" decoding="async" />
+        <figcaption>{copy.exampleCaption}</figcaption>
+      </figure>
+    </section>
+
+    <section class="home-support" aria-labelledby="home-support-title">
+      <header class="home-section-heading"><h2 id="home-support-title">{copy.supportTitle}</h2><p>{copy.supportIntro}</p></header>
+      <nav class="home-format-links" aria-label={copy.formatsLabel}>
+        {copy.formats.map((item, index) => <a href={hrefFor(formatHrefs[index] ?? '/')}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item.label}</strong><small>{item.detail}{' '}<span class="home-format-extensions">{item.extensions}</span></small><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}
+      </nav>
+      <p class="home-support-note">{copy.supportNote}</p>
     </section>
 
     <section class="home-benefits" aria-labelledby="home-benefits-title">
@@ -70,18 +83,37 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
 </BaseLayout>
 
 <style>
+  .home-file-limits { max-width: 240px; min-width: 0; }
+  .home-tool-intro .home-file-limits p { font-size: 16px; line-height: 1.5; }
   .home-exif-showcase .home-section-heading { margin-bottom: .75rem; }
   .home-exif-body { min-width: 0; }
   .home-exif-with-checks {
     display: grid;
-    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
     align-items: start;
     gap: var(--layout-gap);
   }
   .home-exif-intro { max-width: var(--prose-width); margin: 0; font-size: 16px; line-height: 1.7; }
+  .home-exif-reference { margin: .75rem 0 var(--layout-gap); font-size: 16px; }
+  .home-exif-reference a { text-decoration: underline; text-underline-offset: .2em; }
+  .home-exif-explanations { min-width: 0; }
+  .home-exif-explanations article + article { margin-top: var(--layout-gap); }
+  .home-exif-explanations h3 { margin: 0 0 .5rem; font-size: var(--text-card); line-height: 1.2; }
+  .home-exif-explanations p { max-width: var(--prose-width); margin: 0; font-size: 16px; line-height: 1.6; }
   .home-exif-with-checks .home-exif-checks { border-top: 0; }
   .home-exif-with-checks .home-exif-checks > span { padding-top: 0; }
-  .home-exif-with-checks .home-exif-checks a { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .home-exif-with-checks .home-exif-checks a { grid-template-columns: minmax(0, 1fr); gap: .35rem; }
+  .home-exif-checks strong { font-size: 16px; line-height: 1.5; }
+  .home-exif-checks small { font-size: 15px; line-height: 1.5; }
+  .home-example,.home-support { padding: var(--section-space) 0; border-bottom: 1px solid var(--ink); }
+  .home-example figure { margin: 0; max-width: 1000px; }
+  .home-example img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+  .home-example figcaption { max-width: var(--prose-width); margin-top: .75rem; font-size: 16px; line-height: 1.5; color: var(--muted); }
+  .home-support .home-format-links { padding: 0; border-bottom: 0; }
+  .home-format-links a { min-width: 0; }
+  .home-format-links a small { font-size: 16px; line-height: 1.5; }
+  .home-format-extensions { display: block; margin-top: .35rem; color: var(--ink); font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+  .home-support-note { max-width: var(--prose-width); margin: var(--layout-gap) 0 0; font-size: 16px; line-height: 1.6; }
   @media (max-width: 900px) {
     .home-exif-with-checks { grid-template-columns: minmax(0, 1fr); }
     .home-exif-with-checks .home-exif-checks { border-top: 1px solid var(--ink); }
@@ -89,5 +121,7 @@ const benefitIcons = ['shield', 'badge', 'eraser'] as const;
   }
   @media (max-width: 680px) {
     .home-exif-with-checks .home-exif-checks a { grid-template-columns: minmax(0, 1fr); }
+    .home-tool-intro .home-file-limits { max-width: 100%; min-width: 0; }
+    .home-example figure { width: 100%; }
   }
 </style>

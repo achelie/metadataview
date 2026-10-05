@@ -94,18 +94,26 @@ async function canvasImage(page: Page, mime: 'image/jpeg' | 'image/webp'): Promi
   return Buffer.from(values);
 }
 
-test('home page opens with the universal viewer, three useful next steps, and the local scan process', async ({ page }) => {
+test('home page leads with EXIF viewing, supported formats, and useful local next steps', async ({ page }) => {
+  const sampleRequests: string[] = [];
+  page.on('request', (request) => { if (new URL(request.url()).pathname.startsWith('/samples/')) sampleRequests.push(request.url()); });
   await page.goto('/');
-  await expect(page).toHaveTitle('Free Online EXIF & Metadata Viewer | ViewExif');
-  await expect(page.getByRole('heading', { name: 'Free Online EXIF & Metadata Viewer' })).toBeVisible();
+  await expect(page).toHaveTitle('Free EXIF Viewer Online – View Photo Metadata | ViewExif');
+  await expect(page.getByRole('heading', { name: 'Free Online EXIF Viewer', exact: true })).toBeVisible();
   await expect(page.locator('main h1')).toHaveCount(1);
   await expect(page.getByRole('button', { name: 'Choose a file' })).toBeVisible();
+  await expect(page.locator('.home-file-limits p')).toHaveText('Images: up to 50 MB. Other supported files: up to 100 MB.');
   await expect(page.locator('.report-drop-copy p')).toContainText(/Images.*Videos.*Documents.*Audio/);
   await expect(page.locator('.home-exif-upload-guide')).toContainText('View EXIF data, GPS location, camera settings, date taken and file metadata directly in your browser.');
   await expect(page.locator('.home-exif-upload-guide li')).toHaveText(['Camera & Lens', 'GPS Location', 'Date Taken', 'Full Metadata']);
   await expect(page.locator('.home-format-links a strong')).toHaveText(['Images', 'Videos', 'Documents', 'Audio']);
   await expect(page.locator('.home-format-links a').first()).toContainText('EXIF, GPS, camera settings, timestamps, XMP and IPTC');
-  await expect(page.locator('.home-format-links')).not.toContainText('JPEG · PNG · WebP');
+  await expect(page.locator('.home-format-links .home-format-extensions')).toHaveText([
+    'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF',
+    'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2',
+    'PDF, DOCX, PPTX, XLSX',
+    'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA',
+  ]);
   await expect(page.getByText('Use the right tool next.')).toHaveCount(0);
   await expect(page.getByText('The file never takes a network trip.')).toHaveCount(0);
   await expect(page.locator('.home-benefit-grid a')).toHaveCount(3);
@@ -117,14 +125,18 @@ test('home page opens with the universal viewer, three useful next steps, and th
   await expect(page.getByRole('link', { name: /Check file provenance/ })).toHaveAttribute('href', '/c2pa-viewer/');
   await expect(page.getByRole('link', { name: /Share a cleaner copy/ })).toHaveAttribute('href', '/metadata-remover/');
   await expect(page.locator('.home-process-list li')).toHaveCount(5);
+  await expect(page.locator('.home-faq article')).toHaveCount(5);
+  await expect(page.locator('.home-example img')).toHaveAttribute('src', '/seo/exif-report-en-v1.png');
+  await expect(page.locator('.home-example figcaption')).toHaveText('Demo report: the metadata and landmark coordinates were added for this example. They do not describe a real camera or the photo’s actual capture location.');
   const workbenchLink = page.getByRole('link', { name: /Choose a file above/ });
   await expect(workbenchLink).toHaveAttribute('href', '#metadata-workbench-home');
   await expect(page.locator('#metadata-workbench-home')).toHaveCount(1);
   await workbenchLink.click();
   await expect(page).toHaveURL(/#metadata-workbench-home$/);
+  expect(sampleRequests).toEqual([]);
 });
 
-test('home page directly parses all 28 promised file extensions', async ({ page }) => {
+test('home page directly parses supported file extensions', async ({ page }) => {
   test.setTimeout(180_000);
   const cases: Array<[string, string, Buffer, string]> = [
     ['home.png', 'image/png', png(), 'image'],
@@ -887,24 +899,36 @@ test('metadata remover exposes file cleanup scope, verification steps, and type 
   expect(faqSchema.mainEntity).toHaveLength(9);
 });
 
-test('home and universal viewer show the same five expanded FAQ answers and schema', async ({ page }) => {
-  const questions = [
+test('home and universal viewer each match their five expanded FAQ answers to their own schema', async ({ page }) => {
+  const universalQuestions = [
     'Is this metadata viewer safe to use?',
     'What EXIF data can this viewer read?',
     'Can this reveal where a photo was taken?',
     'Can metadata be wrong?',
     'Can metadata restore blurred or redacted parts of an image?',
   ];
-  for (const path of ['/', '/metadata-viewer/']) {
+  const cases = [
+    { path: '/', questions: ['Is this EXIF viewer safe to use?', ...universalQuestions.slice(1)] },
+    { path: '/metadata-viewer/', questions: universalQuestions },
+  ];
+  for (const { path, questions } of cases) {
     await page.goto(path);
     const section = page.locator('.expanded-faq');
     await expect(section.getByRole('heading', { name: 'Frequently asked questions' })).toBeVisible();
     await expect(section.locator('details')).toHaveCount(0);
     await expect(section).toHaveCSS('color', 'rgb(23, 24, 21)');
     expect(await section.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe('rgb(23, 24, 21)');
+    await expect(section.locator('.expanded-faq-list article')).toHaveCount(5);
     for (const question of questions) await expect(section.getByRole('heading', { name: question })).toBeVisible();
+    for (const answer of await section.locator('.expanded-faq-list article p').all()) await expect(answer).toBeVisible();
+    const visibleFaqs = await section.locator('.expanded-faq-list article').evaluateAll((articles) => articles.map((article) => ({
+      question: article.querySelector('h3')?.textContent?.trim(),
+      answer: article.querySelector('p')?.textContent?.trim(),
+    })));
+    expect(visibleFaqs.every((faq) => faq.answer)).toBe(true);
     const faqSchema = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => scripts.map((script) => JSON.parse(script.textContent || '{}')).find((value) => value['@type'] === 'FAQPage'));
     expect(faqSchema.mainEntity.map((entry: { name: string }) => entry.name)).toEqual(questions);
+    expect(faqSchema.mainEntity.map((entry: { name: string; acceptedAnswer: { text: string } }) => ({ question: entry.name, answer: entry.acceptedAnswer.text }))).toEqual(visibleFaqs);
   }
   await page.goto('/image-privacy-checker/');
   const privacyFaq = page.locator('.expanded-faq');
@@ -931,8 +955,8 @@ test('privacy checker matches the homepage editorial structure with privacy-spec
 test('home editorial sections fit an extremely narrow viewport', async ({ page }) => {
   await page.setViewportSize({ width: 239, height: 844 });
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Why view file metadata?' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'How the local scan works' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Why check photo metadata before sharing?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'How to use this online EXIF viewer' })).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   await page.goto('/c2pa-viewer/');
