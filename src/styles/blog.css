@@ -244,8 +244,9 @@
 .blog-prose li { margin-bottom: .6rem; padding-left: .25rem; }
 .blog-prose blockquote { margin: 2rem 0; padding: 1.2rem 1.5rem; border: 1px solid var(--ink); border-left: .55rem solid var(--orange); background: rgba(255,250,240,.72); }
 .blog-prose blockquote p:last-child { margin-bottom: 0; }
-.blog-prose table { display: block; width: 100%; max-width: 100%; margin: 2rem 0; overflow-x: auto; border-collapse: collapse; border: 1px solid var(--ink); background: rgba(255,250,240,.68); }
-.blog-prose th,.blog-prose td { min-width: 9.5rem; padding: .8rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.blog-prose table { width: 100%; max-width: 100%; margin: 2rem 0; table-layout: fixed; border-collapse: collapse; border: 1px solid var(--ink); background: rgba(255,250,240,.68); }
+.blog-prose th,.blog-prose td { min-width: 0; padding: .8rem; overflow-wrap: anywhere; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.blog-prose thead th:first-child { width: 26%; }
 .blog-prose th { color: var(--ink); background: var(--acid); font-size: .76rem; text-transform: uppercase; }
 .blog-prose code { padding: .08rem .3rem; background: var(--paper-deep); overflow-wrap: anywhere; }
 .blog-article__main > .blog-tool-strip { grid-template-columns: minmax(0, .76fr) minmax(0, 1.24fr); margin-block: var(--section-space) 0; }
@@ -287,6 +288,7 @@
   .blog-tool-strip { padding: 1.2rem; box-shadow: -5px 5px 0 rgba(239,106,56,.55); }
   .practical-take { box-shadow: -4px 5px 0 var(--ink); }
   .blog-prose blockquote { padding: 1rem; border-left-width: .35rem; }
+  .blog-prose th,.blog-prose td { padding: .6rem .45rem; }
   .blog-faq article { grid-template-columns: 1.5rem 1fr; gap: .55rem; }
 }
 

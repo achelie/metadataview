@@ -34,7 +34,7 @@ const languageOptions: Array<{ locale: Locale; label: string; short: string }> =
   { locale: 'en', label: 'English', short: 'EN' },
   { locale: 'de', label: 'Deutsch', short: 'DE' },
   { locale: 'fr', label: 'Français', short: 'FR' },
-  { locale: 'zh-CN', label: '中文', short: '中文' },
+  { locale: 'zh-CN', label: '简体中文', short: '中文' },
 ];
 const currentLanguage = languageOptions.find((item) => item.locale === locale) ?? languageOptions[0]!;
 const languageHref = (target: Locale) => translated ? localizePath(basePath, target) : target === 'en' ? basePath : localizePath('/', target);
@@ -67,7 +67,7 @@ const languageHref = (target: Locale) => translated ? localizePath(basePath, tar
         <StaticIcon name="languages" size={15} /><span>{currentLanguage.short}</span><span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={14} /></span>
       </button>
       <div class="nav-dropdown-panel language-dropdown-panel t-dropdown" data-origin="top-right" aria-label={copy.language} aria-hidden="true" inert>
-        {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span><small>{item.short}</small></a>)}
+        {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span>{item.locale !== 'zh-CN' && <small>{item.short}</small>}</a>)}
       </div>
     </div>
     <a class="header-cta" href={hrefFor('/')} aria-current={isCurrent('/') ? 'page' : undefined}>{copy.viewMetadata} <StaticIcon name="arrow" size={16} /></a>
@@ -90,7 +90,7 @@ const languageHref = (target: Locale) => translated ? localizePath(basePath, tar
           <span><StaticIcon name="languages" size={17} /> {copy.language}</span><strong>{currentLanguage.label}</strong><span class="nav-dropdown-chevron"><StaticIcon name="chevronDown" size={16} /></span>
         </button>
         <div class="nav-dropdown-panel language-dropdown-panel t-dropdown" data-origin="top-right" aria-label={copy.language} aria-hidden="true" inert>
-          {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span><small>{item.short}</small></a>)}
+          {languageOptions.map((item) => <a href={languageHref(item.locale)} hreflang={item.locale} lang={item.locale} aria-current={locale === item.locale ? 'page' : undefined}><span>{item.label}</span>{item.locale !== 'zh-CN' && <small>{item.short}</small>}</a>)}
         </div>
       </div>
       <div class="mobile-nav-list">

@@ -33,7 +33,8 @@ const articleGroups = {
   ],
   audio: ['remove-metadata-from-mp3'],
   video: ['remove-metadata-from-mp4'],
-  all: ['what-is-a-metadata-strategy'],
+  all: ['what-is-a-metadata-strategy', 'verify-metadata-removal', 'why-metadata-is-missing'],
+  c2pa: ['how-to-read-c2pa-results'],
 };
 
 const expectedTools = {
@@ -42,6 +43,7 @@ const expectedTools = {
   audio: ['/audio-metadata-viewer/', '/audio-metadata-remover/'],
   video: ['/video-metadata-viewer/', '/video-metadata-remover/'],
   all: ['/metadata-viewer/', '/metadata-remover/'],
+  c2pa: ['/c2pa-viewer/', '/metadata-viewer/'],
 };
 
 test('tool recommendations cover every published guide', () => {
@@ -61,8 +63,13 @@ for (const [scope, slugs] of Object.entries(articleGroups)) {
       const paths = expectedTools[scope as keyof typeof expectedTools];
       expect(await links.evaluateAll(nodes => nodes.map(node => node.getAttribute('href')))).toEqual(paths);
       await expect(strip.locator('strong')).toHaveText(paths.map((_, index) => String(index + 1).padStart(2, '0')));
-      await expect(links.first()).toContainText(`View ${scope === 'all' ? 'file' : scope} metadata`);
-      await expect(links.last()).toContainText('Make a cleaner copy');
+      if (scope === 'c2pa') {
+        await expect(links.first()).toContainText('Check Content Credentials');
+        await expect(links.last()).toContainText('Read ordinary metadata');
+      } else {
+        await expect(links.first()).toContainText(`View ${scope === 'all' ? 'file' : scope} metadata`);
+        await expect(links.last()).toContainText('Make a cleaner copy');
+      }
     });
   }
 }
@@ -161,7 +168,7 @@ for (const width of [320, 375, 390, 430]) {
 
   test(`two- and three-action recommendations fit a ${width}px viewport`, async ({ page }) => {
     await page.setViewportSize({ width, height: 850 });
-    for (const slug of ['do-screenshots-have-metadata', 'remove-metadata-from-word-document', 'what-is-a-metadata-strategy']) {
+    for (const slug of ['do-screenshots-have-metadata', 'remove-metadata-from-word-document', 'what-is-a-metadata-strategy', 'verify-metadata-removal', 'why-metadata-is-missing', 'how-to-read-c2pa-results']) {
       await page.goto(`/blog/${slug}/`);
       const strip = page.locator('.blog-tool-strip');
       await expect(strip).toBeVisible();

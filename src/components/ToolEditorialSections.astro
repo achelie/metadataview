@@ -1,0 +1,58 @@
+---
+import type { Locale } from '../i18n/core';
+import type { ToolEditorialKey, ToolEditorialSection } from '../content/tool-editorial-types';
+
+interface Props { sections: ToolEditorialSection[]; locale?: Locale; toolKey?: ToolEditorialKey }
+const { sections, locale = 'en', toolKey } = Astro.props;
+const words = {
+  en: { field: 'Field or record', reading: 'How to read it', next: 'A guide for the next check', guide: 'Read the guide' },
+  de: { field: 'Feld oder Eintrag', reading: 'So liest du den Wert', next: 'Eine Anleitung für den nächsten Schritt', guide: 'Anleitung lesen · Englisch' },
+  fr: { field: 'Champ ou entrée', reading: 'Comment lire la valeur', next: 'Un guide pour la prochaine vérification', guide: 'Lire le guide · anglais' },
+  'zh-CN': { field: '字段或记录', reading: '怎么理解这个值', next: '下一步的检查指南', guide: '阅读指南 · 英文' },
+}[locale];
+const guide = toolKey === 'c2pa' ? { href: '/blog/how-to-read-c2pa-results/', title: 'How to read C2PA results' }
+  : toolKey === 'remover' || toolKey?.endsWith('Remover') ? { href: '/blog/verify-metadata-removal/', title: 'How to verify metadata removal' }
+  : { href: '/blog/why-metadata-is-missing/', title: 'Why metadata is missing' };
+---
+{sections.length > 0 && <div class="tool-editorial">
+  {sections.map((section) => <section class="tool-editorial-section" aria-labelledby={section.id}>
+    <h2 id={section.id}>{section.title}</h2>
+    <div class="tool-editorial-copy">{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+    {section.fields && <table class="tool-editorial-fields">
+      <thead><tr><th scope="col">{words.field}</th><th scope="col">{words.reading}</th></tr></thead>
+      <tbody>{section.fields.map((field) => <tr><th scope="row">{field.name}</th><td><p>{field.meaning}</p><p class="tool-editorial-caveat">{field.caveat}</p></td></tr>)}</tbody>
+    </table>}
+    {section.figure && <figure>
+      <img src={section.figure.src} alt={section.figure.alt} width="1200" height="800" loading="lazy" decoding="async" />
+      <figcaption>{section.figure.caption}</figcaption>
+    </figure>}
+  </section>)}
+  {toolKey && <aside class="tool-editorial-next"><strong>{words.next}</strong><a href={guide.href} lang="en">{guide.title}<span lang={locale}>{words.guide}</span></a></aside>}
+</div>}
+
+<style>
+  .tool-editorial { min-width: 0; margin: var(--section-space) 0; }
+  .tool-editorial-section { min-width: 0; padding: var(--layout-gap) 0; border-top: 1px solid var(--line); }
+  h2 { margin: 0 0 .75rem; font-size: var(--text-section); line-height: 1.25; overflow-wrap: anywhere; }
+  .tool-editorial-copy { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: .75rem var(--layout-gap); }
+  p { max-width: var(--prose-width); margin: 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+  .tool-editorial-copy p:only-child { grid-column: 1 / -1; }
+  .tool-editorial-fields { width: 100%; margin: var(--layout-gap) 0 0; table-layout: fixed; border-collapse: collapse; text-align: left; }
+  th, td { padding: .75rem .85rem; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+  th:first-child { width: 28%; padding-left: 0; }
+  thead { background: linear-gradient(105deg, rgba(228, 221, 207, .65), rgba(228, 221, 207, .2)); }
+  .tool-editorial-caveat { margin-top: .35rem; color: var(--muted); }
+  figure { margin: var(--layout-gap) 0 0; }
+  img { display: block; width: 100%; max-width: 1000px; height: auto; border: 1px solid var(--line); }
+  figcaption { max-width: var(--prose-width); margin-top: .65rem; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+  .tool-editorial-next { display: flex; align-items: start; justify-content: space-between; gap: var(--layout-gap); padding: var(--layout-gap); border-left: 3px solid var(--rust); background: linear-gradient(105deg, rgba(228, 221, 207, .65), rgba(228, 221, 207, .2)); }
+  .tool-editorial-next strong { font-size: 16px; line-height: 1.5; }
+  .tool-editorial-next a { min-height: 44px; font-size: 16px; line-height: 1.5; text-decoration: underline; text-underline-offset: .2em; overflow-wrap: anywhere; }
+  .tool-editorial-next span { display: block; font-size: 15px; }
+  @media (max-width: 900px) { .tool-editorial-copy { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 680px) {
+    th, td { padding: .65rem .5rem; }
+    th:first-child { width: 32%; }
+    .tool-editorial-next { flex-direction: column; gap: .5rem; }
+  }
+</style>

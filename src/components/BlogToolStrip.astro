@@ -3,7 +3,7 @@ interface Props {
   category?: string;
 }
 
-type ToolScope = 'image' | 'document' | 'audio' | 'video' | 'all';
+type ToolScope = 'image' | 'document' | 'audio' | 'video' | 'all' | 'c2pa';
 const scopesByCategory: Record<string, ToolScope> = {
   'Image privacy': 'image',
   'EXIF basics': 'image',
@@ -14,11 +14,15 @@ const scopesByCategory: Record<string, ToolScope> = {
   'Audio privacy': 'audio',
   'Video privacy': 'video',
   'Metadata management': 'all',
+  'Content Credentials': 'c2pa',
 };
 const category = Astro.props.category;
 const scope = (category && Object.hasOwn(scopesByCategory, category) ? scopesByCategory[category] : undefined) ?? 'all';
 const prefix = scope === 'all' ? '' : `${scope}-`;
-const links = [
+const links = scope === 'c2pa' ? [
+  { href: '/c2pa-viewer/', label: 'Check Content Credentials' },
+  { href: '/metadata-viewer/', label: 'Read ordinary metadata' },
+] : [
   { href: `/${prefix}metadata-viewer/`, label: `View ${scope === 'all' ? 'file' : scope} metadata` },
   ...(scope === 'image' ? [{ href: '/image-privacy-checker/', label: 'Check image privacy' }] : []),
   { href: `/${prefix}metadata-remover/`, label: 'Make a cleaner copy' },

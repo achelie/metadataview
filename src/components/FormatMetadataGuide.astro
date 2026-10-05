@@ -3,14 +3,18 @@ import { IconGlyph } from './IconGlyph';
 import StaticIcon from './StaticIcon.astro';
 import type { FormatGuide } from '../content/tools';
 import type { Locale } from '../i18n/core';
+import ToolEditorialSections from './ToolEditorialSections.astro';
+import type { ToolEditorialKey, ToolEditorialSection } from '../content/tool-editorial-types';
 
 interface Props {
   guide: FormatGuide;
   limitations: string[];
   locale?: Locale;
+  editorialSections?: ToolEditorialSection[];
+  toolKey?: ToolEditorialKey;
 }
 
-const { guide, limitations, locale = 'en' } = Astro.props;
+const { guide, limitations, locale = 'en', editorialSections = [], toolKey } = Astro.props;
 const zh = locale === 'zh-CN';
 const de = locale === 'de';
 const fr = locale === 'fr';
@@ -50,3 +54,5 @@ const t = (en: string, zhText: string, deText: string, frText: string) => zh ? z
     </details>
   </div>
 </section>
+
+<ToolEditorialSections sections={editorialSections} locale={locale} toolKey={toolKey} />

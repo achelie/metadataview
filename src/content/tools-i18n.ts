@@ -1,5 +1,6 @@
 import { localizePath, type Locale } from '../i18n/core';
 import { tools, type FormatGuide, type ToolConfig } from './tools';
+import { getToolEditorial } from './tool-editorial';
 
 export type ToolKey = 'metadata' | 'image' | 'document' | 'video' | 'audio' | 'privacy' | 'remover' | 'imageRemover' | 'videoRemover' | 'audioRemover' | 'documentRemover' | 'c2pa';
 
@@ -552,6 +553,7 @@ export function getTool(key: ToolKey, locale: Locale = 'en'): ToolConfig {
   const copy = locale === 'zh-CN' ? zhCopy[key] : locale === 'de' ? deCopy[key] : frCopy[key];
   return {
     ...base, ...copy,
+    editorialSections: getToolEditorial(key, locale),
     path: localizePath(base.path, locale),
     heroProof: locale === 'fr' && key === 'remover' ? 'Traitement 100 % local · Aucun envoi · Inspecter → Supprimer → Vérifier' : locale === 'fr' && key === 'videoRemover' ? 'Aucun réencodage · Qualité vidéo préservée · Inspecter → Supprimer → Vérifier' : base.heroProof,
     formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : locale === 'de' ? localizedGuideDe(key, base.formatGuide) : localizedGuideFr(key, base.formatGuide),

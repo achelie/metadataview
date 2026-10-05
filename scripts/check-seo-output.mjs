@@ -228,11 +228,14 @@ for (const { relativeFile, html, canonical } of pageRecords) {
   const frenchUrl = `${productionOrigin}${frenchPath}`;
   const chineseUrl = `${productionOrigin}${chinesePath}`;
   const hasTranslatedSet = canonicalSet.has(englishUrl) && canonicalSet.has(germanUrl) && canonicalSet.has(frenchUrl) && canonicalSet.has(chineseUrl);
-  const alternates = new Map([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((entry) => [entry[1], entry[2]]));
+  const alternateEntries = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((entry) => [entry[1], entry[2]]);
+  const alternates = new Map(alternateEntries);
+  if (alternateEntries.length !== alternates.size) failures.push(`${relativeFile}: duplicate hreflang code`);
   const ogLocale = match(html, /<meta property="og:locale" content="([^"]+)"/);
   const ogAlternates = new Set([...html.matchAll(/<meta property="og:locale:alternate" content="([^"]+)"/g)].map((entry) => entry[1]));
 
   if (hasTranslatedSet) {
+    if (alternateEntries.length !== 5 || alternates.size !== 5) failures.push(`${relativeFile}: translated set must contain exactly four languages and x-default`);
     if (alternates.get('en') !== englishUrl) failures.push(`${relativeFile}: invalid English alternate`);
     if (alternates.get('de') !== germanUrl) failures.push(`${relativeFile}: invalid German alternate`);
     if (alternates.get('fr') !== frenchUrl) failures.push(`${relativeFile}: invalid French alternate`);

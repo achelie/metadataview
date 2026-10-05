@@ -46,7 +46,7 @@ const schemas = [
   description={description}
   path="/blog/"
   schemas={schemas}
-  image={featured ? { src: featured.data.cover.src, alt: featured.data.coverAlt, width: 1600, height: 900 } : undefined}
+  image={featured ? { src: featured.data.cover.src, alt: featured.data.coverAlt, width: featured.data.cover.width, height: featured.data.cover.height } : undefined}
 >
   <div class="blog-index page-shell">
     <ReadingRoutes />

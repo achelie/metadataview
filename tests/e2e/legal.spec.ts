@@ -4,7 +4,7 @@ const ADSENSE_ACCOUNT_ID = 'ca-pub-7443237558968985';
 const ADS_TXT_LINE = 'google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0';
 const PUBLIC_EMAIL = 'contact@viewexif.com';
 const POLICY_EFFECTIVE_DATE = '2026-08-23';
-const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-09-23';
+const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-10-05';
 const GOOGLE_AD_REQUEST = /(?:googlesyndication\.com|doubleclick\.net|fundingchoicesmessages\.google\.com)/i;
 
 const legalKinds = ['about', 'privacy', 'contact', 'terms'] as const;
@@ -13,6 +13,8 @@ const locales = [
   {
     prefix: '',
     lang: 'en',
+    visitsPattern: /previous visits to this site or other websites/i,
+    optOutPattern: /opt out of personalized advertising/i,
     labels: { contact: 'Contact', terms: 'Terms' },
     operatorPattern: /independently operated by an individual/i,
     privacyTokens: [/file ?names?/i, /hash(?:es)?/i, /metadata/i, /cookies?/i, /local storage/i, /web beacons?/i, /IP address/i, /advertising technology partners/i],
@@ -20,6 +22,8 @@ const locales = [
   {
     prefix: '/de',
     lang: 'de',
+    visitsPattern: /früheren Besuche auf dieser oder anderen Websites/i,
+    optOutPattern: /personalisierte Werbung.{0,30}deaktivieren/i,
     labels: { contact: 'Kontakt', terms: 'Nutzungsbedingungen' },
     operatorPattern: /unabhängig von einer Einzelperson betrieben/i,
     privacyTokens: [/Dateinamen?/i, /Hash(?:es)?/i, /Metadaten/i, /Cookies?/i, /lokal(?:e|en|er|em|es).{0,24}(?:Speicher|Speicherung)/i, /Web.Beacons?/i, /IP.Adresse/i, /(?:Drittanbieter.{0,24}Werbetechnologie|Werbetechnologiepartner)/i],
@@ -27,6 +31,8 @@ const locales = [
   {
     prefix: '/fr',
     lang: 'fr',
+    visitsPattern: /visites précédentes sur ce site ou d’autres sites/i,
+    optOutPattern: /désactiver la publicité personnalisée/i,
     labels: { contact: 'Contact', terms: 'Conditions d’utilisation' },
     operatorPattern: /exploitée? de façon indépendante par une personne/i,
     privacyTokens: [/noms? de fichiers?/i, /hachage|empreintes?/i, /métadonnées/i, /cookies?/i, /local storage|stockage local/i, /balises? web|web beacons?/i, /adresse IP/i, /partenaires technologiques/i],
@@ -34,6 +40,8 @@ const locales = [
   {
     prefix: '/zh-cn',
     lang: 'zh-CN',
+    visitsPattern: /此前访问本站或其他网站/,
+    optOutPattern: /退出个性化广告/,
     labels: { contact: '联系我们', terms: '使用条款' },
     operatorPattern: /个人独立运营/,
     privacyTokens: [/文件名/, /哈希/, /元数据/, /Cookie/i, /本地存储|local storage/i, /网络信标|web beacon/i, /IP\s*地址/i, /第三方|合作伙伴/],
@@ -116,6 +124,8 @@ test('localized privacy pages disclose processing, advertising controls and prov
     await expect(main).toContainText('Google');
 
     const body = await main.innerText();
+    expect(body, `${path} should explain advertising based on earlier visits`).toMatch(locale.visitsPattern);
+    expect(body, `${path} should explain how to opt out`).toMatch(locale.optOutPattern);
     for (const token of locale.privacyTokens) expect(body, `${path} should disclose ${token}`).toMatch(token);
 
     const hrefs = await main.locator('a[href^="https://"]').evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).href));
