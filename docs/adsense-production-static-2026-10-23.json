@@ -1,0 +1,794 @@
+{
+  "checkedAt": "2026-10-22T16:55:42.176Z",
+  "commit": "63c07f42cc9f6e1a71b85af6e18022386ed4d15c",
+  "origin": "https://www.viewexif.com",
+  "sitemap": {
+    "status": 200,
+    "count": 109,
+    "matchesRelease": true
+  },
+  "resources": [
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "User-agent: *\r\nAllow: /\r\n\r\nSitemap: https://www.viewexif.com/sitemap.xml\r\n"
+    },
+    {
+      "path": "/ads.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "body": "google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0\r\n"
+    },
+    {
+      "path": "/favicon.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    }
+  ],
+  "records": [
+    {
+      "path": "/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/",
+      "mainHash": "339510a7d1413010edc14bc5465b483cfe5765f80c040d5f6df54153d2351b0e",
+      "failures": []
+    },
+    {
+      "path": "/about/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/about/",
+      "mainHash": "19c2ca32c61088989560337bdd501d83e763e935d0f44ba99a3772070ae81e0c",
+      "failures": []
+    },
+    {
+      "path": "/audio-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/audio-metadata-remover/",
+      "mainHash": "5e521dd6a242073e7259b87b533ffcb9b86f23c46bc86af878c651c1d31bc1c4",
+      "failures": []
+    },
+    {
+      "path": "/audio-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/audio-metadata-viewer/",
+      "mainHash": "473fe0640b8077a56cfccd470897af8edcd0aac0ca16a43dcfef3cd2cde1e907",
+      "failures": []
+    },
+    {
+      "path": "/blog/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/",
+      "mainHash": "57037d9cdc8cadf7e7d8218fce85e0962a2e8fde57a76446ea69f710bf2a01d8",
+      "failures": []
+    },
+    {
+      "path": "/blog/do-screenshots-have-metadata/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "mainHash": "7260de8218372c7632e23b3afbb4e840d5724f3a4e7df8f9dddd5e5ba100d15a",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-discord-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "mainHash": "797656f2ed529fa8ae095986b4dda5a476ced5b8e070ffa70a16a1f44bedad8f",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-gmail-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "mainHash": "0e7bfa2610da19bcfef8465e1800b3f3fc49afa779a4ae38785e137b62710806",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-instagram-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "mainHash": "e5f0ffb442697ea9ca1cdde6de5e5119d7dcce1c076fa6e13d423158ced95e6c",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-reddit-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "mainHash": "663bfd8d03043bc3834a465985af228f669c895fc29035a1c9719fd9047d61d7",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-telegram-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "mainHash": "1bb451c71574143b04c6581be68c499cd424d443b9be92c9f6039b20fc619c3b",
+      "failures": []
+    },
+    {
+      "path": "/blog/does-whatsapp-remove-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "mainHash": "dc4a0c5df2bd44e712b48737d53a264e011d517ff09061fa5f93891ea66b0722",
+      "failures": []
+    },
+    {
+      "path": "/blog/exif-metadata-definition-and-how-to-view/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "mainHash": "8379db0f807180ee9d7a76c41a23300407cc152befb85d10dde6905d3f33e39f",
+      "failures": []
+    },
+    {
+      "path": "/blog/exif-orientation-values/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/exif-orientation-values/",
+      "mainHash": "95c842114038781e79b267e7cf15071f1bd1cce8d64a04dcd93b4a5c8e56ab24",
+      "failures": []
+    },
+    {
+      "path": "/blog/exif-timezone-offsettimeoriginal/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/exif-timezone-offsettimeoriginal/",
+      "mainHash": "9c2a56e39e0ec26ef186927f4a42b018d451192c388860df5cfca95f58d30210",
+      "failures": []
+    },
+    {
+      "path": "/blog/exif-vs-metadata/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "mainHash": "57c0b8ae3b5dae65e5248239d558d314c409eba2b2e1fefc463cd1c56ad7b102",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-check-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-check-exif-data/",
+      "mainHash": "b2ab844e5a1870f5b4681c32fd1828df8066d742275592aa82a1c1b7281c0b73",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-check-metadata-of-an-image/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "mainHash": "cf7c3ceb1cc60bea34293255e9c09788ea888f21a3f2915a4c188d2430e71970",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-find-camera-settings-from-a-photo/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "mainHash": "870c076006d1f300cfbb647179ee378bc28a62e8bd4043b4474a3bba9c8067dd",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-find-where-a-photo-was-taken/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "mainHash": "4eafccbd8ad942be3f156baedfb585336076f3967db44687975d14a021fb49ea",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-read-c2pa-results/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-read-c2pa-results/",
+      "mainHash": "0f7405f4783000afd8a73e24045065e5650550a08c9199bc0e7e83a035b87635",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "mainHash": "1887b0a31fa1b73196081fe37393e9b73d10a453f97fab5f7803c5cbe319e466",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-remove-metadata-from-a-photo/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "mainHash": "62e4eebe420aa6377346198216b0019a16f5977a937ee6750704eac465b8e661",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-tell-when-a-photo-was-taken/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "mainHash": "fea48a2ab68f57e132ff87f30ce6446cb9c9c6c7c9fcc3a168967413a61c967b",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-android/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "mainHash": "371d658fee8d0ea6c69ea8bbef7c636407515ebd94c4cb1c1c2c240054c7ef67",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-iphone/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "mainHash": "f959669dbab868f7ef0e1b2e54a6726e53f160bb28a9711e61d46af965009210",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-windows-11/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "mainHash": "dd004809c45e94bb04dc00f34d1afc3cada79ccd7091e9247068c120c7926f8e",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-view-pdf-metadata/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "mainHash": "6f6f124e9775a2678dbfaa651f9cbd0f991b5a938b1a45dec1d46b11bbfbe529",
+      "failures": []
+    },
+    {
+      "path": "/blog/how-to-view-photo-metadata-on-mac/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "mainHash": "7da2808d00e94652a6d868a476d4ad88074949f1195982e989e1f31972191ded",
+      "failures": []
+    },
+    {
+      "path": "/blog/page/2/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/page/2/",
+      "mainHash": "1db015eba9ad658b50ed9523bcb7642740b9090550ad26f3c80203be8be0b736",
+      "failures": []
+    },
+    {
+      "path": "/blog/page/3/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/page/3/",
+      "mainHash": "567b6280a9b065ee86cf28c7324a3484ebf55b35512508e70a19203447a15161",
+      "failures": []
+    },
+    {
+      "path": "/blog/page/4/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/page/4/",
+      "mainHash": "71c219bf31e504732abe23457db66c84245adc97ba79aad82c28c5b7a48d145d",
+      "failures": []
+    },
+    {
+      "path": "/blog/page/5/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/page/5/",
+      "mainHash": "e21819c2ae92c98343b8b730ec9fc451346ca022600a7debda35eb08f8d20b68",
+      "failures": []
+    },
+    {
+      "path": "/blog/page/6/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/page/6/",
+      "mainHash": "9ce07733f32b48b63e03d977224f214aee5d3d496e395e83c8474e5dca7bba9a",
+      "failures": []
+    },
+    {
+      "path": "/blog/remove-metadata-from-mp3/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "mainHash": "ed8602bf4d7169c85dc6d15b4f1fe49d512c377a5cac45b07d379549de16bf73",
+      "failures": []
+    },
+    {
+      "path": "/blog/remove-metadata-from-mp4/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "mainHash": "218a41475150edeba7d0fabbb848cfcb119e6f3a80ba945e321afdeb92872bfe",
+      "failures": []
+    },
+    {
+      "path": "/blog/remove-metadata-from-pdf/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "mainHash": "de70f31addaa7c473c1aff23268309e34e80b78068fd8000cc403a0c04031320",
+      "failures": []
+    },
+    {
+      "path": "/blog/remove-metadata-from-word-document/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "mainHash": "6accfcca29c135e7ab483475b3629d10b0f99cf2215ed90e3b495268086e43c1",
+      "failures": []
+    },
+    {
+      "path": "/blog/verify-metadata-removal/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/verify-metadata-removal/",
+      "mainHash": "83a48e106dfa82893a1e2c01f69909865a27467223ecc6a2e197bff651755620",
+      "failures": []
+    },
+    {
+      "path": "/blog/what-is-a-metadata-strategy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "mainHash": "64ada0c0787814d91ec4b597978e7c7671ed2c84210eb56b1d477ebe34be5623",
+      "failures": []
+    },
+    {
+      "path": "/blog/what-is-exif-data/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "mainHash": "9abce4eb079665d2e93796e5093b5746d4cab4c78abbacccf5033c092b3a7ad2",
+      "failures": []
+    },
+    {
+      "path": "/blog/what-is-xmp-metadata/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "mainHash": "ecb58b51654ff27ff535548384efad5c6c6724c4ab51fb7b2eb93c96f7faa806",
+      "failures": []
+    },
+    {
+      "path": "/blog/why-metadata-is-missing/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/blog/why-metadata-is-missing/",
+      "mainHash": "77e448881c6ac03b52ac688df056ac9bf9f76da040dd1437d2bf2528c9c14c8c",
+      "failures": []
+    },
+    {
+      "path": "/c2pa-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/c2pa-viewer/",
+      "mainHash": "d5b969928d7b950aa09ba17c02c713c7f78be4e55b401c87fc65ffa8dc9fbfac",
+      "failures": []
+    },
+    {
+      "path": "/contact/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/contact/",
+      "mainHash": "5674c876840cae3ea26bd8d1f3439250952fbe4c681406dc2efc65d717dd5b09",
+      "failures": []
+    },
+    {
+      "path": "/de/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/",
+      "mainHash": "9bcd153f2b47dff5ab453a8b1e926564edd99d6773c1e4232ae23505b0d27ef0",
+      "failures": []
+    },
+    {
+      "path": "/de/about/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/about/",
+      "mainHash": "7ba4229db4d0599ee3d88102858863aa47cfe6b70a25ec7495950316516fdcdc",
+      "failures": []
+    },
+    {
+      "path": "/de/audio-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/audio-metadata-remover/",
+      "mainHash": "9f1bef58ded6442c98ef038161ad3759d512ea60c84a9d172e084d470db762fd",
+      "failures": []
+    },
+    {
+      "path": "/de/audio-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/audio-metadata-viewer/",
+      "mainHash": "ea717b54cd7d3c2ef404c9672a64ad3c2660046f9724bb74af8dfe4e84b6dae6",
+      "failures": []
+    },
+    {
+      "path": "/de/c2pa-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/c2pa-viewer/",
+      "mainHash": "d3920c717df0ee8628d7d4be0aa96d48ac4ebf877aa9cec6ee74cf9ff9f7687d",
+      "failures": []
+    },
+    {
+      "path": "/de/contact/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/contact/",
+      "mainHash": "d10c04533bc2ed6183b430fa8c45de2f284920b2711ba2948b5f6d4d011fa7f4",
+      "failures": []
+    },
+    {
+      "path": "/de/document-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/document-metadata-remover/",
+      "mainHash": "b79cdf95b9b10a852027c692ec6c80ebeef8fc13bae44699e03aead0343c00c3",
+      "failures": []
+    },
+    {
+      "path": "/de/document-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/document-metadata-viewer/",
+      "mainHash": "818a52e14dcc2468e9a46550eb0860215354c8dd1b3c0748cb59067a4229cda4",
+      "failures": []
+    },
+    {
+      "path": "/de/image-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/image-metadata-remover/",
+      "mainHash": "317917d87647a96c130fbd01fdc675fdc32134cf718cfd9a443ef0db9e4b1e65",
+      "failures": []
+    },
+    {
+      "path": "/de/image-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/image-metadata-viewer/",
+      "mainHash": "29960f50714444520009c32784b38634a476e83abd3156da293f4abbd3b66b7a",
+      "failures": []
+    },
+    {
+      "path": "/de/image-privacy-checker/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/image-privacy-checker/",
+      "mainHash": "539b8f43d31581e516100e74dee916e1c20653bd114dcb092ab3367e100b4207",
+      "failures": []
+    },
+    {
+      "path": "/de/metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/metadata-remover/",
+      "mainHash": "2720ceeb90e6e378a726c4b3dc844bdff4b905340afac0ed53568484e332666b",
+      "failures": []
+    },
+    {
+      "path": "/de/metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/metadata-viewer/",
+      "mainHash": "6e883c33529e96d4c6caaa43112e0886a5b47be09f7fb45e715c375ed4737bdf",
+      "failures": []
+    },
+    {
+      "path": "/de/privacy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/privacy/",
+      "mainHash": "6d42b5aa45a679dd21263e70ccf5681ac298d811d46de1fc6afaaf70155201ea",
+      "failures": []
+    },
+    {
+      "path": "/de/terms/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/terms/",
+      "mainHash": "ac55331bdda17715d8d9b1cc53e108473d6e67526185187d5523638b6acb6771",
+      "failures": []
+    },
+    {
+      "path": "/de/video-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/video-metadata-remover/",
+      "mainHash": "bac25dd644acdd59fdd84573db003460a5c6845a31cf55a0f1de45843a507ede",
+      "failures": []
+    },
+    {
+      "path": "/de/video-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/de/video-metadata-viewer/",
+      "mainHash": "fffed3ad0830da51dd45f73b51bb3c7383dbe91727e328a01b9ad12115d111e6",
+      "failures": []
+    },
+    {
+      "path": "/document-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/document-metadata-remover/",
+      "mainHash": "8b48ce19abd620ecdce79a1d70f519b4276276dbbe611152da004c2242991e3f",
+      "failures": []
+    },
+    {
+      "path": "/document-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/document-metadata-viewer/",
+      "mainHash": "0b540f3e9312368e3ec72c122f9a2c1ad4237e1b4cdfa148f6bf7f3697f8a075",
+      "failures": []
+    },
+    {
+      "path": "/editorial-policy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/editorial-policy/",
+      "mainHash": "fed33c9cfdff5a20cc0f6d23c014a8c83cf807c86f7b64f9216de3607be0b9a6",
+      "failures": []
+    },
+    {
+      "path": "/fr/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/",
+      "mainHash": "b9625eed598d6af7489d6a2e3d41e7029a1f4d695c57e8bb54f3ab63cb9e4e8a",
+      "failures": []
+    },
+    {
+      "path": "/fr/about/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/about/",
+      "mainHash": "362e7213727919b130ad3d3931652ac341f4ff55496afadc12fb4ea0761d4422",
+      "failures": []
+    },
+    {
+      "path": "/fr/audio-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/audio-metadata-remover/",
+      "mainHash": "8e8c4745dd0787cf61350f506b39e3037a0bfb50477fb045eab6174d0cada56c",
+      "failures": []
+    },
+    {
+      "path": "/fr/audio-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+      "mainHash": "289263438db8d1c1bfca8c5ee29f957711500233da0f6b4267e2a54316229fe6",
+      "failures": []
+    },
+    {
+      "path": "/fr/c2pa-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/c2pa-viewer/",
+      "mainHash": "83d66d4632e09d8ad5ebf933b72383d4ed777b4144a0080a8ba9c1dcbaea6d8d",
+      "failures": []
+    },
+    {
+      "path": "/fr/contact/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/contact/",
+      "mainHash": "59f914e1eb794cb94dedcffff73a02a1569e302be8947d2de87f7337f84b164b",
+      "failures": []
+    },
+    {
+      "path": "/fr/document-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/document-metadata-remover/",
+      "mainHash": "7ac5c50f2e1960b926afd8ec7972d5951eb6fa8c716fe8c2328be1da8257b136",
+      "failures": []
+    },
+    {
+      "path": "/fr/document-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/document-metadata-viewer/",
+      "mainHash": "0172c7a8131ed710780b257a0cf828fe699270e6f46a1f08f1c8b913da47adb2",
+      "failures": []
+    },
+    {
+      "path": "/fr/image-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/image-metadata-remover/",
+      "mainHash": "bf05ae848f84b7b6ca913c7b28f717003c4483551029868d3ac88f0f5b76e41f",
+      "failures": []
+    },
+    {
+      "path": "/fr/image-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/image-metadata-viewer/",
+      "mainHash": "c794931811c484efc8460029e61c78d7bad71162e51e52e1b9fd0d033800addb",
+      "failures": []
+    },
+    {
+      "path": "/fr/image-privacy-checker/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/image-privacy-checker/",
+      "mainHash": "ce0b801a1dd80016fee9c3337fca03fdb741cb87e5aeaaf1d6d7b061f270be62",
+      "failures": []
+    },
+    {
+      "path": "/fr/metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/metadata-remover/",
+      "mainHash": "aacf065b083d1eca7fbff537a6a70b60fe6a8fa29e58949beaf2359a203c5309",
+      "failures": []
+    },
+    {
+      "path": "/fr/metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/metadata-viewer/",
+      "mainHash": "1f32855fda0aea014481ab9109d752752e693ba5f1d62746b646b372ebc8d110",
+      "failures": []
+    },
+    {
+      "path": "/fr/privacy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/privacy/",
+      "mainHash": "698416b414c1191a642420d09a970e99164e7f9aec0b806e1703e0000e34c83b",
+      "failures": []
+    },
+    {
+      "path": "/fr/terms/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/terms/",
+      "mainHash": "64d5cfcce0db7f78d5989437a633f61a9538778d367127cad933dd524fa16c48",
+      "failures": []
+    },
+    {
+      "path": "/fr/video-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/video-metadata-remover/",
+      "mainHash": "8581debb76bfa15a0bcb0f2b8dd585a1efd82e5bba7e3dcc5dce4046be030ecb",
+      "failures": []
+    },
+    {
+      "path": "/fr/video-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/fr/video-metadata-viewer/",
+      "mainHash": "e21ff98f0c92aae7d2ddb17bc6b4ebba674961cae23d752222af2dfa8154262d",
+      "failures": []
+    },
+    {
+      "path": "/how-we-test/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/how-we-test/",
+      "mainHash": "de940b4fc2a0014df51abad8bbefb794a79b36dd3f2d40151270d891bcf7d0e7",
+      "failures": []
+    },
+    {
+      "path": "/image-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/image-metadata-remover/",
+      "mainHash": "00686726992eece9f6f45ee7f778e0e59425905a0fb6868c74fd7b79480c64c9",
+      "failures": []
+    },
+    {
+      "path": "/image-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/image-metadata-viewer/",
+      "mainHash": "4d1fb5a3a0f76c037149312dbb30d3e5184eddbd60ccabc6ccd7263019b49192",
+      "failures": []
+    },
+    {
+      "path": "/image-privacy-checker/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/image-privacy-checker/",
+      "mainHash": "97804adb92c0d4e3b86abee732eb3c8312a607068fcb48163fc8e2084eb85ffe",
+      "failures": []
+    },
+    {
+      "path": "/metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/metadata-remover/",
+      "mainHash": "cc7bd9b2f29e1877926f3901d4f83f3cc447231e533b17ca5f4d4e3990b42704",
+      "failures": []
+    },
+    {
+      "path": "/metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/metadata-viewer/",
+      "mainHash": "da5798ce14b99085b5dd1892fa6dcb44830097804c3880aecb5672774926674d",
+      "failures": []
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/privacy/",
+      "mainHash": "32ab05f99c7f7ae00730772d8c583856bad7f32ee1c0b27c8bed02b9a94a0314",
+      "failures": []
+    },
+    {
+      "path": "/terms/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/terms/",
+      "mainHash": "eac2373ce2a97ca6bff2cdb6050ae1b2d00fb708d073d8b30fdc196f61393eb4",
+      "failures": []
+    },
+    {
+      "path": "/video-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/video-metadata-remover/",
+      "mainHash": "943539a8d724ac69be9ffb500f8e69e2e65b0d4aa8604186e32e1da4d59494a7",
+      "failures": []
+    },
+    {
+      "path": "/video-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/video-metadata-viewer/",
+      "mainHash": "aaacb42218f0a06e0d5d359bf1685f5e86d5b4209af0b9f8914a13062ccaf2f0",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/",
+      "mainHash": "f90fcd424cb7caf0eac3507781be5b9fd7c6af5eaae1748a2793cf1b731f6639",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/about/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/about/",
+      "mainHash": "885412d47c7024e6caf4cb823d41963f09a72e240e41daabcea8924f3f2312c2",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/audio-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+      "mainHash": "6ec5bc2d38381155fedff8f9cb0c12347515aff3e10d3188947d3d78611e3d08",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/audio-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+      "mainHash": "636ec47f3f044963a35a00d239c5fb892baf1e17ddce2c83c74d4e01523b6d07",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/c2pa-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+      "mainHash": "691888b80217a0b37761ef28e3cbf3dbb8ee6525e0492ce74373cfb211c868d2",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/contact/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/contact/",
+      "mainHash": "66a8c235981d5e21080e728d230015c2768772f6290cc4a4584c3f60ca54076d",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/document-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+      "mainHash": "8d4afc00d1ed09d2eb97ca264df795b973a994c7e58012eca8ded96cb829afdc",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/document-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+      "mainHash": "0a305acb35cd092e05f5f06da8a89028af607b62738f79da83784a264c4ee48b",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/image-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+      "mainHash": "3d33ebeb0ca18548ebd35ace27419b111f4f8a3fb681afb685abeebdec98d79c",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/image-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+      "mainHash": "38a909b2bea1496c91472990293d7758812100896f098d57a3219d01c5bf6173",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/image-privacy-checker/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+      "mainHash": "9e2f6d492b4783e5b2aa63826fd1fad41d3360a307399f78c411dbd393a1c319",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/metadata-remover/",
+      "mainHash": "9473a5d660f3e72622dfd2c8a0bc2117b4a94118709a2e4b10860af176eec6d6",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+      "mainHash": "654921b52857b136f513de09c1f95378c0e4776b04cf241e2c4ca5d93149bedf",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/privacy/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/privacy/",
+      "mainHash": "d68660be708e543084c5ab995ef93692e790bfb3e9bb1d48731302555c5e5422",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/terms/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/terms/",
+      "mainHash": "60a06875b982a933565375f0c466dc542b48635f8801d6bcd84a282779a570ab",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/video-metadata-remover/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+      "mainHash": "05935228d0ff6e0e68f041d80d27b470f82f399c34595ad146a9ee98c45f2003",
+      "failures": []
+    },
+    {
+      "path": "/zh-cn/video-metadata-viewer/",
+      "status": 200,
+      "canonical": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+      "mainHash": "af206150ba11401ff27cda8f72506a71c8dcb08b19829042e7b4399c1a062d28",
+      "failures": []
+    }
+  ]
+}

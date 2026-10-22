@@ -1,0 +1,911 @@
+{
+  "checkedAt": "2026-10-22T16:56:37.3293845Z",
+  "origin": "https://www.viewexif.com",
+  "commit": "63c07f42cc9f6e1a71b85af6e18022386ed4d15c",
+  "scope": "Live browser layout and navigation; no files selected, no ad interaction",
+  "homepageLayouts": [
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/about/",
+          "text": "About"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24,
+      "overflow": 0,
+      "route": "/",
+      "title": "Free EXIF Viewer Online – View Photo Metadata | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 320,
+      "workbenchTop": 231.8
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/about/",
+          "text": "About"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/",
+      "title": "Free EXIF Viewer Online – View Photo Metadata | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 390,
+      "workbenchTop": 232.2
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/about/",
+          "text": "About"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/",
+      "title": "Free EXIF Viewer Online – View Photo Metadata | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 1440,
+      "workbenchTop": 224.6
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/de/about/",
+          "text": "Über uns"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24,
+      "overflow": 0,
+      "route": "/de/",
+      "title": "EXIF-Viewer online – Fotometadaten kostenlos | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 320,
+      "workbenchTop": 260.6
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/de/about/",
+          "text": "Über uns"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/de/",
+      "title": "EXIF-Viewer online – Fotometadaten kostenlos | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 390,
+      "workbenchTop": 232.2
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/de/about/",
+          "text": "Über uns"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/de/",
+      "title": "EXIF-Viewer online – Fotometadaten kostenlos | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 1440,
+      "workbenchTop": 248.6
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/fr/about/",
+          "text": "À propos"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24,
+      "overflow": 0,
+      "route": "/fr/",
+      "title": "Visionneuse EXIF gratuite en ligne | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 320,
+      "workbenchTop": 260.6
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/fr/about/",
+          "text": "À propos"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/fr/",
+      "title": "Visionneuse EXIF gratuite en ligne | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 390,
+      "workbenchTop": 261.4
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "Blog"
+        },
+        {
+          "href": "/fr/about/",
+          "text": "À propos"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/fr/",
+      "title": "Visionneuse EXIF gratuite en ligne | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 1440,
+      "workbenchTop": 248.6
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "博客"
+        },
+        {
+          "href": "/zh-cn/about/",
+          "text": "关于我们"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24,
+      "overflow": 0,
+      "route": "/zh-cn/",
+      "title": "免费在线 EXIF 查看器 – 查看照片元数据 | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 320,
+      "workbenchTop": 231.8
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "博客"
+        },
+        {
+          "href": "/zh-cn/about/",
+          "text": "关于我们"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/zh-cn/",
+      "title": "免费在线 EXIF 查看器 – 查看照片元数据 | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 390,
+      "workbenchTop": 184.2
+    },
+    {
+      "height": 900,
+      "languageLinks": [
+        {
+          "lang": "en",
+          "text": "English"
+        },
+        {
+          "lang": "de",
+          "text": "Deutsch"
+        },
+        {
+          "lang": "fr",
+          "text": "Français"
+        },
+        {
+          "lang": "zh-CN",
+          "text": "简体中文"
+        }
+      ],
+      "languagePanelCount": 1,
+      "mainLinks": [
+        {
+          "href": "/blog/",
+          "text": "博客"
+        },
+        {
+          "href": "/zh-cn/about/",
+          "text": "关于我们"
+        }
+      ],
+      "mainNavCount": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/zh-cn/",
+      "title": "免费在线 EXIF 查看器 – 查看照片元数据 | ViewExif",
+      "toolsButtonCount": 1,
+      "width": 1440,
+      "workbenchTop": 224.6
+    }
+  ],
+  "interactions": [
+    {
+      "route": "/",
+      "width": 390,
+      "toolsOpened": {
+        "drawerOpen": "true",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 32.002410888671875,
+        "panelRight": 344
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 127.00723266601562,
+        "panelRight": 307
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "toolsOpened": {
+        "drawerOpen": "false",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 541.4517211914062,
+        "panelRight": 1061.4375
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": false,
+        "inert": false
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 1125.6947021484375,
+        "panelRight": 1305.6875
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/de/",
+      "width": 390,
+      "toolsOpened": {
+        "drawerOpen": "true",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 32.010406494140625,
+        "panelRight": 344
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 127.00437927246094,
+        "panelRight": 307
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/de/",
+      "width": 1440,
+      "toolsOpened": {
+        "drawerOpen": "false",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 526.95166015625,
+        "panelRight": 1046.9375
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": false,
+        "inert": false
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 1125.69189453125,
+        "panelRight": 1305.6875
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/fr/",
+      "width": 390,
+      "toolsOpened": {
+        "drawerOpen": "true",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 32.01959228515625,
+        "panelRight": 344
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 127.00726318359376,
+        "panelRight": 307
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/fr/",
+      "width": 1440,
+      "toolsOpened": {
+        "drawerOpen": "false",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 528.3579711914062,
+        "panelRight": 1048.34375
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": false,
+        "inert": false
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 1125.6988525390625,
+        "panelRight": 1305.6875
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/zh-cn/",
+      "width": 390,
+      "toolsOpened": {
+        "drawerOpen": "true",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 32.0103759765625,
+        "panelRight": 344
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 127.00724792480467,
+        "panelRight": 307
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    },
+    {
+      "route": "/zh-cn/",
+      "width": 1440,
+      "toolsOpened": {
+        "drawerOpen": "false",
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 12,
+        "linksAvailable": true,
+        "overflow": 0,
+        "panelLeft": 520.3265991210938,
+        "panelRight": 1040.3125
+      },
+      "toolsClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      },
+      "drawerAfterClose": {
+        "expanded": "false",
+        "focusOnTrigger": false,
+        "inert": false
+      },
+      "languageOpened": {
+        "expanded": "true",
+        "hidden": false,
+        "inert": false,
+        "linkCount": 4,
+        "overflow": 0,
+        "panelLeft": 1125.69873046875,
+        "panelRight": 1305.6875
+      },
+      "languageClosed": {
+        "expanded": "false",
+        "focusOnTrigger": true,
+        "inert": true
+      }
+    }
+  ],
+  "newPages": [
+    {
+      "canonical": "https://www.viewexif.com/blog/exif-timezone-offsettimeoriginal/",
+      "coverReady": true,
+      "editorialLinks": 2,
+      "h1": "EXIF Time Zones: Read OffsetTimeOriginal Without Guessing",
+      "h1Count": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/blog/exif-timezone-offsettimeoriginal/",
+      "title": "EXIF Time Zones and OffsetTimeOriginal: Fix Photo Date Confusion | ViewExif",
+      "width": 390
+    },
+    {
+      "canonical": "https://www.viewexif.com/blog/exif-timezone-offsettimeoriginal/",
+      "coverReady": true,
+      "editorialLinks": 2,
+      "h1": "EXIF Time Zones: Read OffsetTimeOriginal Without Guessing",
+      "h1Count": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/blog/exif-timezone-offsettimeoriginal/",
+      "title": "EXIF Time Zones and OffsetTimeOriginal: Fix Photo Date Confusion | ViewExif",
+      "width": 1440
+    },
+    {
+      "canonical": "https://www.viewexif.com/blog/exif-orientation-values/",
+      "coverReady": true,
+      "editorialLinks": 2,
+      "h1": "EXIF Orientation Values: Why a Photo Turns Sideways",
+      "h1Count": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/blog/exif-orientation-values/",
+      "title": "EXIF Orientation Values 1–8: Rotation, Mirroring, and Safe Cleanup | ViewExif",
+      "width": 390
+    },
+    {
+      "canonical": "https://www.viewexif.com/blog/exif-orientation-values/",
+      "coverReady": true,
+      "editorialLinks": 2,
+      "h1": "EXIF Orientation Values: Why a Photo Turns Sideways",
+      "h1Count": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/blog/exif-orientation-values/",
+      "title": "EXIF Orientation Values 1–8: Rotation, Mirroring, and Safe Cleanup | ViewExif",
+      "width": 1440
+    },
+    {
+      "canonical": "https://www.viewexif.com/editorial-policy/",
+      "coverReady": true,
+      "editorialLinks": 3,
+      "h1": "How a guide earns its place here",
+      "h1Count": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/editorial-policy/",
+      "title": "Editorial Policy — Sources, Corrections, and Responsibility | ViewExif",
+      "width": 390
+    },
+    {
+      "canonical": "https://www.viewexif.com/editorial-policy/",
+      "coverReady": true,
+      "editorialLinks": 3,
+      "h1": "How a guide earns its place here",
+      "h1Count": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/editorial-policy/",
+      "title": "Editorial Policy — Sources, Corrections, and Responsibility | ViewExif",
+      "width": 1440
+    },
+    {
+      "canonical": "https://www.viewexif.com/how-we-test/",
+      "coverReady": true,
+      "editorialLinks": 3,
+      "h1": "What our checks can actually tell you",
+      "h1Count": 1,
+      "maxFont": 24.34,
+      "overflow": 0,
+      "route": "/how-we-test/",
+      "title": "How We Test — Metadata, Cleanup, and C2PA Checks | ViewExif",
+      "width": 390
+    },
+    {
+      "canonical": "https://www.viewexif.com/how-we-test/",
+      "coverReady": true,
+      "editorialLinks": 3,
+      "h1": "What our checks can actually tell you",
+      "h1Count": 1,
+      "maxFont": 28,
+      "overflow": 0,
+      "route": "/how-we-test/",
+      "title": "How We Test — Metadata, Cleanup, and C2PA Checks | ViewExif",
+      "width": 1440
+    }
+  ],
+  "screenshot": "output/playwright/adsense-release-ux-2026-10-23.png",
+  "completedAt": "2026-10-22T16:58:34.5097153Z",
+  "summary": {
+    "homepageLayouts": 12,
+    "menuLanguageScenarios": 8,
+    "newPageLayouts": 8,
+    "failures": [],
+    "observedMaxFont": 28,
+    "workbenchTopMin": 184.2,
+    "workbenchTopMax": 261.4
+  }
+}
