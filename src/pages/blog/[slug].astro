@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogPostCard from '../../components/BlogPostCard.astro';
 import BlogToolStrip from '../../components/BlogToolStrip.astro';
 import StaticIcon from '../../components/StaticIcon.astro';
+import EditorialDisclosure from '../../components/EditorialDisclosure.astro';
 import { blogPath, formatBlogDate, getReadingTime, resolveRelatedPosts, sortBlogPosts, validateBlogRelationships } from '../../lib/blog';
 import '../../styles/blog.css';
 
@@ -88,6 +89,7 @@ const schemas = [
           <small>{minutes} min read</small>
         </div>
       </div>
+      <p class="blog-publication">First published <time datetime={publishedIso}>{formatBlogDate(post.data.publishedAt)}</time></p>
     </header>
 
     <figure class="blog-cover">
@@ -120,6 +122,8 @@ const schemas = [
           <div>{post.data.faqs.map((faq, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{faq.question}</h3><p>{faq.answer}</p></div></article>)}</div>
         </section>
 
+        <EditorialDisclosure />
+
       </div>
     </div>
 
@@ -131,3 +135,7 @@ const schemas = [
     )}
   </article>
 </BaseLayout>
+
+<style>
+  .blog-publication { margin: .65rem 0 0; color: var(--muted); font-size: .85rem; line-height: 1.5; }
+</style>

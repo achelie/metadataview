@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: '/editorial-policy/' | '/how-we-test/';
+  heading: string;
+  intro: string;
+}
+const { title, description, path, heading, intro } = Astro.props;
+const updated = '2026-10-23';
+const schema = {
+  '@context': 'https://schema.org', '@type': 'WebPage', name: heading, description,
+  url: new URL(path, Astro.site).toString(), dateModified: updated,
+  publisher: { '@type': 'Organization', name: 'ViewExif', url: new URL('/about/', Astro.site).toString() },
+};
+---
+<BaseLayout title={title} description={description} path={path} schemas={[schema]}>
+  <article class="content-page editorial-page">
+    <header>
+      <span class="eyebrow">The work behind the guides</span>
+      <h1>{heading}</h1>
+      <p>{intro}</p>
+      <div class="policy-date"><strong>Updated</strong><time datetime={updated}>October 23, 2026</time></div>
+    </header>
+    <nav class="editorial-page__links" aria-label="Editorial information">
+      <a href="/editorial-policy/" aria-current={path === '/editorial-policy/' ? 'page' : undefined}>Editorial policy</a>
+      <a href="/how-we-test/" aria-current={path === '/how-we-test/' ? 'page' : undefined}>How we test</a>
+      <a href="/about/">About the operator</a>
+      <a href="/blog/">Read the guides</a>
+    </nav>
+    <div class="editorial-page__body"><slot /></div>
+  </article>
+</BaseLayout>
+
+<style>
+  .editorial-page__links { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; padding-block: .5rem; border-bottom: 1px solid var(--line); }
+  .editorial-page__links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 1rem; color: var(--rust); font-weight: 750; text-decoration: underline; text-underline-offset: .2em; }
+  .editorial-page__links a[aria-current="page"] { color: var(--ink); }
+  .editorial-page__body { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 0 var(--layout-gap); padding-top: var(--section-space); align-items: start; }
+  .editorial-page__body :global(section) { min-width: 0; padding-bottom: var(--section-space); }
+  .editorial-page__body :global(h2) { margin: 0 0 .75rem; font-size: var(--text-section); line-height: 1.25; overflow-wrap: anywhere; }
+  .editorial-page__body :global(p), .editorial-page__body :global(li) { max-width: var(--prose-width); font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
+  .editorial-page__body :global(p) { margin: 0 0 1rem; }
+  .editorial-page__body :global(ul), .editorial-page__body :global(ol) { margin: 0 0 1rem; padding-left: 1.3rem; }
+  .editorial-page__body :global(li) { margin-block: .4rem; }
+  .editorial-page__body :global(a) { color: var(--rust); text-decoration: underline; text-underline-offset: .2em; }
+  .editorial-page__body :global(code) { font-size: 1rem; overflow-wrap: anywhere; }
+  @media (max-width: 680px) { .editorial-page__body { grid-template-columns: minmax(0, 1fr); } }
+</style>

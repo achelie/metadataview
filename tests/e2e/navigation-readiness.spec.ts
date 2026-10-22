@@ -12,6 +12,8 @@ const articleGroups = {
     'does-whatsapp-remove-exif-data',
     'exif-metadata-definition-and-how-to-view',
     'exif-vs-metadata',
+    'exif-orientation-values',
+    'exif-timezone-offsettimeoriginal',
     'how-to-check-exif-data',
     'how-to-check-metadata-of-an-image',
     'how-to-find-camera-settings-from-a-photo',
@@ -136,16 +138,20 @@ for (const width of [320, 375, 390, 430]) {
     await page.goto('/');
     const trigger = page.locator('[data-mobile-menu-trigger]');
     const layer = page.locator('[data-mobile-menu-layer]');
-    const drawer = page.getByRole('navigation', { name: 'Mobile navigation', exact: true });
+    const drawer = page.getByRole('navigation', { name: 'Main navigation', exact: true });
     await trigger.click();
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    await expect(layer).toHaveAttribute('aria-hidden', 'false');
+    await expect(layer).toHaveAttribute('data-open', 'true');
+    await expect(drawer).toHaveAttribute('aria-hidden', 'false');
+    await expect(page.locator('.site-header .language-dropdown')).toHaveCount(1);
+    const tools = drawer.getByRole('button', { name: 'Tools', exact: true });
+    await tools.click();
+    await expect(tools).toHaveAttribute('aria-expanded', 'true');
 
     for (const name of ['View metadata', 'Remove metadata']) {
-      const group = drawer.locator('[data-mobile-accordion]').filter({
-        has: page.getByRole('button', { name, exact: true }),
+      const group = drawer.locator('.nav-tool-section').filter({
+        has: page.getByRole('heading', { name, exact: true }),
       });
-      await group.getByRole('button', { name, exact: true }).click();
       const links = group.getByRole('link');
       await expect(links).toHaveCount(5);
       for (const link of await links.all()) {
@@ -158,11 +164,18 @@ for (const width of [320, 375, 390, 430]) {
         expect(box.x + box.width).toBeLessThanOrEqual(width);
       }
     }
+    await expect(drawer.getByRole('link', { name: 'Check privacy', exact: true })).toBeVisible();
+    await expect(drawer.getByRole('link', { name: 'Verify C2PA', exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
     await page.keyboard.press('Escape');
+    await expect(tools).toHaveAttribute('aria-expanded', 'false');
+    await expect(tools).toBeFocused();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    await page.keyboard.press('Escape');
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    await expect(layer).toHaveAttribute('aria-hidden', 'true');
-    await expect(layer).toHaveAttribute('inert', '');
+    await expect(layer).toHaveAttribute('data-open', 'false');
+    await expect(page.locator('#mobile-navigation-drawer')).toHaveAttribute('aria-hidden', 'true');
+    await expect(page.locator('#mobile-navigation-drawer')).toHaveAttribute('inert', '');
     await expect(trigger).toBeFocused();
   });
 

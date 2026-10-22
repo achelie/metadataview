@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grain" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M0 22 22 0" stroke="#c9bba5" stroke-opacity=".22"/><circle cx="5" cy="7" r=".7" fill="#7c6b54" fill-opacity=".25"/></pattern>
+  </defs>
+  <path fill="#f4ead7" d="M0 0h1200v630H0z"/><path fill="url(#grain)" d="M0 0h1200v630H0z"/>
+  <g fill="#272a24" font-family="system-ui,sans-serif">
+    <text x="72" y="85" font-size="24" font-weight="700">FIELD NOTES / EXIF TIME ZONES</text>
+    <text x="72" y="136" font-size="28" font-weight="700">The same instant can fall on two calendar dates.</text>
+    <path d="M72 191h680v226H72z" fill="#fffaf0" stroke="#272a24" stroke-width="2"/>
+    <path d="M768 245h360v242H768z" fill="#d9723f" stroke="#272a24" stroke-width="2"/>
+    <text x="101" y="239" font-size="22">DateTimeOriginal</text>
+    <text x="101" y="287" font-size="28" font-weight="700">2026:07:18 00:15:00</text>
+    <text x="101" y="344" font-size="22">OffsetTimeOriginal</text>
+    <text x="101" y="390" font-size="28" font-weight="700">+09:00</text>
+    <path d="M752 308h43m-10-10 10 10-10 10" fill="none" stroke="#272a24" stroke-width="3"/>
+    <text x="800" y="353" font-size="22">UTC / PREVIOUS DAY</text>
+    <text x="800" y="401" font-size="28" font-weight="700">July 17, 15:15Z</text>
+    <text x="72" y="527" font-size="23">Missing offset? Keep the UTC instant unknown.</text>
+    <text x="72" y="570" font-size="20">Illustrative values · ViewExif</text>
+  </g>
+</svg>

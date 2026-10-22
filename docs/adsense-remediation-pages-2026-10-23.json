@@ -1,0 +1,234 @@
+{
+  "checkedAt": "2026-10-22T16:29:45.840Z",
+  "records": [
+    {
+      "route": "/editorial-policy/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.viewexif.com/editorial-policy/",
+      "bodyWords": 572,
+      "schemaTypes": [
+        "WebPage"
+      ],
+      "faqMatches": null,
+      "imageReady": null,
+      "layouts": [
+        {
+          "width": 320,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 375,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 390,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 430,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 1440,
+          "overflow": 0,
+          "oversized": 0
+        }
+      ]
+    },
+    {
+      "route": "/how-we-test/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.viewexif.com/how-we-test/",
+      "bodyWords": 925,
+      "schemaTypes": [
+        "WebPage"
+      ],
+      "faqMatches": null,
+      "imageReady": null,
+      "layouts": [
+        {
+          "width": 320,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 375,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 390,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 430,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 1440,
+          "overflow": 0,
+          "oversized": 0
+        }
+      ]
+    },
+    {
+      "route": "/blog/exif-timezone-offsettimeoriginal/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.viewexif.com/blog/exif-timezone-offsettimeoriginal/",
+      "bodyWords": 1115,
+      "schemaTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "FAQPage"
+      ],
+      "faqMatches": true,
+      "publicationDate": "2026-10-23T00:00:00.000Z",
+      "imageReady": true,
+      "layouts": [
+        {
+          "width": 320,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 375,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 390,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 430,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 1440,
+          "overflow": 0,
+          "oversized": 0
+        }
+      ]
+    },
+    {
+      "route": "/blog/exif-orientation-values/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://www.viewexif.com/blog/exif-orientation-values/",
+      "bodyWords": 1061,
+      "schemaTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "FAQPage"
+      ],
+      "faqMatches": true,
+      "publicationDate": "2026-10-23T00:00:00.000Z",
+      "imageReady": true,
+      "layouts": [
+        {
+          "width": 320,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 375,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 390,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 430,
+          "overflow": 0,
+          "oversized": 0
+        },
+        {
+          "width": 1440,
+          "overflow": 0,
+          "oversized": 0
+        }
+      ]
+    }
+  ],
+  "linkChecks": [
+    {
+      "href": "/editorial-policy/",
+      "status": 200
+    },
+    {
+      "href": "/how-we-test/",
+      "status": 200
+    },
+    {
+      "href": "/about/",
+      "status": 200
+    },
+    {
+      "href": "/blog/",
+      "status": 200
+    },
+    {
+      "href": "/contact/",
+      "status": 200
+    },
+    {
+      "href": "/privacy/",
+      "status": 200
+    },
+    {
+      "href": "/blog/how-to-read-c2pa-results/",
+      "status": 200
+    },
+    {
+      "href": "/blog/verify-metadata-removal/",
+      "status": 200
+    },
+    {
+      "href": "/blog/how-to-tell-when-a-photo-was-taken/",
+      "status": 200
+    },
+    {
+      "href": "/image-metadata-viewer/",
+      "status": 200
+    },
+    {
+      "href": "/blog/why-metadata-is-missing/",
+      "status": 200
+    },
+    {
+      "href": "/image-privacy-checker/",
+      "status": 200
+    },
+    {
+      "href": "/image-metadata-remover/",
+      "status": 200
+    },
+    {
+      "href": "/blog/exif-orientation-values/",
+      "status": 200
+    },
+    {
+      "href": "/blog/how-to-remove-metadata-from-a-photo/",
+      "status": 200
+    },
+    {
+      "href": "/blog/exif-timezone-offsettimeoriginal/",
+      "status": 200
+    }
+  ],
+  "errors": []
+}

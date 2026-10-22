@@ -563,32 +563,37 @@ test('icon, copy, and green visual label all open the same picker once', async (
   }
 });
 
-test('metadata and remover format menus work on desktop and mobile', async ({ page }) => {
+test('one Tools menu retains every format on desktop and mobile', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   const desktop = page.locator('.desktop-nav');
-  const viewMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'View metadata' });
-  const removeMenu = desktop.locator('.nav-dropdown').filter({ hasText: 'Remove metadata' });
-  const viewTrigger = viewMenu.locator('.nav-dropdown-trigger');
-  await viewTrigger.click();
-  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'true');
-  await expect(viewMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
+  const toolsMenu = desktop.locator('.tools-dropdown');
+  const toolsTrigger = toolsMenu.getByRole('button', { name: 'Tools', exact: true });
+  await expect(desktop.locator('.mobile-nav-list > a')).toHaveText(['Blog', 'About']);
+  await expect(page.locator('.language-dropdown')).toHaveCount(1);
+  await toolsTrigger.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(toolsTrigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(toolsMenu.locator('.t-dropdown')).toHaveClass(/is-open/);
+  const viewMenu = toolsMenu.locator('.nav-tool-section').first();
+  const removeMenu = toolsMenu.locator('.nav-tool-section').nth(1);
+  await expect(viewMenu.getByRole('link').first()).toBeFocused();
   const viewLinks: Array<[string, string]> = [['All Formats', '/'], ['Images', '/image-metadata-viewer/'], ['Videos', '/video-metadata-viewer/'], ['Audio', '/audio-metadata-viewer/'], ['Documents', '/document-metadata-viewer/']];
   for (const [label, href] of viewLinks) {
     await expect(viewMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
   }
-  const removeTrigger = removeMenu.locator('.nav-dropdown-trigger');
-  await removeTrigger.click();
-  await expect(viewTrigger).toHaveAttribute('aria-expanded', 'false');
-  await expect(viewMenu).toHaveAttribute('data-open', 'false');
-  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'true');
   const removeLinks: Array<[string, string]> = [['All Formats', '/metadata-remover/'], ['Images', '/image-metadata-remover/'], ['Videos', '/video-metadata-remover/'], ['Audio', '/audio-metadata-remover/'], ['Documents', '/document-metadata-remover/']];
   for (const [label, href] of removeLinks) {
     await expect(removeMenu.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
   }
+  await expect(toolsMenu.getByRole('link', { name: 'Check privacy', exact: true })).toHaveAttribute('href', '/image-privacy-checker/');
+  await expect(toolsMenu.getByRole('link', { name: 'Verify C2PA', exact: true })).toHaveAttribute('href', '/c2pa-viewer/');
   await page.keyboard.press('Escape');
-  await expect(removeTrigger).toHaveAttribute('aria-expanded', 'false');
-  await expect(removeTrigger).toBeFocused();
+  await expect(toolsTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(toolsTrigger).toBeFocused();
+  await toolsTrigger.click();
+  await page.mouse.click(10, 300);
+  await expect(toolsTrigger).toHaveAttribute('aria-expanded', 'false');
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
@@ -598,18 +603,50 @@ test('metadata and remover format menus work on desktop and mobile', async ({ pa
   await expect(mobileLayer).toHaveAttribute('data-open', 'true');
   await expect(page.locator('.mobile-menu-drawer')).toHaveAttribute('data-open', 'true');
   await expect(page.locator('.mobile-menu-trigger .t-icon-swap')).toHaveAttribute('data-state', 'b');
-  const mobileView = page.locator('.mobile-nav-group').filter({ hasText: 'View metadata' });
-  await mobileView.locator('.t-acc-head').click();
-  await expect(mobileView).toHaveAttribute('data-open', 'true');
-  await expect(mobileView.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/document-metadata-viewer/');
-  const mobileRemove = page.locator('.mobile-nav-group').filter({ hasText: 'Remove metadata' });
-  await mobileRemove.locator('.t-acc-head').click();
-  await expect(mobileView).toHaveAttribute('data-open', 'false');
-  await expect(mobileRemove).toHaveAttribute('data-open', 'true');
-  await expect(mobileRemove.getByRole('link', { name: 'Audio', exact: true })).toHaveAttribute('href', '/audio-metadata-remover/');
+  await toolsTrigger.click();
+  await expect(toolsMenu).toHaveAttribute('data-open', 'true');
+  await expect(viewMenu.getByRole('link', { name: 'Documents', exact: true })).toHaveAttribute('href', '/document-metadata-viewer/');
+  await expect(removeMenu.getByRole('link', { name: 'Audio', exact: true })).toHaveAttribute('href', '/audio-metadata-remover/');
+  await page.keyboard.press('Escape');
+  await expect(toolsTrigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(toolsTrigger).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(mobileLayer).toHaveAttribute('data-open', 'false');
   await expect(page.getByRole('button', { name: 'Open navigation' })).toBeFocused();
+});
+
+test('compact navigation stays within phone viewports in all four languages', async ({ page }) => {
+  for (const locale of [
+    { path: '/', tools: 'Tools' },
+    { path: '/de/', tools: 'Werkzeuge' },
+    { path: '/fr/', tools: 'Outils' },
+    { path: '/zh-cn/', tools: '工具' },
+  ]) {
+    await page.goto(locale.path);
+    await expect(page.locator('.language-dropdown')).toHaveCount(1);
+    for (const width of [320, 375, 390, 430]) {
+      await page.setViewportSize({ width, height: 844 });
+      const menu = page.locator('[data-mobile-menu-trigger]');
+      await menu.click();
+      await page.getByRole('button', { name: locale.tools, exact: true }).click();
+      await expect(page.locator('.tools-dropdown-panel')).toHaveCSS('opacity', '1');
+      const geometry = await page.evaluate(() => ({
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        controls: Array.from(document.querySelectorAll<HTMLElement>('.site-header a,.site-header button')).filter((element) => !element.closest('[inert]') && element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden' && element.tabIndex >= 0).map((element) => {
+          const box = element.getBoundingClientRect();
+          return { left: box.left, right: box.right, height: box.height, fontSize: parseFloat(getComputedStyle(element).fontSize) };
+        }),
+      }));
+      expect(geometry.overflow, `${locale.path} at ${width}px`).toBe(false);
+      for (const control of geometry.controls) {
+        expect(control.left).toBeGreaterThanOrEqual(-1);
+        expect(control.right).toBeLessThanOrEqual(width + 1);
+        expect(control.height).toBeGreaterThanOrEqual(44);
+        expect(control.fontSize).toBeLessThanOrEqual(28);
+      }
+      await menu.click();
+    }
+  }
 });
 
 test('navigation motion uses the transition hooks and honors reduced motion', async ({ page }) => {

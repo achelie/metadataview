@@ -135,8 +135,8 @@ async function assertNoHorizontalOverflow(page: Page) {
 
 test('blog index features the first guide once and exposes the editorial navigation', async ({ page }) => {
   expect(BLOG_PAGE_SIZE).toBe(6);
-  expect(sourcePosts).toHaveLength(31);
-  expect(expectedBlog.pageCount).toBe(5);
+  expect(sourcePosts).toHaveLength(33);
+  expect(expectedBlog.pageCount).toBe(6);
   expect(expectedBlog.featured?.id).toBe('do-screenshots-have-metadata');
   await page.goto('/blog/');
   await expect(page.getByText('Useful answers for files that overshare.')).toHaveCount(0);
@@ -147,11 +147,11 @@ test('blog index features the first guide once and exposes the editorial navigat
   await expect(page.locator('.blog-latest')).toHaveCount(1);
   await expect(page.getByRole('link', { name: ARTICLE_TITLE, exact: true })).toHaveCount(1);
   await assertLatestPage(page, 1);
-  await expect(page.getByText('Page 1 of 5', { exact: true })).toBeVisible();
+  await expect(page.getByText('Page 1 of 6', { exact: true })).toBeVisible();
   await expect(page.locator('.blog-feature .blog-post-card__media img')).toHaveAttribute('src', /do-screenshots-have-metadata/);
   await expect(page.locator('.blog-feature').getByText('Image privacy', { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'View file metadata' })).toHaveAttribute('href', '/metadata-viewer/');
-  await expect(page.locator('.desktop-nav > a[href="/blog/"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('navigation', { name: 'Main navigation', exact: true }).getByRole('link', { name: 'Blog', exact: true })).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('.site-footer a[href="/blog/"]')).toHaveText('Blog');
   const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent ?? '{}')));
   const collection = schemas.find((schema) => schema['@type'] === 'CollectionPage');
@@ -173,14 +173,14 @@ for (let pageNumber = 2; pageNumber <= expectedBlog.pageCount; pageNumber++) {
   });
 }
 
-test('all 31 guides appear exactly once across the blog cards and remain reachable', async ({ page }) => {
+test('all 33 guides appear exactly once across the blog cards and remain reachable', async ({ page }) => {
   const listedPaths: string[] = [];
   for (let pageNumber = 1; pageNumber <= expectedBlog.pageCount; pageNumber++) {
     await page.goto(blogPagePath(pageNumber));
     listedPaths.push(...await page.locator('.blog-feature h1 a, .blog-latest .blog-post-card h2 a').evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? '')));
   }
-  expect(listedPaths).toHaveLength(31);
-  expect(new Set(listedPaths).size).toBe(31);
+  expect(listedPaths).toHaveLength(33);
+  expect(new Set(listedPaths).size).toBe(33);
   expect(listedPaths.filter((path) => path === ARTICLE_PATH)).toHaveLength(1);
   expect([...listedPaths].sort()).toEqual(sourcePosts.map(blogPath).sort());
   await Promise.all(listedPaths.map(async (path) => {

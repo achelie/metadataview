@@ -2,7 +2,7 @@ import type { Locale } from './core';
 
 export interface HomeCopy {
   title: string; description: string; rail: string; eyebrow: string; heading: string; intro: string; limit: string;
-  fileLimits: string;
+  fileLimits: string; quickIntro: string;
   formatsLabel: string;
   formats: Array<{ label: string; detail: string; extensions: string }>;
   exifLabel: string; exifTitle: string; exifIntro: string;
@@ -27,6 +27,7 @@ const en: HomeCopy = {
   rail: 'LOCAL / NO UPLOAD', eyebrow: 'ViewExif · EXIF & file metadata', heading: 'Free Online EXIF Viewer',
   intro: 'ViewExif helps you view EXIF data: camera and lens details, exposure settings, photo dates and GPS coordinates when a picture contains them. Choose a file to read its metadata in your browser. Your files stay on your device. You can also inspect supported videos, documents and audio here.', limit: 'one-file limit',
   fileLimits: 'Images: up to 50 MB. Other supported files: up to 100 MB.',
+  quickIntro: 'Read photo EXIF and file metadata locally. No upload.',
   formatsLabel: 'BROWSE BY FORMAT',
   formats: [
     { label: 'Images', detail: 'EXIF, GPS, camera settings, timestamps, XMP and IPTC, plus color and editing traces', extensions: 'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF' },
@@ -92,6 +93,7 @@ const zh: HomeCopy = {
   rail: '本机处理 / 不上传', eyebrow: 'ViewExif · EXIF 与文件元数据', heading: '免费在线 EXIF 查看器',
   intro: '用 ViewExif 查看照片里已有的 EXIF：相机和镜头、曝光设置、照片日期，以及 GPS 坐标。选择一个文件，就能在浏览器里读取元数据。文件留在你的设备上。这里也能检查支持的视频、文档和音频。', limit: '单个文件上限',
   fileLimits: '图片最大 50 MB；其他支持的文件最大 100 MB。',
+  quickIntro: '在本机查看照片 EXIF 和文件元数据，无需上传。',
   formatsLabel: '按文件类型查看',
   formats: [
     { label: '图片', detail: 'EXIF、GPS、相机设置、日期、XMP、IPTC，以及色彩和编辑痕迹', extensions: 'PNG、JPG、JPEG、WebP、HEIC、HEIF、TIF、TIFF、GIF' },
@@ -157,6 +159,7 @@ const de: HomeCopy = {
   rail: 'LOKAL / KEIN UPLOAD', eyebrow: 'ViewExif · EXIF & Dateimetadaten', heading: 'Kostenloser EXIF-Viewer online',
   intro: 'Mit ViewExif liest du vorhandene EXIF-Daten: Kamera, Objektiv, Belichtung, Fotodatum und GPS-Koordinaten. Wähle eine Datei und sieh ihre Metadaten direkt im Browser. Deine Dateien bleiben auf deinem Gerät. Hier kannst du auch unterstützte Videos, Dokumente und Audiodateien prüfen.', limit: 'pro Datei',
   fileLimits: 'Bilder: bis zu 50 MB. Andere unterstützte Dateien: bis zu 100 MB.',
+  quickIntro: 'EXIF und Datei-Metadaten lokal lesen. Ohne Upload.',
   formatsLabel: 'NACH FORMAT',
   formats: [
     { label: 'Bilder', detail: 'EXIF, GPS, Kameraeinstellungen, Zeitangaben, XMP und IPTC sowie Farb- und Bearbeitungsspuren', extensions: 'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF' },
@@ -222,6 +225,7 @@ const fr: HomeCopy = {
   rail: 'LOCAL / AUCUN ENVOI', eyebrow: 'ViewExif · EXIF et métadonnées', heading: 'Visionneuse EXIF gratuite en ligne',
   intro: 'ViewExif vous aide à lire les données EXIF présentes : appareil, objectif, exposition, dates et coordonnées GPS. Choisissez un fichier pour consulter ses métadonnées dans votre navigateur. Vos fichiers restent sur votre appareil. Vous pouvez aussi examiner les vidéos, documents et fichiers audio pris en charge.', limit: 'par fichier',
   fileLimits: 'Images : jusqu’à 50 Mo. Autres fichiers pris en charge : jusqu’à 100 Mo.',
+  quickIntro: 'Lisez les métadonnées en local, sans envoyer le fichier.',
   formatsLabel: 'PAR FORMAT',
   formats: [
     { label: 'Images', detail: 'EXIF, GPS, appareil, dates, XMP et IPTC, plus les traces de couleur et de retouche', extensions: 'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF' },

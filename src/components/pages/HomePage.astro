@@ -30,13 +30,13 @@ const exifCheckHrefs = ['/image-metadata-viewer/', '/image-metadata-viewer/', '/
 <BaseLayout title={copy.title} description={copy.description} path={homePath} schemas={schemas} image={socialImage} locale={locale} translated>
   <div class="home-shell home-tool-first">
     <section class="home-tool-intro" aria-labelledby="home-title">
-      <div class="home-intro-rail"><span>{copy.rail}</span><i></i></div>
-      <div><span class="eyebrow">{copy.eyebrow}</span><h1 id="home-title">{copy.heading}</h1><p>{copy.intro}</p></div>
+      <div><h1 id="home-title">{copy.heading}</h1><p>{copy.quickIntro}</p></div>
       <aside class="home-file-limits"><p>{copy.fileLimits}</p></aside>
     </section>
 
     <MetadataReportWorkbench client:load placement="home" scope="all" locale={locale} formats={locale === 'zh-CN' ? '图片 · 视频 · 文档 · 音频' : locale === 'de' ? 'Bilder · Videos · Dokumente · Audio' : locale === 'fr' ? 'Images · Vidéos · Documents · Audio' : 'Images · Videos · Documents · Audio'} accept=".png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,.pdf,.docx,.pptx,.xlsx,.mp4,.m4v,.mov,.mkv,.webm,.avi,.flv,.3gp,.3g2,.mp3,.flac,.ogg,.opus,.oga,.m4a,.aac,.wav,.wma" allowedTypes={['png','jpeg','webp','heic','tiff','gif','pdf','docx','pptx','xlsx','mp4','mov','mkv','webm','avi','flv','3gp','3g2','mp3','flac','ogg','opus','m4a','aac','wav','wma']} />
 
+    <p class="home-detail-intro">{copy.intro}</p>
     <ResultReadingGuide locale={locale} />
     <section class="home-benefits home-exif-showcase" aria-labelledby="home-exif-title">
       <header class="home-section-heading"><span class="section-index">{copy.exifLabel}</span><h2 id="home-exif-title">{copy.exifTitle}</h2></header>
@@ -83,8 +83,14 @@ const exifCheckHrefs = ['/image-metadata-viewer/', '/image-metadata-viewer/', '/
 </BaseLayout>
 
 <style>
+  /* Keep the first operation close to its explanation, including at 320px. */
+  .home-tool-intro { display: block; padding-block: 1rem .75rem; }
+  .home-tool-intro h1 { margin: 0 0 .5rem; line-height: 1.2; }
+  .home-tool-intro p { font-size: 16px; line-height: 1.5; }
+  .home-tool-intro .home-file-limits { min-width: 0; margin-top: .5rem; padding: 0; border: 0; background: none; }
+  .home-tool-intro .home-file-limits p { font-size: 16px; line-height: 1.5; color: var(--muted); }
+  .home-detail-intro { max-width: var(--prose-width); margin: var(--layout-gap) 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
   .home-file-limits { max-width: 240px; min-width: 0; }
-  .home-tool-intro .home-file-limits p { font-size: 16px; line-height: 1.5; }
   .home-exif-showcase .home-section-heading { margin-bottom: .75rem; }
   .home-exif-body { min-width: 0; }
   .home-exif-with-checks {

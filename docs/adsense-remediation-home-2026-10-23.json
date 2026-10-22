@@ -1,0 +1,114 @@
+[
+  {
+    "route": "/",
+    "width": 320,
+    "workbenchTop": 231.8,
+    "overflow": 0,
+    "maxFont": 24
+  },
+  {
+    "route": "/",
+    "width": 375,
+    "workbenchTop": 232.1,
+    "overflow": 0,
+    "maxFont": 24.25
+  },
+  {
+    "route": "/",
+    "width": 390,
+    "workbenchTop": 232.2,
+    "overflow": 0,
+    "maxFont": 24.34
+  },
+  {
+    "route": "/",
+    "width": 430,
+    "workbenchTop": 208.5,
+    "overflow": 0,
+    "maxFont": 24.58
+  },
+  {
+    "route": "/de/",
+    "width": 320,
+    "workbenchTop": 260.6,
+    "overflow": 0,
+    "maxFont": 24
+  },
+  {
+    "route": "/de/",
+    "width": 375,
+    "workbenchTop": 232.1,
+    "overflow": 0,
+    "maxFont": 24.25
+  },
+  {
+    "route": "/de/",
+    "width": 390,
+    "workbenchTop": 232.2,
+    "overflow": 0,
+    "maxFont": 24.34
+  },
+  {
+    "route": "/de/",
+    "width": 430,
+    "workbenchTop": 208.5,
+    "overflow": 0,
+    "maxFont": 24.58
+  },
+  {
+    "route": "/fr/",
+    "width": 320,
+    "workbenchTop": 260.6,
+    "overflow": 0,
+    "maxFont": 24
+  },
+  {
+    "route": "/fr/",
+    "width": 375,
+    "workbenchTop": 261.2,
+    "overflow": 0,
+    "maxFont": 24.25
+  },
+  {
+    "route": "/fr/",
+    "width": 390,
+    "workbenchTop": 261.4,
+    "overflow": 0,
+    "maxFont": 24.34
+  },
+  {
+    "route": "/fr/",
+    "width": 430,
+    "workbenchTop": 208.5,
+    "overflow": 0,
+    "maxFont": 24.58
+  },
+  {
+    "route": "/zh-cn/",
+    "width": 320,
+    "workbenchTop": 231.8,
+    "overflow": 0,
+    "maxFont": 24
+  },
+  {
+    "route": "/zh-cn/",
+    "width": 375,
+    "workbenchTop": 184.1,
+    "overflow": 0,
+    "maxFont": 24.25
+  },
+  {
+    "route": "/zh-cn/",
+    "width": 390,
+    "workbenchTop": 184.2,
+    "overflow": 0,
+    "maxFont": 24.34
+  },
+  {
+    "route": "/zh-cn/",
+    "width": 430,
+    "workbenchTop": 184.5,
+    "overflow": 0,
+    "maxFont": 24.58
+  }
+]

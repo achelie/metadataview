@@ -104,8 +104,8 @@ test('a sample travels viewer → privacy → remover → processed-copy privacy
   const menuTrigger = page.locator('[data-mobile-menu-trigger]');
   await menuTrigger.click();
   await expect(page.locator('[data-mobile-menu-layer]')).toHaveAttribute('data-open', 'true');
-  const viewGroup = page.locator('.mobile-nav-group').first();
-  await viewGroup.locator('.t-acc-head').click();
+  await page.locator('.tools-dropdown > .nav-dropdown-trigger').click();
+  const viewGroup = page.locator('.nav-tool-section').first();
   await expect(viewGroup.getByRole('link', { name: 'Images', exact: true })).toBeVisible();
   await menuTrigger.click();
   await expect(page.locator('[data-mobile-menu-layer]')).toHaveAttribute('data-open', 'false');

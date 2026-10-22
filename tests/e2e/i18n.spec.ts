@@ -50,6 +50,7 @@ test('desktop language dropdown switches the same page and sends localized blog 
 test('localized links retain their prefix while Blog remains English', async ({ page }) => {
   await page.goto('/de/');
   const nav = page.locator('.desktop-nav');
+  await nav.getByRole('button', { name: 'Werkzeuge', exact: true }).click();
   await expect(nav.getByRole('link', { name: 'Datenschutz prüfen' })).toHaveAttribute('href', '/de/image-privacy-checker/');
   await expect(nav.getByRole('link', { name: 'C2PA prüfen' })).toHaveAttribute('href', '/de/c2pa-viewer/');
   await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
@@ -72,6 +73,7 @@ test('localized footers expose reciprocal Contact and Terms links', async ({ pag
 test('French navigation retains its prefix while Blog remains English', async ({ page }) => {
   await page.goto('/fr/');
   const nav = page.locator('.desktop-nav');
+  await nav.getByRole('button', { name: 'Outils', exact: true }).click();
   await expect(nav.getByRole('link', { name: 'Vérifier la confidentialité' })).toHaveAttribute('href', '/fr/image-privacy-checker/');
   await expect(nav.getByRole('link', { name: 'Vérifier C2PA' })).toHaveAttribute('href', '/fr/c2pa-viewer/');
   await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
@@ -80,8 +82,7 @@ test('French navigation retains its prefix while Blog remains English', async ({
 test('mobile language dropdown exposes all states and remains usable at 239px', async ({ page }) => {
   await page.setViewportSize({ width: 239, height: 844 });
   await page.goto('/de/image-privacy-checker/');
-  await page.getByRole('button', { name: 'Navigation öffnen' }).click();
-  const dropdown = page.locator('.mobile-language-dropdown');
+  const dropdown = page.locator('.header-inner > .language-dropdown');
   await dropdown.getByRole('button').click();
   await expect(dropdown.getByRole('link', { name: /Deutsch/ })).toHaveAttribute('aria-current', 'page');
   await expect(dropdown.getByRole('link', { name: /English/ })).toHaveAttribute('href', '/image-privacy-checker/');
