@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
+import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -11,7 +12,7 @@ for (const file of (await walk('dist')).filter(f => f.endsWith('.html'))) {
   const field = re => html.match(re)?.[1] ?? '';
   const canonical = field(/<link rel="canonical" href="([^"]+)"/);
   const robots = field(/<meta name="robots" content="([^"]+)"/);
-  if (!canonical || /noindex/.test(robots)) continue;
+  if (!canonical || path.basename(file) === '404.html') continue;
   pages.push({ canonical, title: field(/<title>(.*?)<\/title>/s), h1: field(/<h1[^>]*>(.*?)<\/h1>/s), robots,
     links: [...new Set([...html.matchAll(/href="(\/[^"?#]*)/g)].map(m => m[1]))].sort() });
 }
@@ -30,9 +31,11 @@ if (process.argv.includes('--capture')) {
   let movedArchiveEntries = 0;
   for (const old of baseline) {
     const current = pages.find(p => p.canonical === old.canonical);
-    if (!current) { failures.push(`Missing indexable URL: ${old.canonical}`); continue; }
-    for (const key of ['title', 'h1', 'robots']) if (current[key] !== old[key]) failures.push(`${old.canonical}: changed ${key}`);
-    if (!sitemap.includes(`<loc>${old.canonical}</loc>`)) failures.push(`Missing sitemap entry: ${old.canonical}`);
+    if (!current) { failures.push(`Missing public URL: ${old.canonical}`); continue; }
+    for (const key of ['title', 'h1']) if (current[key] !== old[key]) failures.push(`${old.canonical}: changed ${key}`);
+    const expectedNoindex = isLocaleNoindex(new URL(old.canonical).pathname);
+    if (/\bnoindex\b/i.test(current.robots) !== expectedNoindex) failures.push(`${old.canonical}: incorrect indexability`);
+    if (sitemap.includes(`<loc>${old.canonical}</loc>`) === expectedNoindex) failures.push(`${old.canonical}: incorrect sitemap membership`);
     // Bundled stylesheet hashes change on rebuild; protect page entries, not asset filenames.
     for (const link of old.links.filter(link => !link.startsWith('/_astro/'))) {
       if (current.links.includes(link)) continue;
@@ -45,6 +48,6 @@ if (process.argv.includes('--capture')) {
     }
   }
   if (failures.length) throw new Error(failures.join('\n'));
-  console.log(`Preserved ${baseline.length} URLs, titles, H1s, robots, sitemap entries and existing internal links.`);
+  console.log(`Preserved ${baseline.length} public URLs, titles, H1s and existing internal links; indexability and sitemap follow the English-only policy.`);
   if (movedArchiveEntries) console.log(`${movedArchiveEntries} article links moved within blog pagination and remain reachable and indexable.`);
 }

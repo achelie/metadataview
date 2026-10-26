@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 const baseline = JSON.parse(await readFile('docs/content-url-baseline.json', 'utf8'));
 const origin = 'https://www.viewexif.com';
@@ -24,11 +25,14 @@ await Promise.all(Array.from({ length: 6 }, async () => {
       const local = await readFile(`dist${route}index.html`, 'utf8');
       const failures = [];
       if (live.status !== 200 || live.url !== entry.canonical) failures.push('status/redirect');
-      if (/noindex/i.test(live.robots) || /<meta name="robots" content="[^"]*noindex/i.test(live.html)) failures.push('noindex');
+      const expectedNoindex = isLocaleNoindex(route);
+      const actualNoindex = /\bnoindex\b/i.test(live.robots) || /<meta name="robots" content="[^"]*\bnoindex\b/i.test(live.html);
+      if (actualNoindex !== expectedNoindex) failures.push('indexing policy');
       for (const pattern of [/<title>(.*?)<\/title>/s, /<h1[^>]*>(.*?)<\/h1>/s, /<link rel="canonical" href="([^"]+)"/]) {
         if (live.html.match(pattern)?.[1] !== local.match(pattern)?.[1]) failures.push('SEO mismatch');
       }
-      if (!sitemap.html.includes(`<loc>${entry.canonical}</loc>`)) failures.push('sitemap');
+      if (sitemap.html.includes(`<loc>${entry.canonical}</loc>`) === expectedNoindex) failures.push('sitemap');
+      if (/<link\b[^>]*rel="alternate"[^>]*hreflang=/i.test(live.html)) failures.push('stale search alternates');
       if ((live.html.match(/name="google-adsense-account" content="ca-pub-7443237558968985"/g) ?? []).length !== 1) failures.push('account meta');
       if (/adsbygoogle|fundingchoicesmessages|pagead2\.googlesyndication/i.test(live.html)) failures.push('advertising runtime');
       if (local.includes('result-reading-guide') && !live.html.includes('result-reading-guide')) failures.push('missing result guide');
