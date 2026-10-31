@@ -1,0 +1,203 @@
+{
+  "generatedAt": "2026-10-05T11:04:48.071Z",
+  "baseRevision": "4009b57",
+  "scope": "Synthetic file demonstrations of existing processing engines, captured during this working-tree editorial implementation. No customer file, invented result or third-party stock illustration.",
+  "recipe": "scripts/create-editorial-fixtures.mjs",
+  "recipeSha256": "adeb1ef9f7240bb1fdc8f849c10c4a7938fc54ae8a595cf246081db3210fc529",
+  "reproduction": "node --experimental-strip-types scripts/create-editorial-fixtures.mjs <fresh-directory>; DOCX ZIP timestamps may change; teaching values are reproducible, bytes are not guaranteed identical.",
+  "constraints": [
+    "No advertising runtime was enabled.",
+    "Container-only MP4 is not playable.",
+    "WAV quick-reader warning is retained.",
+    "PNG cleanup retains 29 residual fields; no anonymity claim.",
+    "Unsigned JPEG has no C2PA manifest; not-found is not a failed signature.",
+    "Original files and raw screenshot/text evidence remain in the local output directory."
+  ],
+  "captures": [
+    {
+      "family": "image",
+      "route": "/image-metadata-viewer/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-photo.jpg",
+        "bytes": 253983,
+        "sha256": "4932b44f686a7f8a245377de4766c81e039e6e27f9aeba49993dab5898c12889",
+        "provenance": "Unchanged AI-generated metadata-demo-v1.jpg; provenance: public/samples/SOURCES.md"
+      },
+      "screenshot": {
+        "path": "public/editorial/image-sample.png",
+        "bytes": 339918,
+        "sha256": "c929840a0e8c22f7696c0b6296c2e96682c924a42a0cb01a15abca2353c7db14",
+        "capturedAt": "2026-10-05T10:46:16.451Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/image-result.txt",
+        "sha256": "6a92aa82d68de17373f31ebbfd354e31d904806854012ce988afbefefd2e3925",
+        "capturedAt": "2026-10-05T10:46:17.473Z",
+        "text": "Your file stays on this device.\nScan complete · 196 fields\nREPORT READY · BYTES STAYED LOCAL\nsynthetic-photo.jpg metadata report\n\nJPEG · 248.0 KB · 1,200 × 800 px\n\nReplace\nClear\nDownload report (PDF)\nMore exports\nEXIF Summary\n\nThe photo details people check first. Missing means this file did not expose a usable value.\n\nCAMERA\nViewExif · Demo Camera\nDATE TAKEN\n2026:01:15 10:30:00\nGPS\n48.858400, 2.294500\nView on OpenStreetMap\n\nOpenStreetMap opens in a new tab and receives these coordinates and network request information, including your IP address. Your original file is not uploaded.\n\nMore photo details\nLENS\nDemo 35mm f/1.8\nISO\nISO 200\nAPERTURE\nf/2.8\nSHUTTER SPEED\n1/125\nFOCAL LENGTH\n35 mm\nORIENTATION\ntop-left\nView all metadata ↓\nFile details and fingerprints\nONE-PASS IMAGE INSPECTION\nFull scan complete\n\nThe full image scan is complete. Every safe ExifTool result is now searchable below.\n\nEXIFTOOL 13.59\n77 fields\nPRIVACY PASS\n24 potentially sensitive fields found\n\nMetadata is editable, and pixels can still reveal people, signs, addresses, and landmarks.\n\nOpen Privacy Checker\nRemove image metadata\nVerify C2PA\n\nNo need to choose it again. The file stays in this tab’s memory; reloading clears it.\n\nMETADATA RESULTS\nRead the useful part—or audit every tag.\nReadable 76\nAll fields 196\nSearch metadata fields\nSOURCE\nAll sources\nCalculated from EXIF GPS\nContainer\nEXIF\nEXIF GPS\nExifTool · Composite\nExifTool · EXIF\nExifTool · File\nExifTool · GPS\nExifTool · JFIF\nFile signature\nJFIF\nNormalized EXIF\n76 found\nLOADED CHAPTERS\n01\nPrivacy signals\n2\n02\nLocation\n19\n03\nCamera & lens\n4\n04\nCapture settings\n6\n05\nDates\n9\n06\nAuthor & rights\n1\n07\nSoftware & editing\n1\n08\nTechnical details\n23\n09\nImage encoding\n10\n10\nVideo encoding & tracks\n1\nPrivacy signals\nA practical summary from privacy signals. Switch to native fields for exact paths.\n2\nJFIF Thumbnail Width\nSENSITIVE\nJFIF Thumbnail Width\n0px\nJFIF\njfif.JFIF Thumbnail Width\nPARSER\nJFIF Thumbnail Height\nSENSITIVE\nJFIF Thumbnail Height\n0px\nJFIF\njfif.JFIF Thumbnail Height\nPARSER\nLocation\n19\nCamera & lens\n4\nCapture settings\n6\nDates\n9\nAuthor & rights\n1\nSoftware & editing\n1\nTechnical details\n23\nImage encoding\n10\nVideo encoding & tracks\n1\nFile header · first 256 bytes\nOffset, hexadecimal, and printable ASCII\nRaw safe JSON\nBinary values are summaries; size and depth caps remain active"
+      }
+    },
+    {
+      "family": "document",
+      "route": "/document-metadata-viewer/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-document.docx",
+        "bytes": 2281,
+        "sha256": "fad4bc16651cdd485b1a5cc20cfe821968a1ab2776b6ea72ffcf2f1f8abcd8bd",
+        "provenance": "Generated OOXML; title Synthetic review copy, author Ada Example, company Example Studio, Review status Draft."
+      },
+      "screenshot": {
+        "path": "public/editorial/document-sample.png",
+        "bytes": 439613,
+        "sha256": "ad4f758e7f4deb4d6cf5b106232e5ef121b8fb7347cec42162a769593baefcee",
+        "capturedAt": "2026-10-05T10:42:39.260Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/document-result.txt",
+        "sha256": "8d2b42012a172afae7fb2ef2bf772f57149a0b8006d05bf610319ab5e9bdaa66",
+        "capturedAt": "2026-10-05T11:03:05.764Z",
+        "text": "Your file stays on this device.\nScan complete · 65 fields\nREPORT READY · BYTES STAYED LOCAL\nsynthetic-document.docx metadata report\n\nDOCX · 2.2 KB\n\nReplace\nClear\nDownload report (PDF)\nMore exports\nFile details and fingerprints\n\nA practical reading first, then the exact ExifTool paths when you need receipts.\n\nFORMAT\nDOCX\nFILE SIZE\n2.2 KB\nMIME TYPE\napplication/vnd.openxmlformats-officedocument.wordprocessingml.document\nSTORED PAGES\n4\nSTORED WORDS\n321\nAUTHORING APP\nFixture Office\nSHA-256 · PRIMARY FINGERPRINT\nfad4bc16651cdd485b1a5cc20cfe821968a1ab2776b6ea72ffcf2f1f8abcd8bd\nMD5 · COMPATIBILITY CHECKSUM, NOT SECURITY PROOF\nfb7025d097490f3c0223a9a6cacdf4e4\nDEEP FIELD ENGINE\nExifTool 13.59\n\nThe full standard ExifTool field set is in the report.\n\nLOAD ENGINE\nREAD TAGS\nBUILD REPORT\nSTANDARD SCAN\n38 fields\nScan embedded data\nContinue with this file\n\nNo need to choose it again. The file stays in this tab’s memory; reloading clears it.\n\nRemove metadata\nMETADATA RESULTS\nRead the useful part—or audit every tag.\nReadable 31\nAll fields 65\nSearch metadata fields\nSOURCE\nAll sources\nApplication\nDocument\nExifTool · File\nExifTool · ZIP package\nOOXML custom properties\nPackage\n31 found\nLOADED CHAPTERS\n01\nDocument properties\n6\n02\nApplication statistics\n10\n03\nCustom properties\n1\n04\nPackage details\n7\n05\nDates & timeline\n5\n06\nVideo encoding & tracks\n2\nDocument properties\nA practical summary from document properties. Switch to native fields for exact paths.\n6\nTitle\nTitle\nSynthetic review copy\nDocument\ndocument.Title\nPARSER\nAuthor\nSENSITIVE\nAuthor\nAda Example\nDocument\ndocument.Author\nPARSER\nLast Modified By\nLastModifiedBy\nGrace Example\nDocument\ndocument.LastModifiedBy\nPARSER\nRevision\nRevision\n7\nDocument\ndocument.Revision\nPARSER\nCreated\nCreated\n2026-08-07T01:02:03Z\nDocument\ndocument.Created\nPARSER\nModified\nModified\n2026-08-07T04:05:06Z\nDocument\ndocument.Modified\nPARSER\nApplication statistics\n10\nCustom properties\n1\nPackage details\n7\nDates & timeline\n5\nVideo encoding & tracks\n2\nFile header · first 256 bytes\nOffset, hexadecimal, and printable ASCII\nRaw safe JSON\nBinary values are summaries; size and depth caps remain active"
+      }
+    },
+    {
+      "family": "audio",
+      "route": "/audio-metadata-viewer/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-audio.wav",
+        "bytes": 16102,
+        "sha256": "b1d14aa2dfe4bde6721888214ce9671ff4a08c47fe60c4623361d34519eafc4e",
+        "provenance": "One second silent PCM, 8000 Hz, mono, 16 bits; RIFF INFO INAM Synthetic silence and IART Ada Example."
+      },
+      "screenshot": {
+        "path": "public/editorial/audio-sample.png",
+        "bytes": 451847,
+        "sha256": "be9a2ca379c984c6ea72cbfbd423bd1f7940609459fcaefe6307b81858da661f",
+        "capturedAt": "2026-10-05T10:43:57.532Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/audio-result.txt",
+        "sha256": "9ebcb6416c951afc813d0fa8d00cc678f936b42edf5c4947864b09f0eca07586",
+        "capturedAt": "2026-10-05T10:44:32.196Z",
+        "text": "Your file stays on this device.\nScan complete · 63 fields\nREPORT READY · BYTES STAYED LOCAL\nsynthetic-audio.wav metadata report\n\nWAV · 15.7 KB\n\nReplace\nClear\nDownload report (PDF)\nMore exports\nFile details and fingerprints\n\nA practical reading first, then the exact ExifTool paths when you need receipts.\n\nFORMAT\nWAV\nFILE SIZE\n15.7 KB\nMIME TYPE\naudio/wav\nDURATION\n1.00s\nAUDIO CODEC\nPCM\nBITRATE\n128 kbps\nSAMPLE RATE\n8,000 Hz\nCHANNELS\n1\nBIT DEPTH\n16-bit\nCOMPRESSION\nLossless\nBIT DEPTH\n16\nSHA-256 · PRIMARY FINGERPRINT\nb1d14aa2dfe4bde6721888214ce9671ff4a08c47fe60c4623361d34519eafc4e\nMD5 · COMPATIBILITY CHECKSUM, NOT SECURITY PROOF\n2935050dd3f13dd5d290ffcc11ac2b9a\nDEEP FIELD ENGINE\nExifTool 13.59\n\nThe full standard ExifTool field set is in the report.\n\nLOAD ENGINE\nREAD TAGS\nBUILD REPORT\nSTANDARD SCAN\n36 fields\nScan embedded data\n1 parser notes\n\nAUDIO_PARSER_WARNING Data chunk size exceeds file size\n\nContinue with this file\n\nNo need to choose it again. The file stays in this tab’s memory; reloading clears it.\n\nRemove metadata\nMETADATA RESULTS\nRead the useful part—or audit every tag.\nReadable 26\nAll fields 63\nSearch metadata fields\nSOURCE\nAll sources\nArtwork\nEncoding\nExifTool · Composite\nExifTool · File\nExifTool · RIFF media\nIdentity\nRelease\n26 found\nLOADED CHAPTERS\n01\nTrack & people\n3\n02\nRelease & rights\n2\n03\nAudio encoding\n10\n04\nEmbedded artwork\n1\n05\nDates & timeline\n4\n06\nVideo encoding & tracks\n3\n07\nAudio encoding\n3\nTrack & people\nA practical summary from track & people. Switch to native fields for exact paths.\n3\nTitle\nTitle\nSynthetic silence\nIdentity\nidentity.Title\nPARSER\nArtist\nArtist\nAda Example\nIdentity\nidentity.Artist\nPARSER\nArtists\nArtists\n[\n  \"Ada Example\"\n]\nIdentity\nidentity.Artists\nPARSER\nRelease & rights\n2\nAudio encoding\n10\nEmbedded artwork\n1\nDates & timeline\n4\nVideo encoding & tracks\n3\nAudio encoding\n3\nFile header · first 256 bytes\nOffset, hexadecimal, and printable ASCII\nRaw safe JSON\nBinary values are summaries; size and depth caps remain active"
+      }
+    },
+    {
+      "family": "video",
+      "route": "/video-metadata-viewer/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-container.mp4",
+        "bytes": 144,
+        "sha256": "b255e50308eb34428c4018c9f8621d184e715db7d0cf83f473ca5a632c0d05f5",
+        "provenance": "Synthetic container-only MP4, timescale1000/duration1000, no media tracks. Not a playable video; demonstrates reading limits."
+      },
+      "screenshot": {
+        "path": "public/editorial/video-sample.png",
+        "bytes": 445962,
+        "sha256": "725f7e1281929e85cefa9b130840e45878bdce1a6ac077a5f7ca49561b92bc72",
+        "capturedAt": "2026-10-05T10:49:49.510Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/video-result.txt",
+        "sha256": "568c3f626d5e2340d9499d13e87697ac6c6ad30ba6a584d327ac74c9a1cb8f8e",
+        "capturedAt": "2026-10-05T10:49:50.529Z",
+        "text": "Your file stays on this device.\nScan complete · 67 fields\nREPORT READY · BYTES STAYED LOCAL\nsynthetic-container.mp4 metadata report\n\nMP4 · 0.1 KB\n\nReplace\nClear\nDownload report (PDF)\nMore exports\nFile details and fingerprints\n\nA practical reading first, then the exact ExifTool paths when you need receipts.\n\nFORMAT\nMP4\nFILE SIZE\n144 B\nMIME TYPE\nvideo/mp4\nDURATION\n1.00s\nSHA-256 · PRIMARY FINGERPRINT\nb255e50308eb34428c4018c9f8621d184e715db7d0cf83f473ca5a632c0d05f5\nMD5 · COMPATIBILITY CHECKSUM, NOT SECURITY PROOF\n0833d5ff032a05f6fb4c49b55c2f4f2a\nDEEP FIELD ENGINE\nExifTool 13.59\n\nThe full standard ExifTool field set is in the report.\n\nLOAD ENGINE\nREAD TAGS\nBUILD REPORT\nSTANDARD SCAN\n46 fields\nScan embedded data\nContinue with this file\n\nNo need to choose it again. The file stays in this tab’s memory; reloading clears it.\n\nRemove metadata\nMETADATA RESULTS\nRead the useful part—or audit every tag.\nReadable 24\nAll fields 67\nSearch metadata fields\nSOURCE\nAll sources\nContainer\nExifTool · File\nExifTool · QuickTime\nTracks\n24 found\nLOADED CHAPTERS\n01\nContainer & timeline\n5\n02\nTracks\n1\n03\nDates & timeline\n11\n04\nEmbedded content\n1\n05\nVideo encoding & tracks\n6\nContainer & timeline\nA practical summary from container & timeline. Switch to native fields for exact paths.\n5\nContainer\nContainer\nMP4\nContainer\ncontainer.Container\nPARSER\nCompatible Brands\nCompatibleBrands\n[\n  \"isom\",\n  \"isom\",\n  \"iso2\",\n  \"mp41\"\n]\nContainer\ncontainer.CompatibleBrands\nPARSER\nDuration\nDuration\n1\nContainer\ncontainer.Duration\nPARSER\nCreation Time\nCreationTime\n1904-01-01T00:00:00.000Z\nContainer\ncontainer.CreationTime\nPARSER\nModification Time\nModificationTime\n1904-01-01T00:00:00.000Z\nContainer\ncontainer.ModificationTime\nPARSER\nTracks\n1\nDates & timeline\n11\nEmbedded content\n1\nVideo encoding & tracks\n6\nFile header · first 144 bytes\nOffset, hexadecimal, and printable ASCII\nRaw safe JSON\nBinary values are summaries; size and depth caps remain active"
+      }
+    },
+    {
+      "family": "c2pa",
+      "route": "/c2pa-viewer/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-photo.jpg",
+        "bytes": 253983,
+        "sha256": "4932b44f686a7f8a245377de4766c81e039e6e27f9aeba49993dab5898c12889",
+        "provenance": "Unchanged AI-generated metadata-demo-v1.jpg; provenance: public/samples/SOURCES.md"
+      },
+      "screenshot": {
+        "path": "public/editorial/c2pa-sample.png",
+        "bytes": 396738,
+        "sha256": "75ee8cc990fcdb1b679a60302ced64fa2bbe2c9eb03ae9ec441d14230fefa6ac",
+        "capturedAt": "2026-10-05T10:45:29.647Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/c2pa-result.txt",
+        "sha256": "b807a3431d754f34b8187350f19b24e0e65eacfba4bc16fcb4ae1fb9f797c2e6",
+        "capturedAt": "2026-10-05T10:45:30.683Z",
+        "text": "No Content Credentials found\n\nThis file has no embedded C2PA manifest, so there is no signature to verify.\n\nThat does not mean the content is fake or has never been edited. It is different from a signature failing verification.\n\nView ordinary metadata\nTry signed sample\n\nSee how a signed Adobe test image looks in this viewer. Adobe · CC BY-SA 4.0 · Source and license\n\nJPEG · 1200 × 800\nDetected format\nJPEG image/jpeg\nFile size\n248.0 KB\nDimensions\n1200 × 800\nSHA-256\n4932b44f686a7f8a245377de4766c81e039e6e27f9aeba49993dab5898c12889\nTechnical diagnostics\nVerifier output and the complete JSON report\nOPEN"
+      }
+    },
+    {
+      "family": "cleanup",
+      "route": "/image-metadata-remover/",
+      "origin": "http://127.0.0.1:4330",
+      "viewport": {
+        "width": 1200,
+        "height": 800
+      },
+      "input": {
+        "name": "synthetic-cleanup.png",
+        "bytes": 691,
+        "sha256": "552f4249b1ed8a51b251ef858570f6c04dfd1803ffa4cb119db79034e64ea4b8",
+        "provenance": "Generated orange PNG, 320x180, Author Ada Example, Comment Synthetic metadata cleanup sample."
+      },
+      "screenshot": {
+        "path": "public/editorial/cleanup-sample.png",
+        "bytes": 283267,
+        "sha256": "df50732767eb5f153b892b4f5cdc04b1cecb36ded049bf4a2621df661bdaca39",
+        "capturedAt": "2026-10-05T10:49:18.772Z"
+      },
+      "capturedResult": {
+        "path": "output/playwright/adsense-20261005/cleanup-result.txt",
+        "sha256": "8444c26a46940ec0189594cc9eb016af6acb286495bf9015c998add0597c6277",
+        "capturedAt": "2026-10-05T10:49:19.291Z",
+        "text": "Your file stays on this device.\nVerification finished\nCLEANUP DESK\nsynthetic-cleanup.png\n\nMetadata scan verified with residual fields. Review the remaining data and content checks.\n\nReplace\nClear\nFORMAT\nPNG\nSOURCE SIZE\n691 B\nFIELDS READ\n118\nELIGIBLE\n37\nENGINE\nexiftool\nVERIFICATION RESULT\nVerified with residual metadata\n\n691 B → 608 B · exiftool\n\n29 metadata fields remain. Review them before sharing.\n\nDownload processed copy\nMore exports\n15\nREMOVED\n27\nPRESERVED\n29\nRESIDUAL\nCheck the processed copy\n\nNo need to choose it again. The file stays in this tab’s memory; reloading clears it.\n\nView metadata\nCheck privacy\nStructure check\nStructure check passed. This alone does not prove content is unchanged.\nStructure check\nStructure check passed. This alone does not prove content is unchanged.\nStructure check\nStructure check passed. This alone does not prove content is unchanged.\nStructure check\nStructure check passed. This alone does not prove content is unchanged.\nContent consistency\nEncoded image/audio/video payloads match. Rendering, ancillary data and track interpretation are not certified by this check.\n\nICC color data, orientation, animation, and structural image fields were intentionally retained.\n\nRemoved fields\n15\nIntentionally preserved\n27\nResidual metadata\n29"
+      }
+    }
+  ],
+  "covers": [
+    {
+      "slug": "verify-metadata-removal",
+      "path": "src/assets/blog/verify-metadata-removal.png",
+      "source": "public/editorial/cleanup-sample.png",
+      "sha256": "df50732767eb5f153b892b4f5cdc04b1cecb36ded049bf4a2621df661bdaca39",
+      "bytes": 283267
+    },
+    {
+      "slug": "why-metadata-is-missing",
+      "path": "src/assets/blog/why-metadata-is-missing.png",
+      "source": "public/editorial/document-sample.png",
+      "sha256": "ad4f758e7f4deb4d6cf5b106232e5ef121b8fb7347cec42162a769593baefcee",
+      "bytes": 439613
+    },
+    {
+      "slug": "how-to-read-c2pa-results",
+      "path": "src/assets/blog/how-to-read-c2pa-results.png",
+      "source": "public/editorial/c2pa-sample.png",
+      "sha256": "75ee8cc990fcdb1b679a60302ced64fa2bbe2c9eb03ae9ec441d14230fefa6ac",
+      "bytes": 396738
+    }
+  ]
+}

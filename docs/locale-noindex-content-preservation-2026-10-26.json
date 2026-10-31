@@ -1,0 +1,663 @@
+{
+  "checkedAt": "2026-10-26T12:32:05.249Z",
+  "baselineCommit": "63c07f4",
+  "pages": 109,
+  "failures": [],
+  "records": [
+    {
+      "path": "/",
+      "mainHash": "26bbc5ccd172bbff52e4aacfde03df29d7747dc5cf05f4d947ccd6f4e108cd13",
+      "beforeHash": "26bbc5ccd172bbff52e4aacfde03df29d7747dc5cf05f4d947ccd6f4e108cd13",
+      "unchanged": true
+    },
+    {
+      "path": "/about/",
+      "mainHash": "19c2ca32c61088989560337bdd501d83e763e935d0f44ba99a3772070ae81e0c",
+      "beforeHash": "19c2ca32c61088989560337bdd501d83e763e935d0f44ba99a3772070ae81e0c",
+      "unchanged": true
+    },
+    {
+      "path": "/audio-metadata-remover/",
+      "mainHash": "61fe55c342ec3f0017eed60e98d3cb2cf7478a253e50246a23bb26e820fae5d0",
+      "beforeHash": "61fe55c342ec3f0017eed60e98d3cb2cf7478a253e50246a23bb26e820fae5d0",
+      "unchanged": true
+    },
+    {
+      "path": "/audio-metadata-viewer/",
+      "mainHash": "42a5d70e80f14afe5e39e38c4aa41fd16a760e0fe56023ccb5cd9f24f8e34665",
+      "beforeHash": "42a5d70e80f14afe5e39e38c4aa41fd16a760e0fe56023ccb5cd9f24f8e34665",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/",
+      "mainHash": "560dbc3ef6344a2d3d9b96f5297351a04d0dc08c44e9d0c719d420c348602cc4",
+      "beforeHash": "560dbc3ef6344a2d3d9b96f5297351a04d0dc08c44e9d0c719d420c348602cc4",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/do-screenshots-have-metadata/",
+      "mainHash": "22db1310e24e16ccad96a72d66524b538053328b22c8b39c3c9dc9a7a3059f22",
+      "beforeHash": "22db1310e24e16ccad96a72d66524b538053328b22c8b39c3c9dc9a7a3059f22",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-discord-remove-exif-data/",
+      "mainHash": "73f354661c0850eea0b6fff477b8942709a5f2e85dad51962ce4523dd78d6fe9",
+      "beforeHash": "73f354661c0850eea0b6fff477b8942709a5f2e85dad51962ce4523dd78d6fe9",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-gmail-remove-exif-data/",
+      "mainHash": "fa4c100f21f3a7ad97c684edfb4bde723809e8c0137d32858a469b380778fdb8",
+      "beforeHash": "fa4c100f21f3a7ad97c684edfb4bde723809e8c0137d32858a469b380778fdb8",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-instagram-remove-exif-data/",
+      "mainHash": "40bc484006cd420cd8f2add4b4d99f6a618061c2a03338f5a974e7885ad269b5",
+      "beforeHash": "40bc484006cd420cd8f2add4b4d99f6a618061c2a03338f5a974e7885ad269b5",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-reddit-remove-exif-data/",
+      "mainHash": "a69e27e51a6e2d9ed6dda9781a8d4a10599f1f77252bf7d56dbd2c1d5d1bab16",
+      "beforeHash": "a69e27e51a6e2d9ed6dda9781a8d4a10599f1f77252bf7d56dbd2c1d5d1bab16",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-telegram-remove-exif-data/",
+      "mainHash": "1734b1b84dfc4410fc0ebaff8abdd9506158367e53df602a8c068ca8e0c8e981",
+      "beforeHash": "1734b1b84dfc4410fc0ebaff8abdd9506158367e53df602a8c068ca8e0c8e981",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/does-whatsapp-remove-exif-data/",
+      "mainHash": "895e134c22ed226598964b50450ba1cca8b9cf601e9cf565dbad75bd629a6706",
+      "beforeHash": "895e134c22ed226598964b50450ba1cca8b9cf601e9cf565dbad75bd629a6706",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/exif-metadata-definition-and-how-to-view/",
+      "mainHash": "4e955e1835a481a2a5dce6e1747b2af14a8b8c73696f5a4fc375bfa39e6595f4",
+      "beforeHash": "4e955e1835a481a2a5dce6e1747b2af14a8b8c73696f5a4fc375bfa39e6595f4",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/exif-orientation-values/",
+      "mainHash": "089cd4cf5f9fe3bf6c3c0eaa091772048875ad6a76a86489ef05250d85864ec2",
+      "beforeHash": "089cd4cf5f9fe3bf6c3c0eaa091772048875ad6a76a86489ef05250d85864ec2",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/exif-timezone-offsettimeoriginal/",
+      "mainHash": "b3397ed0dd004a37ffba05aa52586fa39075a5f9ff40b1cf3e773a91e06bf9cc",
+      "beforeHash": "b3397ed0dd004a37ffba05aa52586fa39075a5f9ff40b1cf3e773a91e06bf9cc",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/exif-vs-metadata/",
+      "mainHash": "07bfa6025fa7a95f8270e90479979a4ef97e6b6b3796dc0b9029bd99a4841539",
+      "beforeHash": "07bfa6025fa7a95f8270e90479979a4ef97e6b6b3796dc0b9029bd99a4841539",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-check-exif-data/",
+      "mainHash": "d9550aa5edcde33837b210b0ec824787105fd1bc1dfc24a313adbf4610cd5ad9",
+      "beforeHash": "d9550aa5edcde33837b210b0ec824787105fd1bc1dfc24a313adbf4610cd5ad9",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-check-metadata-of-an-image/",
+      "mainHash": "4d298c3b53fc625ca859528eeb7b269ef9fcf32496d1a5c625492a924f6de035",
+      "beforeHash": "4d298c3b53fc625ca859528eeb7b269ef9fcf32496d1a5c625492a924f6de035",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-find-camera-settings-from-a-photo/",
+      "mainHash": "4cd391769c37a667580b335a49426f917e2da9429be0e3584dc6abbab3fe3bdc",
+      "beforeHash": "4cd391769c37a667580b335a49426f917e2da9429be0e3584dc6abbab3fe3bdc",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-find-where-a-photo-was-taken/",
+      "mainHash": "0ffa132dd7387403af12d75c157e6d50c8e7300cec9f4800b1f57efcfe1851ca",
+      "beforeHash": "0ffa132dd7387403af12d75c157e6d50c8e7300cec9f4800b1f57efcfe1851ca",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-read-c2pa-results/",
+      "mainHash": "05233b0c26de3663643e80cf20a6dcdcd7901380f30024d19b98381b4433b976",
+      "beforeHash": "05233b0c26de3663643e80cf20a6dcdcd7901380f30024d19b98381b4433b976",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "mainHash": "a8d53f8599478b8282bbe82cb2797c4686bb1387b3d2846d83ad73ba15c86195",
+      "beforeHash": "a8d53f8599478b8282bbe82cb2797c4686bb1387b3d2846d83ad73ba15c86195",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-remove-metadata-from-a-photo/",
+      "mainHash": "4832aeac1514f5185be8231c0664a8a7ee565ffa6c20df1987418d116545b0ff",
+      "beforeHash": "4832aeac1514f5185be8231c0664a8a7ee565ffa6c20df1987418d116545b0ff",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-tell-when-a-photo-was-taken/",
+      "mainHash": "5a3431e624f1e41a8cbc7bf9293d5dc8db61c9b954bb065a3bfcd745480611d7",
+      "beforeHash": "5a3431e624f1e41a8cbc7bf9293d5dc8db61c9b954bb065a3bfcd745480611d7",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-android/",
+      "mainHash": "7d20279abb0aac83df40e03bc30159e95d64669d4838bb0d6a616a4a2c085494",
+      "beforeHash": "7d20279abb0aac83df40e03bc30159e95d64669d4838bb0d6a616a4a2c085494",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-iphone/",
+      "mainHash": "decee72f5337e1fe21df8362acf33e3012088a3e92cfb6a8f352c876578bc5fb",
+      "beforeHash": "decee72f5337e1fe21df8362acf33e3012088a3e92cfb6a8f352c876578bc5fb",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-view-exif-data-on-windows-11/",
+      "mainHash": "8295e9919106040ffc9edeadf7162a3c1a3ecf1f9dbd50b1a311c42b03288040",
+      "beforeHash": "8295e9919106040ffc9edeadf7162a3c1a3ecf1f9dbd50b1a311c42b03288040",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-view-pdf-metadata/",
+      "mainHash": "a554fa65fa007fe04b623330ca61a2ef9dfd19d736e9cb6a3027e4c54618b6c1",
+      "beforeHash": "a554fa65fa007fe04b623330ca61a2ef9dfd19d736e9cb6a3027e4c54618b6c1",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/how-to-view-photo-metadata-on-mac/",
+      "mainHash": "6658ad92f785353ccc0dcf76906300f484edc1c81de1472e08440d31f818d9a0",
+      "beforeHash": "6658ad92f785353ccc0dcf76906300f484edc1c81de1472e08440d31f818d9a0",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/page/2/",
+      "mainHash": "f4316dceaf2d31dc9dbe164ba944107e6923467c3f9b479b47ac1e792b1c0806",
+      "beforeHash": "f4316dceaf2d31dc9dbe164ba944107e6923467c3f9b479b47ac1e792b1c0806",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/page/3/",
+      "mainHash": "8dd0bbe59d21436eb9dd2f0e32503702ba1d1fdc711898f4172ef4c568aca384",
+      "beforeHash": "8dd0bbe59d21436eb9dd2f0e32503702ba1d1fdc711898f4172ef4c568aca384",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/page/4/",
+      "mainHash": "1c1e53981607e232d06aa12bfb88ea49f828b07e719ff3dc0cbd3c79c2e7f7e0",
+      "beforeHash": "1c1e53981607e232d06aa12bfb88ea49f828b07e719ff3dc0cbd3c79c2e7f7e0",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/page/5/",
+      "mainHash": "85b49e4be2e729bcc677c439481a7201eecf8bb76e24f3ab40926859935d2921",
+      "beforeHash": "85b49e4be2e729bcc677c439481a7201eecf8bb76e24f3ab40926859935d2921",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/page/6/",
+      "mainHash": "dd1db16df5846b52d3d669277f4fe96c629e2c6755ff2486db3fdd3a5ac2121d",
+      "beforeHash": "dd1db16df5846b52d3d669277f4fe96c629e2c6755ff2486db3fdd3a5ac2121d",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/remove-metadata-from-mp3/",
+      "mainHash": "f80db14451b9e470b9a35308fc4654a4e1afb70c6c1b6c6b3cf32414908ad643",
+      "beforeHash": "f80db14451b9e470b9a35308fc4654a4e1afb70c6c1b6c6b3cf32414908ad643",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/remove-metadata-from-mp4/",
+      "mainHash": "faba1e171d187352fbeb151c49a19ed0b0fff3c2997e4df05d4626d6a39f79a7",
+      "beforeHash": "faba1e171d187352fbeb151c49a19ed0b0fff3c2997e4df05d4626d6a39f79a7",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/remove-metadata-from-pdf/",
+      "mainHash": "50902afbeb7173856f0096a060234523ac77873729110a40e280e2e19830c862",
+      "beforeHash": "50902afbeb7173856f0096a060234523ac77873729110a40e280e2e19830c862",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/remove-metadata-from-word-document/",
+      "mainHash": "e49eb73f0abe67872aaab7a31d5ab90b9edb8bcc77174648e4724b1dc3603442",
+      "beforeHash": "e49eb73f0abe67872aaab7a31d5ab90b9edb8bcc77174648e4724b1dc3603442",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/verify-metadata-removal/",
+      "mainHash": "d49bc52871ae32f4d29b54699646de30ceff48406ca7a726391bb04e108b0cba",
+      "beforeHash": "d49bc52871ae32f4d29b54699646de30ceff48406ca7a726391bb04e108b0cba",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/what-is-a-metadata-strategy/",
+      "mainHash": "50ea4105b568716f1a04ffc4236b0b493722b0423c195473bd5a4bd9ec8f54d5",
+      "beforeHash": "50ea4105b568716f1a04ffc4236b0b493722b0423c195473bd5a4bd9ec8f54d5",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/what-is-exif-data/",
+      "mainHash": "240f9215bc5074d977953465aaf24f815de908eebc7157283e17ed89522a8120",
+      "beforeHash": "240f9215bc5074d977953465aaf24f815de908eebc7157283e17ed89522a8120",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/what-is-xmp-metadata/",
+      "mainHash": "ae9c76ef3056366d081ba02c73b019ed78d9a27622354d04ecea6e3fb106f24d",
+      "beforeHash": "ae9c76ef3056366d081ba02c73b019ed78d9a27622354d04ecea6e3fb106f24d",
+      "unchanged": true
+    },
+    {
+      "path": "/blog/why-metadata-is-missing/",
+      "mainHash": "9d0814d569d63f2081a95ab0b9f8ae0154017a3f21d2df76a740cc896da8544a",
+      "beforeHash": "9d0814d569d63f2081a95ab0b9f8ae0154017a3f21d2df76a740cc896da8544a",
+      "unchanged": true
+    },
+    {
+      "path": "/c2pa-viewer/",
+      "mainHash": "f78c53d7a9ca1d35e76358862bbf1a2444ea924daef1aa6fea832c52127c5d26",
+      "beforeHash": "f78c53d7a9ca1d35e76358862bbf1a2444ea924daef1aa6fea832c52127c5d26",
+      "unchanged": true
+    },
+    {
+      "path": "/contact/",
+      "mainHash": "5674c876840cae3ea26bd8d1f3439250952fbe4c681406dc2efc65d717dd5b09",
+      "beforeHash": "5674c876840cae3ea26bd8d1f3439250952fbe4c681406dc2efc65d717dd5b09",
+      "unchanged": true
+    },
+    {
+      "path": "/de/",
+      "mainHash": "9cdbc6db97806d26fb29ff08de5409b47968617d10c908ea8b1234b869a4e80b",
+      "beforeHash": "9cdbc6db97806d26fb29ff08de5409b47968617d10c908ea8b1234b869a4e80b",
+      "unchanged": true
+    },
+    {
+      "path": "/de/about/",
+      "mainHash": "7ba4229db4d0599ee3d88102858863aa47cfe6b70a25ec7495950316516fdcdc",
+      "beforeHash": "7ba4229db4d0599ee3d88102858863aa47cfe6b70a25ec7495950316516fdcdc",
+      "unchanged": true
+    },
+    {
+      "path": "/de/audio-metadata-remover/",
+      "mainHash": "6311cca31bbc47e228fb5caa706a1e9b6cfc236655c2c359284ffabf6cf372ea",
+      "beforeHash": "6311cca31bbc47e228fb5caa706a1e9b6cfc236655c2c359284ffabf6cf372ea",
+      "unchanged": true
+    },
+    {
+      "path": "/de/audio-metadata-viewer/",
+      "mainHash": "e9c5761dc42f2e04a33d8581f367e73a5d2fffe352f5a7ca8e999db18d45f58f",
+      "beforeHash": "e9c5761dc42f2e04a33d8581f367e73a5d2fffe352f5a7ca8e999db18d45f58f",
+      "unchanged": true
+    },
+    {
+      "path": "/de/c2pa-viewer/",
+      "mainHash": "d962e621d81e81a0709df2f6a48640c22e30fbb79d1965d9ec8632025dc03d92",
+      "beforeHash": "d962e621d81e81a0709df2f6a48640c22e30fbb79d1965d9ec8632025dc03d92",
+      "unchanged": true
+    },
+    {
+      "path": "/de/contact/",
+      "mainHash": "d10c04533bc2ed6183b430fa8c45de2f284920b2711ba2948b5f6d4d011fa7f4",
+      "beforeHash": "d10c04533bc2ed6183b430fa8c45de2f284920b2711ba2948b5f6d4d011fa7f4",
+      "unchanged": true
+    },
+    {
+      "path": "/de/document-metadata-remover/",
+      "mainHash": "8992d9eca4d0cbfe4e9336868a586b5882fb6b2db2e61911da1e5b1e3759e000",
+      "beforeHash": "8992d9eca4d0cbfe4e9336868a586b5882fb6b2db2e61911da1e5b1e3759e000",
+      "unchanged": true
+    },
+    {
+      "path": "/de/document-metadata-viewer/",
+      "mainHash": "f206dc6d02e3e54d106c0f9c428d53ee82312e0185af773903e6ac5ddd14e221",
+      "beforeHash": "f206dc6d02e3e54d106c0f9c428d53ee82312e0185af773903e6ac5ddd14e221",
+      "unchanged": true
+    },
+    {
+      "path": "/de/image-metadata-remover/",
+      "mainHash": "89e8c6c4550223284d57de479b82cb091ff711c989f58319f8a3b20302fd84b0",
+      "beforeHash": "89e8c6c4550223284d57de479b82cb091ff711c989f58319f8a3b20302fd84b0",
+      "unchanged": true
+    },
+    {
+      "path": "/de/image-metadata-viewer/",
+      "mainHash": "aa7efb46093f4d6b4e4bb6d5301546bc7d941be1ce3f66caa511dcd60b5213a4",
+      "beforeHash": "aa7efb46093f4d6b4e4bb6d5301546bc7d941be1ce3f66caa511dcd60b5213a4",
+      "unchanged": true
+    },
+    {
+      "path": "/de/image-privacy-checker/",
+      "mainHash": "be8a4b915ba497cb29eb661f1f539867422e761ff2d92a9eba1498cccdbffab4",
+      "beforeHash": "be8a4b915ba497cb29eb661f1f539867422e761ff2d92a9eba1498cccdbffab4",
+      "unchanged": true
+    },
+    {
+      "path": "/de/metadata-remover/",
+      "mainHash": "ae791fc74e6f50180e0459c44363d1f5451de1cf611228e66609e9a73c3777e8",
+      "beforeHash": "ae791fc74e6f50180e0459c44363d1f5451de1cf611228e66609e9a73c3777e8",
+      "unchanged": true
+    },
+    {
+      "path": "/de/metadata-viewer/",
+      "mainHash": "d0b0e07a55e262bd7dcdb41a9aa3ff7be488372d199cf7c308432f1639fbd891",
+      "beforeHash": "d0b0e07a55e262bd7dcdb41a9aa3ff7be488372d199cf7c308432f1639fbd891",
+      "unchanged": true
+    },
+    {
+      "path": "/de/privacy/",
+      "mainHash": "6d42b5aa45a679dd21263e70ccf5681ac298d811d46de1fc6afaaf70155201ea",
+      "beforeHash": "6d42b5aa45a679dd21263e70ccf5681ac298d811d46de1fc6afaaf70155201ea",
+      "unchanged": true
+    },
+    {
+      "path": "/de/terms/",
+      "mainHash": "ac55331bdda17715d8d9b1cc53e108473d6e67526185187d5523638b6acb6771",
+      "beforeHash": "ac55331bdda17715d8d9b1cc53e108473d6e67526185187d5523638b6acb6771",
+      "unchanged": true
+    },
+    {
+      "path": "/de/video-metadata-remover/",
+      "mainHash": "ab4c9ba6e34d1f683bebe2aae0e8c8c564d6c10399acad016d9b4b9b7846de02",
+      "beforeHash": "ab4c9ba6e34d1f683bebe2aae0e8c8c564d6c10399acad016d9b4b9b7846de02",
+      "unchanged": true
+    },
+    {
+      "path": "/de/video-metadata-viewer/",
+      "mainHash": "be67c118b495315616531b3bb2cdeedfb8e17f84aa3120d994afdea266220c96",
+      "beforeHash": "be67c118b495315616531b3bb2cdeedfb8e17f84aa3120d994afdea266220c96",
+      "unchanged": true
+    },
+    {
+      "path": "/document-metadata-remover/",
+      "mainHash": "c5205fb113ef328e133d139d4685161c859afa88cea916bb34469d9492710924",
+      "beforeHash": "c5205fb113ef328e133d139d4685161c859afa88cea916bb34469d9492710924",
+      "unchanged": true
+    },
+    {
+      "path": "/document-metadata-viewer/",
+      "mainHash": "ae548f6b5dadccf76ec63fd8b895f199329c4e2dbb4077282e952824cbbb6a99",
+      "beforeHash": "ae548f6b5dadccf76ec63fd8b895f199329c4e2dbb4077282e952824cbbb6a99",
+      "unchanged": true
+    },
+    {
+      "path": "/editorial-policy/",
+      "mainHash": "fed33c9cfdff5a20cc0f6d23c014a8c83cf807c86f7b64f9216de3607be0b9a6",
+      "beforeHash": "fed33c9cfdff5a20cc0f6d23c014a8c83cf807c86f7b64f9216de3607be0b9a6",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/",
+      "mainHash": "7f5de7781d09e8967caed82cbf4187d4a7a1dfc7477351561e5d65dd58bfd098",
+      "beforeHash": "7f5de7781d09e8967caed82cbf4187d4a7a1dfc7477351561e5d65dd58bfd098",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/about/",
+      "mainHash": "362e7213727919b130ad3d3931652ac341f4ff55496afadc12fb4ea0761d4422",
+      "beforeHash": "362e7213727919b130ad3d3931652ac341f4ff55496afadc12fb4ea0761d4422",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/audio-metadata-remover/",
+      "mainHash": "2aed640be672d9210288fb9b12a94ead86ad14c7790e402d6467f175c7cce140",
+      "beforeHash": "2aed640be672d9210288fb9b12a94ead86ad14c7790e402d6467f175c7cce140",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/audio-metadata-viewer/",
+      "mainHash": "040f3463f92b3f65fbfce08bce8fe051ad0b6ab0814fd443ff4170e00dab86bc",
+      "beforeHash": "040f3463f92b3f65fbfce08bce8fe051ad0b6ab0814fd443ff4170e00dab86bc",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/c2pa-viewer/",
+      "mainHash": "85b05fcf00d55ced21a08db17367a8d6a7f5cf66966b28fe09312fc513d2dc3e",
+      "beforeHash": "85b05fcf00d55ced21a08db17367a8d6a7f5cf66966b28fe09312fc513d2dc3e",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/contact/",
+      "mainHash": "59f914e1eb794cb94dedcffff73a02a1569e302be8947d2de87f7337f84b164b",
+      "beforeHash": "59f914e1eb794cb94dedcffff73a02a1569e302be8947d2de87f7337f84b164b",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/document-metadata-remover/",
+      "mainHash": "98d74e1a9f812f82ddd14fb942d3f6a4d1e1dc05d2d2e8882c2e89f5dae30d42",
+      "beforeHash": "98d74e1a9f812f82ddd14fb942d3f6a4d1e1dc05d2d2e8882c2e89f5dae30d42",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/document-metadata-viewer/",
+      "mainHash": "973d742a0044bc8a54c5df820caa36789a40f73b9db801ae1afe08ab2a9e782f",
+      "beforeHash": "973d742a0044bc8a54c5df820caa36789a40f73b9db801ae1afe08ab2a9e782f",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/image-metadata-remover/",
+      "mainHash": "d68eef57d1ee84b6197ed97c8b9e06006f590b4bc9b146e6e8d9e45f251f0e46",
+      "beforeHash": "d68eef57d1ee84b6197ed97c8b9e06006f590b4bc9b146e6e8d9e45f251f0e46",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/image-metadata-viewer/",
+      "mainHash": "21535ce92ded353944639e9bd2898b25ad22bb2228814fd1e3c7c87d6abcf3e7",
+      "beforeHash": "21535ce92ded353944639e9bd2898b25ad22bb2228814fd1e3c7c87d6abcf3e7",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/image-privacy-checker/",
+      "mainHash": "87ffe8e8be564caf54e51086fa6cf9b5475a6d5ab5ac77e09185f04ab6bf0d19",
+      "beforeHash": "87ffe8e8be564caf54e51086fa6cf9b5475a6d5ab5ac77e09185f04ab6bf0d19",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/metadata-remover/",
+      "mainHash": "1bcb693da47302d69da46560780d9f1e32ebf141cfd1a5f5dad0a6f0723736f3",
+      "beforeHash": "1bcb693da47302d69da46560780d9f1e32ebf141cfd1a5f5dad0a6f0723736f3",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/metadata-viewer/",
+      "mainHash": "fbd013987782b98fa9bdc96dddf059a9d5620cd5acc4b3d34d90a5d9410033d4",
+      "beforeHash": "fbd013987782b98fa9bdc96dddf059a9d5620cd5acc4b3d34d90a5d9410033d4",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/privacy/",
+      "mainHash": "698416b414c1191a642420d09a970e99164e7f9aec0b806e1703e0000e34c83b",
+      "beforeHash": "698416b414c1191a642420d09a970e99164e7f9aec0b806e1703e0000e34c83b",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/terms/",
+      "mainHash": "64d5cfcce0db7f78d5989437a633f61a9538778d367127cad933dd524fa16c48",
+      "beforeHash": "64d5cfcce0db7f78d5989437a633f61a9538778d367127cad933dd524fa16c48",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/video-metadata-remover/",
+      "mainHash": "de3476ff448d8329363e188eeaeec5e8a7146c0a6e4ea31214440f1b0d544a3f",
+      "beforeHash": "de3476ff448d8329363e188eeaeec5e8a7146c0a6e4ea31214440f1b0d544a3f",
+      "unchanged": true
+    },
+    {
+      "path": "/fr/video-metadata-viewer/",
+      "mainHash": "f09b5e198d72e74d8bc6d86a35aa280416070c82f6c0b119808cdcfc71997e4f",
+      "beforeHash": "f09b5e198d72e74d8bc6d86a35aa280416070c82f6c0b119808cdcfc71997e4f",
+      "unchanged": true
+    },
+    {
+      "path": "/how-we-test/",
+      "mainHash": "de940b4fc2a0014df51abad8bbefb794a79b36dd3f2d40151270d891bcf7d0e7",
+      "beforeHash": "de940b4fc2a0014df51abad8bbefb794a79b36dd3f2d40151270d891bcf7d0e7",
+      "unchanged": true
+    },
+    {
+      "path": "/image-metadata-remover/",
+      "mainHash": "aa000714edc9b14f143116bf32dfeabe43551a78e1910e5bcb8934f080b91713",
+      "beforeHash": "aa000714edc9b14f143116bf32dfeabe43551a78e1910e5bcb8934f080b91713",
+      "unchanged": true
+    },
+    {
+      "path": "/image-metadata-viewer/",
+      "mainHash": "bbb56fb4bcb1a7fa6aacf86acaeec8d425323ea87f599c64643efd05860d10be",
+      "beforeHash": "bbb56fb4bcb1a7fa6aacf86acaeec8d425323ea87f599c64643efd05860d10be",
+      "unchanged": true
+    },
+    {
+      "path": "/image-privacy-checker/",
+      "mainHash": "c1b2437dec53b93f5a39366a6a5d034fb26cec187511284e73888d774048aa8e",
+      "beforeHash": "c1b2437dec53b93f5a39366a6a5d034fb26cec187511284e73888d774048aa8e",
+      "unchanged": true
+    },
+    {
+      "path": "/metadata-remover/",
+      "mainHash": "702aab74a5a0c27fe9bcd5be861fa77f3ba0d8f5aca0af9d49de660c93e3e0dc",
+      "beforeHash": "702aab74a5a0c27fe9bcd5be861fa77f3ba0d8f5aca0af9d49de660c93e3e0dc",
+      "unchanged": true
+    },
+    {
+      "path": "/metadata-viewer/",
+      "mainHash": "9f1f984671b7dfd452b6ba7f359ea4dbd80427d35261b35a0ffa502834575afc",
+      "beforeHash": "9f1f984671b7dfd452b6ba7f359ea4dbd80427d35261b35a0ffa502834575afc",
+      "unchanged": true
+    },
+    {
+      "path": "/privacy/",
+      "mainHash": "32ab05f99c7f7ae00730772d8c583856bad7f32ee1c0b27c8bed02b9a94a0314",
+      "beforeHash": "32ab05f99c7f7ae00730772d8c583856bad7f32ee1c0b27c8bed02b9a94a0314",
+      "unchanged": true
+    },
+    {
+      "path": "/terms/",
+      "mainHash": "eac2373ce2a97ca6bff2cdb6050ae1b2d00fb708d073d8b30fdc196f61393eb4",
+      "beforeHash": "eac2373ce2a97ca6bff2cdb6050ae1b2d00fb708d073d8b30fdc196f61393eb4",
+      "unchanged": true
+    },
+    {
+      "path": "/video-metadata-remover/",
+      "mainHash": "f459ded1fb04e71c000f39df06bd9f05e2ee59fc5192181d22c562054d699490",
+      "beforeHash": "f459ded1fb04e71c000f39df06bd9f05e2ee59fc5192181d22c562054d699490",
+      "unchanged": true
+    },
+    {
+      "path": "/video-metadata-viewer/",
+      "mainHash": "9290369f99daa65cc1a4f2173594388ea556709809ac03dc75b6a280187bdd6e",
+      "beforeHash": "9290369f99daa65cc1a4f2173594388ea556709809ac03dc75b6a280187bdd6e",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/",
+      "mainHash": "325e3a390df68ec409ecf46161dc8daf29286bf6c5edbc7aca08cfd1a4ae5304",
+      "beforeHash": "325e3a390df68ec409ecf46161dc8daf29286bf6c5edbc7aca08cfd1a4ae5304",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/about/",
+      "mainHash": "885412d47c7024e6caf4cb823d41963f09a72e240e41daabcea8924f3f2312c2",
+      "beforeHash": "885412d47c7024e6caf4cb823d41963f09a72e240e41daabcea8924f3f2312c2",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/audio-metadata-remover/",
+      "mainHash": "151680806a5a1b563d4531810743c326356bb459f2e27b88743b759222deb02c",
+      "beforeHash": "151680806a5a1b563d4531810743c326356bb459f2e27b88743b759222deb02c",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/audio-metadata-viewer/",
+      "mainHash": "83d103043432216df11cddf72cdded6461e63c954dc946a944b85d46918bc7da",
+      "beforeHash": "83d103043432216df11cddf72cdded6461e63c954dc946a944b85d46918bc7da",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/c2pa-viewer/",
+      "mainHash": "a699758d09b581406c7e7ee1ed84d26c021af2517b7cffa8b4a40600bcf5e340",
+      "beforeHash": "a699758d09b581406c7e7ee1ed84d26c021af2517b7cffa8b4a40600bcf5e340",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/contact/",
+      "mainHash": "66a8c235981d5e21080e728d230015c2768772f6290cc4a4584c3f60ca54076d",
+      "beforeHash": "66a8c235981d5e21080e728d230015c2768772f6290cc4a4584c3f60ca54076d",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/document-metadata-remover/",
+      "mainHash": "ed2dfbd8df769282994bb00c2d5470652fef5e0234ab8d5ab1c116a99dbb4206",
+      "beforeHash": "ed2dfbd8df769282994bb00c2d5470652fef5e0234ab8d5ab1c116a99dbb4206",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/document-metadata-viewer/",
+      "mainHash": "4921e14729821199d0e5dc1e49806806038f122d9ae3732d80bd2028d4a2b17a",
+      "beforeHash": "4921e14729821199d0e5dc1e49806806038f122d9ae3732d80bd2028d4a2b17a",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/image-metadata-remover/",
+      "mainHash": "1167c95cd3563793b5d316b9a499a85cbce268c4780d3358fcb6b7e4545d16b2",
+      "beforeHash": "1167c95cd3563793b5d316b9a499a85cbce268c4780d3358fcb6b7e4545d16b2",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/image-metadata-viewer/",
+      "mainHash": "3a1b47c3b480997df797fdc75f6e96919c16c36d5ea362cc8120d1b2ea684adb",
+      "beforeHash": "3a1b47c3b480997df797fdc75f6e96919c16c36d5ea362cc8120d1b2ea684adb",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/image-privacy-checker/",
+      "mainHash": "a9ece17f81a448c640805a8ff02e7744633b132536086981dc18e407a19dfd72",
+      "beforeHash": "a9ece17f81a448c640805a8ff02e7744633b132536086981dc18e407a19dfd72",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/metadata-remover/",
+      "mainHash": "b2e7be7e8c6c801cde54cc907b6dbeb49890ddf1ed207b361021e4c5267d4f1a",
+      "beforeHash": "b2e7be7e8c6c801cde54cc907b6dbeb49890ddf1ed207b361021e4c5267d4f1a",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/metadata-viewer/",
+      "mainHash": "23dd1c299250160fd9936a1141f6c8432247cb235da5de27cc2a92429fe0058b",
+      "beforeHash": "23dd1c299250160fd9936a1141f6c8432247cb235da5de27cc2a92429fe0058b",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/privacy/",
+      "mainHash": "d68660be708e543084c5ab995ef93692e790bfb3e9bb1d48731302555c5e5422",
+      "beforeHash": "d68660be708e543084c5ab995ef93692e790bfb3e9bb1d48731302555c5e5422",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/terms/",
+      "mainHash": "60a06875b982a933565375f0c466dc542b48635f8801d6bcd84a282779a570ab",
+      "beforeHash": "60a06875b982a933565375f0c466dc542b48635f8801d6bcd84a282779a570ab",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/video-metadata-remover/",
+      "mainHash": "9f3fea2834b93d478278c669bf4524ff4246c4aac6d53b71f17f32472d1888fb",
+      "beforeHash": "9f3fea2834b93d478278c669bf4524ff4246c4aac6d53b71f17f32472d1888fb",
+      "unchanged": true
+    },
+    {
+      "path": "/zh-cn/video-metadata-viewer/",
+      "mainHash": "125d3e20598cb3425ba5b710e3cbcb17dc70e20b044dec15d26890b5c3f3b9ad",
+      "beforeHash": "125d3e20598cb3425ba5b710e3cbcb17dc70e20b044dec15d26890b5c3f3b9ad",
+      "unchanged": true
+    }
+  ],
+  "method": "Compare main HTML against the previous clean release, normalizing generated Astro island UID values and emitted asset filename hashes; all readable content and structure remain compared."
+}

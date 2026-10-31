@@ -1,0 +1,4206 @@
+{
+  "checkedAt": "2026-09-23T10:40:37.569Z",
+  "mode": "Static-only: saved pre-fix production HTML vs existing dist; no network, build or server startup",
+  "head": "c42b98a2f33987623858c6c740e2a95a4c7084aa",
+  "summary": {
+    "savedSnapshotPages": 101,
+    "currentSitemapUrls": 101,
+    "uniqueSitemapUrls": 101,
+    "missingFromCurrent": [],
+    "addedSinceSnapshot": [],
+    "metadataPreserved": 101,
+    "articleBodiesCompared": 28,
+    "articleBodiesPreserved": 28,
+    "articlePracticalTakeFaqCoverPreserved": 28,
+    "sourceArticles": 28,
+    "sourceImages": 28,
+    "allSourceBytesMatchHead": true,
+    "untrackedSourceFiles": [],
+    "removedSourceFiles": [],
+    "failures": []
+  },
+  "legacyBaseline": {
+    "count": 100,
+    "missingFromLegacyBaseline": [
+      "https://www.viewexif.com/blog/how-to-check-exif-data/"
+    ],
+    "legacyUrlsMissingNow": []
+  },
+  "headerFiles": [
+    {
+      "file": "public/robots.txt",
+      "identical": true,
+      "headSha256": "acf848d2e16e22fb18c77cf3dabe5479b7fa70fb620c12835123f54ac3400745",
+      "sourceSha256": "acf848d2e16e22fb18c77cf3dabe5479b7fa70fb620c12835123f54ac3400745",
+      "distSha256": "acf848d2e16e22fb18c77cf3dabe5479b7fa70fb620c12835123f54ac3400745"
+    },
+    {
+      "file": "public/_headers",
+      "identical": true,
+      "headSha256": "1a82576f35d1d8e6f350475d32b6596e0b0dce632738a90e310e7faff03b869e",
+      "sourceSha256": "1a82576f35d1d8e6f350475d32b6596e0b0dce632738a90e310e7faff03b869e",
+      "distSha256": "1a82576f35d1d8e6f350475d32b6596e0b0dce632738a90e310e7faff03b869e"
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://www.viewexif.com/",
+      "currentFile": "dist/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/000.html",
+      "before": {
+        "title": "Free Online EXIF &amp; Metadata Viewer | ViewExif",
+        "h1": "Free Online EXIF &amp; Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Free Online EXIF &amp; Metadata Viewer | ViewExif",
+        "h1": "Free Online EXIF &amp; Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/about/",
+      "currentFile": "dist/about/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/001.html",
+      "before": {
+        "title": "About ViewExif — Who Builds and Checks This Toolkit",
+        "h1": "One operator. No mystery company.",
+        "canonical": [
+          "https://www.viewexif.com/about/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "About ViewExif — Who Builds and Checks This Toolkit",
+        "h1": "One operator. No mystery company.",
+        "canonical": [
+          "https://www.viewexif.com/about/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/audio-metadata-remover/",
+      "currentFile": "dist/audio-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/002.html",
+      "before": {
+        "title": "Audio Metadata Remover — Clean MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+        "h1": "Audio Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Audio Metadata Remover — Clean MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+        "h1": "Audio Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/audio-metadata-viewer/",
+      "currentFile": "dist/audio-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/003.html",
+      "before": {
+        "title": "Audio Metadata Viewer – View MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+        "h1": "Audio Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Audio Metadata Viewer – View MP3, FLAC, OGG, M4A, WAV and WMA Tags",
+        "h1": "Audio Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/",
+      "currentFile": "dist/blog/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/004.html",
+      "before": {
+        "title": "Metadata Privacy Guides | ViewExif",
+        "h1": "<a href=\"/blog/do-screenshots-have-metadata/\">Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save</a>",
+        "canonical": [
+          "https://www.viewexif.com/blog/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Privacy Guides | ViewExif",
+        "h1": "<a href=\"/blog/do-screenshots-have-metadata/\">Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save</a>",
+        "canonical": [
+          "https://www.viewexif.com/blog/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "currentFile": "dist/blog/do-screenshots-have-metadata/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/005.html",
+      "before": {
+        "title": "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save | ViewExif",
+        "h1": "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save",
+        "canonical": [
+          "https://www.viewexif.com/blog/do-screenshots-have-metadata/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save | ViewExif",
+        "h1": "Do Screenshots Have Metadata? What iPhone, Android, Windows, and Mac Save",
+        "canonical": [
+          "https://www.viewexif.com/blog/do-screenshots-have-metadata/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "currentFile": "dist/blog/does-discord-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/006.html",
+      "before": {
+        "title": "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained | ViewExif",
+        "h1": "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-discord-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained | ViewExif",
+        "h1": "Does Discord Remove EXIF Data? Photos, Videos, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-discord-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "currentFile": "dist/blog/does-gmail-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/007.html",
+      "before": {
+        "title": "Does Gmail Remove EXIF Data? What Photo Attachments Keep | ViewExif",
+        "h1": "Does Gmail Remove EXIF Data? What Photo Attachments Keep",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-gmail-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does Gmail Remove EXIF Data? What Photo Attachments Keep | ViewExif",
+        "h1": "Does Gmail Remove EXIF Data? What Photo Attachments Keep",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-gmail-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "currentFile": "dist/blog/does-instagram-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/008.html",
+      "before": {
+        "title": "Does Instagram Remove EXIF Data? What Photos Still Reveal | ViewExif",
+        "h1": "Does Instagram Remove EXIF Data? What Photos Still Reveal",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-instagram-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does Instagram Remove EXIF Data? What Photos Still Reveal | ViewExif",
+        "h1": "Does Instagram Remove EXIF Data? What Photos Still Reveal",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-instagram-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "currentFile": "dist/blog/does-reddit-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/009.html",
+      "before": {
+        "title": "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy | ViewExif",
+        "h1": "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-reddit-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy | ViewExif",
+        "h1": "Does Reddit Remove EXIF Data? Photos, GPS, and Upload Privacy",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-reddit-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "currentFile": "dist/blog/does-telegram-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/010.html",
+      "before": {
+        "title": "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained | ViewExif",
+        "h1": "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-telegram-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained | ViewExif",
+        "h1": "Does Telegram Remove EXIF Data? Photos, Files, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-telegram-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "currentFile": "dist/blog/does-whatsapp-remove-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/011.html",
+      "before": {
+        "title": "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained | ViewExif",
+        "h1": "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained | ViewExif",
+        "h1": "Does WhatsApp Remove EXIF Data? Photos, Dates, and GPS Explained",
+        "canonical": [
+          "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "currentFile": "dist/blog/exif-metadata-definition-and-how-to-view/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/012.html",
+      "before": {
+        "title": "EXIF Metadata Definition and How to View It | ViewExif",
+        "h1": "EXIF Metadata Definition and How to View It",
+        "canonical": [
+          "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "EXIF Metadata Definition and How to View It | ViewExif",
+        "h1": "EXIF Metadata Definition and How to View It",
+        "canonical": [
+          "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "currentFile": "dist/blog/exif-vs-metadata/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/013.html",
+      "before": {
+        "title": "EXIF vs Metadata: What Is the Difference? | ViewExif",
+        "h1": "EXIF vs Metadata: What Is the Difference?",
+        "canonical": [
+          "https://www.viewexif.com/blog/exif-vs-metadata/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "EXIF vs Metadata: What Is the Difference? | ViewExif",
+        "h1": "EXIF vs Metadata: What Is the Difference?",
+        "canonical": [
+          "https://www.viewexif.com/blog/exif-vs-metadata/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-check-exif-data/",
+      "currentFile": "dist/blog/how-to-check-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/014.html",
+      "before": {
+        "title": "How to Check EXIF Data: Camera Settings, Dates &amp; GPS | ViewExif",
+        "h1": "How to Check EXIF Data in a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-check-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Check EXIF Data: Camera Settings, Dates &amp; GPS | ViewExif",
+        "h1": "How to Check EXIF Data in a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-check-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "currentFile": "dist/blog/how-to-check-metadata-of-an-image/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/015.html",
+      "before": {
+        "title": "How to Check Metadata of an Image: EXIF, GPS, and More | ViewExif",
+        "h1": "How to Check Metadata of an Image",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Check Metadata of an Image: EXIF, GPS, and More | ViewExif",
+        "h1": "How to Check Metadata of an Image",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "currentFile": "dist/blog/how-to-find-camera-settings-from-a-photo/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/016.html",
+      "before": {
+        "title": "How to Find Camera Settings From a Photo: EXIF Guide | ViewExif",
+        "h1": "How to Find Camera Settings From a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Find Camera Settings From a Photo: EXIF Guide | ViewExif",
+        "h1": "How to Find Camera Settings From a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "currentFile": "dist/blog/how-to-find-where-a-photo-was-taken/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/017.html",
+      "before": {
+        "title": "How to Find Where a Photo Was Taken Using EXIF Data | ViewExif",
+        "h1": "How to Find Where a Photo Was Taken",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Find Where a Photo Was Taken Using EXIF Data | ViewExif",
+        "h1": "How to Find Where a Photo Was Taken",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "currentFile": "dist/blog/how-to-remove-gps-data-from-photos-before-sharing/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/018.html",
+      "before": {
+        "title": "How to Remove GPS Data from Photos Before Sharing | ViewExif",
+        "h1": "How to Remove GPS Data from Photos Before Sharing",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove GPS Data from Photos Before Sharing | ViewExif",
+        "h1": "How to Remove GPS Data from Photos Before Sharing",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "currentFile": "dist/blog/how-to-remove-metadata-from-a-photo/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/019.html",
+      "before": {
+        "title": "How to Remove Metadata From a Photo Before Sharing | ViewExif",
+        "h1": "How to Remove Metadata From a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove Metadata From a Photo Before Sharing | ViewExif",
+        "h1": "How to Remove Metadata From a Photo",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "currentFile": "dist/blog/how-to-tell-when-a-photo-was-taken/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/020.html",
+      "before": {
+        "title": "How to Tell When a Photo Was Taken Using EXIF Dates | ViewExif",
+        "h1": "How to Tell When a Photo Was Taken",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Tell When a Photo Was Taken Using EXIF Dates | ViewExif",
+        "h1": "How to Tell When a Photo Was Taken",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "currentFile": "dist/blog/how-to-view-exif-data-on-android/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/021.html",
+      "before": {
+        "title": "How to View EXIF Data on Android: Photos, GPS, and Camera Info | ViewExif",
+        "h1": "How to View EXIF Data on Android",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to View EXIF Data on Android: Photos, GPS, and Camera Info | ViewExif",
+        "h1": "How to View EXIF Data on Android",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "currentFile": "dist/blog/how-to-view-exif-data-on-iphone/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/022.html",
+      "before": {
+        "title": "How to View EXIF Data on iPhone: Photos, GPS &amp; Camera Info | ViewExif",
+        "h1": "How to View EXIF Data on iPhone",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to View EXIF Data on iPhone: Photos, GPS &amp; Camera Info | ViewExif",
+        "h1": "How to View EXIF Data on iPhone",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "currentFile": "dist/blog/how-to-view-exif-data-on-windows-11/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/023.html",
+      "before": {
+        "title": "How to View EXIF Data on Windows 11: Camera Info &amp; GPS | ViewExif",
+        "h1": "How to View EXIF Data on Windows 11",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to View EXIF Data on Windows 11: Camera Info &amp; GPS | ViewExif",
+        "h1": "How to View EXIF Data on Windows 11",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "currentFile": "dist/blog/how-to-view-pdf-metadata/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/024.html",
+      "before": {
+        "title": "How to View PDF Metadata: Author, Dates, and Software | ViewExif",
+        "h1": "How to View PDF Metadata",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-pdf-metadata/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to View PDF Metadata: Author, Dates, and Software | ViewExif",
+        "h1": "How to View PDF Metadata",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-pdf-metadata/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "currentFile": "dist/blog/how-to-view-photo-metadata-on-mac/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/025.html",
+      "before": {
+        "title": "How to View Photo Metadata on Mac: EXIF, GPS &amp; Dates | ViewExif",
+        "h1": "How to View Photo Metadata on Mac",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to View Photo Metadata on Mac: EXIF, GPS &amp; Dates | ViewExif",
+        "h1": "How to View Photo Metadata on Mac",
+        "canonical": [
+          "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/2/",
+      "currentFile": "dist/blog/page/2/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/026.html",
+      "before": {
+        "title": "Metadata Privacy Guides — Page 2 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/2/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Privacy Guides — Page 2 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/2/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/3/",
+      "currentFile": "dist/blog/page/3/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/027.html",
+      "before": {
+        "title": "Metadata Privacy Guides — Page 3 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/3/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Privacy Guides — Page 3 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/3/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/4/",
+      "currentFile": "dist/blog/page/4/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/028.html",
+      "before": {
+        "title": "Metadata Privacy Guides — Page 4 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/4/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Privacy Guides — Page 4 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/4/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/page/5/",
+      "currentFile": "dist/blog/page/5/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/029.html",
+      "before": {
+        "title": "Metadata Privacy Guides — Page 5 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/5/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Privacy Guides — Page 5 | ViewExif",
+        "h1": "Latest metadata guides.",
+        "canonical": [
+          "https://www.viewexif.com/blog/page/5/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "currentFile": "dist/blog/remove-metadata-from-mp3/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/030.html",
+      "before": {
+        "title": "How to Remove Metadata From MP3 Without Losing Audio Quality | ViewExif",
+        "h1": "How to Remove Metadata From MP3",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-mp3/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove Metadata From MP3 Without Losing Audio Quality | ViewExif",
+        "h1": "How to Remove Metadata From MP3",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-mp3/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "currentFile": "dist/blog/remove-metadata-from-mp4/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/031.html",
+      "before": {
+        "title": "How to Remove Metadata From MP4 Without Re-encoding | ViewExif",
+        "h1": "How to Remove Metadata From MP4",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-mp4/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove Metadata From MP4 Without Re-encoding | ViewExif",
+        "h1": "How to Remove Metadata From MP4",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-mp4/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "currentFile": "dist/blog/remove-metadata-from-pdf/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/032.html",
+      "before": {
+        "title": "How to Remove Metadata From PDF Safely | ViewExif",
+        "h1": "How to Remove Metadata From PDF",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-pdf/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove Metadata From PDF Safely | ViewExif",
+        "h1": "How to Remove Metadata From PDF",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-pdf/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "currentFile": "dist/blog/remove-metadata-from-word-document/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/033.html",
+      "before": {
+        "title": "How to Remove Metadata From a Word Document | ViewExif",
+        "h1": "How to Remove Metadata From a Word Document",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-word-document/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "How to Remove Metadata From a Word Document | ViewExif",
+        "h1": "How to Remove Metadata From a Word Document",
+        "canonical": [
+          "https://www.viewexif.com/blog/remove-metadata-from-word-document/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "currentFile": "dist/blog/what-is-a-metadata-strategy/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/034.html",
+      "before": {
+        "title": "What Is a Metadata Strategy? A Practical Guide for Your Files | ViewExif",
+        "h1": "What Is a Metadata Strategy?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-a-metadata-strategy/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "What Is a Metadata Strategy? A Practical Guide for Your Files | ViewExif",
+        "h1": "What Is a Metadata Strategy?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-a-metadata-strategy/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "currentFile": "dist/blog/what-is-exif-data/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/035.html",
+      "before": {
+        "title": "What Is EXIF Data? GPS, Camera Info &amp; Photo Metadata Explained | ViewExif",
+        "h1": "What Is EXIF Data?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-exif-data/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "What Is EXIF Data? GPS, Camera Info &amp; Photo Metadata Explained | ViewExif",
+        "h1": "What Is EXIF Data?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-exif-data/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "currentFile": "dist/blog/what-is-xmp-metadata/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/036.html",
+      "before": {
+        "title": "What Is XMP Metadata? Sidecars, Editing Data, and Privacy | ViewExif",
+        "h1": "What Is XMP Metadata?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-xmp-metadata/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "What Is XMP Metadata? Sidecars, Editing Data, and Privacy | ViewExif",
+        "h1": "What Is XMP Metadata?",
+        "canonical": [
+          "https://www.viewexif.com/blog/what-is-xmp-metadata/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/c2pa-viewer/",
+      "currentFile": "dist/c2pa-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/037.html",
+      "before": {
+        "title": "C2PA Viewer — Verify Content Credentials and File Provenance",
+        "h1": "C2PA Viewer",
+        "canonical": [
+          "https://www.viewexif.com/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "C2PA Viewer — Verify Content Credentials and File Provenance",
+        "h1": "C2PA Viewer",
+        "canonical": [
+          "https://www.viewexif.com/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/contact/",
+      "currentFile": "dist/contact/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/038.html",
+      "before": {
+        "title": "Contact ViewExif — Reach the Independent Operator",
+        "h1": "Email, minus the mystery form.",
+        "canonical": [
+          "https://www.viewexif.com/contact/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Contact ViewExif — Reach the Independent Operator",
+        "h1": "Email, minus the mystery form.",
+        "canonical": [
+          "https://www.viewexif.com/contact/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/",
+      "currentFile": "dist/de/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/039.html",
+      "before": {
+        "title": "Kostenloser EXIF- &amp; Metadaten-Viewer online | ViewExif",
+        "h1": "EXIF &amp; Metadaten kostenlos online ansehen",
+        "canonical": [
+          "https://www.viewexif.com/de/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Kostenloser EXIF- &amp; Metadaten-Viewer online | ViewExif",
+        "h1": "EXIF &amp; Metadaten kostenlos online ansehen",
+        "canonical": [
+          "https://www.viewexif.com/de/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/about/",
+      "currentFile": "dist/de/about/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/040.html",
+      "before": {
+        "title": "Über ViewExif – Wer diesen Werkzeugkasten baut und prüft",
+        "h1": "Eine Person. Keine erfundene Firma.",
+        "canonical": [
+          "https://www.viewexif.com/de/about/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Über ViewExif – Wer diesen Werkzeugkasten baut und prüft",
+        "h1": "Eine Person. Keine erfundene Firma.",
+        "canonical": [
+          "https://www.viewexif.com/de/about/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/audio-metadata-remover/",
+      "currentFile": "dist/de/audio-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/041.html",
+      "before": {
+        "title": "Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen",
+        "h1": "Audio-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen",
+        "h1": "Audio-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/audio-metadata-viewer/",
+      "currentFile": "dist/de/audio-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/042.html",
+      "before": {
+        "title": "Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags",
+        "h1": "Audio-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags",
+        "h1": "Audio-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/c2pa-viewer/",
+      "currentFile": "dist/de/c2pa-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/043.html",
+      "before": {
+        "title": "C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren",
+        "h1": "C2PA-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren",
+        "h1": "C2PA-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/contact/",
+      "currentFile": "dist/de/contact/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/044.html",
+      "before": {
+        "title": "Kontakt zu ViewExif – Den unabhängigen Betreiber erreichen",
+        "h1": "E-Mail, ohne rätselhaftes Formular.",
+        "canonical": [
+          "https://www.viewexif.com/de/contact/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Kontakt zu ViewExif – Den unabhängigen Betreiber erreichen",
+        "h1": "E-Mail, ohne rätselhaftes Formular.",
+        "canonical": [
+          "https://www.viewexif.com/de/contact/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/document-metadata-remover/",
+      "currentFile": "dist/de/document-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/045.html",
+      "before": {
+        "title": "Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen",
+        "h1": "Dokument-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen",
+        "h1": "Dokument-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/document-metadata-viewer/",
+      "currentFile": "dist/de/document-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/046.html",
+      "before": {
+        "title": "Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften",
+        "h1": "Dokument-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften",
+        "h1": "Dokument-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-metadata-remover/",
+      "currentFile": "dist/de/image-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/047.html",
+      "before": {
+        "title": "Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen",
+        "h1": "Bild-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen",
+        "h1": "Bild-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-metadata-viewer/",
+      "currentFile": "dist/de/image-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/048.html",
+      "before": {
+        "title": "Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen",
+        "h1": "Bild-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen",
+        "h1": "Bild-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/image-privacy-checker/",
+      "currentFile": "dist/de/image-privacy-checker/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/049.html",
+      "before": {
+        "title": "Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden",
+        "h1": "Bild-Datenschutz-Check",
+        "canonical": [
+          "https://www.viewexif.com/de/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden",
+        "h1": "Bild-Datenschutz-Check",
+        "canonical": [
+          "https://www.viewexif.com/de/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/metadata-remover/",
+      "currentFile": "dist/de/metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/050.html",
+      "before": {
+        "title": "Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen",
+        "h1": "Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen",
+        "h1": "Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/metadata-viewer/",
+      "currentFile": "dist/de/metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/051.html",
+      "before": {
+        "title": "Metadaten-Viewer – Versteckte Dateidaten online ansehen",
+        "h1": "Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadaten-Viewer – Versteckte Dateidaten online ansehen",
+        "h1": "Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/privacy/",
+      "currentFile": "dist/de/privacy/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/052.html",
+      "before": {
+        "title": "Datenschutz – Lokale Dateiverarbeitung und externe Dienste",
+        "h1": "Deine Datei bleibt hier. Ein Seitenaufruf nicht.",
+        "canonical": [
+          "https://www.viewexif.com/de/privacy/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Datenschutz – Lokale Dateiverarbeitung und externe Dienste",
+        "h1": "Deine Datei bleibt hier. Ein Seitenaufruf nicht.",
+        "canonical": [
+          "https://www.viewexif.com/de/privacy/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/terms/",
+      "currentFile": "dist/de/terms/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/053.html",
+      "before": {
+        "title": "Nutzungsbedingungen — ViewExif",
+        "h1": "Nutze die Werkzeuge. Lass dein Urteil eingeschaltet.",
+        "canonical": [
+          "https://www.viewexif.com/de/terms/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Nutzungsbedingungen — ViewExif",
+        "h1": "Nutze die Werkzeuge. Lass dein Urteil eingeschaltet.",
+        "canonical": [
+          "https://www.viewexif.com/de/terms/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/video-metadata-remover/",
+      "currentFile": "dist/de/video-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/054.html",
+      "before": {
+        "title": "Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen",
+        "h1": "Video-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen",
+        "h1": "Video-Metadaten-Entferner",
+        "canonical": [
+          "https://www.viewexif.com/de/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/de/video-metadata-viewer/",
+      "currentFile": "dist/de/video-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/055.html",
+      "before": {
+        "title": "Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen",
+        "h1": "Video-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen",
+        "h1": "Video-Metadaten-Viewer",
+        "canonical": [
+          "https://www.viewexif.com/de/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/document-metadata-remover/",
+      "currentFile": "dist/document-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/056.html",
+      "before": {
+        "title": "Document Metadata Remover — Clean PDF, DOCX, PPTX and XLSX Properties",
+        "h1": "Document Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Document Metadata Remover — Clean PDF, DOCX, PPTX and XLSX Properties",
+        "h1": "Document Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/document-metadata-viewer/",
+      "currentFile": "dist/document-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/057.html",
+      "before": {
+        "title": "Document Metadata Viewer – View PDF, DOCX, PPTX and XLSX Properties",
+        "h1": "Document Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Document Metadata Viewer – View PDF, DOCX, PPTX and XLSX Properties",
+        "h1": "Document Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/",
+      "currentFile": "dist/fr/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/058.html",
+      "before": {
+        "title": "Visionneuse EXIF et métadonnées gratuite en ligne | ViewExif",
+        "h1": "Visionneuse EXIF et métadonnées gratuite en ligne",
+        "canonical": [
+          "https://www.viewexif.com/fr/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Visionneuse EXIF et métadonnées gratuite en ligne | ViewExif",
+        "h1": "Visionneuse EXIF et métadonnées gratuite en ligne",
+        "canonical": [
+          "https://www.viewexif.com/fr/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/about/",
+      "currentFile": "dist/fr/about/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/059.html",
+      "before": {
+        "title": "À propos de ViewExif — Qui construit et vérifie ces outils",
+        "h1": "Une personne. Pas de société inventée.",
+        "canonical": [
+          "https://www.viewexif.com/fr/about/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "À propos de ViewExif — Qui construit et vérifie ces outils",
+        "h1": "Une personne. Pas de société inventée.",
+        "canonical": [
+          "https://www.viewexif.com/fr/about/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/audio-metadata-remover/",
+      "currentFile": "dist/fr/audio-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/060.html",
+      "before": {
+        "title": "Nettoyer les métadonnées MP3, FLAC, OGG, M4A, WAV et WMA",
+        "h1": "Suppresseur de métadonnées audio",
+        "canonical": [
+          "https://www.viewexif.com/fr/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Nettoyer les métadonnées MP3, FLAC, OGG, M4A, WAV et WMA",
+        "h1": "Suppresseur de métadonnées audio",
+        "canonical": [
+          "https://www.viewexif.com/fr/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+      "currentFile": "dist/fr/audio-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/061.html",
+      "before": {
+        "title": "Métadonnées audio — lire les balises MP3, FLAC, OGG, M4A, WAV et WMA",
+        "h1": "Lecteur de métadonnées audio",
+        "canonical": [
+          "https://www.viewexif.com/fr/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Métadonnées audio — lire les balises MP3, FLAC, OGG, M4A, WAV et WMA",
+        "h1": "Lecteur de métadonnées audio",
+        "canonical": [
+          "https://www.viewexif.com/fr/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/c2pa-viewer/",
+      "currentFile": "dist/fr/c2pa-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/062.html",
+      "before": {
+        "title": "Lecteur C2PA — vérifier Content Credentials et la provenance d’un fichier",
+        "h1": "Lecteur C2PA",
+        "canonical": [
+          "https://www.viewexif.com/fr/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Lecteur C2PA — vérifier Content Credentials et la provenance d’un fichier",
+        "h1": "Lecteur C2PA",
+        "canonical": [
+          "https://www.viewexif.com/fr/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/contact/",
+      "currentFile": "dist/fr/contact/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/063.html",
+      "before": {
+        "title": "Contacter ViewExif — Joindre l’exploitant indépendant",
+        "h1": "Un e-mail, sans formulaire mystérieux.",
+        "canonical": [
+          "https://www.viewexif.com/fr/contact/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Contacter ViewExif — Joindre l’exploitant indépendant",
+        "h1": "Un e-mail, sans formulaire mystérieux.",
+        "canonical": [
+          "https://www.viewexif.com/fr/contact/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/document-metadata-remover/",
+      "currentFile": "dist/fr/document-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/064.html",
+      "before": {
+        "title": "Nettoyer les propriétés PDF, DOCX, PPTX et XLSX",
+        "h1": "Suppresseur de métadonnées de document",
+        "canonical": [
+          "https://www.viewexif.com/fr/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Nettoyer les propriétés PDF, DOCX, PPTX et XLSX",
+        "h1": "Suppresseur de métadonnées de document",
+        "canonical": [
+          "https://www.viewexif.com/fr/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/document-metadata-viewer/",
+      "currentFile": "dist/fr/document-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/065.html",
+      "before": {
+        "title": "Métadonnées de document — lire PDF, DOCX, PPTX et XLSX",
+        "h1": "Lecteur de métadonnées de document",
+        "canonical": [
+          "https://www.viewexif.com/fr/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Métadonnées de document — lire PDF, DOCX, PPTX et XLSX",
+        "h1": "Lecteur de métadonnées de document",
+        "canonical": [
+          "https://www.viewexif.com/fr/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-metadata-remover/",
+      "currentFile": "dist/fr/image-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/066.html",
+      "before": {
+        "title": "Nettoyer les métadonnées PNG, JPEG, WebP, HEIC, TIFF et GIF",
+        "h1": "Suppresseur de métadonnées d’image",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Nettoyer les métadonnées PNG, JPEG, WebP, HEIC, TIFF et GIF",
+        "h1": "Suppresseur de métadonnées d’image",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-metadata-viewer/",
+      "currentFile": "dist/fr/image-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/067.html",
+      "before": {
+        "title": "Métadonnées d’image — lire PNG, JPEG, WebP, HEIC, TIFF et GIF",
+        "h1": "Lecteur de métadonnées d’image",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Métadonnées d’image — lire PNG, JPEG, WebP, HEIC, TIFF et GIF",
+        "h1": "Lecteur de métadonnées d’image",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/image-privacy-checker/",
+      "currentFile": "dist/fr/image-privacy-checker/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/068.html",
+      "before": {
+        "title": "Confidentialité des images — détecter EXIF, GPS et métadonnées cachées",
+        "h1": "Vérificateur de confidentialité des images",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Confidentialité des images — détecter EXIF, GPS et métadonnées cachées",
+        "h1": "Vérificateur de confidentialité des images",
+        "canonical": [
+          "https://www.viewexif.com/fr/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/metadata-remover/",
+      "currentFile": "dist/fr/metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/069.html",
+      "before": {
+        "title": "Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents",
+        "h1": "Suppresseur de métadonnées",
+        "canonical": [
+          "https://www.viewexif.com/fr/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents",
+        "h1": "Suppresseur de métadonnées",
+        "canonical": [
+          "https://www.viewexif.com/fr/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/metadata-viewer/",
+      "currentFile": "dist/fr/metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/070.html",
+      "before": {
+        "title": "Lecteur de métadonnées — voir les informations cachées d’un fichier",
+        "h1": "Lecteur de métadonnées",
+        "canonical": [
+          "https://www.viewexif.com/fr/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Lecteur de métadonnées — voir les informations cachées d’un fichier",
+        "h1": "Lecteur de métadonnées",
+        "canonical": [
+          "https://www.viewexif.com/fr/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/privacy/",
+      "currentFile": "dist/fr/privacy/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/071.html",
+      "before": {
+        "title": "Confidentialité — Traitement local et services tiers",
+        "h1": "Votre fichier reste ici. Une requête de page, non.",
+        "canonical": [
+          "https://www.viewexif.com/fr/privacy/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Confidentialité — Traitement local et services tiers",
+        "h1": "Votre fichier reste ici. Une requête de page, non.",
+        "canonical": [
+          "https://www.viewexif.com/fr/privacy/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/terms/",
+      "currentFile": "dist/fr/terms/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/072.html",
+      "before": {
+        "title": "Conditions d’utilisation — ViewExif",
+        "h1": "Utilisez les outils. Gardez votre jugement allumé.",
+        "canonical": [
+          "https://www.viewexif.com/fr/terms/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Conditions d’utilisation — ViewExif",
+        "h1": "Utilisez les outils. Gardez votre jugement allumé.",
+        "canonical": [
+          "https://www.viewexif.com/fr/terms/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/video-metadata-remover/",
+      "currentFile": "dist/fr/video-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/073.html",
+      "before": {
+        "title": "Nettoyer les métadonnées MP4, MOV, MKV, WebM, AVI et FLV",
+        "h1": "Suppresseur de métadonnées vidéo",
+        "canonical": [
+          "https://www.viewexif.com/fr/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Nettoyer les métadonnées MP4, MOV, MKV, WebM, AVI et FLV",
+        "h1": "Suppresseur de métadonnées vidéo",
+        "canonical": [
+          "https://www.viewexif.com/fr/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/fr/video-metadata-viewer/",
+      "currentFile": "dist/fr/video-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/074.html",
+      "before": {
+        "title": "Métadonnées vidéo — lire MP4, MOV, MKV, WebM, AVI et FLV",
+        "h1": "Lecteur de métadonnées vidéo",
+        "canonical": [
+          "https://www.viewexif.com/fr/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Métadonnées vidéo — lire MP4, MOV, MKV, WebM, AVI et FLV",
+        "h1": "Lecteur de métadonnées vidéo",
+        "canonical": [
+          "https://www.viewexif.com/fr/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/image-metadata-remover/",
+      "currentFile": "dist/image-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/075.html",
+      "before": {
+        "title": "Image Metadata Remover – Remove EXIF, GPS &amp; Photo Metadata | ViewExif",
+        "h1": "Image Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Image Metadata Remover – Remove EXIF, GPS &amp; Photo Metadata | ViewExif",
+        "h1": "Image Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/image-metadata-viewer/",
+      "currentFile": "dist/image-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/076.html",
+      "before": {
+        "title": "Image Metadata Viewer – View EXIF, GPS &amp; Photo Metadata | ViewExif",
+        "h1": "Image Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Image Metadata Viewer – View EXIF, GPS &amp; Photo Metadata | ViewExif",
+        "h1": "Image Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/image-privacy-checker/",
+      "currentFile": "dist/image-privacy-checker/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/077.html",
+      "before": {
+        "title": "Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata",
+        "h1": "Image Privacy Checker",
+        "canonical": [
+          "https://www.viewexif.com/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Image Privacy Checker – Detect EXIF, GPS and Hidden Metadata",
+        "h1": "Image Privacy Checker",
+        "canonical": [
+          "https://www.viewexif.com/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/metadata-remover/",
+      "currentFile": "dist/metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/078.html",
+      "before": {
+        "title": "Metadata Remover – Remove File Metadata Online | ViewExif",
+        "h1": "Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Remover – Remove File Metadata Online | ViewExif",
+        "h1": "Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/metadata-viewer/",
+      "currentFile": "dist/metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/079.html",
+      "before": {
+        "title": "Metadata Viewer – View Hidden File Metadata Online",
+        "h1": "Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Metadata Viewer – View Hidden File Metadata Online",
+        "h1": "Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/privacy/",
+      "currentFile": "dist/privacy/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/080.html",
+      "before": {
+        "title": "Privacy — Local File Processing and Third-Party Services",
+        "h1": "Your file stays here. A page request does not.",
+        "canonical": [
+          "https://www.viewexif.com/privacy/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Privacy — Local File Processing and Third-Party Services",
+        "h1": "Your file stays here. A page request does not.",
+        "canonical": [
+          "https://www.viewexif.com/privacy/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/terms/",
+      "currentFile": "dist/terms/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/081.html",
+      "before": {
+        "title": "Terms of Use — ViewExif",
+        "h1": "Use the tools. Keep your judgment switched on.",
+        "canonical": [
+          "https://www.viewexif.com/terms/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Terms of Use — ViewExif",
+        "h1": "Use the tools. Keep your judgment switched on.",
+        "canonical": [
+          "https://www.viewexif.com/terms/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/video-metadata-remover/",
+      "currentFile": "dist/video-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/082.html",
+      "before": {
+        "title": "Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif",
+        "h1": "Video Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Video Metadata Remover – Remove MP4, MOV Metadata Online | ViewExif",
+        "h1": "Video Metadata Remover",
+        "canonical": [
+          "https://www.viewexif.com/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/video-metadata-viewer/",
+      "currentFile": "dist/video-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/083.html",
+      "before": {
+        "title": "Video Metadata Viewer – View MP4, MOV, GPS &amp; Codec Info | ViewExif",
+        "h1": "Video Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "Video Metadata Viewer – View MP4, MOV, GPS &amp; Codec Info | ViewExif",
+        "h1": "Video Metadata Viewer",
+        "canonical": [
+          "https://www.viewexif.com/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/",
+      "currentFile": "dist/zh-cn/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/084.html",
+      "before": {
+        "title": "免费在线 EXIF 与元数据查看器 | ViewExif",
+        "h1": "免费在线 EXIF 与元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "免费在线 EXIF 与元数据查看器 | ViewExif",
+        "h1": "免费在线 EXIF 与元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/about/",
+      "currentFile": "dist/zh-cn/about/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/085.html",
+      "before": {
+        "title": "关于 ViewExif — 谁在制作和核验这套工具",
+        "h1": "一个独立运营者，没有神秘公司。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/about/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "关于 ViewExif — 谁在制作和核验这套工具",
+        "h1": "一个独立运营者，没有神秘公司。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/about/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+      "currentFile": "dist/zh-cn/audio-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/086.html",
+      "before": {
+        "title": "音频元数据清除器 — 清理 MP3、FLAC、OGG、M4A、WAV 与 WMA",
+        "h1": "音频元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "音频元数据清除器 — 清理 MP3、FLAC、OGG、M4A、WAV 与 WMA",
+        "h1": "音频元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/audio-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+      "currentFile": "dist/zh-cn/audio-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/087.html",
+      "before": {
+        "title": "音频元数据查看器 — 查看 MP3、FLAC、OGG、M4A、WAV 与 WMA 标签",
+        "h1": "音频元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "音频元数据查看器 — 查看 MP3、FLAC、OGG、M4A、WAV 与 WMA 标签",
+        "h1": "音频元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/audio-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+      "currentFile": "dist/zh-cn/c2pa-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/088.html",
+      "before": {
+        "title": "C2PA 查看器 — 验证内容凭证与文件来源",
+        "h1": "C2PA 查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "C2PA 查看器 — 验证内容凭证与文件来源",
+        "h1": "C2PA 查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/c2pa-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/contact/",
+      "currentFile": "dist/zh-cn/contact/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/089.html",
+      "before": {
+        "title": "联系 ViewExif — 找到独立运营者",
+        "h1": "直接发邮件，不玩神秘表单。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/contact/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "联系 ViewExif — 找到独立运营者",
+        "h1": "直接发邮件，不玩神秘表单。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/contact/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+      "currentFile": "dist/zh-cn/document-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/090.html",
+      "before": {
+        "title": "文档元数据清除器 — 清理 PDF、DOCX、PPTX 与 XLSX 属性",
+        "h1": "文档元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "文档元数据清除器 — 清理 PDF、DOCX、PPTX 与 XLSX 属性",
+        "h1": "文档元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/document-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+      "currentFile": "dist/zh-cn/document-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/091.html",
+      "before": {
+        "title": "文档元数据查看器 — 查看 PDF、DOCX、PPTX 与 XLSX 属性",
+        "h1": "文档元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "文档元数据查看器 — 查看 PDF、DOCX、PPTX 与 XLSX 属性",
+        "h1": "文档元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/document-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+      "currentFile": "dist/zh-cn/image-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/092.html",
+      "before": {
+        "title": "图片元数据清除器 — 清理 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+        "h1": "图片元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "图片元数据清除器 — 清理 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+        "h1": "图片元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+      "currentFile": "dist/zh-cn/image-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/093.html",
+      "before": {
+        "title": "图片元数据查看器 — 查看 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+        "h1": "图片元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "图片元数据查看器 — 查看 PNG、JPEG、WebP、HEIC、TIFF 和 GIF",
+        "h1": "图片元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+      "currentFile": "dist/zh-cn/image-privacy-checker/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/094.html",
+      "before": {
+        "title": "图片隐私检查器 — 查找 EXIF、GPS 和隐藏元数据",
+        "h1": "图片隐私检查器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "图片隐私检查器 — 查找 EXIF、GPS 和隐藏元数据",
+        "h1": "图片隐私检查器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/image-privacy-checker/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/metadata-remover/",
+      "currentFile": "dist/zh-cn/metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/095.html",
+      "before": {
+        "title": "元数据清除器 — 清理图片、视频、音频和文档标签",
+        "h1": "元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "元数据清除器 — 清理图片、视频、音频和文档标签",
+        "h1": "元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+      "currentFile": "dist/zh-cn/metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/096.html",
+      "before": {
+        "title": "元数据查看器 — 在线查看文件里的隐藏信息",
+        "h1": "元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "元数据查看器 — 在线查看文件里的隐藏信息",
+        "h1": "元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/privacy/",
+      "currentFile": "dist/zh-cn/privacy/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/097.html",
+      "before": {
+        "title": "隐私说明 — 本地文件处理与第三方服务",
+        "h1": "文件留在这里，网页请求不会。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/privacy/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "隐私说明 — 本地文件处理与第三方服务",
+        "h1": "文件留在这里，网页请求不会。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/privacy/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/terms/",
+      "currentFile": "dist/zh-cn/terms/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/098.html",
+      "before": {
+        "title": "使用条款 — ViewExif",
+        "h1": "工具可以用，判断力别关机。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/terms/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "使用条款 — ViewExif",
+        "h1": "工具可以用，判断力别关机。",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/terms/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+      "currentFile": "dist/zh-cn/video-metadata-remover/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/099.html",
+      "before": {
+        "title": "视频元数据清除器 — 清理 MP4、MOV、MKV、WebM、AVI 与 FLV",
+        "h1": "视频元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "视频元数据清除器 — 清理 MP4、MOV、MKV、WebM、AVI 与 FLV",
+        "h1": "视频元数据清除器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/video-metadata-remover/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+      "currentFile": "dist/zh-cn/video-metadata-viewer/index.html",
+      "snapshotFile": ".tmp/adsense-live-html-20260923/100.html",
+      "before": {
+        "title": "视频元数据查看器 — 查看 MP4、MOV、MKV、WebM、AVI 与 FLV",
+        "h1": "视频元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "after": {
+        "title": "视频元数据查看器 — 查看 MP4、MOV、MKV、WebM、AVI 与 FLV",
+        "h1": "视频元数据查看器",
+        "canonical": [
+          "https://www.viewexif.com/zh-cn/video-metadata-viewer/"
+        ],
+        "robots": []
+      },
+      "comparisons": {
+        "title": true,
+        "h1": true,
+        "canonical": true,
+        "robots": true
+      }
+    }
+  ],
+  "articles": [
+    {
+      "url": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "78b56aec766183db1eb02c3952db885fa94f5b745d8cacad7028195f4bc82d30",
+          "afterSha256": "78b56aec766183db1eb02c3952db885fa94f5b745d8cacad7028195f4bc82d30",
+          "beforeBytes": 7652,
+          "afterBytes": 7652
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "52648bf5e331f14ba925a9e699b942dbcbd9a6b4d7a96f730a8b1adb18860f15",
+          "afterSha256": "52648bf5e331f14ba925a9e699b942dbcbd9a6b4d7a96f730a8b1adb18860f15",
+          "beforeBytes": 471,
+          "afterBytes": 471
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "da381fba68d86b698921cf7dba64ed6c39b2fa110339b78cb139e15b8ff57a53",
+          "afterSha256": "da381fba68d86b698921cf7dba64ed6c39b2fa110339b78cb139e15b8ff57a53",
+          "beforeBytes": 1420,
+          "afterBytes": 1420
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "391bc4246a9ff0682a2a73e4b81c9310d894e1f5c831d058d1ddeceac052a7ac",
+          "afterSha256": "391bc4246a9ff0682a2a73e4b81c9310d894e1f5c831d058d1ddeceac052a7ac",
+          "beforeBytes": 212,
+          "afterBytes": 212
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "a2e0fede61cad18d876ec9970a5eed9f4ae87f96b4d3fc3c62c2da625fb887fd",
+          "afterSha256": "a2e0fede61cad18d876ec9970a5eed9f4ae87f96b4d3fc3c62c2da625fb887fd",
+          "beforeBytes": 8342,
+          "afterBytes": 8342
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "e8300478cc0625f90ca325bc8c5d2df390d315ffd055ed5f49aa1655edd581c5",
+          "afterSha256": "e8300478cc0625f90ca325bc8c5d2df390d315ffd055ed5f49aa1655edd581c5",
+          "beforeBytes": 504,
+          "afterBytes": 504
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "81c15021c3f9fd9ea62fd8e255e8d7042fa68e44fb165d682655647aaa8f023d",
+          "afterSha256": "81c15021c3f9fd9ea62fd8e255e8d7042fa68e44fb165d682655647aaa8f023d",
+          "beforeBytes": 1461,
+          "afterBytes": 1461
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "5c37622d2b00f2eb94007277c0fcbe31e6e79b73ff9a82b42e2e31f21515a87c",
+          "afterSha256": "5c37622d2b00f2eb94007277c0fcbe31e6e79b73ff9a82b42e2e31f21515a87c",
+          "beforeBytes": 197,
+          "afterBytes": 197
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "197ad33167da4ffea017b74db35c258a6907f68fa8f107a68ce1fe5ff99d6062",
+          "afterSha256": "197ad33167da4ffea017b74db35c258a6907f68fa8f107a68ce1fe5ff99d6062",
+          "beforeBytes": 8836,
+          "afterBytes": 8836
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "a13c416b4e76e23798bd723c3deb4ecbbf9251f0c2d79bebbece71d9816864f5",
+          "afterSha256": "a13c416b4e76e23798bd723c3deb4ecbbf9251f0c2d79bebbece71d9816864f5",
+          "beforeBytes": 484,
+          "afterBytes": 484
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "1e213f4b0f5892b76ca1c4190b539a03c9e70a4abfa27bab311912a5afb12879",
+          "afterSha256": "1e213f4b0f5892b76ca1c4190b539a03c9e70a4abfa27bab311912a5afb12879",
+          "beforeBytes": 1472,
+          "afterBytes": 1472
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "6f9acb65ee110ea40d8bd37450cc7dc0b755e62351795966ca007be11f7e91c1",
+          "afterSha256": "6f9acb65ee110ea40d8bd37450cc7dc0b755e62351795966ca007be11f7e91c1",
+          "beforeBytes": 220,
+          "afterBytes": 220
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "757f44155a78164caaa7176d866a7b7ab9906b5e0d63717ff7988ba8391e2347",
+          "afterSha256": "757f44155a78164caaa7176d866a7b7ab9906b5e0d63717ff7988ba8391e2347",
+          "beforeBytes": 8165,
+          "afterBytes": 8165
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "460a9db49bd7c11e71f38d8d181dfb8bbc3ff2508ed849628708dc1b3bcab4d2",
+          "afterSha256": "460a9db49bd7c11e71f38d8d181dfb8bbc3ff2508ed849628708dc1b3bcab4d2",
+          "beforeBytes": 543,
+          "afterBytes": 543
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "dafd55ef90864e748cfcf2951612abd9ce5db0195cf5438a3793a995765af0cf",
+          "afterSha256": "dafd55ef90864e748cfcf2951612abd9ce5db0195cf5438a3793a995765af0cf",
+          "beforeBytes": 1573,
+          "afterBytes": 1573
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "de6058cabb9b34f85b435af09dff636b2d9b862bfaac6858d7ca940b1df07c31",
+          "afterSha256": "de6058cabb9b34f85b435af09dff636b2d9b862bfaac6858d7ca940b1df07c31",
+          "beforeBytes": 208,
+          "afterBytes": 208
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "6dc42460456b1c4076354e91bd997dfecdd705e2158be5ec06d2fd0960bd7df9",
+          "afterSha256": "6dc42460456b1c4076354e91bd997dfecdd705e2158be5ec06d2fd0960bd7df9",
+          "beforeBytes": 8585,
+          "afterBytes": 8585
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "219a36c405b98f88776af0ff211b45f1b1fb8146aa98d9555e1b05359c3a5706",
+          "afterSha256": "219a36c405b98f88776af0ff211b45f1b1fb8146aa98d9555e1b05359c3a5706",
+          "beforeBytes": 520,
+          "afterBytes": 520
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "c0378e52c152af738a28ccd313fb363f5226c953352a55c8d4f5644749f310c2",
+          "afterSha256": "c0378e52c152af738a28ccd313fb363f5226c953352a55c8d4f5644749f310c2",
+          "beforeBytes": 1552,
+          "afterBytes": 1552
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "5d7b499a53f04df160b799b92132462cf3af976212eab4ab2b96cd96d3fc7ec5",
+          "afterSha256": "5d7b499a53f04df160b799b92132462cf3af976212eab4ab2b96cd96d3fc7ec5",
+          "beforeBytes": 226,
+          "afterBytes": 226
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "8243043c9ea008868dd1f84ce3e34852727e70fe8bbad61ed5753ffca64df297",
+          "afterSha256": "8243043c9ea008868dd1f84ce3e34852727e70fe8bbad61ed5753ffca64df297",
+          "beforeBytes": 8250,
+          "afterBytes": 8250
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "e9b0f4edcf811528f5022f32f8ea5b7b1b3247a3aa1de5c9ff82cf174db08f4c",
+          "afterSha256": "e9b0f4edcf811528f5022f32f8ea5b7b1b3247a3aa1de5c9ff82cf174db08f4c",
+          "beforeBytes": 514,
+          "afterBytes": 514
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "26ee64ede14f54204c43450e9c90414d9e698ecf6409044bac5d2f58811850f0",
+          "afterSha256": "26ee64ede14f54204c43450e9c90414d9e698ecf6409044bac5d2f58811850f0",
+          "beforeBytes": 1504,
+          "afterBytes": 1504
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "17c6be64a79a23aa58ccd992e38eacde5d4d0b33a31feaefe239edf4eefb4e8a",
+          "afterSha256": "17c6be64a79a23aa58ccd992e38eacde5d4d0b33a31feaefe239edf4eefb4e8a",
+          "beforeBytes": 210,
+          "afterBytes": 210
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "4927da666efdb33c2b96bab92c5835e47164c5a4aee9ffb2a2e1d27f11054326",
+          "afterSha256": "4927da666efdb33c2b96bab92c5835e47164c5a4aee9ffb2a2e1d27f11054326",
+          "beforeBytes": 7025,
+          "afterBytes": 7025
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "100d0942f65fe36f10e55c6e3afca79284f3262f28d840abbc2a0b9aba703d2f",
+          "afterSha256": "100d0942f65fe36f10e55c6e3afca79284f3262f28d840abbc2a0b9aba703d2f",
+          "beforeBytes": 528,
+          "afterBytes": 528
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "60850c72be097d1320fc89ce7ae7c698a86b9f259840215acc2f155d669de667",
+          "afterSha256": "60850c72be097d1320fc89ce7ae7c698a86b9f259840215acc2f155d669de667",
+          "beforeBytes": 1521,
+          "afterBytes": 1521
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "da53dc75b5809afa1aa9e9e913ab44102f2f563a63691a0316a527e0207fefb6",
+          "afterSha256": "da53dc75b5809afa1aa9e9e913ab44102f2f563a63691a0316a527e0207fefb6",
+          "beforeBytes": 201,
+          "afterBytes": 201
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "dcad670c947310a7f76eaac88ba0dd78be542dacac629085e05cf5f02e662e15",
+          "afterSha256": "dcad670c947310a7f76eaac88ba0dd78be542dacac629085e05cf5f02e662e15",
+          "beforeBytes": 10986,
+          "afterBytes": 10986
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "b37704dab838d6cec626876c330e6ad46e659872da742263b91d98a266cbd462",
+          "afterSha256": "b37704dab838d6cec626876c330e6ad46e659872da742263b91d98a266cbd462",
+          "beforeBytes": 503,
+          "afterBytes": 503
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "bd3ac2830681b76d591336aab5e6eb2479038a12d374f8aa3f02f7ae717509db",
+          "afterSha256": "bd3ac2830681b76d591336aab5e6eb2479038a12d374f8aa3f02f7ae717509db",
+          "beforeBytes": 1481,
+          "afterBytes": 1481
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "f7765de38ea5354fb8a0adb7e6c2c5859b3ffdbccf973365597454b8cbde1bf3",
+          "afterSha256": "f7765de38ea5354fb8a0adb7e6c2c5859b3ffdbccf973365597454b8cbde1bf3",
+          "beforeBytes": 219,
+          "afterBytes": 219
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/exif-vs-metadata/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "049f7c6e1faa57749ede70f81460af40155c666ec65057076cef0a0927bd200e",
+          "afterSha256": "049f7c6e1faa57749ede70f81460af40155c666ec65057076cef0a0927bd200e",
+          "beforeBytes": 9509,
+          "afterBytes": 9509
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "bc8a8a1d0935b32f91369473b8deb808dc40e07b42af597dc1cc83723b41d25b",
+          "afterSha256": "bc8a8a1d0935b32f91369473b8deb808dc40e07b42af597dc1cc83723b41d25b",
+          "beforeBytes": 532,
+          "afterBytes": 532
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "63acc75d05d7e3459f25223dd0ef9f1de26c22621cf8f4780d6e2cab4926e119",
+          "afterSha256": "63acc75d05d7e3459f25223dd0ef9f1de26c22621cf8f4780d6e2cab4926e119",
+          "beforeBytes": 1397,
+          "afterBytes": 1397
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "469fa1947ab4410af928c1370c3d1109668857a4b0d9ad15879ae0c2a1bd3f95",
+          "afterSha256": "469fa1947ab4410af928c1370c3d1109668857a4b0d9ad15879ae0c2a1bd3f95",
+          "beforeBytes": 222,
+          "afterBytes": 222
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-check-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "b2ce5218b25486250c40b8852c1f3e834229f2b1c4dfaa5453fa0b71a934cd5c",
+          "afterSha256": "b2ce5218b25486250c40b8852c1f3e834229f2b1c4dfaa5453fa0b71a934cd5c",
+          "beforeBytes": 10609,
+          "afterBytes": 10609
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "86821fcce1935b0ce3b8b87f5ecdced2d08f5eeee05a0082974ffebbc1e77319",
+          "afterSha256": "86821fcce1935b0ce3b8b87f5ecdced2d08f5eeee05a0082974ffebbc1e77319",
+          "beforeBytes": 496,
+          "afterBytes": 496
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "fedeec192e138a94078af1038b21147f86034b51976318d9d465cf4a6e86f7f3",
+          "afterSha256": "fedeec192e138a94078af1038b21147f86034b51976318d9d465cf4a6e86f7f3",
+          "beforeBytes": 1306,
+          "afterBytes": 1306
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "fdaafde0da8f8ead93e19770470fafa37a6ac695e43da9d50c4e45aad302dc7e",
+          "afterSha256": "fdaafde0da8f8ead93e19770470fafa37a6ac695e43da9d50c4e45aad302dc7e",
+          "beforeBytes": 198,
+          "afterBytes": 198
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "d0eb1aea86f7804a35a95fb379b51ff379968165d5a786b56d7809389eec83c4",
+          "afterSha256": "d0eb1aea86f7804a35a95fb379b51ff379968165d5a786b56d7809389eec83c4",
+          "beforeBytes": 11622,
+          "afterBytes": 11622
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "462b6c942905ac272b3dd48b112b55c07af28137c99206c56d99b54af98b8123",
+          "afterSha256": "462b6c942905ac272b3dd48b112b55c07af28137c99206c56d99b54af98b8123",
+          "beforeBytes": 520,
+          "afterBytes": 520
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "decefddc53c4d5a00fec67cf62729154d9cc2257567bf5a4e752a8ca7e455b84",
+          "afterSha256": "decefddc53c4d5a00fec67cf62729154d9cc2257567bf5a4e752a8ca7e455b84",
+          "beforeBytes": 1457,
+          "afterBytes": 1457
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "503d9008deff08cdfb0f98089cbea4d836a5224d6c1b92eaf33fbcaa469d786e",
+          "afterSha256": "503d9008deff08cdfb0f98089cbea4d836a5224d6c1b92eaf33fbcaa469d786e",
+          "beforeBytes": 208,
+          "afterBytes": 208
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "69c6336f3213645a3073a984a108068fd06260c98f69ab2f43fded05ba36e74a",
+          "afterSha256": "69c6336f3213645a3073a984a108068fd06260c98f69ab2f43fded05ba36e74a",
+          "beforeBytes": 11626,
+          "afterBytes": 11626
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "07fe15b48f56f1e5fd6b1952f9dfedb20bda065f54ee645c657f9196ad41ca5b",
+          "afterSha256": "07fe15b48f56f1e5fd6b1952f9dfedb20bda065f54ee645c657f9196ad41ca5b",
+          "beforeBytes": 510,
+          "afterBytes": 510
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "b15dc9d2c7cf0f30859f9c34e206f860d52645a2839f6546fd3dbccf631964c7",
+          "afterSha256": "b15dc9d2c7cf0f30859f9c34e206f860d52645a2839f6546fd3dbccf631964c7",
+          "beforeBytes": 1505,
+          "afterBytes": 1505
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "af0414f110c538a29af132412002a879f7d08fd25182302d6bfd2a912ba5108b",
+          "afterSha256": "af0414f110c538a29af132412002a879f7d08fd25182302d6bfd2a912ba5108b",
+          "beforeBytes": 200,
+          "afterBytes": 200
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "7f53ad4565155767fffd140de0ef1a73d90a72e895cda7bb7fbd6c34b5f9fd65",
+          "afterSha256": "7f53ad4565155767fffd140de0ef1a73d90a72e895cda7bb7fbd6c34b5f9fd65",
+          "beforeBytes": 9975,
+          "afterBytes": 9975
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "91dab9cab95cbac91e472e397cf04f5d1e717467f1c405d18aefcf6fea0735c2",
+          "afterSha256": "91dab9cab95cbac91e472e397cf04f5d1e717467f1c405d18aefcf6fea0735c2",
+          "beforeBytes": 523,
+          "afterBytes": 523
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "36999f584ab07f11c96558ed2da2676975580e333f5b9313710403c9fad3b5db",
+          "afterSha256": "36999f584ab07f11c96558ed2da2676975580e333f5b9313710403c9fad3b5db",
+          "beforeBytes": 1305,
+          "afterBytes": 1305
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "1c8be2dd18c9934812df4005df36d0f62d99703cdbe4a4b8506199b5fa70a94b",
+          "afterSha256": "1c8be2dd18c9934812df4005df36d0f62d99703cdbe4a4b8506199b5fa70a94b",
+          "beforeBytes": 241,
+          "afterBytes": 241
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "4bf3572ed370d9b1fdab41795124728ca297f0feadc9a0321b8b47c691ae2c76",
+          "afterSha256": "4bf3572ed370d9b1fdab41795124728ca297f0feadc9a0321b8b47c691ae2c76",
+          "beforeBytes": 9845,
+          "afterBytes": 9845
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "92ba1f4d6fa424d8239e9d012a7c971ac49eb09ff6c7022ae19aeaf1cf2abb6d",
+          "afterSha256": "92ba1f4d6fa424d8239e9d012a7c971ac49eb09ff6c7022ae19aeaf1cf2abb6d",
+          "beforeBytes": 506,
+          "afterBytes": 506
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "8093ca749c0804ebac0b676172cd9ed0ff998c846658d53a450148625860cc6b",
+          "afterSha256": "8093ca749c0804ebac0b676172cd9ed0ff998c846658d53a450148625860cc6b",
+          "beforeBytes": 1327,
+          "afterBytes": 1327
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "739ef504e52b1051d34dd592207715f2ced7f7f000d139072da6c189c257bef3",
+          "afterSha256": "739ef504e52b1051d34dd592207715f2ced7f7f000d139072da6c189c257bef3",
+          "beforeBytes": 235,
+          "afterBytes": 235
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "06ebd8960be8263a575433a5e55ccce6f7cd114d20fe2f310f50d469a8e97f9c",
+          "afterSha256": "06ebd8960be8263a575433a5e55ccce6f7cd114d20fe2f310f50d469a8e97f9c",
+          "beforeBytes": 11534,
+          "afterBytes": 11534
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "790904a92a21a94c9664bf925bd9c6684b46572cd30514c7113f8f3a7cb7be49",
+          "afterSha256": "790904a92a21a94c9664bf925bd9c6684b46572cd30514c7113f8f3a7cb7be49",
+          "beforeBytes": 538,
+          "afterBytes": 538
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "d43dab8c49c90aa732f6f04733aade64970391d3bcb48e65d1b13f1836148698",
+          "afterSha256": "d43dab8c49c90aa732f6f04733aade64970391d3bcb48e65d1b13f1836148698",
+          "beforeBytes": 1381,
+          "afterBytes": 1381
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "885bc996b180753551858d9b453aed86486bb8b8389d53d86deba77f6fef6849",
+          "afterSha256": "885bc996b180753551858d9b453aed86486bb8b8389d53d86deba77f6fef6849",
+          "beforeBytes": 220,
+          "afterBytes": 220
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "b429f6e9dff64a185cb7aa168822f653b7552621ce29c9126f3fab1c0c2a36cf",
+          "afterSha256": "b429f6e9dff64a185cb7aa168822f653b7552621ce29c9126f3fab1c0c2a36cf",
+          "beforeBytes": 10903,
+          "afterBytes": 10903
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "ba5b6f995d2246db373523d9c7c528206d3253c742d352c476fffb405b2cc4d0",
+          "afterSha256": "ba5b6f995d2246db373523d9c7c528206d3253c742d352c476fffb405b2cc4d0",
+          "beforeBytes": 549,
+          "afterBytes": 549
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "4ed64c49677f44e68cbbffe44661551d65390f6cf54f0eb1fde535f4b67c5b96",
+          "afterSha256": "4ed64c49677f44e68cbbffe44661551d65390f6cf54f0eb1fde535f4b67c5b96",
+          "beforeBytes": 1484,
+          "afterBytes": 1484
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "a51cb9331957ab8e041e4574fdc842ae1601c76e8a70f635928fa6da57dedf35",
+          "afterSha256": "a51cb9331957ab8e041e4574fdc842ae1601c76e8a70f635928fa6da57dedf35",
+          "beforeBytes": 218,
+          "afterBytes": 218
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "4e485c9a62d11706c7a27c45a098603674d3d777c6f8c3ce11c01c66b758ff11",
+          "afterSha256": "4e485c9a62d11706c7a27c45a098603674d3d777c6f8c3ce11c01c66b758ff11",
+          "beforeBytes": 10758,
+          "afterBytes": 10758
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "36e66489aaca7d87e95e6337b0fde5ed25b461fdaaa91d61b101f8eaeddae375",
+          "afterSha256": "36e66489aaca7d87e95e6337b0fde5ed25b461fdaaa91d61b101f8eaeddae375",
+          "beforeBytes": 539,
+          "afterBytes": 539
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "9b5f361144534903fea463450970f64acb88661a8e5ad1d3f25ec466b2d02ad7",
+          "afterSha256": "9b5f361144534903fea463450970f64acb88661a8e5ad1d3f25ec466b2d02ad7",
+          "beforeBytes": 1559,
+          "afterBytes": 1559
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "ca3478f52e920c721e64a49a594198db3fec28f33759a1bf6671ba5a4f3d9f68",
+          "afterSha256": "ca3478f52e920c721e64a49a594198db3fec28f33759a1bf6671ba5a4f3d9f68",
+          "beforeBytes": 218,
+          "afterBytes": 218
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "c1a5fc8d9398bb3e64f489d5ab0ea5ebdae9e480068da43952d21551caa91a54",
+          "afterSha256": "c1a5fc8d9398bb3e64f489d5ab0ea5ebdae9e480068da43952d21551caa91a54",
+          "beforeBytes": 10798,
+          "afterBytes": 10798
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "f6887d0b6c34d003e7fa4b600b555b5ad44e4b0c47ee320ad9a36b7fd514b124",
+          "afterSha256": "f6887d0b6c34d003e7fa4b600b555b5ad44e4b0c47ee320ad9a36b7fd514b124",
+          "beforeBytes": 528,
+          "afterBytes": 528
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "cea87653138f9a0d26464d2d4f4a932c93191b30e04339869f146aae1e440729",
+          "afterSha256": "cea87653138f9a0d26464d2d4f4a932c93191b30e04339869f146aae1e440729",
+          "beforeBytes": 1139,
+          "afterBytes": 1139
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "6d0755b12fd120f7b445637b3ce7e0c16483b570724a7ca6ee3bdb5e234a0a22",
+          "afterSha256": "6d0755b12fd120f7b445637b3ce7e0c16483b570724a7ca6ee3bdb5e234a0a22",
+          "beforeBytes": 234,
+          "afterBytes": 234
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "8dfeb3ef6fdac7611b369c306b06a4cf25f386a430488e918b1d838d0beec1cf",
+          "afterSha256": "8dfeb3ef6fdac7611b369c306b06a4cf25f386a430488e918b1d838d0beec1cf",
+          "beforeBytes": 10418,
+          "afterBytes": 10418
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "f89dee610d69c90082a59602ccb459dc0b8004ff1edb0869a4f6e34988a76074",
+          "afterSha256": "f89dee610d69c90082a59602ccb459dc0b8004ff1edb0869a4f6e34988a76074",
+          "beforeBytes": 555,
+          "afterBytes": 555
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "dd2401c00f1e6459027d78ad18142491c768f166cb8d7dd583e74c7e2e15c8cc",
+          "afterSha256": "dd2401c00f1e6459027d78ad18142491c768f166cb8d7dd583e74c7e2e15c8cc",
+          "beforeBytes": 1683,
+          "afterBytes": 1683
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "aae3a9d3b356e771094d336cb02173386bd9468998d70fda6d4c69b834873df7",
+          "afterSha256": "aae3a9d3b356e771094d336cb02173386bd9468998d70fda6d4c69b834873df7",
+          "beforeBytes": 209,
+          "afterBytes": 209
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "29c9aabed0b66d70e987aaf203055af9c476e811c3a501797e94ecb4e00ae84d",
+          "afterSha256": "29c9aabed0b66d70e987aaf203055af9c476e811c3a501797e94ecb4e00ae84d",
+          "beforeBytes": 10576,
+          "afterBytes": 10576
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "522060c393bcbea7e110eada2bf2d7589b72a973c285a962f08ec9ebf11eda6e",
+          "afterSha256": "522060c393bcbea7e110eada2bf2d7589b72a973c285a962f08ec9ebf11eda6e",
+          "beforeBytes": 492,
+          "afterBytes": 492
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "f59c5ba7bbd0309691b88400c7c7b50a3c7a340d7a455cf75162ea283b02767a",
+          "afterSha256": "f59c5ba7bbd0309691b88400c7c7b50a3c7a340d7a455cf75162ea283b02767a",
+          "beforeBytes": 1448,
+          "afterBytes": 1448
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "37b11bb012019b7cf3a3bb4b00daf11f61c1a488b76af94855643faefb1b6ec9",
+          "afterSha256": "37b11bb012019b7cf3a3bb4b00daf11f61c1a488b76af94855643faefb1b6ec9",
+          "beforeBytes": 224,
+          "afterBytes": 224
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "9d03bf3346855110d146bc7497160256a9ceff638ece698d0c9c084adab1868c",
+          "afterSha256": "9d03bf3346855110d146bc7497160256a9ceff638ece698d0c9c084adab1868c",
+          "beforeBytes": 11108,
+          "afterBytes": 11108
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "96d9af4f0ac2ed07fa88ccbabfd927cbdc36458cdff371c337f4061751494b0d",
+          "afterSha256": "96d9af4f0ac2ed07fa88ccbabfd927cbdc36458cdff371c337f4061751494b0d",
+          "beforeBytes": 548,
+          "afterBytes": 548
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "fc5ed97b2aefaeef33efb00a9ed6d190e9441fd0e33530aed37edbb5f9c41868",
+          "afterSha256": "fc5ed97b2aefaeef33efb00a9ed6d190e9441fd0e33530aed37edbb5f9c41868",
+          "beforeBytes": 1504,
+          "afterBytes": 1504
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "d5735ad0f212b5d4090bd1a88b2ee76690f6bf65ebb5a079aeafe183ce85baf1",
+          "afterSha256": "d5735ad0f212b5d4090bd1a88b2ee76690f6bf65ebb5a079aeafe183ce85baf1",
+          "beforeBytes": 193,
+          "afterBytes": 193
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "1ef8bb0f5b7a0f55e604bde02e4d8f113cc2c4fcc80259e3a61a73fe77f7b5ab",
+          "afterSha256": "1ef8bb0f5b7a0f55e604bde02e4d8f113cc2c4fcc80259e3a61a73fe77f7b5ab",
+          "beforeBytes": 10693,
+          "afterBytes": 10693
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "db24b631e24eaf7b4ae391f2bfcb5f31616f0f517a65ceae077af6a5dd1a9ad0",
+          "afterSha256": "db24b631e24eaf7b4ae391f2bfcb5f31616f0f517a65ceae077af6a5dd1a9ad0",
+          "beforeBytes": 470,
+          "afterBytes": 470
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "aceb941db922a412fc391b07cf8bfce50977e7a7a16058b486febfe36b40f2bd",
+          "afterSha256": "aceb941db922a412fc391b07cf8bfce50977e7a7a16058b486febfe36b40f2bd",
+          "beforeBytes": 1468,
+          "afterBytes": 1468
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "97a82b677f51713ab149ef92431036f169123682e5adf76fe26d7aac88c0fdfb",
+          "afterSha256": "97a82b677f51713ab149ef92431036f169123682e5adf76fe26d7aac88c0fdfb",
+          "beforeBytes": 207,
+          "afterBytes": 207
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "354f9f28471894ec73b9e0b4c1d6a143a21137b6119872261e05157788320d90",
+          "afterSha256": "354f9f28471894ec73b9e0b4c1d6a143a21137b6119872261e05157788320d90",
+          "beforeBytes": 9870,
+          "afterBytes": 9870
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "f7cc1a1e469228eddd65de01ce67338c6438353e3023f1aacb2de72d88aa01cf",
+          "afterSha256": "f7cc1a1e469228eddd65de01ce67338c6438353e3023f1aacb2de72d88aa01cf",
+          "beforeBytes": 494,
+          "afterBytes": 494
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "015a35e7443c3e514f504a4e60d00b036c12bd2f45fc6f0a56bd8aef3c06331d",
+          "afterSha256": "015a35e7443c3e514f504a4e60d00b036c12bd2f45fc6f0a56bd8aef3c06331d",
+          "beforeBytes": 1333,
+          "afterBytes": 1333
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "8d7c960821c727492fddedff531b9ef06e15361d189ce93326219dfe6d71d1eb",
+          "afterSha256": "8d7c960821c727492fddedff531b9ef06e15361d189ce93326219dfe6d71d1eb",
+          "beforeBytes": 200,
+          "afterBytes": 200
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "0c8decc4782dc1285fcae858639506a0f3446a244cafec1b6aa38c392ff48da3",
+          "afterSha256": "0c8decc4782dc1285fcae858639506a0f3446a244cafec1b6aa38c392ff48da3",
+          "beforeBytes": 10666,
+          "afterBytes": 10666
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "c53fcc3a4aeb7274f0f4ebd2ce0a386b5272334cafb3cdd57881350d64b27e33",
+          "afterSha256": "c53fcc3a4aeb7274f0f4ebd2ce0a386b5272334cafb3cdd57881350d64b27e33",
+          "beforeBytes": 455,
+          "afterBytes": 455
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "9517f512416336917ba9547ea687eeee335ce5ab3a2f5f00081f63fdeda9330c",
+          "afterSha256": "9517f512416336917ba9547ea687eeee335ce5ab3a2f5f00081f63fdeda9330c",
+          "beforeBytes": 1408,
+          "afterBytes": 1408
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "b37b1994c48bae471f2816e9dd7f6471c85655c6cd7e7fbec86f6fc939e88977",
+          "afterSha256": "b37b1994c48bae471f2816e9dd7f6471c85655c6cd7e7fbec86f6fc939e88977",
+          "beforeBytes": 197,
+          "afterBytes": 197
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "fae24aa885ad75a26ce0dcbb71b08a4e3b65fedeae05837de5a54ec594063222",
+          "afterSha256": "fae24aa885ad75a26ce0dcbb71b08a4e3b65fedeae05837de5a54ec594063222",
+          "beforeBytes": 12083,
+          "afterBytes": 12083
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "60db664f649f6167ede0a637251a83ce7ac3d3cf288c6d72400b472593e64c94",
+          "afterSha256": "60db664f649f6167ede0a637251a83ce7ac3d3cf288c6d72400b472593e64c94",
+          "beforeBytes": 483,
+          "afterBytes": 483
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "05d74cef98fac71a5912217614f9ea8832e2036617858e8364eb679d4efbea6d",
+          "afterSha256": "05d74cef98fac71a5912217614f9ea8832e2036617858e8364eb679d4efbea6d",
+          "beforeBytes": 1466,
+          "afterBytes": 1466
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "8c42b305c24fc681fdcaaa68dfa206d0c8f735346d33d18906a3e57baaee8d9c",
+          "afterSha256": "8c42b305c24fc681fdcaaa68dfa206d0c8f735346d33d18906a3e57baaee8d9c",
+          "beforeBytes": 228,
+          "afterBytes": 228
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "edad55effb5ec889630c5d366033eb30dc07a024cf90032b656ebe7df7b13e76",
+          "afterSha256": "edad55effb5ec889630c5d366033eb30dc07a024cf90032b656ebe7df7b13e76",
+          "beforeBytes": 10921,
+          "afterBytes": 10921
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "ac83d47bf4d467570241bf963f27ae91774ef37a3173561e6929512c50292ecb",
+          "afterSha256": "ac83d47bf4d467570241bf963f27ae91774ef37a3173561e6929512c50292ecb",
+          "beforeBytes": 517,
+          "afterBytes": 517
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "e8ee64cea58ed65f511590bcb3dc195f9e3c8e9a6197d32ff0298813b1101406",
+          "afterSha256": "e8ee64cea58ed65f511590bcb3dc195f9e3c8e9a6197d32ff0298813b1101406",
+          "beforeBytes": 1640,
+          "afterBytes": 1640
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "0f5d615441c79f35cb4a5cdd57c12b75c7ddefab899f176c40970c0e25d29f23",
+          "afterSha256": "0f5d615441c79f35cb4a5cdd57c12b75c7ddefab899f176c40970c0e25d29f23",
+          "beforeBytes": 195,
+          "afterBytes": 195
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-exif-data/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "fbbb05686bbe1e28cbf3534ba373dbdaea7f422ccd781ab3aba29cf193c4a86f",
+          "afterSha256": "fbbb05686bbe1e28cbf3534ba373dbdaea7f422ccd781ab3aba29cf193c4a86f",
+          "beforeBytes": 11394,
+          "afterBytes": 11394
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "7cbfaadcb5d5480322b5e7297af22a024ba266c70b5728ea1469ed4ddf9f6415",
+          "afterSha256": "7cbfaadcb5d5480322b5e7297af22a024ba266c70b5728ea1469ed4ddf9f6415",
+          "beforeBytes": 510,
+          "afterBytes": 510
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "813d2a8a1fa51d1309da401b2541555d3429e57af1f89706d4b032fc7c553fce",
+          "afterSha256": "813d2a8a1fa51d1309da401b2541555d3429e57af1f89706d4b032fc7c553fce",
+          "beforeBytes": 1341,
+          "afterBytes": 1341
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "30058cfa898fbe00aeef44ffb27beed125d090ec69bb5aadfc7a8787cfe0fd36",
+          "afterSha256": "30058cfa898fbe00aeef44ffb27beed125d090ec69bb5aadfc7a8787cfe0fd36",
+          "beforeBytes": 211,
+          "afterBytes": 211
+        }
+      }
+    },
+    {
+      "url": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+      "sections": {
+        "body": {
+          "identical": true,
+          "beforeSha256": "c1c1dab0cf16093a9faf5ffc37231d4abaef2b110fb3d5bdef003b78fbcf9f26",
+          "afterSha256": "c1c1dab0cf16093a9faf5ffc37231d4abaef2b110fb3d5bdef003b78fbcf9f26",
+          "beforeBytes": 12067,
+          "afterBytes": 12067
+        },
+        "practicalTake": {
+          "identical": true,
+          "beforeSha256": "14d8891569be6659359c7248a35b5b6901801b3bd90538c0ec5f0eafb46271c6",
+          "afterSha256": "14d8891569be6659359c7248a35b5b6901801b3bd90538c0ec5f0eafb46271c6",
+          "beforeBytes": 565,
+          "afterBytes": 565
+        },
+        "faq": {
+          "identical": true,
+          "beforeSha256": "c6e84bfb18874a28e80c68822ea773aa6af4f2c7b64e860cc7c9cf8719cde64d",
+          "afterSha256": "c6e84bfb18874a28e80c68822ea773aa6af4f2c7b64e860cc7c9cf8719cde64d",
+          "beforeBytes": 1382,
+          "afterBytes": 1382
+        },
+        "cover": {
+          "identical": true,
+          "beforeSha256": "e9f4672e0daecc6c378e9e58269b02ed9036507f1168efb9b1eae91edce090d2",
+          "afterSha256": "e9f4672e0daecc6c378e9e58269b02ed9036507f1168efb9b1eae91edce090d2",
+          "beforeBytes": 213,
+          "afterBytes": 213
+        }
+      }
+    }
+  ],
+  "sourceFiles": [
+    {
+      "file": "src/assets/blog/do-screenshots-have-metadata.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "d9ab3d832fc685ba6c3982b87500d4652752ca3437269bb09ff7537d00ad945d",
+      "workingSha256": "d9ab3d832fc685ba6c3982b87500d4652752ca3437269bb09ff7537d00ad945d",
+      "headBytes": 169054,
+      "workingBytes": 169054
+    },
+    {
+      "file": "src/assets/blog/does-discord-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "2ee788dd3a657dca569a3dbea438cc64330bde44e870f1602e8c1a92abe29913",
+      "workingSha256": "2ee788dd3a657dca569a3dbea438cc64330bde44e870f1602e8c1a92abe29913",
+      "headBytes": 49954,
+      "workingBytes": 49954
+    },
+    {
+      "file": "src/assets/blog/does-gmail-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "b674c56f6aaa54efe2088c774b3fa0c26e60e144f6aa358ad8cfed006d852dcf",
+      "workingSha256": "b674c56f6aaa54efe2088c774b3fa0c26e60e144f6aa358ad8cfed006d852dcf",
+      "headBytes": 21490,
+      "workingBytes": 21490
+    },
+    {
+      "file": "src/assets/blog/does-instagram-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "d3c5c631b143136bb4689546ab2c12f66885612c2ab2b1524fbc352c173100ca",
+      "workingSha256": "d3c5c631b143136bb4689546ab2c12f66885612c2ab2b1524fbc352c173100ca",
+      "headBytes": 49638,
+      "workingBytes": 49638
+    },
+    {
+      "file": "src/assets/blog/does-reddit-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "568f658156a6860fcc26ed3531460914c40ac8134cfd32df5999442c00242e38",
+      "workingSha256": "568f658156a6860fcc26ed3531460914c40ac8134cfd32df5999442c00242e38",
+      "headBytes": 51278,
+      "workingBytes": 51278
+    },
+    {
+      "file": "src/assets/blog/does-telegram-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "04ee996247bb6bde970a4c376f884f75744ff37ca3af111638b74037bae2ab87",
+      "workingSha256": "04ee996247bb6bde970a4c376f884f75744ff37ca3af111638b74037bae2ab87",
+      "headBytes": 137418,
+      "workingBytes": 137418
+    },
+    {
+      "file": "src/assets/blog/does-whatsapp-remove-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "6860c74400b953e4ccdcb2b0c65f4ea81f891f69c2c534b138b1f600febf5b64",
+      "workingSha256": "6860c74400b953e4ccdcb2b0c65f4ea81f891f69c2c534b138b1f600febf5b64",
+      "headBytes": 108518,
+      "workingBytes": 108518
+    },
+    {
+      "file": "src/assets/blog/exif-metadata-definition-and-how-to-view.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "d869a9f3865b1fffebfb3395391ad2fd1cb2d19cee9baf1584a5ea4b62b77230",
+      "workingSha256": "d869a9f3865b1fffebfb3395391ad2fd1cb2d19cee9baf1584a5ea4b62b77230",
+      "headBytes": 80988,
+      "workingBytes": 80988
+    },
+    {
+      "file": "src/assets/blog/exif-vs-metadata.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "fabd03a61eb364b2895fb1d1320b574e6b109ce1c29b71251993b4cc835710d9",
+      "workingSha256": "fabd03a61eb364b2895fb1d1320b574e6b109ce1c29b71251993b4cc835710d9",
+      "headBytes": 48450,
+      "workingBytes": 48450
+    },
+    {
+      "file": "src/assets/blog/how-to-check-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "208ab5af116555e3f2bc2606975880ea1fa35e1a1e9c521e4d8809c33d4aae0a",
+      "workingSha256": "208ab5af116555e3f2bc2606975880ea1fa35e1a1e9c521e4d8809c33d4aae0a",
+      "headBytes": 89572,
+      "workingBytes": 89572
+    },
+    {
+      "file": "src/assets/blog/how-to-check-metadata-of-an-image.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "48c773114c41b541e73d4da27b23c0a2e8d5d4d2110a823e86b16805e0415008",
+      "workingSha256": "48c773114c41b541e73d4da27b23c0a2e8d5d4d2110a823e86b16805e0415008",
+      "headBytes": 85634,
+      "workingBytes": 85634
+    },
+    {
+      "file": "src/assets/blog/how-to-find-camera-settings-from-a-photo.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "53d46cc49917aa82804f2628c2a706edce3ee09264b7c93be9f5e2c6793de309",
+      "workingSha256": "53d46cc49917aa82804f2628c2a706edce3ee09264b7c93be9f5e2c6793de309",
+      "headBytes": 135382,
+      "workingBytes": 135382
+    },
+    {
+      "file": "src/assets/blog/how-to-find-where-a-photo-was-taken.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "766257d3726609eafbff06329eda562894fcc1235dc80e8d94b9fb1ac965cebb",
+      "workingSha256": "766257d3726609eafbff06329eda562894fcc1235dc80e8d94b9fb1ac965cebb",
+      "headBytes": 345076,
+      "workingBytes": 345076
+    },
+    {
+      "file": "src/assets/blog/how-to-remove-gps-data-from-photos-before-sharing.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "9b477394f5e04b4884b55209689de86f22d777f701fc53819f6a5fb8ee75e151",
+      "workingSha256": "9b477394f5e04b4884b55209689de86f22d777f701fc53819f6a5fb8ee75e151",
+      "headBytes": 439342,
+      "workingBytes": 439342
+    },
+    {
+      "file": "src/assets/blog/how-to-remove-metadata-from-a-photo.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "1e3aad39dcf1d8599c35a65bf2897ac51c27f5c139aab82a686d2fb0caaa9640",
+      "workingSha256": "1e3aad39dcf1d8599c35a65bf2897ac51c27f5c139aab82a686d2fb0caaa9640",
+      "headBytes": 53062,
+      "workingBytes": 53062
+    },
+    {
+      "file": "src/assets/blog/how-to-tell-when-a-photo-was-taken.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "1cd243fdbd7298eb419f913a47526226be80adfd96f671fef4d9d65babf0a7c9",
+      "workingSha256": "1cd243fdbd7298eb419f913a47526226be80adfd96f671fef4d9d65babf0a7c9",
+      "headBytes": 160696,
+      "workingBytes": 160696
+    },
+    {
+      "file": "src/assets/blog/how-to-view-exif-data-on-android.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "316b836e9635a2f54f56e83a1e2eebe76ecf91f79b7067c0d713ea4077434fa2",
+      "workingSha256": "316b836e9635a2f54f56e83a1e2eebe76ecf91f79b7067c0d713ea4077434fa2",
+      "headBytes": 63284,
+      "workingBytes": 63284
+    },
+    {
+      "file": "src/assets/blog/how-to-view-exif-data-on-iphone.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "2450aea8ab7b1f0e59774772444050d0f406d800db8fed528ed747d9c2a65028",
+      "workingSha256": "2450aea8ab7b1f0e59774772444050d0f406d800db8fed528ed747d9c2a65028",
+      "headBytes": 101252,
+      "workingBytes": 101252
+    },
+    {
+      "file": "src/assets/blog/how-to-view-exif-data-on-windows-11.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "be00ace989dde966b3db23ca18fb591b869953984ead6502c20a3175a4691bc3",
+      "workingSha256": "be00ace989dde966b3db23ca18fb591b869953984ead6502c20a3175a4691bc3",
+      "headBytes": 53138,
+      "workingBytes": 53138
+    },
+    {
+      "file": "src/assets/blog/how-to-view-pdf-metadata.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "b238170862d5065de2fe5953343a7769e4b9509c6411b8b9f54b7507785d5743",
+      "workingSha256": "b238170862d5065de2fe5953343a7769e4b9509c6411b8b9f54b7507785d5743",
+      "headBytes": 48158,
+      "workingBytes": 48158
+    },
+    {
+      "file": "src/assets/blog/how-to-view-photo-metadata-on-mac.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "988ec26ed45623b71a80c2facca32e89d4c5e814e5440a641d1da55bd44bbb28",
+      "workingSha256": "988ec26ed45623b71a80c2facca32e89d4c5e814e5440a641d1da55bd44bbb28",
+      "headBytes": 98470,
+      "workingBytes": 98470
+    },
+    {
+      "file": "src/assets/blog/remove-metadata-from-mp3.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "2b67ca3556ad640464c63143acc43500036ef35499af2f9455e2302b5b8d57c0",
+      "workingSha256": "2b67ca3556ad640464c63143acc43500036ef35499af2f9455e2302b5b8d57c0",
+      "headBytes": 55082,
+      "workingBytes": 55082
+    },
+    {
+      "file": "src/assets/blog/remove-metadata-from-mp4.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "8dddcfa52379b26f17c83b1a452f27e21a7b3de4bcca1872b4456994d46e93be",
+      "workingSha256": "8dddcfa52379b26f17c83b1a452f27e21a7b3de4bcca1872b4456994d46e93be",
+      "headBytes": 82478,
+      "workingBytes": 82478
+    },
+    {
+      "file": "src/assets/blog/remove-metadata-from-pdf.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "b678998cb23c4c26a875784b14544f96e98df93691f20fe2cf9f2377051917ab",
+      "workingSha256": "b678998cb23c4c26a875784b14544f96e98df93691f20fe2cf9f2377051917ab",
+      "headBytes": 108992,
+      "workingBytes": 108992
+    },
+    {
+      "file": "src/assets/blog/remove-metadata-from-word-document.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "3b4a06128da4e2d283d6b84bb994a666c6fd8c8c9f8316381ad511e57e8eefea",
+      "workingSha256": "3b4a06128da4e2d283d6b84bb994a666c6fd8c8c9f8316381ad511e57e8eefea",
+      "headBytes": 161054,
+      "workingBytes": 161054
+    },
+    {
+      "file": "src/assets/blog/what-is-a-metadata-strategy.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "d281e0f3835765b3989250b6ca515f0c40d26e0f99d441e49c901ce199cb4f72",
+      "workingSha256": "d281e0f3835765b3989250b6ca515f0c40d26e0f99d441e49c901ce199cb4f72",
+      "headBytes": 54170,
+      "workingBytes": 54170
+    },
+    {
+      "file": "src/assets/blog/what-is-exif-data.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "7c7ccb93aef1b68f848fc6b19e8119b8baef4d3e26aac64ed6017acbe138c0fa",
+      "workingSha256": "7c7ccb93aef1b68f848fc6b19e8119b8baef4d3e26aac64ed6017acbe138c0fa",
+      "headBytes": 53536,
+      "workingBytes": 53536
+    },
+    {
+      "file": "src/assets/blog/what-is-xmp-metadata.webp",
+      "identical": true,
+      "normalizedLineEndingsIdentical": false,
+      "headSha256": "053ffcbdd3442c9b7bdb4f6abd991d0e20799ed260f8a58cd6b0b9c84175674b",
+      "workingSha256": "053ffcbdd3442c9b7bdb4f6abd991d0e20799ed260f8a58cd6b0b9c84175674b",
+      "headBytes": 69612,
+      "workingBytes": 69612
+    },
+    {
+      "file": "src/content/blog/do-screenshots-have-metadata.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "5e36e82261f19aa5130ae421692693c83def3f22b15dbc6c84785a1de287a635",
+      "workingSha256": "5e36e82261f19aa5130ae421692693c83def3f22b15dbc6c84785a1de287a635",
+      "headBytes": 8952,
+      "workingBytes": 8952
+    },
+    {
+      "file": "src/content/blog/does-discord-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "7bd65cb62d8d81162675e9f30235f13063df60fc4bbc2b32084b50631f499c97",
+      "workingSha256": "7bd65cb62d8d81162675e9f30235f13063df60fc4bbc2b32084b50631f499c97",
+      "headBytes": 9785,
+      "workingBytes": 9785
+    },
+    {
+      "file": "src/content/blog/does-gmail-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "76e005d102759ffe7d794c4be6acdb33eeddbfc2ab11fea3f86caeb3b97ee34d",
+      "workingSha256": "76e005d102759ffe7d794c4be6acdb33eeddbfc2ab11fea3f86caeb3b97ee34d",
+      "headBytes": 10331,
+      "workingBytes": 10331
+    },
+    {
+      "file": "src/content/blog/does-instagram-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "61ef786c32696cfe98b4456e1baf59850ac5be79198a2f21bf9b14f5aab52a02",
+      "workingSha256": "61ef786c32696cfe98b4456e1baf59850ac5be79198a2f21bf9b14f5aab52a02",
+      "headBytes": 9657,
+      "workingBytes": 9657
+    },
+    {
+      "file": "src/content/blog/does-reddit-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "991b9befc4b437ae3a7ad69b02f574f14ec45d68adfa0284276968620a78332f",
+      "workingSha256": "991b9befc4b437ae3a7ad69b02f574f14ec45d68adfa0284276968620a78332f",
+      "headBytes": 10191,
+      "workingBytes": 10191
+    },
+    {
+      "file": "src/content/blog/does-telegram-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "cf39658e5cb169db112dc99ae5d7221183c77b4c3a5a47f782a8c21640fbdce2",
+      "workingSha256": "cf39658e5cb169db112dc99ae5d7221183c77b4c3a5a47f782a8c21640fbdce2",
+      "headBytes": 9776,
+      "workingBytes": 9776
+    },
+    {
+      "file": "src/content/blog/does-whatsapp-remove-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "abc4f0b15ee76ca15c3c2a456c1fa0a58d009ff5bd40601d25a74c1ae2ff0283",
+      "workingSha256": "abc4f0b15ee76ca15c3c2a456c1fa0a58d009ff5bd40601d25a74c1ae2ff0283",
+      "headBytes": 8633,
+      "workingBytes": 8633
+    },
+    {
+      "file": "src/content/blog/exif-metadata-definition-and-how-to-view.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "b6aea5b63da4f90f82df7e030861c068ab848514bdba8a266ac919a9ea67e2f3",
+      "workingSha256": "b6aea5b63da4f90f82df7e030861c068ab848514bdba8a266ac919a9ea67e2f3",
+      "headBytes": 12137,
+      "workingBytes": 12137
+    },
+    {
+      "file": "src/content/blog/exif-vs-metadata.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "c2ccc9209294ae4173aa778087f11a344667262d7a21d6b3a57df02460a9fd7c",
+      "workingSha256": "c2ccc9209294ae4173aa778087f11a344667262d7a21d6b3a57df02460a9fd7c",
+      "headBytes": 10952,
+      "workingBytes": 10952
+    },
+    {
+      "file": "src/content/blog/how-to-check-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "e8b17e351800fde0b666c3ab0b352f24d0afa76bd57b1514f430d40e9fd3689b",
+      "workingSha256": "e8b17e351800fde0b666c3ab0b352f24d0afa76bd57b1514f430d40e9fd3689b",
+      "headBytes": 11595,
+      "workingBytes": 11595
+    },
+    {
+      "file": "src/content/blog/how-to-check-metadata-of-an-image.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "f483beb92f489a6a05d930f3393e9f35472ff7315c2336f1994f677aefab6d97",
+      "workingSha256": "f483beb92f489a6a05d930f3393e9f35472ff7315c2336f1994f677aefab6d97",
+      "headBytes": 12787,
+      "workingBytes": 12787
+    },
+    {
+      "file": "src/content/blog/how-to-find-camera-settings-from-a-photo.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "9df7972763ca758a7d90b1efe39de467f99b4b918e310723f75fc86ce5f59558",
+      "workingSha256": "9df7972763ca758a7d90b1efe39de467f99b4b918e310723f75fc86ce5f59558",
+      "headBytes": 12710,
+      "workingBytes": 12710
+    },
+    {
+      "file": "src/content/blog/how-to-find-where-a-photo-was-taken.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "04047800c8c11ab3f3f751b9fb79f0e9955a818466b0c1f3acffb4b420c9e05f",
+      "workingSha256": "04047800c8c11ab3f3f751b9fb79f0e9955a818466b0c1f3acffb4b420c9e05f",
+      "headBytes": 11124,
+      "workingBytes": 11124
+    },
+    {
+      "file": "src/content/blog/how-to-remove-gps-data-from-photos-before-sharing.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "01cb35f31bb1559bccdb259a909c93167509cd56a5cc62dfcc90311ae3bdd3f9",
+      "workingSha256": "01cb35f31bb1559bccdb259a909c93167509cd56a5cc62dfcc90311ae3bdd3f9",
+      "headBytes": 11086,
+      "workingBytes": 11086
+    },
+    {
+      "file": "src/content/blog/how-to-remove-metadata-from-a-photo.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "8657bb79062e9802ded7386123be5a4dd31c42e9976fa226b02552b7c2eea19e",
+      "workingSha256": "8657bb79062e9802ded7386123be5a4dd31c42e9976fa226b02552b7c2eea19e",
+      "headBytes": 12693,
+      "workingBytes": 12693
+    },
+    {
+      "file": "src/content/blog/how-to-tell-when-a-photo-was-taken.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "02744ff231c3cde9ed2eb070cd5724815d9cb1be4d6519d7ac95e7a5897e0288",
+      "workingSha256": "02744ff231c3cde9ed2eb070cd5724815d9cb1be4d6519d7ac95e7a5897e0288",
+      "headBytes": 12038,
+      "workingBytes": 12038
+    },
+    {
+      "file": "src/content/blog/how-to-view-exif-data-on-android.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "51324232288532aea071ac14b545b44c7081bf72f86f8aa31d23690e09f97b49",
+      "workingSha256": "51324232288532aea071ac14b545b44c7081bf72f86f8aa31d23690e09f97b49",
+      "headBytes": 12048,
+      "workingBytes": 12048
+    },
+    {
+      "file": "src/content/blog/how-to-view-exif-data-on-iphone.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "5b5f8932cd70b36f5047ca7a08068a41f5793aea3f5d10e3345bdce2f3134138",
+      "workingSha256": "5b5f8932cd70b36f5047ca7a08068a41f5793aea3f5d10e3345bdce2f3134138",
+      "headBytes": 11732,
+      "workingBytes": 11732
+    },
+    {
+      "file": "src/content/blog/how-to-view-exif-data-on-windows-11.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "2fd9a0db2385dc080544113df880a302ced5a8fe07f717fe5e6ad7463e28c8cc",
+      "workingSha256": "2fd9a0db2385dc080544113df880a302ced5a8fe07f717fe5e6ad7463e28c8cc",
+      "headBytes": 11901,
+      "workingBytes": 11901
+    },
+    {
+      "file": "src/content/blog/how-to-view-pdf-metadata.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "2fb77355487a80f3780f1693b7014a3b0618744b9790e9316199e3952af91db0",
+      "workingSha256": "2fb77355487a80f3780f1693b7014a3b0618744b9790e9316199e3952af91db0",
+      "headBytes": 11832,
+      "workingBytes": 11832
+    },
+    {
+      "file": "src/content/blog/how-to-view-photo-metadata-on-mac.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "c2345fac3c311cc38dc8254ddcd8a7cfbb7846003c15a51a991e33b17b9a49db",
+      "workingSha256": "c2345fac3c311cc38dc8254ddcd8a7cfbb7846003c15a51a991e33b17b9a49db",
+      "headBytes": 12355,
+      "workingBytes": 12355
+    },
+    {
+      "file": "src/content/blog/remove-metadata-from-mp3.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "ecfee6ebb85c30a92eb2274eba44563106ff63c7020de9fb5d7047cd61e341fe",
+      "workingSha256": "ecfee6ebb85c30a92eb2274eba44563106ff63c7020de9fb5d7047cd61e341fe",
+      "headBytes": 12078,
+      "workingBytes": 12078
+    },
+    {
+      "file": "src/content/blog/remove-metadata-from-mp4.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "754e3ba32e2f3ead400b019cb4dad28855b0ede1f541097a1d3fa90eb3dc5271",
+      "workingSha256": "754e3ba32e2f3ead400b019cb4dad28855b0ede1f541097a1d3fa90eb3dc5271",
+      "headBytes": 11062,
+      "workingBytes": 11062
+    },
+    {
+      "file": "src/content/blog/remove-metadata-from-pdf.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "a6e4e004d95578637df9da4dace27821a040f7d04158281bf51f71624c1a2b25",
+      "workingSha256": "a6e4e004d95578637df9da4dace27821a040f7d04158281bf51f71624c1a2b25",
+      "headBytes": 11913,
+      "workingBytes": 11913
+    },
+    {
+      "file": "src/content/blog/remove-metadata-from-word-document.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "4a680e448a952d02f902be7bb94b345f34275ce152207ae4d0101b681c9aa281",
+      "workingSha256": "4a680e448a952d02f902be7bb94b345f34275ce152207ae4d0101b681c9aa281",
+      "headBytes": 13297,
+      "workingBytes": 13297
+    },
+    {
+      "file": "src/content/blog/what-is-a-metadata-strategy.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "378a49a5ded0a8d2673bf01fb32c663bfe1c8c43e2ffa0236152110963b4c5a6",
+      "workingSha256": "378a49a5ded0a8d2673bf01fb32c663bfe1c8c43e2ffa0236152110963b4c5a6",
+      "headBytes": 12540,
+      "workingBytes": 12540
+    },
+    {
+      "file": "src/content/blog/what-is-exif-data.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "118cc932197b31ee541bab5f3ca44027e0333798c7cd47df6f422b4b63e0e316",
+      "workingSha256": "118cc932197b31ee541bab5f3ca44027e0333798c7cd47df6f422b4b63e0e316",
+      "headBytes": 12716,
+      "workingBytes": 12716
+    },
+    {
+      "file": "src/content/blog/what-is-xmp-metadata.md",
+      "identical": true,
+      "normalizedLineEndingsIdentical": true,
+      "headSha256": "bc0f925d5916f1929d45bd6f284a8a2440de42bc4de0c2999008fe0a2a054ae7",
+      "workingSha256": "bc0f925d5916f1929d45bd6f284a8a2440de42bc4de0c2999008fe0a2a054ae7",
+      "headBytes": 13055,
+      "workingBytes": 13055
+    }
+  ]
+}

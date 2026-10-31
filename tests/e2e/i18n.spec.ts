@@ -12,7 +12,7 @@ const locales = [
   { prefix: '/fr', lang: 'fr' },
 ] as const;
 
-test('German, French and Chinese routes have four-way reciprocal SEO links', async ({ page }) => {
+test('German, French and Chinese routes stay reachable but are excluded from Search', async ({ page }) => {
   for (const locale of locales) {
     for (const path of ['/', ...toolPaths, '/about/', '/privacy/', '/contact/', '/terms/']) {
       const localizedPath = path === '/' ? `${locale.prefix}/` : `${locale.prefix}${path}`;
@@ -21,10 +21,8 @@ test('German, French and Chinese routes have four-way reciprocal SEO links', asy
       await expect(page.locator('html')).toHaveAttribute('lang', locale.lang);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${localizedPath}`);
-      await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', `https://www.viewexif.com${path}`);
-      await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveAttribute('href', `https://www.viewexif.com${path === '/' ? '/de/' : `/de${path}`}`);
-      await expect(page.locator('link[rel="alternate"][hreflang="fr"]')).toHaveAttribute('href', `https://www.viewexif.com${path === '/' ? '/fr/' : `/fr${path}`}`);
-      await expect(page.locator('link[rel="alternate"][hreflang="zh-CN"]')).toHaveAttribute('href', `https://www.viewexif.com${path === '/' ? '/zh-cn/' : `/zh-cn${path}`}`);
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+      await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
     }
   }
 });
@@ -38,6 +36,12 @@ test('desktop language dropdown switches the same page and sends localized blog 
   await expect(dropdown.getByRole('link', { name: /中文/ })).toHaveAttribute('href', '/zh-cn/image-metadata-viewer/');
   await dropdown.getByRole('link', { name: /Deutsch/ }).click();
   await expect(page).toHaveURL(/\/de\/image-metadata-viewer\/$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await page.locator('.header-inner > .language-dropdown').getByRole('button').click();
+  await page.locator('.header-inner > .language-dropdown').getByRole('link', { name: /English/ }).click();
+  await expect(page).toHaveURL(/\/image-metadata-viewer\/$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
 
   await page.goto('/blog/');
   await expect(page.locator('link[rel="alternate"]')).toHaveCount(0);
@@ -50,6 +54,7 @@ test('desktop language dropdown switches the same page and sends localized blog 
 test('localized links retain their prefix while Blog remains English', async ({ page }) => {
   await page.goto('/de/');
   const nav = page.locator('.desktop-nav');
+  await nav.getByRole('button', { name: 'Werkzeuge', exact: true }).click();
   await expect(nav.getByRole('link', { name: 'Datenschutz prüfen' })).toHaveAttribute('href', '/de/image-privacy-checker/');
   await expect(nav.getByRole('link', { name: 'C2PA prüfen' })).toHaveAttribute('href', '/de/c2pa-viewer/');
   await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
@@ -72,6 +77,7 @@ test('localized footers expose reciprocal Contact and Terms links', async ({ pag
 test('French navigation retains its prefix while Blog remains English', async ({ page }) => {
   await page.goto('/fr/');
   const nav = page.locator('.desktop-nav');
+  await nav.getByRole('button', { name: 'Outils', exact: true }).click();
   await expect(nav.getByRole('link', { name: 'Vérifier la confidentialité' })).toHaveAttribute('href', '/fr/image-privacy-checker/');
   await expect(nav.getByRole('link', { name: 'Vérifier C2PA' })).toHaveAttribute('href', '/fr/c2pa-viewer/');
   await expect(nav.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
@@ -80,8 +86,7 @@ test('French navigation retains its prefix while Blog remains English', async ({
 test('mobile language dropdown exposes all states and remains usable at 239px', async ({ page }) => {
   await page.setViewportSize({ width: 239, height: 844 });
   await page.goto('/de/image-privacy-checker/');
-  await page.getByRole('button', { name: 'Navigation öffnen' }).click();
-  const dropdown = page.locator('.mobile-language-dropdown');
+  const dropdown = page.locator('.header-inner > .language-dropdown');
   await dropdown.getByRole('button').click();
   await expect(dropdown.getByRole('link', { name: /Deutsch/ })).toHaveAttribute('aria-current', 'page');
   await expect(dropdown.getByRole('link', { name: /English/ })).toHaveAttribute('href', '/image-privacy-checker/');

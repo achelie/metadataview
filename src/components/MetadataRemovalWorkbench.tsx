@@ -217,7 +217,7 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     : result.status === 'verified-residual' ? t('download-residual-note', { count: result.residual.length.toLocaleString(locale) })
       : result.status === 'incomplete' ? t('download-incomplete-note') : t('result-blocked');
 
-  return <section className={`workbench removal-workbench removal-${scope}`} aria-busy={busy || sample.loading}>
+  return <section id="metadata-workbench-tool" className={`workbench removal-workbench removal-${scope}`} aria-busy={busy || sample.loading}>
     <div className="workbench-topline"><div className="local-proof"><Icon icon={checkIcon} width="18" /><span>{t("your-file-stays-on-this-device")}</span></div><span className="status-line" role="status" aria-live="polite"><i className={busy ? 'is-live' : ''}></i>{t(`status-${status}`)}</span></div>
     <input ref={input} className="sr-only" type="file" tabIndex={-1} aria-hidden="true" accept={accept} onChange={(event) => { const selected = event.target.files?.item(0); if (selected) void inspect(selected); }} />
     {!before ? <div ref={dropzone} className={`removal-dropzone ${dragging ? 'is-dragging' : ''}`} role="button" tabIndex={busy ? -1 : 0} aria-label={chooseLabel} aria-describedby={`removal-drop-help-${scope}`} aria-disabled={busy} onClick={picker} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); picker(); } }} onDragOver={(event) => { event.preventDefault(); if (!busy) setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={(event) => { event.preventDefault(); setDragging(false); const selected = event.dataTransfer.files.item(0); if (selected && !busy) void inspect(selected); }}>

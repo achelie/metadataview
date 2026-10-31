@@ -3,8 +3,9 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { siteIdentity } from '../config/site';
+import { isLocaleNoindex } from '../config/search-indexing.mjs';
 import { canonicalUrl } from '../lib/seo';
-import { getAlternatePaths, stripLocale, type Locale } from '../i18n/core';
+import { stripLocale, type Locale } from '../i18n/core';
 import { getMessages } from '../i18n/messages';
 import '../styles/global.css';
 
@@ -40,11 +41,9 @@ const {
 const canonical = canonicalUrl(path, Astro.site);
 const socialImage = image ? new URL(image.src, Astro.site).toString() : undefined;
 const copy = getMessages(locale);
-const alternatePaths = translated ? getAlternatePaths(path) : undefined;
-const alternateUrls = alternatePaths ? Object.fromEntries(Object.entries(alternatePaths).map(([key, value]) => [key, canonicalUrl(value, Astro.site)])) : undefined;
+const pageNoindex = noindex || isLocaleNoindex(Astro.url.pathname);
 const ogLocales: Record<Locale, string> = { en: 'en_US', de: 'de_DE', fr: 'fr_FR', 'zh-CN': 'zh_CN' };
 const ogLocale = ogLocales[locale];
-const alternateOgLocales = translated ? Object.entries(ogLocales).filter(([key]) => key !== locale).map(([, value]) => value) : [];
 const basePath = stripLocale(Astro.url.pathname);
 const toolRouterEnabled = basePath === '/'
   || /^\/(?:metadata-(?:viewer|remover)|(?:image|video|audio|document)-metadata-(?:viewer|remover)|image-privacy-checker|c2pa-viewer)\/?$/.test(basePath);
@@ -65,13 +64,6 @@ const toolRouterEnabled = basePath === '/'
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {alternateUrls && <>
-      <link rel="alternate" hreflang="en" href={alternateUrls.en} />
-      <link rel="alternate" hreflang="de" href={alternateUrls.de} />
-      <link rel="alternate" hreflang="fr" href={alternateUrls.fr} />
-      <link rel="alternate" hreflang="zh-CN" href={alternateUrls['zh-CN']} />
-      <link rel="alternate" hreflang="x-default" href={alternateUrls['x-default']} />
-    </>}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="ViewExif" />
@@ -79,7 +71,6 @@ const toolRouterEnabled = basePath === '/'
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
-    {alternateOgLocales.map((alternate) => <meta property="og:locale:alternate" content={alternate} />)}
     {socialImage && <meta property="og:image" content={socialImage} />}
     {image?.alt && <meta property="og:image:alt" content={image.alt} />}
     {image?.width && <meta property="og:image:width" content={String(image.width)} />}
@@ -94,7 +85,7 @@ const toolRouterEnabled = basePath === '/'
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     {image?.alt && <meta name="twitter:image:alt" content={image.alt} />}
     <script is:inline src="https://analytics.ahrefs.com/analytics.js" data-key="7tLAA9e0vH5NusPCfeDVgw" async></script>
-    {noindex && <meta name="robots" content="noindex" />}
+    {pageNoindex && <meta name="robots" content="noindex, follow" />}
     {schemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
   </head>
   <body>

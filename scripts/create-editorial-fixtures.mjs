@@ -1,0 +1,21 @@
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { deflateSync } from 'node:zlib';
+import { ooxmlFixture } from '../tests/fixtures/ooxml.ts';
+// Pass a fresh destination to preserve the original captured fixture evidence.
+// Run with Node 22: node --experimental-strip-types scripts/create-editorial-fixtures.mjs <new-directory>
+const dir=process.argv[2] ?? 'output/playwright/adsense-editorial-fixtures';
+await mkdir(dir,{recursive:true});
+await mkdir('public/editorial',{recursive:true});
+const files=[];
+async function save(name,bytes,note){await writeFile(`${dir}/${name}`,bytes,{flag:'wx'});files.push({name,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),note});}
+await save('synthetic-document.docx',await ooxmlFixture('docx',{title:'Synthetic review copy',author:'Ada Example',company:'Example Studio',customName:'Review status',customValue:'Draft',bodyText:'Synthetic document for a local metadata demonstration. This is not a customer file.'}),'Generated OOXML; title Synthetic review copy, author Ada Example, company Example Studio, Review status Draft.');
+const data=Buffer.alloc(16000); const fmt=Buffer.alloc(16);fmt.writeUInt16LE(1,0);fmt.writeUInt16LE(1,2);fmt.writeUInt32LE(8000,4);fmt.writeUInt32LE(16000,8);fmt.writeUInt16LE(2,12);fmt.writeUInt16LE(16,14);
+function riffChunk(id,bytes){const size=Buffer.alloc(4);size.writeUInt32LE(bytes.length);return Buffer.concat([Buffer.from(id),size,bytes,...(bytes.length%2?[Buffer.alloc(1)]:[])]);}
+const info=Buffer.concat([Buffer.from('INFO'),riffChunk('INAM',Buffer.from('Synthetic silence\0')),riffChunk('IART',Buffer.from('Ada Example\0'))]);const chunks=Buffer.concat([Buffer.from('WAVE'),riffChunk('fmt ',fmt),riffChunk('LIST',info),riffChunk('data',data)]);const wavSize=Buffer.alloc(4);wavSize.writeUInt32LE(chunks.length);await save('synthetic-audio.wav',Buffer.concat([Buffer.from('RIFF'),wavSize,chunks]),'One second silent PCM, 8000 Hz, mono, 16 bits; RIFF INFO INAM Synthetic silence and IART Ada Example.');
+function box(type,body){const head=Buffer.alloc(8);head.writeUInt32BE(body.length+8);head.write(type,4);return Buffer.concat([head,body]);}const ftyp=box('ftyp',Buffer.concat([Buffer.from('isom'),Buffer.alloc(4),Buffer.from('isomiso2mp41')]));const mvhd=Buffer.alloc(100);mvhd.writeUInt32BE(1000,12);mvhd.writeUInt32BE(1000,16);mvhd.writeUInt32BE(0x00010000,20);mvhd.writeUInt16BE(0x0100,24);mvhd.writeUInt32BE(0x00010000,36);mvhd.writeUInt32BE(0x00010000,52);mvhd.writeUInt32BE(0x40000000,68);mvhd.writeUInt32BE(1,96);await save('synthetic-container.mp4',Buffer.concat([ftyp,box('moov',box('mvhd',mvhd))]),'Synthetic container-only MP4, timescale1000/duration1000, no media tracks. Not a playable video; demonstrates reading limits.');
+await save('synthetic-photo.jpg',await readFile('public/samples/metadata-demo-v1.jpg'),'Unmodified AI-generated ViewExif demo image; teaching EXIF, no embedded C2PA manifest. Provenance in public/samples/SOURCES.md.');
+const crc32=(buf)=>{let crc=0xffffffff;for(const b of buf){crc^=b;for(let i=0;i<8;i++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return (crc^0xffffffff)>>>0;};
+function chunk(type,bytes){const t=Buffer.from(type);const head=Buffer.alloc(4);head.writeUInt32BE(bytes.length);const crc=Buffer.alloc(4);crc.writeUInt32BE(crc32(Buffer.concat([t,bytes])));return Buffer.concat([head,t,bytes,crc]);}
+const ihdr=Buffer.alloc(13);ihdr.writeUInt32BE(320);ihdr.writeUInt32BE(180,4);ihdr.set([8,2,0,0,0],8);const pixels=Buffer.alloc(180*(1+320*3));for(let y=0;y<180;y++){const row=y*(1+320*3);for(let x=0;x<320;x++)pixels.set([239,106,56],row+1+x*3);}await save('synthetic-cleanup.png',Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('tEXt',Buffer.from('Author\0Ada Example')),chunk('tEXt',Buffer.from('Comment\0Synthetic metadata cleanup sample')),chunk('IDAT',deflateSync(pixels)),chunk('IEND',Buffer.alloc(0))]),'Generated orange PNG, 320x180, Author Ada Example, Comment Synthetic metadata cleanup sample.');
+await writeFile(`${dir}/fixtures.json`,JSON.stringify({createdAt:new Date().toISOString(),files},null,2),{flag:'wx'});console.log(JSON.stringify({dir,files:files.length}));

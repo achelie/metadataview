@@ -137,7 +137,7 @@ function exifSummaryFromReport(report: MetadataReport, gps: { text: string; mapU
     { id: 'camera', label: 'Camera', value: camera },
     { id: 'lens', label: 'Lens', value: reportValue(report, ['LensModel', 'Lens', 'LensID', 'LensMake']) },
     { id: 'date', label: 'Date Taken', value: reportValue(report, ['SubSecDateTimeOriginal', 'DateTimeOriginal', 'CreateDate']) },
-    { id: 'gps', label: 'GPS', value: gps?.text, href: gps?.mapUrl },
+    { id: 'gps', label: 'GPS', value: gps?.text, mapUrl: gps?.mapUrl },
     { id: 'iso', label: 'ISO', value: formatExifValue('iso', reportValue(report, ['ISO', 'ISOSpeedRatings', 'PhotographicSensitivity'])) },
     { id: 'aperture', label: 'Aperture', value: formatExifValue('aperture', reportValue(report, ['FNumber', 'Aperture', 'ApertureValue'])) },
     { id: 'shutter', label: 'Shutter Speed', value: reportValue(report, ['ExposureTime', 'ShutterSpeed', 'ShutterSpeedValue']) },
@@ -174,8 +174,10 @@ function gpsFromReport(report: MetadataReport | null): { text: string; mapUrl: s
 function PhotoSummaryRows({ items, locale }: { items: ReturnType<typeof exifSummaryFromReport>; locale: Locale }) {
   const t = reportTranslator(locale);
   return <dl>{items.map((item) => <div key={item.id} data-exif-summary={item.id}>
-    <dt>{reportDisplay(locale, item.label)}</dt><dd>{item.value ? <>{item.value}{item.href ? <>
-      <a href={item.href} target="_blank" rel="noopener noreferrer" aria-describedby="home-map-disclosure">{t('open-map')}</a>
+    <dt>{reportDisplay(locale, item.label)}</dt><dd>{item.value ? <>{item.value}{item.mapUrl ? <>
+      {/* Keep location URLs out of attributes collected by outbound-link analytics. */}
+      <button type="button" className="map-open-button" aria-describedby="home-map-disclosure"
+        onClick={() => window.open(item.mapUrl, '_blank', 'noopener,noreferrer')}>{t('open-map')}</button>
       <p id="home-map-disclosure" className="map-disclosure">{t('map-disclosure')}</p>
     </> : null}</> : <span>{t('not-found')}</span>}</dd>
   </div>)}</dl>;

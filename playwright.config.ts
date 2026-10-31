@@ -15,8 +15,8 @@ export default defineConfig({
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', testMatch: '**/release.spec.ts', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', testMatch: '**/release.spec.ts', use: { ...devices['Desktop Safari'] } },
+    { name: 'firefox', testMatch: ['**/release.spec.ts', '**/analytics-privacy.spec.ts'], use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', testMatch: ['**/release.spec.ts', '**/analytics-privacy.spec.ts'], use: { ...devices['Desktop Safari'] } },
   ],
   webServer: externalBaseUrl ? undefined : {
     command: 'pnpm preview --host 127.0.0.1 --port 4329',

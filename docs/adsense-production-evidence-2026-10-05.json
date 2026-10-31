@@ -1,0 +1,1670 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-05T12:22:43.739Z",
+  "deployment": {
+    "codeCommit": "c3a76f11dcf1bf234181bc63583a6260e9f46a0a",
+    "githubBranch": "codex/homepage-exif-seo",
+    "platform": "Cloudflare Pages",
+    "project": "achelie-metadataview",
+    "environment": "Production",
+    "pagesBranch": "main",
+    "id": "0a60f594-b822-4c8f-96bc-d2724af09966",
+    "deploymentUrl": "https://0a60f594.achelie-metadataview.pages.dev",
+    "productionUrl": "https://www.viewexif.com/",
+    "readiness": "Wrangler deployment completed, deployment list identified matching production source, custom-domain HTML and assets matched the clean Git archive build.",
+    "cleanArchive": true,
+    "frozenLockfileInstall": true,
+    "reviewSubmitted": false,
+    "adsEnabled": false
+  },
+  "localVerification": {
+    "unitFirst": {
+      "passed": 286,
+      "failed": 1,
+      "cause": "Existing Chinese PDF export test exceeded its unchanged 5000ms timeout."
+    },
+    "unitFinal": {
+      "passed": 287,
+      "failed": 0,
+      "files": 27,
+      "command": "pnpm test --maxWorkers=1",
+      "startedAtLocal": "2026-10-05 20:08:14+08:00",
+      "durationSeconds": 15.79
+    },
+    "build": {
+      "passed": true,
+      "builtPages": 105,
+      "canonicalPages": 104,
+      "typeAndSeoAndAssetChecksPassed": true
+    },
+    "releasePrivacyPriorToCommit": {
+      "passed": 22,
+      "explicitlySkipped": 4,
+      "scope": "Previously completed runtime/real-SDK checks apply to unchanged file-processing and analytics logic. These are not newly executed production privacy tests."
+    }
+  },
+  "production": {
+    "publicCapture": {
+      "startedAt": "2026-10-05T12:12:44.0259184Z",
+      "completedAt": "2026-10-05T12:13:19.2357102Z",
+      "pages": 104,
+      "extraPublicResources": 5,
+      "http200": 109,
+      "retries": 0
+    },
+    "pageVerification": {
+      "checkedAt": "2026-10-05T12:14:58.148Z",
+      "passed": true,
+      "pages": 104,
+      "records": [
+        {
+          "url": "https://www.viewexif.com/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "8fc0de35e25947e5028b4203fb0d4a01fcf978ea282a945d4c7484ca75a1e813",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/about/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c792fee1f65df7b0c5aa5daa74878bec1a7d8342cbbcc9e82fab44e39e43f01b",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/audio-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "bf6dfd92e0b9a0a1ffafd9b0045c287e971979378c1e9e8fbb294c5b87a00444",
+          "editorialSections": 3
+        },
+        {
+          "url": "https://www.viewexif.com/audio-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0876c59899bda299891c113bc13f466b7fc1b055b1b5056996d2620ce134781e",
+          "editorialSections": 3
+        },
+        {
+          "url": "https://www.viewexif.com/blog/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0f0dd1360972767a937681a4405f6447a2eaefcd8ec8cb6dbbdfa3c29919fb9d",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/do-screenshots-have-metadata/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "9e2db9f901ca7fd28f187da0b9ee983d1d44817dc14ca0bf49f68bfc097aa1ec",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-discord-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "f2c71797ae11403d5cc1b72c7b8de4d60380b044bbca50503fe182a1b071dc85",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-gmail-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "522d941f944904a6729753841b49ebbeb4388d910fda154111d08e28e2cd04ee",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-instagram-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "516c4c71c3e54e650423494b6014abafb1dcec64af42684f82b64ffa672ddbaf",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-reddit-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "ccbbdec740fc844604aa916a4591ef9ea6a84addf3a2c9564deaa882b93f5708",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-telegram-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "193801d2a5b120e37038da700c5a7e0a817dda1559ce14eaa3716d4061255a7b",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/does-whatsapp-remove-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c1a77b58cb98a0a06a7897f9ef0986562fd628c2caed2636484b30470e0c2b35",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/exif-metadata-definition-and-how-to-view/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "14cc35a00f90ff3458601dabd61e5903bd9f114a4505a0eea0daf8ae07768ee4",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/exif-vs-metadata/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "5ce98cacf8da5e24d157b11139fe9aec851d95b7d4a9f1ce498c0637d9157d4e",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-check-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "cc7cd036b2659c5572771af59c4641b3fecf66abe6a3bb190ebf2b4e5022790f",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-check-metadata-of-an-image/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "330ffd826a49fe62f84d0780b0fb8539df975dc42f8c1aa2459820190705b28c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-find-camera-settings-from-a-photo/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "e2b9ed79477474a0957541defcc66f885b8ed84d545d819335ec6b84729750f1",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-find-where-a-photo-was-taken/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "ea4ecdf4f959b90d1be4c6772644a633468f65f94da86f12ac25f6bf18a90fc5",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-read-c2pa-results/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "4c20fad58d14ea259272189340b3cde212114f5b7a70ded5aab309d22d0a5128",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-remove-gps-data-from-photos-before-sharing/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c7f78c1052c5df0bfff0d28dac6d037a9f5b9d837d46bdbe6b5efd94b5321a3a",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-remove-metadata-from-a-photo/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "d11a522b506d44b5f6a4fa558d04cb45434e0051527209334ad9f539b4cb2f60",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-tell-when-a-photo-was-taken/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "fee0937b6eb10a9eda5b6c856bdbf9807bc2eeb56f0f062d293289692dde8bdc",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-android/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "4016329b489f792f895b0c713c761cfc2ccf503b1f9bd4079235bec57404c99c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-iphone/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "28d9ccf7c82bae2783420e079d0b49c25471b10e431290352f2134e77dfaad1a",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-view-exif-data-on-windows-11/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "fbbbebe01e75140436c0d152fed4435cc50cd4d225b1e73b240d3e2c125764c1",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-view-pdf-metadata/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "42ac6131e536c325b939f5ad956dbd6ae231af8bd512dde656c531240c22e901",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/how-to-view-photo-metadata-on-mac/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3f0a94a5e905f7b7c7617439ae3d21d5679739e13847cd374aec5757b963472d",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/page/2/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "97073e649933347434a8da8dc7724e8f3ce0566650933e23cc9d70577f7d2555",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/page/3/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "065bdd6374ff3b2d02d5922606b61d65e74db192e7a6e0d025a5a1f44dd78600",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/page/4/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "a15e6d2c2c6691f391d19686f7c25faa44e0fbee38036463d7b8e1525e7b2804",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/page/5/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "deb8b0a60220812d70a6a1d12524d9158e79f9b0db12236bcdeb16acb57dd071",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/remove-metadata-from-mp3/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "b9e979e6e2a7f231a6cd78d175124d3df41c429a0217bc1bdd1e3329d5dab34f",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/remove-metadata-from-mp4/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "99c9a9e85ece39cf1241fa323ca70fa2a7c89033ffaac6fec4f0524dfd7d484c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/remove-metadata-from-pdf/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "a77eb0cc85ddaee5dc22fbeb091a8355874aa55e60a045d203badc3c21b781d8",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/remove-metadata-from-word-document/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "b4f39ffd806c1687866eca29a4d4e3382acd995a807752f33cd3fc6f3bc4c26c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/verify-metadata-removal/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "24ae5485094099223c0515378ecb04c273f8c8e0742d1ca8654f754a818d2dc4",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/what-is-a-metadata-strategy/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "cc2b5f338ba0c579f9aced6745cd527e86d9b125d499764fbd38119fd13c04da",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/what-is-exif-data/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0546241fed2beb95f8fe58224c8fb493d6095c460dc174be69efe0116fd82fd8",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/what-is-xmp-metadata/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "499cd6ac2977350001de389dd0e48fcd94ed7893ab011e32f9e31c1e7b34fda8",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/blog/why-metadata-is-missing/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "404088a322ff9725db4ea68feb663e0af323b409c07508f62738f94daa461624",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/c2pa-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "9b36962ecc89425650d5eef44cc6e0655809abcffcaa0d983eaa5f01c0ecea9a",
+          "editorialSections": 3
+        },
+        {
+          "url": "https://www.viewexif.com/contact/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "6c04a142b5b78cb73090ea0fa26cc68441e2a7ed4e9cb9be259f8c74ddcd436e",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "a50581d08e8130a7099e3230486738404dab683126a022613ee3250b274811c4",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/about/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "6ef72337e90fdc22958d07ece7480a7bdc6a459e1e4f740fc1d413f7d4b9389c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/audio-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "2c3dacb0c5274094b0c93618998f3bff9783099b5275633f47d21b2772ae2ecb",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/audio-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "fffa1a7b334365dcb8a9e447993e1f2c5db1cccb4ba79df8ccd5af6ef37cab95",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/c2pa-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c6043fcc0003b457427b477cacbf1d0793c8ea6cedddfc58ea2090df65213875",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/contact/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "ee9fd38e1bf0904174577bcf1a5d0b899454c21ad588ccfa05417b46b26ed792",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/document-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "40389eee4938ae497b0359fd9e29cabc5f5b5109ef6bc7b3e6ef32cf62f33c07",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/document-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "557cc7cd5c9e1003c1338c7a945a466abf5d8206a691675a5500397c31e43f9b",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/image-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "39ae82a67a4c25be4d12285d341db6f033393c559ef4dfd18102f6d948157e54",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/image-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "d82cf04183e62ac48bda2b9be4fc298be87ddbb9e17bde810e46e0215b5884c0",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/image-privacy-checker/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "68a2535572247922a183be2f1a3a608861456773783abe373ce84b058fb1a579",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "36c1cb52a5106d433ad351072f84859a8892cacc3fe30db3515ba578534b61f9",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "ac79aa279311604a33e32b590999a3f4e83729edfa08bb4107a164a75eb29b17",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/privacy/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "a580cd5016ba2807868ff1453f78e7f133b2018e1856bf6914b210d6bc9f345c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/terms/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0c245a813d6a3d4235b93274cac343d7181d03369ac098f02d6d3e2a56379197",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/de/video-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "af18748f22d1becf8dc27537df4df6314ca57f2031ee7dc260305da020eb44df",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/de/video-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "fca3e6e0cca67605d50c639d5c825590beeddc35d4265d9644dcb384c3777b9c",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/document-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "e09661d9b4f20f76e14db1bf939d3ce441ce4cabf1f2430d90d837a0b63221f6",
+          "editorialSections": 3
+        },
+        {
+          "url": "https://www.viewexif.com/document-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "76e6b1c2c14d54a184606e5232de19d547b294cb88f0d6bb1923e4c26e65e4fe",
+          "editorialSections": 3
+        },
+        {
+          "url": "https://www.viewexif.com/fr/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "10f45b5dd634d0666bf7c4812a42cb52a49ae411a6a45938351c6df9396ae890",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/fr/about/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "4e09678af331f1282067aa88f3cc147048591314dfce6881b4f0be7b247c83d0",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/fr/audio-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3bea60c6d26922183f1ac95c3ac8a2f5a75754348c372883fcc00a04afc8c36a",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/audio-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "db37491c09f0f1e01d03bf9c676ce0b5af23472d283a6134b7700edca2e79a61",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/c2pa-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0f52c610066e74daf6385e16564e1eff5a67c4b677d3c74babd74b611b2164d0",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/contact/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "b4abd0a115f645b6029cf74351e0d708617a0d3b1f8e7bbec08fc45d5861af39",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/fr/document-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "18aba7361903403f87d307b9228cdd2490467a1606bedea6d2ced41dcfa8caa4",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/document-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "7f97d752e1afba4f7a99f92dfa2e5b80ceef98b11d7b61339a4d3ec535d7d6c5",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/image-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c98e164a8c05ce0c9e27371e3252f456b2a4b1ca41ef3eb1c87f872eac0e3fdc",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/image-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "08b7582bf1e9078b4f1480b35435ef9c14cc3e3a5078914a28732e9d8a436a38",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/image-privacy-checker/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "86fa9b17151091e187c189415e3f803f455bcd96a13809427d65e7d2e5326f89",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "b3c0a6683e9166ddb35816b0ef18c1ec4f56e447e6f6d661f01f3f77d6619b87",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "fa94d610158cec08af5b3eacc88cf78bd0c8b455ca5f1f18804cbafccf41f53d",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/privacy/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "20593b08d86029e96ae3bb3f1ed9f22afd2c624ebd2121dd0f92f445e05bbf9c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/fr/terms/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "1c3ae989cda9ec8f5e9b281e313e2e93be2840a6f2430c3d7234c3c458f3fc5f",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/fr/video-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0e99eb30e8c793c28c594ae70aa5350c3cf86c9266132316130355c761a9b61d",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/fr/video-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "244c7eb37de80ddba8f0f269b935b023dbd9a03eff7685f4b02b2fa3a3b50217",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/image-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "2d7a832dfa1c9390ba421393bdacb471755231aace2973f3d286a0963ef2df58",
+          "editorialSections": 1
+        },
+        {
+          "url": "https://www.viewexif.com/image-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3befb840ecb5b24baed4d8d894e58e288a4a442837e0592442aa09a6ee4bea91",
+          "editorialSections": 1
+        },
+        {
+          "url": "https://www.viewexif.com/image-privacy-checker/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "8d5ce989c5156935b351d816b25b016e4d58dfeccc8e05bf9b77dd6b36115a74",
+          "editorialSections": 2
+        },
+        {
+          "url": "https://www.viewexif.com/metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "67a65af3390ce7629c79a55ee76678befa12751a566b15f704624c06b99fc977",
+          "editorialSections": 1
+        },
+        {
+          "url": "https://www.viewexif.com/metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "f257bb01456870c2c0b41b8baa65034025e507136aeec06c40201265ab6e6091",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/privacy/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0704f1222daf932fe04cae544153314284f8c968b04e1feba5c526e395669bc9",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/terms/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "86036a28235d2b7d44a7c91ab2c63f58b94a0cf3e63cdd320b4d5b0992b42a5b",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/video-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "c5affda294465a47a05ab870453fa76f3d3dcf5fa3954b1de7588fa316876954",
+          "editorialSections": 1
+        },
+        {
+          "url": "https://www.viewexif.com/video-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "55c0363ea64ffde3a3edb77c0ed8d1c300946c1bd25e80ad07a07263ac35ca5a",
+          "editorialSections": 1
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "6aa4e8a3068dc9be3a22162f6a7d5fc43abf5e6f40a6326f6c64e5cf057d684c",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/about/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "43a9e5121c225be6df9944532e5d4ff947da9e784c7186f7712f8c4d019c5c78",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/audio-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "ce26bc6b59dd9773fe4ce4ec6f597cbb41a137689388ea39b8d36c8574f725c6",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/audio-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "299e79ae4fc7f08ca363d2223606cefcf2721cce64a66f9b9a49f46fd92e7331",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/c2pa-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "003622f74b5b6f079f58b10f9236651c5b10440b4d68e4b47f2b655d61e10479",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/contact/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "1f85c8bb87448c124e9a4098ae982651a8947b4d283392081a8d8c0cfeb2ac9d",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/document-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3d57fbaa2a1a9bded2026f13ca0cada3975d85e03578c1267d467dad85f1ed05",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/document-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0649c2f1a143b73e5ce27a2c5023a5b608d38174a2d6ec579fbef64d2fa14900",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/image-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "382bc5763d6cd51cdacbf926f70ef43e8cdab5e531496d5b5bb806ca3e65a4dc",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/image-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3fd3b6f2a93ad21c326ac3508209848263752f44f9c56d8d7c892b426ed28801",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/image-privacy-checker/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "3a369238cd8ffe89b0d889318fa3ea17d039e5171a89b8e9409af05d71248a28",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "b229615d496e4f29bd78b48dc23058f153a96336ed75de7a3be12d40ecefe72b",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "6d04100ffc0008ccf06bc980a3c7b3e88fa43ae328a0c8a3f0b16f7cec7e3f27",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/privacy/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "0fb16037f0990f18bdec9746662665a33cf2d9e104db7aa07dc31a1140442482",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/terms/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "f29390a09f073286abb40981b14457839265273223aec9c6e7f87edab1580c6f",
+          "editorialSections": 0
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/video-metadata-remover/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "a76b93a35d824d144cb25655492cbf92e600443111daa35949c551bf7b57de2a",
+          "editorialSections": 4
+        },
+        {
+          "url": "https://www.viewexif.com/zh-cn/video-metadata-viewer/",
+          "status": 200,
+          "errors": [],
+          "liveHtmlSha256": "68f50fb1be699d24d5d46fd9efd360f7d31c070a6f86b8fc0cb6b89af0f2ec2d",
+          "editorialSections": 4
+        }
+      ],
+      "failures": []
+    },
+    "images": {
+      "checkedAt": "2026-10-05T12:14:07.3453586Z",
+      "passed": true,
+      "records": [
+        {
+          "url": "https://www.viewexif.com/editorial/audio-sample.png",
+          "localSha256": "BE9A2CA379C984C6EA72CBFBD423BD1F7940609459FCAEFE6307B81858DA661F",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "BE9A2CA379C984C6EA72CBFBD423BD1F7940609459FCAEFE6307B81858DA661F",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/editorial/c2pa-sample.png",
+          "localSha256": "75EE8CC990FCDB1B679A60302CED64FA2BBE2C9EB03AE9EC441D14230FEFA6AC",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "75EE8CC990FCDB1B679A60302CED64FA2BBE2C9EB03AE9EC441D14230FEFA6AC",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/editorial/cleanup-sample.png",
+          "localSha256": "DF50732767EB5F153B892B4F5CDC04B1CECB36DED049BF4A2621DF661BDACA39",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "DF50732767EB5F153B892B4F5CDC04B1CECB36DED049BF4A2621DF661BDACA39",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/editorial/document-sample.png",
+          "localSha256": "AD4F758E7F4DEB4D6CF5B106232E5EF121B8FB7347CEC42162A769593BAEFCEE",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "AD4F758E7F4DEB4D6CF5B106232E5EF121B8FB7347CEC42162A769593BAEFCEE",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/editorial/image-sample.png",
+          "localSha256": "C929840A0E8C22F7696C0B6296C2E96682C924A42A0CB01A15ABCA2353C7DB14",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "C929840A0E8C22F7696C0B6296C2E96682C924A42A0CB01A15ABCA2353C7DB14",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/editorial/video-sample.png",
+          "localSha256": "725F7E1281929E85CEFA9B130840E45878BDCE1A6AC077A5F7CA49561B92BC72",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "725F7E1281929E85CEFA9B130840E45878BDCE1A6AC077A5F7CA49561B92BC72",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/_astro/verify-metadata-removal.5ncbGth5.png",
+          "localSha256": "DF50732767EB5F153B892B4F5CDC04B1CECB36DED049BF4A2621DF661BDACA39",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "DF50732767EB5F153B892B4F5CDC04B1CECB36DED049BF4A2621DF661BDACA39",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/_astro/why-metadata-is-missing.CsLr3jfy.png",
+          "localSha256": "AD4F758E7F4DEB4D6CF5B106232E5EF121B8FB7347CEC42162A769593BAEFCEE",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "AD4F758E7F4DEB4D6CF5B106232E5EF121B8FB7347CEC42162A769593BAEFCEE",
+          "status": 200
+        },
+        {
+          "url": "https://www.viewexif.com/_astro/how-to-read-c2pa-results.C6vzIuEo.png",
+          "localSha256": "75EE8CC990FCDB1B679A60302CED64FA2BBE2C9EB03AE9EC441D14230FEFA6AC",
+          "passed": true,
+          "contentType": "image/png",
+          "attempts": [
+            {
+              "attempt": 1,
+              "status": 200
+            }
+          ],
+          "productionSha256": "75EE8CC990FCDB1B679A60302CED64FA2BBE2C9EB03AE9EC441D14230FEFA6AC",
+          "status": 200
+        }
+      ]
+    },
+    "bodyDepth": {
+      "checkedAt": "2026-10-05T12:14:58.228Z",
+      "passed": true,
+      "totals": {
+        "toolBearingPages": 52,
+        "newBlogBodies": 3,
+        "failures": 0
+      },
+      "method": {
+        "parser": "parse5 resolved through Astro",
+        "wordCounter": "Intl.Segmenter(locale, { granularity: word }), isWordLike",
+        "countedTags": [
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "p",
+          "li",
+          "th",
+          "td",
+          "dt",
+          "dd",
+          "figcaption",
+          "summary",
+          "pre"
+        ],
+        "excludedTags": [
+          "astro-island",
+          "script",
+          "style",
+          "nav",
+          "template",
+          "noscript",
+          "button",
+          "input",
+          "select",
+          "textarea",
+          "svg"
+        ],
+        "excludedClasses": [
+          "tool-hero",
+          "home-tool-intro",
+          "related-tools",
+          "related-list",
+          "reading-routes",
+          "tool-editorial-next",
+          "home-process-cta",
+          "section-index",
+          "eyebrow",
+          "home-benefit-icon",
+          "blog-tool-strip",
+          "blog-related",
+          "result-reading-guide"
+        ],
+        "foldedFaqs": "Static summary and answer text is included even when details is initially closed.",
+        "repeatedHelper": "The entire shared .result-reading-guide helper is excluded so its repeated operating tips cannot meet the per-tool editorial minimum.",
+        "blogRoot": ".blog-prose only; frontmatter, byline, cover, practical take, template FAQs and related links are excluded.",
+        "thresholds": {
+          "toolWordsEnDeFrMinimum": 800,
+          "newBlogBodyMinimum": 800,
+          "newBlogBodyMaximum": 1500
+        },
+        "chinese": "Record Han characters and segmented words. Require local unique IDs, Chinese editorial headings/paragraphs, field rows and labelled illustrations. Record English/Chinese section, paragraph and field counts without demanding identical structures; manual semantic-equivalence review remains required."
+      },
+      "records": [
+        {
+          "route": "/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 842,
+            "hanCharacters": 0,
+            "characters": 5106
+          },
+          "errors": []
+        },
+        {
+          "route": "/metadata-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 958,
+            "hanCharacters": 0,
+            "characters": 5824
+          },
+          "errors": []
+        },
+        {
+          "route": "/image-metadata-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 901,
+            "hanCharacters": 0,
+            "characters": 5604
+          },
+          "errors": []
+        },
+        {
+          "route": "/document-metadata-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 940,
+            "hanCharacters": 0,
+            "characters": 6003
+          },
+          "errors": []
+        },
+        {
+          "route": "/video-metadata-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 1208,
+            "hanCharacters": 0,
+            "characters": 7685
+          },
+          "errors": []
+        },
+        {
+          "route": "/audio-metadata-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 903,
+            "hanCharacters": 0,
+            "characters": 5592
+          },
+          "errors": []
+        },
+        {
+          "route": "/image-privacy-checker/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 809,
+            "hanCharacters": 0,
+            "characters": 4914
+          },
+          "errors": []
+        },
+        {
+          "route": "/metadata-remover/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 847,
+            "hanCharacters": 0,
+            "characters": 5472
+          },
+          "errors": []
+        },
+        {
+          "route": "/image-metadata-remover/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 853,
+            "hanCharacters": 0,
+            "characters": 5604
+          },
+          "errors": []
+        },
+        {
+          "route": "/document-metadata-remover/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 890,
+            "hanCharacters": 0,
+            "characters": 5839
+          },
+          "errors": []
+        },
+        {
+          "route": "/video-metadata-remover/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 955,
+            "hanCharacters": 0,
+            "characters": 6388
+          },
+          "errors": []
+        },
+        {
+          "route": "/audio-metadata-remover/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 852,
+            "hanCharacters": 0,
+            "characters": 5401
+          },
+          "errors": []
+        },
+        {
+          "route": "/c2pa-viewer/",
+          "locale": "en",
+          "kind": "tool",
+          "counts": {
+            "words": 931,
+            "hanCharacters": 0,
+            "characters": 5789
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 823,
+            "hanCharacters": 0,
+            "characters": 6039
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/metadata-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 881,
+            "hanCharacters": 0,
+            "characters": 6521
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/image-metadata-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 968,
+            "hanCharacters": 0,
+            "characters": 7144
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/document-metadata-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 972,
+            "hanCharacters": 0,
+            "characters": 7432
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/video-metadata-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 984,
+            "hanCharacters": 0,
+            "characters": 7224
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/audio-metadata-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 990,
+            "hanCharacters": 0,
+            "characters": 7235
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/image-privacy-checker/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 1036,
+            "hanCharacters": 0,
+            "characters": 7839
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/metadata-remover/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 1016,
+            "hanCharacters": 0,
+            "characters": 7575
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/image-metadata-remover/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 987,
+            "hanCharacters": 0,
+            "characters": 7470
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/document-metadata-remover/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 1003,
+            "hanCharacters": 0,
+            "characters": 7660
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/video-metadata-remover/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 979,
+            "hanCharacters": 0,
+            "characters": 7494
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/audio-metadata-remover/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 985,
+            "hanCharacters": 0,
+            "characters": 7465
+          },
+          "errors": []
+        },
+        {
+          "route": "/de/c2pa-viewer/",
+          "locale": "de",
+          "kind": "tool",
+          "counts": {
+            "words": 1051,
+            "hanCharacters": 0,
+            "characters": 7941
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 896,
+            "hanCharacters": 0,
+            "characters": 5846
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/metadata-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 908,
+            "hanCharacters": 0,
+            "characters": 5819
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/image-metadata-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1067,
+            "hanCharacters": 0,
+            "characters": 6955
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/document-metadata-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1084,
+            "hanCharacters": 0,
+            "characters": 6992
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/video-metadata-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1068,
+            "hanCharacters": 0,
+            "characters": 6854
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/audio-metadata-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1088,
+            "hanCharacters": 0,
+            "characters": 6968
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/image-privacy-checker/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1099,
+            "hanCharacters": 0,
+            "characters": 7149
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/metadata-remover/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1065,
+            "hanCharacters": 0,
+            "characters": 6897
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/image-metadata-remover/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1057,
+            "hanCharacters": 0,
+            "characters": 7007
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/document-metadata-remover/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1060,
+            "hanCharacters": 0,
+            "characters": 6992
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/video-metadata-remover/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1070,
+            "hanCharacters": 0,
+            "characters": 6918
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/audio-metadata-remover/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1063,
+            "hanCharacters": 0,
+            "characters": 6900
+          },
+          "errors": []
+        },
+        {
+          "route": "/fr/c2pa-viewer/",
+          "locale": "fr",
+          "kind": "tool",
+          "counts": {
+            "words": 1069,
+            "hanCharacters": 0,
+            "characters": 6980
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 869,
+            "hanCharacters": 1318,
+            "characters": 1739
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/metadata-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1278,
+            "hanCharacters": 2013,
+            "characters": 2499
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/image-metadata-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1389,
+            "hanCharacters": 2167,
+            "characters": 2854
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/document-metadata-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1462,
+            "hanCharacters": 2236,
+            "characters": 2946
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/video-metadata-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1437,
+            "hanCharacters": 2253,
+            "characters": 2821
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/audio-metadata-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1453,
+            "hanCharacters": 2219,
+            "characters": 2869
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/image-privacy-checker/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1379,
+            "hanCharacters": 2214,
+            "characters": 2670
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/metadata-remover/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1337,
+            "hanCharacters": 2197,
+            "characters": 2622
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/image-metadata-remover/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1365,
+            "hanCharacters": 2173,
+            "characters": 2737
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/document-metadata-remover/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1366,
+            "hanCharacters": 2139,
+            "characters": 2789
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/video-metadata-remover/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1336,
+            "hanCharacters": 2196,
+            "characters": 2604
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/audio-metadata-remover/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1368,
+            "hanCharacters": 2176,
+            "characters": 2722
+          },
+          "errors": []
+        },
+        {
+          "route": "/zh-cn/c2pa-viewer/",
+          "locale": "zh-CN",
+          "kind": "tool",
+          "counts": {
+            "words": 1343,
+            "hanCharacters": 2140,
+            "characters": 2785
+          },
+          "errors": []
+        },
+        {
+          "route": "/blog/verify-metadata-removal/",
+          "locale": "en",
+          "kind": "blog",
+          "counts": {
+            "words": 1080,
+            "hanCharacters": 0,
+            "characters": 6977
+          },
+          "errors": []
+        },
+        {
+          "route": "/blog/why-metadata-is-missing/",
+          "locale": "en",
+          "kind": "blog",
+          "counts": {
+            "words": 1038,
+            "hanCharacters": 0,
+            "characters": 6413
+          },
+          "errors": []
+        },
+        {
+          "route": "/blog/how-to-read-c2pa-results/",
+          "locale": "en",
+          "kind": "blog",
+          "counts": {
+            "words": 1096,
+            "hanCharacters": 0,
+            "characters": 7151
+          },
+          "errors": []
+        }
+      ]
+    },
+    "mobile": {
+      "startedAt": "2026-10-05T12:12:45.025Z",
+      "completedAt": "2026-10-05T12:21:05.098Z",
+      "passed": true,
+      "totals": {
+        "records": 368,
+        "initialStates": 236,
+        "failures": 0,
+        "automaticDownloads": 0
+      },
+      "widths": [
+        320,
+        375,
+        390,
+        430
+      ],
+      "consistentPageVersions": true,
+      "initialHtmlSetSha256": "6c9c955e1dad8b143b358272b06596de884d00c3ecae4f9b831a92a11ecaf12d",
+      "browserVersion": "151.0.7922.34",
+      "nodeVersion": "v22.19.0",
+      "failures": [],
+      "downloads": [],
+      "method": {
+        "engine": "Playwright Chromium, reduced-motion mobile viewport; browser default zoom retained",
+        "widths": [
+          320,
+          375,
+          390,
+          430
+        ],
+        "expectedInitialRoutes": 59,
+        "expectedInitialStates": 236,
+        "text": "Computed fonts for rendered authored text nodes, inputs and generated before/after content; hidden/inert/screen-reader-only trees excluded.",
+        "touch": "Measured main upload controls, mobile navigation/language options, editorial guide links and visible result controls. Ordinary inline prose links are not primary touch targets.",
+        "tables": "Page overflow, table bounds outside the viewport and inner horizontal table overflow fail. CSS overflow mode is also recorded so a contained scroll area can be distinguished from page overflow.",
+        "results": "Six real uploaded states in all four languages at 320px; English states also at375/390/430px. PNG cleanup requires an explicit recorded button click.",
+        "fixtures": "Synthetic teaching files only. MP4 is container-only/non-playable; WAV has a known quick-parser warning; C2PA uses an unsigned JPEG.",
+        "requests": "Analytics/RUM event endpoints and all non-GET/HEAD requests intercepted; this layout test is not analytics execution or privacy certification.",
+        "evidence": "New output JSON and failure screenshots are preserved; existing output filenames are never overwritten."
+      }
+    }
+  },
+  "limitations": [
+    "Google approval/indexing is not inferred from deployment.",
+    "Private AdSense Sites/backend evidence and previously accepted licensing Unknowns are unchanged.",
+    "Mobile layout test intercepts analytics/RUM endpoints; it is separate from real-SDK privacy verification."
+  ],
+  "retainedFailures": [
+    "First unit timeout and full passing retry logs retained.",
+    "First deployment connectivity failure and passing retry logs retained.",
+    "A failed deployment-list query and successful retry are retained."
+  ],
+  "artifacts": {
+    "capture": {
+      "localPath": "output/playwright/adsense-production-20261005-c3a76f1/capture.json",
+      "sha256": "308ece42e6a5dd5278c3fcdf4e675cb0fc6a11252e754daf04335515cc6025af"
+    },
+    "pages": {
+      "localPath": "output/playwright/adsense-production-20261005-c3a76f1/verification.json",
+      "sha256": "9b47b24f9406b6fc34efd79f7d2a1de5bb6d4e4ea492b5ae2bf726a7c331e31f"
+    },
+    "images": {
+      "localPath": "output/playwright/adsense-production-images-20261005-c3a76f1/images.json",
+      "sha256": "2f00fe2ded5c3997d21dcd2011dccb74ff2caded70f046db3118f0c218167cc8"
+    },
+    "depth": {
+      "localPath": "output/playwright/adsense-production-depth-20261005-c3a76f1.json",
+      "sha256": "15a5e291e843db4c9601674dc4cd58d6be1909db1e7817dca36806485018d0c4"
+    },
+    "mobile": {
+      "localPath": "output/playwright/adsense-production-mobile-20261005-c3a76f1.json",
+      "sha256": "5d38f655fe84a140816a34b5ebcf971dc6eb81e6258f6186e8196dc839b9c958"
+    }
+  }
+}

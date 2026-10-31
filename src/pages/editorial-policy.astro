@@ -1,0 +1,42 @@
+---
+import EditorialPage from '../components/pages/EditorialPage.astro';
+import { SITE_CONTACT_EMAIL } from '../config/site';
+---
+<EditorialPage
+  title="Editorial Policy — Sources, Corrections, and Responsibility | ViewExif"
+  description="Who writes ViewExif's metadata guides, how sources and examples support claims, and how to request a correction without sending private original files."
+  path="/editorial-policy/"
+  heading="How a guide earns its place here"
+  intro="A useful guide should help you make a decision about a real file. Here is who answers for the words, which evidence we use, and how to flag a mistake."
+>
+  <section aria-labelledby="responsibility">
+    <h2 id="responsibility">One operator, a visible byline</h2>
+    <p>ViewExif is a brand independently operated by an individual. The same operator is responsible for the tools, guides, updates, and corrections. Blog articles use the ViewExif brand as their author name and link to the <a href="/about/">About page</a>. That brand byline does not represent a newsroom, a professional certification, or a team of named specialists.</p>
+    <p>We do not invent author biographies, qualifications, customer experiences, or device tests to make a page look more established. The practical value has to come from the explanation and the evidence a reader can inspect.</p>
+  </section>
+  <section aria-labelledby="sources">
+    <h2 id="sources">Match the source to the claim</h2>
+    <p>For field definitions and file behavior, useful sources include format specifications, ExifTool documentation, and the official documentation of the relevant software. Links sit beside the statements they support, so you can check the context rather than trusting a general source list.</p>
+    <p>A community discussion can illustrate a problem someone reported. It cannot establish how every account, app version, or transfer route behaves. When a guide cites a discussion, read it as a reported experience with those limits. A platform-specific claim needs stronger support or a clearly described test before it becomes a broad conclusion.</p>
+  </section>
+  <section aria-labelledby="examples">
+    <h2 id="examples">Separate examples from observations</h2>
+    <p>Worked timestamps, invented names, and synthetic files explain a mechanism without exposing a person's data. We label them as examples. A diagram illustrates a relationship; it is not a screenshot from a device test. A tool screenshot shows the file and workflow stated in its caption.</p>
+    <p>An actual platform comparison needs the test date, route used to send and receive the file, relevant app or browser version, and a comparison of the source and returned copy. Without that record, we avoid presenting a general recommendation as a new hands-on measurement. Our <a href="/how-we-test/">testing page</a> explains the checks that exist for ViewExif itself.</p>
+  </section>
+  <section aria-labelledby="dates">
+    <h2 id="dates">Dates tell you when to look closer</h2>
+    <p>Each blog article displays its publication and last-edited dates. A last-edited date means the article changed; it does not certify a fresh test on every device named in the text. A dated test, where supplied, describes its own scope.</p>
+    <p>Software menus, export options, parser support, and platform behavior can change. Check that you are inspecting the same file and transfer route described in the guide. If the observed behavior differs, the older explanation needs review rather than a stronger promise.</p>
+  </section>
+  <section aria-labelledby="limits">
+    <h2 id="limits">Keep the limits beside the result</h2>
+    <p>Metadata is editable. A missing field does not prove it never existed, and an embedded date does not authenticate an event. A privacy scan covers readable metadata rather than faces, signs, or other information visible in the pixels.</p>
+    <p>C2PA signature, file binding, publisher trust, and credential availability answer different questions. No credentials found is not a finding of forgery. A cleanup warning or residual field must remain visible in the explanation. We do not turn an incomplete check into a claim that a file is risk-free.</p>
+  </section>
+  <section aria-labelledby="corrections">
+    <h2 id="corrections">Ask for a correction with safe details</h2>
+    <p>Email <a href={`mailto:${SITE_CONTACT_EMAIL}`}>{SITE_CONTACT_EMAIL}</a> with the guide URL, the disputed sentence, and the source or steps that show the problem. For a tool issue, include the browser version, file format, and field name. Redact private values from screenshots and avoid attaching an original personal file.</p>
+    <p>The operator reviews a substantiated issue against the source and current behavior, updates the explanation when needed, and changes the article's edit date for a substantive correction. Contact details and the site's data-handling explanation remain available on the <a href="/contact/">Contact</a> and <a href="/privacy/">Privacy</a> pages.</p>
+  </section>
+</EditorialPage>

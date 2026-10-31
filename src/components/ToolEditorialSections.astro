@@ -1,0 +1,71 @@
+---
+import type { Locale } from '../i18n/core';
+import type { ToolEditorialKey, ToolEditorialSection } from '../content/tool-editorial-types';
+
+interface Props { sections: ToolEditorialSection[]; locale?: Locale; toolKey?: ToolEditorialKey }
+const { sections, locale = 'en', toolKey } = Astro.props;
+const words = {
+  en: { field: 'Field or record', reading: 'How to read it', next: 'Guides for your next check', guide: 'Read the guide' },
+  de: { field: 'Feld oder Eintrag', reading: 'So liest du den Wert', next: 'Anleitungen für den nächsten Schritt', guide: 'Anleitung lesen · Englisch' },
+  fr: { field: 'Champ ou entrée', reading: 'Comment lire la valeur', next: 'Guides pour la prochaine vérification', guide: 'Lire le guide · anglais' },
+  'zh-CN': { field: '字段或记录', reading: '怎么理解这个值', next: '下一步的检查指南', guide: '阅读指南 · 英文' },
+}[locale];
+const guidesByTool: Record<ToolEditorialKey, Array<[string, string]>> = {
+  home: [['why-metadata-is-missing', 'Why metadata is missing'], ['exif-timezone-offsettimeoriginal', 'Read photo times and time zones']],
+  metadata: [['exif-vs-metadata', 'EXIF and other metadata records'], ['why-metadata-is-missing', 'Why metadata is missing']],
+  image: [['exif-timezone-offsettimeoriginal', 'Read photo times and time zones'], ['exif-orientation-values', 'Read all eight EXIF orientation values'], ['how-to-find-where-a-photo-was-taken', 'Read stored photo locations']],
+  document: [['how-to-view-pdf-metadata', 'Read PDF properties and their limits'], ['remove-metadata-from-word-document', 'Check Word document metadata']],
+  video: [['remove-metadata-from-mp4', 'Check and remove MP4 metadata'], ['why-metadata-is-missing', 'Why metadata is missing']],
+  audio: [['remove-metadata-from-mp3', 'Check and remove MP3 tags'], ['why-metadata-is-missing', 'Why metadata is missing']],
+  privacy: [['how-to-remove-gps-data-from-photos-before-sharing', 'Remove stored GPS before sharing'], ['verify-metadata-removal', 'Verify the cleaned file']],
+  remover: [['verify-metadata-removal', 'Verify metadata removal'], ['why-metadata-is-missing', 'Understand missing fields']],
+  imageRemover: [['verify-metadata-removal', 'Verify metadata removal'], ['exif-orientation-values', 'Keep the intended photo orientation'], ['how-to-remove-gps-data-from-photos-before-sharing', 'Remove stored GPS before sharing']],
+  videoRemover: [['remove-metadata-from-mp4', 'Remove MP4 metadata'], ['verify-metadata-removal', 'Verify metadata removal']],
+  audioRemover: [['remove-metadata-from-mp3', 'Remove MP3 tags'], ['verify-metadata-removal', 'Verify metadata removal']],
+  documentRemover: [['remove-metadata-from-pdf', 'Review PDF metadata and cleanup limits'], ['remove-metadata-from-word-document', 'Remove Word document metadata'], ['verify-metadata-removal', 'Verify metadata removal']],
+  c2pa: [['how-to-read-c2pa-results', 'Read C2PA results without overclaiming'], ['exif-vs-metadata', 'Separate editable metadata from credentials']],
+};
+const guides = toolKey ? guidesByTool[toolKey] : [];
+---
+{sections.length > 0 && <div class="tool-editorial">
+  {sections.map((section) => <section class="tool-editorial-section" aria-labelledby={section.id}>
+    <h2 id={section.id}>{section.title}</h2>
+    <div class="tool-editorial-copy">{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+    {section.fields && <table class="tool-editorial-fields">
+      <thead><tr><th scope="col">{words.field}</th><th scope="col">{words.reading}</th></tr></thead>
+      <tbody>{section.fields.map((field) => <tr><th scope="row">{field.name}</th><td><p>{field.meaning}</p><p class="tool-editorial-caveat">{field.caveat}</p></td></tr>)}</tbody>
+    </table>}
+    {section.figure && <figure>
+      <img src={section.figure.src} alt={section.figure.alt} width="1200" height="800" loading="lazy" decoding="async" />
+      <figcaption>{section.figure.caption}</figcaption>
+    </figure>}
+  </section>)}
+  {toolKey && <aside class="tool-editorial-next"><strong>{words.next}</strong><ul>{guides.map(([slug, title]) => <li><a href={`/blog/${slug}/`} lang="en">{title}<span lang={locale}>{words.guide}</span></a></li>)}</ul></aside>}
+</div>}
+
+<style>
+  .tool-editorial { min-width: 0; margin: var(--section-space) 0; }
+  .tool-editorial-section { min-width: 0; padding: var(--layout-gap) 0; border-top: 1px solid var(--line); }
+  h2 { margin: 0 0 .75rem; font-size: var(--text-section); line-height: 1.25; overflow-wrap: anywhere; }
+  .tool-editorial-copy { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: .75rem var(--layout-gap); }
+  p { max-width: var(--prose-width); margin: 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+  .tool-editorial-copy p:only-child { grid-column: 1 / -1; }
+  .tool-editorial-fields { width: 100%; margin: var(--layout-gap) 0 0; table-layout: fixed; border-collapse: collapse; text-align: left; }
+  th, td { padding: .75rem .85rem; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+  th:first-child { width: 28%; padding-left: 0; }
+  thead { background: linear-gradient(105deg, rgba(228, 221, 207, .65), rgba(228, 221, 207, .2)); }
+  .tool-editorial-caveat { margin-top: .35rem; color: var(--muted); }
+  figure { margin: var(--layout-gap) 0 0; }
+  img { display: block; width: 100%; max-width: 1000px; height: auto; border: 1px solid var(--line); }
+  figcaption { max-width: var(--prose-width); margin-top: .65rem; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+  .tool-editorial-next { display: grid; gap: .75rem; padding: var(--layout-gap); border-left: 3px solid var(--rust); background: linear-gradient(105deg, rgba(228, 221, 207, .65), rgba(228, 221, 207, .2)); }
+  .tool-editorial-next ul { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+  .tool-editorial-next strong { font-size: 16px; line-height: 1.5; }
+  .tool-editorial-next a { display: block; min-height: 44px; font-size: 16px; line-height: 1.5; text-decoration: underline; text-underline-offset: .2em; overflow-wrap: anywhere; }
+  .tool-editorial-next span { display: block; font-size: 15px; }
+  @media (max-width: 900px) { .tool-editorial-copy { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 680px) {
+    th, td { padding: .65rem .5rem; }
+    th:first-child { width: 32%; }
+  }
+</style>

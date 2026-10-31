@@ -39,6 +39,7 @@ const t = (en: string, zhText: string, deText: string, frText: string) => zh ? z
       <aside><strong>50 MB</strong> {t('for images and camera RAW files.', '用于图片与相机 RAW 文件；', 'für Bilder und Kamera-RAW-Dateien;', 'pour les images et fichiers RAW ;')} <strong>100 MB</strong> {t('for video, audio, and PDF.', '用于视频、音频和 PDF。', 'für Video, Audio und PDF.', 'pour les vidéos, l’audio et les PDF.')}</aside>
     </section>
 
+    <slot />
     <section class="c2pa-plain-faq" aria-labelledby="c2pa-faq-title">
       <header><span class="c2pa-chapter-index">{t('KEEP THE CAVEAT', '别丢掉边界', 'GRENZEN BEHALTEN', 'GARDER LES NUANCES')}</span><h2 id="c2pa-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen', 'Questions fréquentes')}</h2></header>
       <div>{faqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div>

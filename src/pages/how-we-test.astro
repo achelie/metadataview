@@ -1,0 +1,52 @@
+---
+import EditorialPage from '../components/pages/EditorialPage.astro';
+---
+<EditorialPage
+  title="How We Test — Metadata, Cleanup, and C2PA Checks | ViewExif"
+  description="The synthetic fixtures, browser checks, cleanup comparisons, and C2PA result checks used by ViewExif, with the limits of each kind of verification."
+  path="/how-we-test/"
+  heading="What our checks can actually tell you"
+  intro="A green check needs a clear scope. This page describes the automated checks in ViewExif's current implementation and the uncertainty that remains when you inspect your own file."
+>
+  <section aria-labelledby="samples">
+    <h2 id="samples">Start with files we can explain</h2>
+    <p>The test suite includes synthetic image, audio, video, and Office fixtures. These are small files or deliberately limited containers with known values: a chosen width, an invented author, a comment, or a specific package property. Tests can then check a parser's output against those values instead of guessing what an unfamiliar file should contain.</p>
+    <p>Synthetic fixtures make failures repeatable. They do not represent every camera, damaged file, embedded preview, editor namespace, or real-world document. Some exercise only a container or tag-handling path and are not complete playable media. The site also has sample workflows for broader browser checks. A sample result describes that sample rather than every file with the same extension.</p>
+  </section>
+  <section aria-labelledby="reading">
+    <h2 id="reading">Check the meaning as well as the value</h2>
+    <p>Unit tests cover file-type detection, metadata-report normalization, GPS conversion, EXIF orientation, safe value display, and export behavior. For example, GPS tests include decimal and degrees/minutes/seconds coordinates, invalid ranges, and altitude reference handling. Orientation tests check accepted values and the displayed dimension swap for a sideways image.</p>
+    <p>These checks help catch a correct raw number being given the wrong meaning. They do not establish that the camera recorded a truthful coordinate or date. A readable field remains a statement in the file. Preserve its original path when comparing it with another tool, because similar display labels can refer to different metadata families.</p>
+  </section>
+  <section aria-labelledby="cleanup">
+    <h2 id="cleanup">Compare a cleanup copy with its source</h2>
+    <p>The cleanup code builds a baseline, creates a separate output, and compares the available metadata reports. Its policy distinguishes eligible descriptive or private fields, structural fields retained for the file to work, and runtime information supplied by the browser or filesystem.</p>
+    <p>Tests check that private fields remain eligible even when their names resemble structural data. They also check that partial or truncated scans do not count as complete verification. A “removed” field list, a “retained” field list, and a residual warning therefore answer different questions. Read the conclusion and warnings before relying on any count.</p>
+    <p>Where supported, additional checks compare encoded media payloads or untouched Office package entries. Test cases deliberately change content to confirm that those comparisons fail. A format without an implemented content comparison receives a warning rather than an invented content-preservation pass. A hash comparison establishes equality of the checked bytes; it does not assess image aesthetics or the truth of a document.</p>
+  </section>
+  <section aria-labelledby="c2pa">
+    <h2 id="c2pa">Keep credential checks separate</h2>
+    <p>C2PA report tests use controlled SDK-shaped results to check how ViewExif presents signature validation, file binding, publisher trust, and revocation information. They include valid, trusted, invalid, and no-credential cases, plus unfamiliar diagnostic codes. These fixtures test the report adapter; they are not independent cryptographic validations of those invented records.</p>
+    <p>Browser tests also open an unsigned sample and exercise the signed-sample path, retries, cancellation, and report download. An unsigned result must stay “no credentials found.” A result called valid must not quietly become trusted. The underlying verifier and its available trust information still limit the conclusion. Read <a href="/blog/how-to-read-c2pa-results/">how to interpret C2PA results</a> for the practical differences.</p>
+  </section>
+  <section aria-labelledby="browser">
+    <h2 id="browser">Exercise the actual browser workflow</h2>
+    <p>Playwright tests cover choosing a file, hydration, sample loading, exports, local tool handoff, clearing a result, and mobile layout. Specific checks measure horizontal overflow and text sizes at narrow widths, rather than relying only on a desktop screenshot. Four-language routes have checks for translated output and usable navigation.</p>
+    <p>The configured browser matrix uses Chromium for the wider interface suite. Selected release and analytics-privacy tests also run under Firefox and WebKit. These are automated browser environments, not a claim of hands-on testing on every named phone or physical device. Browser versions, available memory, and file size can change an individual result.</p>
+  </section>
+  <section aria-labelledby="network">
+    <h2 id="network">Look for file-derived data in requests</h2>
+    <p>Analytics-privacy tests choose synthetic files containing recognizable marker values and inspect outgoing URLs, request bodies, and headers during supported workflows. The audit checks for filenames, private field values, hashes, and location data. It distinguishes an explicit map-opening action from background requests, because opening a location link deliberately sends coordinates to the map service.</p>
+    <p>This is a test of the captured workflow and services present during that run. It cannot promise that a future third-party script, a browser extension, or a changed deployment has identical behavior. The <a href="/privacy/">privacy policy</a> explains the current distinction between local file processing and ordinary page requests.</p>
+  </section>
+  <section aria-labelledby="release">
+    <h2 id="release">Check the built pages before release</h2>
+    <p>The repository's release-verification command combines unit tests, an Astro check and production build, generated sitemap and SEO checks, and selected release browser tests. Separate editorial scripts inspect content depth, links, and narrow-screen layouts. The build checks canonical URLs and generated output; a word count checks length only, not usefulness or originality.</p>
+    <p>This page describes the checks available in the code. It is not a live certificate that the deployed site just passed every suite. We keep test outcomes scoped to the run and environment in which they were observed. AdSense approval, traffic quality, mailbox delivery, and account-level consent settings require their own verification.</p>
+  </section>
+  <section aria-labelledby="your-file">
+    <h2 id="your-file">Repeat a smaller check on your file</h2>
+    <p>Keep your original, inspect the exact copy you plan to share, and review both metadata and visible content. After cleanup, reopen the downloaded output and read any residual or incomplete-verification notice. For an important archive, compare another viewer and retain the local report with the original.</p>
+    <p>Use the <a href="/blog/verify-metadata-removal/">cleanup verification guide</a> for the full sequence. If a result looks wrong, <a href="/contact/">send a redacted report of the steps</a> rather than the private original. Our <a href="/editorial-policy/">editorial policy</a> explains who handles corrections and how examples differ from actual observations.</p>
+  </section>
+</EditorialPage>

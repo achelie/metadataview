@@ -4,6 +4,7 @@ import { metadataViewerFaqs } from './metadata-faqs';
 import type { DetectedFileType } from '../lib/metadata/types';
 import type { MetadataRemovalScope } from '../lib/metadata-removal/types';
 import { C2PA_ACCEPT, C2PA_FORMAT_SUMMARY } from '../lib/c2pa/formats';
+import { getToolEditorial, type ToolEditorialKey, type ToolEditorialSection } from './tool-editorial';
 
 export interface ToolConfig {
   title: string; metaTitle: string; description: string; path: string; eyebrow: string; icon: IconName; heroProof?: string;
@@ -18,6 +19,7 @@ export interface ToolConfig {
   faqDisplay?: 'accordion' | 'expanded';
   limitations: string[]; faqs: { question: string; answer: string }[];
   related: { href: string; title: string; note: string }[];
+  editorialSections?: ToolEditorialSection[];
 }
 
 export interface FormatGuide {
@@ -444,3 +446,7 @@ export const tools: Record<string, ToolConfig> = {
     ], related: protectRelated,
   },
 };
+
+for (const [key, tool] of Object.entries(tools)) {
+  tool.editorialSections = getToolEditorial(key as ToolEditorialKey, 'en');
+}

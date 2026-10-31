@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { createHash } from 'node:crypto';
 import { deflate } from 'pako';
 import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
 
@@ -40,30 +41,103 @@ function withExif(jpeg: Buffer): Buffer {
 async function open(page: Page) { await page.goto('/image-metadata-viewer/'); await page.locator('astro-island:not([ssr])').waitFor({state:'attached'}); }
 async function upload(page: Page,name:string,buffer:Buffer,mimeType:string){ await page.locator('input[type=file]').setInputFiles({name,buffer,mimeType}); }
 async function ready(page: Page,name: string|RegExp=/metadata report$/){ await expect(page.getByRole('heading',{name})).toBeVisible({timeout:20_000}); }
+async function openFileDetails(page: Page) {
+  const details = page.locator('.report-file-details');
+  await details.locator('summary').click();
+  await expect(details).toHaveAttribute('open', '');
+  return details;
+}
+async function openExportMenu(page: Page) {
+  const menu = page.locator('.report-export-actions .result-export-menu');
+  await menu.locator('summary').click();
+  await expect(menu).toHaveAttribute('open', '');
+  return menu;
+}
 
 test('ships the shared accessible evidence desk with all six image families',async({page})=>{ await open(page); await expect(page.getByRole('button',{name:'Choose an image'})).toBeVisible(); await expect(page.locator('input[type=file]')).toHaveAttribute('accept','.png,.jpg,.jpeg,.webp,.heic,.heif,.tif,.tiff,.gif,image/png,image/jpeg,image/webp,image/heic,image/heif,image/tiff,image/gif'); });
 test('automatically runs one full image scan without staged controls',async({page})=>{ test.setTimeout(60_000); await open(page); await upload(page,'full-scan.png',png(),'image/png'); await ready(page); await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000}); await expect(page.locator('.report-engine-stats')).toContainText(/ExifTool\s+\d/i); await expect(page.locator('.report-engine ol')).toHaveCount(0); await expect(page.getByRole('button',{name:/Scan embedded data|Retry standard scan/})).toHaveCount(0); });
-test('reads a baseline PNG with dimensions, hashes, and its file header',async({page})=>{ await open(page); await upload(page,'pixel.png',png(),'image/png'); await ready(page,/pixel\.png metadata report/); await expect(page.getByText('2 × 1 px')).toBeVisible(); await expect(page.getByText('SHA-256 · primary fingerprint')).toBeVisible(); await expect(page.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/); await expect(page.getByText(/File header · first \d+ bytes/)).toBeVisible(); });
+test('reads a baseline PNG with dimensions, hashes, and its file header',async({page})=>{ await open(page); await upload(page,'pixel.png',png(),'image/png'); await ready(page,/pixel\.png metadata report/); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('2 × 1 px',{exact:true})).toBeVisible(); await expect(details.getByText('SHA-256 · primary fingerprint',{exact:true})).toBeVisible(); await expect(details.locator('.report-hashes code').first()).toHaveText(/^[a-f0-9]{64}$/); await expect(page.getByText(/File header · first \d+ bytes/)).toBeVisible(); });
 test('reads PNG text and exposes friendly plus native source/path fields',async({page})=>{ await open(page); await upload(page,'author.png',png([['tEXt','Artist','Ada Example']]),'image/png'); await ready(page); await expect(page.getByText(/potentially sensitive field/)).toBeVisible(); await expect(page.locator('[data-field-path="png.text.Artist"]')).toContainText('Ada Example'); await page.getByRole('button',{name:/All native fields/}).click(); await expect(page.locator('.report-sections')).toContainText('Artist'); });
 test('keeps compressed PNG parameters as native data without special interpretation',async({page})=>{ await open(page); await upload(page,'generated.png',png([['zTXt','parameters','orange cat\nSteps: 12, Seed: 42']]),'image/png'); await ready(page); await page.getByPlaceholder(/Search value/).fill('orange cat'); await expect(page.locator('.report-sections')).toContainText('orange cat'); await expect(page.getByText('AI generation data',{exact:true})).toHaveCount(0); await page.getByRole('button',{name:/All native fields/}).click(); await expect(page.locator('.report-sections')).toContainText('parameters'); });
 test('keeps unknown UTF-8 iTXt fields searchable',async({page})=>{ await open(page); await upload(page,'unicode.png',png([['iTXt','odd-field','你好 from metadata']]),'image/png'); await ready(page); await page.getByPlaceholder(/Search value/).fill('你好'); await expect(page.locator('.report-sections')).toContainText('你好 from metadata'); });
-test('reads real JPEG EXIF camera, date, serial, orientation, and GPS',async({page})=>{ await open(page); await upload(page,'camera.jpg',withExif(await canvasImage(page,'image/jpeg')),'image/jpeg'); await ready(page); await expect(page.locator('.report-sections')).toContainText('Pocket Camera'); await expect(page.locator('.report-sections')).toContainText('DeskCam 42'); await expect(page.getByText('GPS location found')).toBeVisible(); await expect(page.locator('.report-map-action code')).toHaveText('37.775000, -122.419444'); await expect(page.getByRole('link',{name:'View on OpenStreetMap'})).toHaveAttribute('href',/openstreetmap\.org\/\?mlat=37\.775/); await page.getByRole('button',{name:/All native fields/}).click(); await page.getByPlaceholder(/Search value/).fill('BODY-12345'); await expect(page.locator('.report-sections')).toContainText('BODY-12345'); await expect(page.getByRole('link',{name:'Open Privacy Checker'})).toBeVisible(); });
-test('reads a browser-encoded WebP',async({page})=>{ await open(page); await upload(page,'pixel.webp',await canvasImage(page,'image/webp'),'image/webp'); await ready(page); await expect(page.getByText('WEBP',{exact:true}).first()).toBeVisible(); await expect(page.getByText('3 × 2 px')).toBeVisible(); });
-test('reads HEIC spatial properties even when Chromium cannot preview the pixels',async({page})=>{ await open(page); await upload(page,'photo.heic',Buffer.from(heicFixture(640,480)),'image/heic'); await ready(page,/photo\.heic metadata report/); await expect(page.getByText('HEIC',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-facts')).toContainText(/640.*480 px/); });
-test('reads TIFF image directories and falls back cleanly when preview decoding is unavailable',async({page})=>{ await open(page); await upload(page,'scan.tiff',Buffer.from(tiffFixture(320,240)),'image/tiff'); await ready(page,/scan\.tiff metadata report/); await expect(page.getByText('TIFF',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-facts')).toContainText(/320.*240 px/); await expect(page.locator('.report-sections')).toContainText(/little-endian/i); });
-test('reads GIF comments and animation facts',async({page})=>{ await open(page); await upload(page,'loop.gif',Buffer.from(gifFixture({comment:'GIF contact sheet',animated:true})),'image/gif'); await ready(page,/loop\.gif metadata report/); await expect(page.getByText('GIF',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-sections')).toContainText('GIF contact sheet'); await expect(page.locator('[data-field-path="Animated"]')).toContainText(/Animated.*true/i); });
-test('trusts the PNG signature over a misleading JPG extension and MIME',async({page})=>{ await open(page); await upload(page,'renamed.jpg',png(),'image/jpeg'); await ready(page); await expect(page.getByText('PNG',{exact:true}).first()).toBeVisible(); await expect(page.locator('.report-warnings')).toContainText(/filename suggests JPEG/i); await expect(page.locator('.report-warnings')).toContainText(/browser reported image\/jpeg/i); });
+test('reads real JPEG EXIF camera, date, serial, orientation, and GPS',async({page})=>{ await open(page); await upload(page,'camera.jpg',withExif(await canvasImage(page,'image/jpeg')),'image/jpeg'); await ready(page); await expect(page.locator('.report-sections')).toContainText('Pocket Camera'); await expect(page.locator('.report-sections')).toContainText('DeskCam 42'); await expect(page.locator('[data-exif-summary="gps"]')).toContainText('37.775000, -122.419444'); await expect(page.getByRole('button',{name:'View on OpenStreetMap'})).toBeVisible(); await expect(page.locator('a[href*="openstreetmap.org"]')).toHaveCount(0); await page.getByRole('button',{name:/All native fields/}).click(); await page.getByPlaceholder(/Search value/).fill('BODY-12345'); await expect(page.locator('.report-sections')).toContainText('BODY-12345'); await expect(page.getByRole('link',{name:'Open Privacy Checker'})).toBeVisible(); });
+test('reads a browser-encoded WebP',async({page})=>{ await open(page); await upload(page,'pixel.webp',await canvasImage(page,'image/webp'),'image/webp'); await ready(page); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('WEBP',{exact:true})).toBeVisible(); await expect(details.locator('.report-facts').getByText('3 × 2 px',{exact:true})).toBeVisible(); });
+test('reads HEIC spatial properties even when Chromium cannot preview the pixels',async({page})=>{ await open(page); await upload(page,'photo.heic',Buffer.from(heicFixture(640,480)),'image/heic'); await ready(page,/photo\.heic metadata report/); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('HEIC',{exact:true})).toBeVisible(); await expect(details.locator('.report-facts')).toContainText(/640.*480 px/); });
+test('reads TIFF image directories and falls back cleanly when preview decoding is unavailable',async({page})=>{ await open(page); await upload(page,'scan.tiff',Buffer.from(tiffFixture(320,240)),'image/tiff'); await ready(page,/scan\.tiff metadata report/); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('TIFF',{exact:true})).toBeVisible(); await expect(details.locator('.report-facts')).toContainText(/320.*240 px/); await expect(page.locator('.report-sections')).toContainText(/little-endian/i); });
+test('reads GIF comments and animation facts',async({page})=>{ await open(page); await upload(page,'loop.gif',Buffer.from(gifFixture({comment:'GIF contact sheet',animated:true})),'image/gif'); await ready(page,/loop\.gif metadata report/); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('GIF',{exact:true})).toBeVisible(); await expect(page.locator('.report-sections')).toContainText('GIF contact sheet'); await expect(page.locator('[data-field-path="Animated"]')).toContainText(/Animated.*true/i); });
+test('trusts the PNG signature over a misleading JPG extension and MIME',async({page})=>{ await open(page); await upload(page,'renamed.jpg',png(),'image/jpeg'); await ready(page); const details=await openFileDetails(page); await expect(details.locator('.report-facts').getByText('PNG',{exact:true})).toBeVisible(); await expect(page.locator('.report-warnings')).toContainText(/filename suggests JPEG/i); await expect(page.locator('.report-warnings')).toContainText(/browser reported image\/jpeg/i); });
 test('rejects unsupported bytes and recovers with a valid image',async({page})=>{ await open(page); await upload(page,'fake.png',Buffer.from('not really an image'),'image/png'); await expect(page.getByRole('alert')).toContainText(/file signature/i); await upload(page,'recovered.png',png(),'image/png'); await ready(page,/recovered\.png metadata report/); });
 test('stops files over 50 MB before parsing',async({page})=>{ test.setTimeout(45_000); await open(page); await page.evaluate(()=>{ const file=new File([new Uint8Array(50*1024*1024+1)],'huge.png',{type:'image/png'}); const transfer=new DataTransfer(); transfer.items.add(file); document.querySelector('.report-dropzone')!.dispatchEvent(new DragEvent('drop',{bubbles:true,dataTransfer:transfer})); }); await expect(page.getByRole('alert')).toContainText('stops at 50 MB',{timeout:25_000}); });
-test('handles multiple selection explicitly and opens only the first file',async({page})=>{ await open(page); await page.locator('input[type=file]').setInputFiles([{name:'first.png',buffer:png(),mimeType:'image/png'},{name:'second.png',buffer:png([['tEXt','Artist','Second']]),mimeType:'image/png'}]); await ready(page,/first\.png metadata report/); await expect(page.getByRole('status')).toContainText(/extra file was ignored/); await expect(page.getByText('second.png')).toHaveCount(0); });
+test('handles multiple selection explicitly and opens only the first file',async({page})=>{ await open(page); await page.locator('input[type=file]').setInputFiles([{name:'first.png',buffer:png(),mimeType:'image/png'},{name:'second.png',buffer:png([['tEXt','Artist','Second']]),mimeType:'image/png'}]); await ready(page,/first\.png metadata report/); await expect(page.locator('.workbench-topline .status-line')).toContainText(/extra file was ignored/); await expect(page.getByText('second.png')).toHaveCount(0); });
 test('search, source filter, view switch, and chapter navigation do not reparse',async({page})=>{ await open(page); await upload(page,'author.png',png([['tEXt','Artist','Ada Example']]),'image/png'); await ready(page); const hash=await page.locator('.report-hashes code').first().textContent(); await page.getByPlaceholder(/Search value/).fill('Ada Example'); await page.getByLabel('Filter by source').selectOption('PNG text'); await expect(page.locator('.report-sections')).toContainText('Ada Example'); await page.getByRole('button',{name:/All native fields/}).click(); await expect(page.locator('.report-chapters a').first()).toHaveAttribute('href',/^#/); expect(await page.locator('.report-hashes code').first().textContent()).toBe(hash); });
 test('long values start shortened and expand on demand',async({page})=>{ await open(page); await upload(page,'long.png',png([['iTXt','Description','x'.repeat(12_000)]]),'image/png'); await ready(page); const expand=page.getByRole('button',{name:/Show all 12,000 characters/}).first(); await expect(expand).toBeVisible(); await expand.click(); await expect(page.getByRole('button',{name:'Show less'}).first()).toBeVisible(); });
-test('raw JSON stays lazy until its panel opens',async({page})=>{ await open(page); await upload(page,'raw.png',png([['tEXt','Artist','Ada']]),'image/png'); await ready(page); await expect(page.locator('.report-raw-json')).toHaveText(''); await page.getByText('Raw safe JSON',{exact:true}).click(); await expect(page.locator('.report-raw-json')).toContainText('Artist'); });
-test('copies one field, visible rows, and all rows',async({page,context})=>{ await context.grantPermissions(['clipboard-read','clipboard-write']); await open(page); await upload(page,'copy.png',png([['tEXt','Artist','Ada Example']]),'image/png'); await ready(page); await page.getByRole('button',{name:'Copy Artist'}).first().click(); await expect.poll(()=>page.evaluate(()=>navigator.clipboard.readText())).toBe('Ada Example'); await page.getByRole('button',{name:'Copy visible'}).click(); await expect(page.getByRole('status')).toContainText(/visible fields copied/); await page.getByRole('button',{name:'Copy all'}).click(); await expect(page.getByRole('status')).toContainText(/fields copied/); });
-test('downloads complete JSON, raw JSON, and a locally generated PDF',async({page})=>{ test.setTimeout(90_000); await open(page); await upload(page,'export.png',png([['tEXt','Artist','Ada']]),'image/png'); await ready(page); await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000}); let event=page.waitForEvent('download'); await page.getByRole('button',{name:'Complete JSON'}).click(); expect((await event).suggestedFilename()).toMatch(/metadata-report\.json$/); event=page.waitForEvent('download'); await page.getByRole('button',{name:'Raw JSON'}).click(); expect((await event).suggestedFilename()).toMatch(/raw-metadata\.json$/); event=page.waitForEvent('download'); await page.getByRole('button',{name:'Readable PDF'}).click(); expect((await event).suggestedFilename()).toMatch(/metadata-report\.pdf$/); });
+test('raw JSON stays lazy until its panel opens',async({page})=>{
+  await open(page); await upload(page,'raw.png',png([['tEXt','Artist','Ada']]),'image/png'); await ready(page);
+  const raw=page.locator('.report-raw-json');
+  const panel=page.locator('.report-evidence details').filter({has:raw});
+  await expect(raw).toHaveText('');
+  await panel.locator('summary').click();
+  await expect(panel).toHaveAttribute('open','');
+  await expect(raw).toBeVisible();
+  await expect(raw).toContainText('Artist');
+});
+test('copies one field, visible rows, and all rows',async({page,context})=>{
+  test.setTimeout(60_000);
+  await context.grantPermissions(['clipboard-read','clipboard-write']);
+  await open(page); await upload(page,'copy.png',png([['tEXt','Artist','Ada Example']]),'image/png'); await ready(page);
+  await page.getByRole('button',{name:'Copy Artist',exact:true}).first().click();
+  await expect.poll(()=>page.evaluate(()=>navigator.clipboard.readText())).toBe('Ada Example');
+  await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000});
+  const status=page.locator('.report-export-actions .result-action-note');
+  let menu=await openExportMenu(page);
+  await menu.getByRole('button',{name:'Copy visible',exact:true}).click();
+  await expect(status).toContainText(/visible fields copied/);
+  await expect(menu).not.toHaveAttribute('open','');
+  menu=await openExportMenu(page);
+  await menu.getByRole('button',{name:'Copy all',exact:true}).click();
+  await expect(status).toHaveText('All readable and native fields copied');
+  await expect(menu).not.toHaveAttribute('open','');
+});
+test('downloads complete JSON, raw JSON, and a locally generated PDF',async({page})=>{
+  test.setTimeout(90_000);
+  await open(page); await upload(page,'export.png',png([['tEXt','Artist','Ada']]),'image/png'); await ready(page);
+  await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000});
+  let menu=await openExportMenu(page);
+  let event=page.waitForEvent('download');
+  await menu.getByRole('button',{name:'Complete JSON',exact:true}).click();
+  expect((await event).suggestedFilename()).toMatch(/metadata-report\.json$/);
+  await expect(menu).not.toHaveAttribute('open','');
+  menu=await openExportMenu(page);
+  event=page.waitForEvent('download');
+  await menu.getByRole('button',{name:'Raw JSON',exact:true}).click();
+  expect((await event).suggestedFilename()).toMatch(/raw-metadata\.json$/);
+  await expect(menu).not.toHaveAttribute('open','');
+  event=page.waitForEvent('download');
+  await page.locator('.report-export-actions').getByRole('button',{name:'Download report (PDF)',exact:true}).click();
+  expect((await event).suggestedFilename()).toMatch(/metadata-report\.pdf$/);
+});
 test('rapid replacement ignores stale results and shows the newest file',async({page})=>{ await open(page); const input=page.locator('input[type=file]'); await input.setInputFiles({name:'old.png',buffer:png([['iTXt','Description','x'.repeat(100_000)]]),mimeType:'image/png'}); await input.setInputFiles({name:'new.png',buffer:png([['tEXt','Artist','Newest']]),mimeType:'image/png'}); await ready(page,/new\.png metadata report/); await expect(page.getByText('old.png')).toHaveCount(0); });
 test('keyboard activation, result focus, replace, and clear work',async({page})=>{ await open(page); const chooser=page.waitForEvent('filechooser'); await page.getByRole('button',{name:'Choose an image'}).press('Enter'); await (await chooser).setFiles({name:'keyboard.png',buffer:png(),mimeType:'image/png'}); const heading=page.getByRole('heading',{name:/keyboard\.png metadata report/}); await expect(heading).toBeVisible({timeout:20_000}); await expect(heading).toBeFocused(); const replacement=page.waitForEvent('filechooser'); await page.getByRole('button',{name:'Replace'}).click(); await (await replacement).setFiles({name:'replacement.png',buffer:png(),mimeType:'image/png'}); await ready(page,/replacement\.png metadata report/); await page.getByRole('button',{name:'Clear'}).click(); const choose=page.getByRole('button',{name:'Choose an image'}); await expect(choose).toBeVisible(); await expect(choose).toBeFocused(); });
-test('selection sends no filename, hash input, or metadata values over the network',async({page})=>{ await open(page); const unsafe:string[]=[]; page.on('request',(request)=>{ if(request.method()!=='GET'||/secret-local-name|Private/.test(request.postData()??'')) unsafe.push(`${request.method()} ${request.url()}`); }); await upload(page,'secret-local-name.png',png([['tEXt','Artist','Private']]),'image/png'); await ready(page); expect(unsafe).toEqual([]); });
+test('selected file values stay out of outgoing requests',async({page,context})=>{
+  test.setTimeout(60_000);
+  const name='secret-local-name.png';
+  const author='Private image-viewer test artist 6bd40e';
+  const buffer=png([['tEXt','Artist',author]]);
+  const values=[name,author,createHash('sha256').update(buffer).digest('hex')];
+  const canaries=values.flatMap(value=>[value,encodeURIComponent(value),encodeURIComponent(value).replace(/%20/g,'+')]);
+  const unsafe:string[]=[];
+  await context.route('**/*',async route=>{
+    const request=route.request();
+    const payload=`${request.url()}\n${JSON.stringify(request.headers())}\n${request.postData()??''}`;
+    if(canaries.some(value=>payload.includes(value))){
+      unsafe.push(`${request.method()} ${request.url()}`);
+      await route.fulfill({status:204,body:''});
+    }else await route.continue();
+  });
+  await open(page); await upload(page,name,buffer,'image/png'); await ready(page,/secret-local-name\.png metadata report/);
+  await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000});
+  expect(unsafe).toEqual([]);
+});
 test('390px result has no page overflow and long values stay contained',async({page})=>{ await page.setViewportSize({width:390,height:844}); await open(page); await upload(page,'mobile.png',png([['iTXt','Description','x'.repeat(8_000)]]),'image/png'); await ready(page); const width=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth})); expect(width.scroll).toBeLessThanOrEqual(width.client+1); });
 
 const mapLocales = [
@@ -73,7 +147,7 @@ const mapLocales = [
   { prefix: '/zh-cn', label: '在 OpenStreetMap 查看', disclosure: /此坐标及 IP 地址.*原文件不会上传/ },
 ];
 
-for (const locale of mapLocales) test(`map disclosure and click-only data flow ${locale.prefix || 'en'}`, async ({ page, context }) => {
+for (const locale of mapLocales) test(`map disclosure and click-only data flow ${locale.prefix || 'en'}`, async ({ page, context, baseURL }) => {
   test.setTimeout(90_000);
   const mapRequests: { url: string; method: string; body: string | null; referrer?: string }[] = [];
   const otherExternalRequests: string[] = [];
@@ -81,7 +155,7 @@ for (const locale of mapLocales) test(`map disclosure and click-only data flow $
   await context.route('**/*', async (route) => {
     const request = route.request();
     const url = new URL(request.url());
-    if (['127.0.0.1', 'localhost'].includes(url.hostname)) return route.continue();
+    if (url.origin === new URL(baseURL!).origin) return route.continue();
     if (url.hostname === 'www.openstreetmap.org') {
       mapRequests.push({ url: request.url(), method: request.method(), body: request.postData(), referrer: request.headers().referer });
     } else otherExternalRequests.push(`${request.url()} ${request.postData() ?? ''}`);
@@ -89,34 +163,36 @@ for (const locale of mapLocales) test(`map disclosure and click-only data flow $
   });
   await page.goto(`${locale.prefix}/`);
   await page.locator('astro-island:not([ssr])').waitFor({ state: 'attached' });
-  const links = page.getByRole('link', { name: locale.label, exact: true });
+  const links = page.getByRole('button', { name: locale.label, exact: true });
   await expect(links).toHaveCount(0);
   await upload(page, 'synthetic-private-location.jpg', withExif(await canvasImage(page, 'image/jpeg')), 'image/jpeg');
   await expect(page.locator('.report-engine.is-complete')).toBeVisible({ timeout: 45_000 });
-  await expect(links).toHaveCount(2);
+  await expect(links).toHaveCount(1);
   expect(mapRequests).toEqual([]);
   expect(otherExternalRequests.join('\n')).not.toMatch(/37\.775|-122\.419|synthetic-private-location|BODY-12345|Ada%20Example/);
 
-  for (const width of [1440, 390, 239]) {
+  for (const width of [320, 375, 390, 430, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     for (const link of await links.all()) {
       const id = await link.getAttribute('aria-describedby');
       expect(id).toBeTruthy();
       await expect(page.locator(`[id="${id}"]`)).toBeVisible();
       await expect(page.locator(`[id="${id}"]`)).toHaveText(locale.disclosure);
-      await expect(link).toHaveAttribute('target', '_blank');
-      await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      await expect(link).not.toHaveAttribute('href');
+      await expect(link).not.toHaveAttribute('data-href');
+      expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      await link.focus();
+      await expect(link).toBeFocused();
     }
     const size = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(size.scroll, `${locale.prefix} at ${width}px`).toBeLessThanOrEqual(size.client + 1);
     if (!locale.prefix) {
       await page.screenshot({ path: `output/playwright/adsense-map-${width}.png`, fullPage: true });
       await page.locator('.home-exif-summary').screenshot({ path: `output/playwright/adsense-map-summary-${width}.png` });
-      await page.locator('.report-map-action').screenshot({ path: `output/playwright/adsense-map-report-${width}.png` });
     }
   }
 
-  for (let index = 0; index < 2; index++) {
+  for (let index = 0; index < 1; index++) {
     const popupEvent = context.waitForEvent('page');
     await links.nth(index).click();
     const popup = await popupEvent;
@@ -138,5 +214,5 @@ for (const locale of mapLocales) test(`map disclosure and click-only data flow $
   await expect(page.locator('.report-engine.is-complete')).toBeVisible({ timeout: 45_000 });
   await expect(links).toHaveCount(0);
   await expect(page.locator('.map-disclosure')).toHaveCount(0);
-  expect(mapRequests).toHaveLength(2);
+  expect(mapRequests).toHaveLength(1);
 });

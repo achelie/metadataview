@@ -390,10 +390,10 @@ export const reportMessages = {
     "fr": "Voir sur OpenStreetMap"
   },
   "map-disclosure": {
-    "en": "Opening OpenStreetMap sends these coordinates and network request information, including your IP address, to that service. Your original file is not uploaded.",
-    "zh-CN": "打开 OpenStreetMap 会向该服务发送此坐标及 IP 地址等网络请求信息。原文件不会上传。",
-    "de": "Beim Öffnen von OpenStreetMap erhält der Dienst diese Koordinaten und Angaben zur Netzwerkanfrage, etwa deine IP-Adresse. Deine Originaldatei wird nicht hochgeladen.",
-    "fr": "Ouvrir OpenStreetMap transmet à ce service ces coordonnées et les informations de requête réseau, dont votre adresse IP. Le fichier original reste dans votre navigateur."
+    "en": "OpenStreetMap opens in a new tab and receives these coordinates and network request information, including your IP address. Your original file is not uploaded.",
+    "zh-CN": "OpenStreetMap 会在新标签页打开，并收到此坐标及 IP 地址等网络请求信息。原文件不会上传。",
+    "de": "OpenStreetMap öffnet sich in einem neuen Tab und erhält diese Koordinaten und Angaben zur Netzwerkanfrage, etwa deine IP-Adresse. Deine Originaldatei wird nicht hochgeladen.",
+    "fr": "OpenStreetMap s’ouvre dans un nouvel onglet et reçoit ces coordonnées et les informations de requête réseau, dont votre adresse IP. Le fichier original reste dans votre navigateur."
   },
   "not-found": {
     "en": "Not found",

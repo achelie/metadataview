@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="grain" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M0 22 22 0" stroke="#c9bba5" stroke-opacity=".22"/><circle cx="5" cy="7" r=".7" fill="#7c6b54" fill-opacity=".25"/></pattern>
+    <g id="image"><path fill="#d0d4b5" stroke="#272a24" stroke-width="2" d="M0 0h210v280H0z"/><path d="m18 236 72-114 41 60 40-39 21 93z" fill="#5d725b"/><circle cx="161" cy="55" r="23" fill="#d9723f"/><path d="M22 20v36m0-36 20 19M22 20 7 42" fill="none" stroke="#272a24" stroke-width="4"/></g>
+  </defs>
+  <path fill="#f4ead7" d="M0 0h1200v630H0z"/><path fill="url(#grain)" d="M0 0h1200v630H0z"/>
+  <g fill="#272a24" font-family="system-ui,sans-serif">
+    <text x="72" y="85" font-size="24" font-weight="700">FIELD NOTES / EXIF ORIENTATION</text>
+    <text x="72" y="136" font-size="28" font-weight="700">The pixels and the display instruction work together.</text>
+    <g transform="translate(116 427) rotate(-90)"><use href="#image"/></g>
+    <path d="M489 321h154m-16-15 16 15-16 15" fill="none" stroke="#272a24" stroke-width="3"/>
+    <text x="489" y="286" font-size="23">Orientation 6</text>
+    <text x="489" y="367" font-size="21">Rotate 90° clockwise</text>
+    <g transform="translate(816 188)"><use href="#image"/></g>
+    <text x="116" y="476" font-size="23">Stored pixels: landscape</text>
+    <text x="816" y="510" font-size="23">Display: portrait</text>
+    <text x="72" y="570" font-size="20">Illustrative diagram · ViewExif</text>
+  </g>
+</svg>
