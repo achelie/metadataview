@@ -34,13 +34,13 @@ related:
   - exif-orientation-values
 ---
 
-An EXIF capture time can look precise while leaving a basic question unanswered: precise in which time zone? `2026:07:18 00:15:00` records a calendar date and a clock reading. Add `OffsetTimeOriginal = +09:00`, and you can calculate a stated UTC instant. Without that offset, converting the value requires an assumption.
+An EXIF capture time can give you a date and a clock reading without telling you the time zone. For example, `2026:07:18 00:15:00` becomes a stated UTC instant when paired with `OffsetTimeOriginal = +09:00`. Without the offset, you need an assumption to convert it.
 
-This guide uses invented values to explain the calculation. They are worked examples, not results from a camera or a social platform. Start with the closest original file and keep a copy before changing anything.
+The values in the examples are invented; they are not results from a camera or a social platform. Start with the closest original file and keep a copy before making changes.
 
 ## Which offset belongs to which date?
 
-Use the offset with the same purpose as the date, rather than applying the first time-zone field you find to every timestamp.
+Match each date to the offset written for it. The first time-zone field you find may belong to a different timestamp.
 
 | Date field | Matching offset | What the pair describes |
 | --- | --- | --- |
@@ -70,15 +70,13 @@ For a negative offset, the UTC calculation moves forward. A stated `2026:07:17 2
 
 ## What does a missing offset mean?
 
-A missing offset means this record does not supply that part of the time, rather than silently declaring the clock to be UTC.
-
-Record the value as “local clock time; offset unknown.” Do not attach the zone your laptop uses today. The camera could have stayed on a home-zone clock while its owner traveled. An export could also have kept the capture value while dropping its companion field.
+When the offset is missing, record the value as “local clock time; offset unknown.” The record does not say the time is UTC. Avoid attaching the zone your laptop uses today: the camera might have stayed on its home-zone clock during travel, or an export might have dropped the offset while keeping the capture time.
 
 An explicit `+00:00` is different: the file states a zero UTC offset. A blank field provides no such statement. More digits in `SubSecTimeOriginal` add fractions of a second; they do not supply the missing zone.
 
 ## Does an offset identify a city or daylight-saving rule?
 
-An offset supplies a numerical difference from UTC, without identifying a unique region or the rules that region follows through the year.
+An offset gives a numerical difference from UTC. It does not identify a region or its rules throughout the year.
 
 `+01:00` does not establish Paris, Berlin, or any other city. A regional zone can change its offset seasonally, while an embedded offset describes the value associated with that particular timestamp. Adding a region requires independent context.
 
@@ -86,7 +84,7 @@ When two pictures differ by exactly an hour, treat daylight-saving handling as a
 
 ## Why do EXIF and XMP dates disagree?
 
-Different metadata families can keep separate versions of a date, and an editor may update one without making every copy agree.
+EXIF and XMP can hold separate dates. An editor may update one and leave the other unchanged.
 
 Adobe's [EXIF namespace reference](https://developer.adobe.com/xmp/docs/xmp-namespaces/exif/) explains how EXIF capture and digitization fields map into XMP. The representation can look different, including a combined date string in place of several classic EXIF fields. Similar labels do not establish identical storage or update history.
 
@@ -94,7 +92,7 @@ Keep each value with its path. A capture time under EXIF, an XMP modification ti
 
 ## Can GPS time settle the question?
 
-GPS date and time can provide a separate comparison point when both fields exist, but agreement still does not authenticate the camera clock.
+When both GPS date and time are present, you can compare them with the capture time. Even if they agree, that does not authenticate the camera clock.
 
 EXIF stores GPS date and time separately. ExifTool's [GPS reference](https://exiftool.org/TagNames/GPS.html) documents the UTC date handling. Compare a complete GPS date/time pair with the capture time after applying its known offset. Do not compare the bare hours across different calendar dates.
 
@@ -102,9 +100,7 @@ If the values disagree, write down the disagreement. GPS records can be edited, 
 
 ## How do you inspect the fields in ViewExif?
 
-Open the original in the [Image Metadata Viewer](/image-metadata-viewer/), then search the full field list for the date and its matching offset.
-
-Use this order:
+Open the original in the [Image Metadata Viewer](/image-metadata-viewer/) and search the full field list in this order:
 
 1. Find `DateTimeOriginal` and record its native path.
 2. Find `OffsetTimeOriginal`; record “missing” if it is absent.
@@ -124,6 +120,6 @@ For archive organization, apply a small trial correction in an editor that suppo
 
 ## What can you conclude from a consistent timestamp?
 
-A consistent capture date and offset establish what the file currently states, with fewer conversion ambiguities; they do not establish the real history of the scene.
+A consistent capture date and offset tell you what the file currently records and make conversion less ambiguous. They do not establish the scene's real history: metadata can change while the visible picture stays the same.
 
-Say “the file records this time” when that is your evidence. Metadata can change without changing the visible picture. If a field disappeared during export, [why metadata is missing](/blog/why-metadata-is-missing/) explains why another viewer cannot recreate the lost bytes. Keep uncertainty visible instead of replacing it with a confident guess.
+If a field disappeared during export, [why metadata is missing](/blog/why-metadata-is-missing/) explains why another viewer cannot recreate the lost bytes. When the file is your evidence, say it records a time rather than claiming the time is proven.

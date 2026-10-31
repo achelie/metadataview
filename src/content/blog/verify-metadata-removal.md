@@ -35,9 +35,9 @@ related:
   - remove-metadata-from-mp3
 ---
 
-Verify metadata removal by inspecting the processed copy, checking its remaining fields, and confirming that the file still works. Start with the cleanup conclusion. A saved file named “clean” says nothing about whether the output scan finished or a private field survived.
+Start with the cleanup result, then inspect the downloaded copy and make sure it still works. A filename containing “clean” cannot tell you whether the output scan finished or a private field survived.
 
-This matters when sending a client document, posting a product photo, or sharing an audio recording. The task is to remove details the recipient should not receive while keeping the useful content. That takes two checks: what changed in the metadata, and whether the resulting file remains suitable for your purpose.
+Whether you are sending a client document, posting a product photo or sharing a recording, check both what changed in the metadata and whether the file still suits its purpose.
 
 ## Start with the verification state
 
@@ -50,19 +50,19 @@ The [Metadata Remover](/metadata-remover/) scans the source, creates a separate 
 | Verification incomplete | A source or output scan did not finish or reached a limit | Keep the warning and use another suitable reader for the unresolved check |
 | Output blocked | An integrity check failed | Keep the original; ViewExif blocks the file download |
 
-An incomplete result can still offer a processed copy. That is an explicit choice with a warning, not confirmation that all private fields disappeared. If the file contains sensitive information you cannot account for, stop before sharing it.
+ViewExif may still offer a processed copy when verification is incomplete, with a warning. That does not confirm that every private field disappeared. If you cannot account for sensitive information, stop before sharing.
 
 ![ViewExif shows cleanup verification and field groups for a synthetic test file](/editorial/cleanup-sample.png)
 
 *Actual browser result from a synthetic ViewExif test file, recorded on October 5, 2026. The example illustrates the interface; it is not a camera original or a test of a sharing platform.*
 
-In this synthetic PNG run, the processed file shrank from 691 to 608 bytes. The result listed 15 removed, 27 preserved and 29 residual fields, with a verified-with-residual-metadata conclusion. That smaller download still needs review; neither the byte reduction nor the removal count cancels the 29 remaining findings.
+In this synthetic PNG run, the file shrank from 691 to 608 bytes. The result listed 15 removed, 27 preserved and 29 residual fields, with a verified-with-residual-metadata conclusion. The smaller file and removal count do not cancel the 29 remaining findings; review them before sharing.
 
 ## Separate removed, preserved and residual fields
 
-The three groups answer different questions. Removed lists readable fields that the cleanup targeted and no longer found. Preserved explains records kept under the selected policy. Residual lists targeted records still visible in the output.
+Removed lists readable fields the cleanup targeted and no longer found. Preserved lists records kept under the selected policy. Residual lists targeted records still visible in the output.
 
-For example, a photographer may want to remove GPS and a camera serial number while keeping color and orientation. An editor delivering an MP3 may want a private comment removed but its cover art retained. Neither task calls for a file with literally no technical information.
+A photographer may want to remove GPS and a camera serial number while keeping color and orientation. Someone delivering an MP3 may want to remove a private comment while retaining its cover art. Both files can still contain useful technical information.
 
 | File | Descriptive fields to review | Content or technical information that can remain |
 | --- | --- | --- |
@@ -85,11 +85,11 @@ The [ExifTool FAQ](https://exiftool.org/faq.html#Q3) explains why duplicate tags
 exiftool -a -G1 -s "processed-copy.jpg"
 ```
 
-Here `-a` includes duplicate tags, `-G1` identifies their groups, and `-s` displays tag names. Substitute your output path. This reads the file; it does not clear tags or repair a failed scan. Keep warnings in the comparison rather than copying only the reassuring lines.
+Here `-a` includes duplicate tags, `-G1` identifies their groups, and `-s` displays tag names. Substitute your output path. The command reads the file; it does not clear tags or repair a failed scan. Include warnings in your comparison as well as the readable fields.
 
 ## Check that the output still works
 
-Metadata verification and content integrity serve different purposes. A report that finds no remaining author field does not tell you that a PDF form still behaves as intended. Likewise, an audio header check does not replace listening to the recording.
+A report with no remaining author field cannot tell you whether a PDF form still works. An audio header check cannot replace listening to the recording either.
 
 Open an image and compare its colors and orientation. Play the start and a later section of a recording. Open several document pages, important links and any required forms. Use the application the recipient will use when compatibility matters.
 
@@ -97,7 +97,7 @@ Do not expect the source and output hashes to match: changing embedded data chan
 
 ## Read risk scores in the right direction
 
-The [Image Privacy Checker](/image-privacy-checker/) assigns higher scores to more detected metadata risk. A decrease means the supported rules found less scored evidence in that copy. It does not measure every way a person could identify the subject or sender.
+The [Image Privacy Checker](/image-privacy-checker/) assigns higher scores when it detects more metadata risk. A lower score means its supported rules found less scored evidence in that copy; it does not cover every way to identify the subject or sender.
 
 Zero can accompany a street address visible in the picture. A cleaned audio file can retain a recognizable voice. A document with empty properties can still contain a name in its text. Residual fields or incomplete verification need attention regardless of how small a score looks.
 
@@ -107,6 +107,6 @@ Use the number to prioritize the listed findings. Read each finding, the scan de
 
 Changing metadata can remove or invalidate a digital signature or Content Credential. ViewExif asks for confirmation when its scan detects likely signatures. If the signed state matters, preserve the original and resolve the intended workflow with the sender before editing.
 
-The cleanup receipt records the operation's status, counts, checks and warnings. It supports a handoff such as “these fields were removed; these records stayed.” It is not a certificate that a file is anonymous, legally redacted or authentic. Read it before forwarding it because a report can itself contain identifying information.
+The cleanup receipt records the operation's status, counts, checks and warnings. You can use it to show which fields were removed and which stayed. It does not certify that a file is anonymous, legally redacted or authentic. Read the receipt before forwarding it; the report itself can contain identifying information.
 
 Before sending the copy, check the filename, the visible or audible content, and the exact attachment you selected. If another editor saves the file afterward, inspect that newest copy again. Your earlier report describes the earlier bytes, not every later export.

@@ -35,15 +35,15 @@ related:
   - what-is-xmp-metadata
 ---
 
-Read a C2PA result as a set of checks on a signed record associated with a file. Start with the conclusion, then look at what was actually checked. A valid signature, a trusted publisher and a truthful scene are three different questions.
+Start with the C2PA result, then check what the verifier actually examined. A valid signature tells you something about the signed record; publisher trust and the truth of the scene need separate consideration.
 
 The [C2PA Viewer](/c2pa-viewer/) reads supported embedded Content Credentials locally. It can inspect signatures, file bindings, declared actions and source relationships. It does not decide whether a photograph depicts a real event or whether a recording's message is accurate.
 
-The [C2PA explainer](https://spec.c2pa.org/specifications/specifications/2.4/explainer/Explainer.html) describes provenance as information about an asset's history. The signed structure helps make those records tamper-evident. It provides evidence to evaluate, rather than a universal authenticity verdict.
+The [C2PA explainer](https://spec.c2pa.org/specifications/specifications/2.4/explainer/Explainer.html) describes provenance as information about an asset's history. Its signed structure helps make those records tamper-evident, giving you evidence to assess rather than a verdict on authenticity.
 
 ## Match the result to the question it answers
 
-Begin with the status shown near the file. Missing information and a failed check should lead to different next steps.
+Start with the status shown near the file. A missing credential calls for a different response from a failed check.
 
 | Result | What you can say | What you cannot infer |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ A normal phone photo, a scanner output or an older archive file may have no C2PA
 
 *Actual browser result from a synthetic unsigned test file, recorded on October 5, 2026. This is a controlled absence example, not a real-camera capture or a sharing-platform retention test.*
 
-The no-credential result offers an explanation and next steps. Ordinary metadata inspection can still reveal readable dates, software labels or camera fields. Those editable labels answer different questions; they do not supply a missing signed history.
+You can still inspect ordinary metadata for dates, software labels or camera fields. Those fields are editable and cannot replace a missing signed history.
 
 If a sender said the file included Content Credentials, ask for the original export and inspect that copy. Keep the versions separate. A screenshot of a credential badge cannot show that the file you received carries the same embedded record.
 
@@ -71,7 +71,7 @@ If a sender said the file included Content Credentials, ask for the original exp
 
 File binding asks whether the protected content matches the credential. Claim signature asks whether the signed statement validates. Publisher trust concerns the signer under an applicable trust policy. Revocation concerns the signing credential's status.
 
-ViewExif displays these separately because one answer cannot safely stand in for another. The tool uses the official Content Authenticity browser verifier inside a Worker, but applies a local policy: it does not fetch remote manifests, external trust lists or online OCSP responses.
+ViewExif shows each check separately. It runs the official Content Authenticity browser verifier inside a Worker under a local policy: it does not fetch remote manifests, external trust lists or online OCSP responses.
 
 | Check | Read it as | Keep this limitation |
 | --- | --- | --- |
@@ -102,10 +102,10 @@ Claims shown under an invalid result remain diagnostic material. Do not quote th
 
 A credential can declare a watermark-related action or assertion. ViewExif reports those declarations when present. It does not inspect image pixels or audio samples to confirm an invisible signal, and it does not use that signal to retrieve a remote credential.
 
-This distinction matters when another service finds a history that this local viewer does not. Different retrieval methods and verification policies can produce different available evidence. Before comparing badges, compare the files and the checks each service actually performed.
+Another service may find a history this local viewer does not because retrieval methods and verification policies differ. Compare the files and the checks each service performed before comparing their badges.
 
 ## Record a conclusion that survives a handoff
 
 Save the verification receipt if you need to explain the result to someone else. Record which copy you checked, when, its fingerprint, the status and the unresolved checks. Review the exported report before sending it because provenance records can contain names or other identifying details.
 
-A defensible description is specific: “The embedded credential validated locally; publisher trust was not checked against an external list.” For an unsigned copy, say that no embedded credential was found. Preserve the original before using a metadata remover, since changes can remove or invalidate the credential you wanted to examine.
+For example: “The embedded credential validated locally; publisher trust was not checked against an external list.” If the copy is unsigned, say no embedded credential was found. Keep the original before removing metadata, since a change can remove or invalidate the credential you wanted to examine.

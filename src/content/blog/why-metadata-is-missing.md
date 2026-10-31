@@ -35,9 +35,9 @@ related:
   - how-to-view-pdf-metadata
 ---
 
-Missing metadata can mean that a file never contained a field, an export removed it, or your current reader cannot show it. Start by checking the exact file and the scan status. An empty camera panel is a clue to investigate, not a history of what happened.
+A field may be missing because the file never contained it, an export removed it, or your reader cannot show it. Check the exact file and the scan status first. An empty camera panel alone cannot tell you what happened.
 
-Suppose an invoice shows no Author, a vacation image has no GPS, or an MP3 has an empty Artist field. Those are separate records with different writers and different storage locations. The useful question is specific: “Where should this value live, and which copy did I actually inspect?”
+An invoice with no Author, a vacation photo with no GPS and an MP3 with no Artist involve different records. For each one, ask where the value should be stored and which copy you inspected.
 
 ## Distinguish absence from an unfinished reading
 
@@ -51,11 +51,11 @@ Open the saved file in the [Metadata Viewer](/metadata-viewer/) and wait for the
 | Error, cancellation or timeout | Reading did not establish a complete result | Keep the warning; retry or change the reading method |
 | Different values across groups | Multiple stored claims disagree | Preserve the group names and compare the file's history |
 
-A quick summary can appear before a deeper scan finishes. If that later scan fails, the earlier readable fields remain useful, but they cannot account for everything the unfinished stage might have found. Report “not read” rather than silently converting it to “not present.”
+A quick summary can appear before a deeper scan finishes. If the later scan fails, the fields already read are still useful, but the unfinished stage may have found more. Report the unresolved fields as “not read,” not “not present.”
 
 ## Find out who would write the missing field
 
-Camera information usually comes from capture software. A document Author may come from an editor profile or template. Music tags may come from a tagging application. A field cannot survive a journey if no step wrote it in the first place.
+Camera information usually comes from capture software; a document Author may come from an editor profile or template. Music tags may come from a tagging application. The value may be absent simply because nobody wrote it.
 
 | File or record | Potential writer | Why an expected value might be absent |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ Technical fields can still appear beside empty descriptive records. An MP3 needs
 
 ## Search the stored groups, not just the summary
 
-The readable view helps answer common questions. Native fields help when two applications disagree. Search for the desired value and nearby names, keeping the source group visible.
+When applications disagree, search the native fields for the value and nearby names. Keep the source group visible as you compare them.
 
 A photo date might appear in EXIF and XMP. A PDF can carry an Author property and an XMP creator. Removing one location does not establish that every duplicate disappeared. The [ExifTool FAQ on extraction](https://exiftool.org/faq.html#Q3) documents how its default duplicate handling can hide a same-named tag; `-a` includes those records and `-G1` identifies their groups.
 
@@ -82,7 +82,7 @@ In the [Document Metadata Viewer](/document-metadata-viewer/), inspect stored pr
 
 ## Compare the copies at each handoff
 
-Gather the original, the editor's export and the recipient's downloaded attachment if they are available. Inspect each separately. Use a simple record rather than guessing from the final file alone:
+If available, gather the original, the editor's export and the recipient's downloaded attachment. Inspect each one and record the results:
 
 | Copy | Reader completed? | Selected field and group | Next comparison |
 | --- | --- | --- | --- |
@@ -90,13 +90,13 @@ Gather the original, the editor's export and the recipient's downloaded attachme
 | Export | Record yes or the warning | Record the same field and group | Compare with received file |
 | Received copy | Record yes or the warning | Record the same field and group | Locate the first observable change |
 
-If the original has a field and the export lacks it, you found a boundary worth checking in the editor's settings. If both have it and the received copy lacks it, investigate the delivery route. You have located an observed difference, not proved every internal step the service performed.
+If the original has a field and the export lacks it, check the editor's settings. If both have it but the received copy does not, investigate the delivery route. The difference tells you where to look; it does not prove every internal step the service performed.
 
 Use a harmless synthetic sample for a platform test. Record the date, app version, sending option and download route. A preview and a file attachment can produce different copies. No screenshot in this guide claims to test WhatsApp, email or another platform's present behavior.
 
 ## Check catalogs and sidecars separately
 
-An application can show a caption, date or location stored in its own library. That display does not establish that the exported file contains the same field. Ask the application to show where the information lives before using its screen as evidence of embedded metadata.
+An application can show a caption, date or location from its own library, even if the exported file does not contain that field. Check where the application stores the information before treating its display as evidence of embedded metadata.
 
 An `.xmp` sidecar is another separate record. ViewExif's image input reads embedded XMP in supported images; it does not accept a standalone sidecar as the main image. Keep the sidecar with its related original and inspect it through a suitable application. Read the [XMP guide](/blog/what-is-xmp-metadata/) when the catalog and file appear to disagree.
 
@@ -104,4 +104,4 @@ An `.xmp` sidecar is another separate record. ViewExif's image input reads embed
 
 You can say that a completed supported scan found no readable GPS in the inspected copy. You cannot say where the scene occurred, who removed GPS, or that the photograph is fake. Likewise, absent Author does not establish anonymous document content or ownership.
 
-Do not write guessed replacement values merely to make a report look complete. Preserve an earlier record if it matters, keep the warning if reading failed, and request the original when a factual dispute needs better evidence. A precise gap is more useful than a confident story about bytes you do not have.
+Do not invent replacement values to fill a report. Preserve an earlier record if it matters, keep any reading warning, and request the original when a dispute calls for better evidence.
