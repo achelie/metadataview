@@ -5,6 +5,7 @@ import BlogPostCard from '../../components/BlogPostCard.astro';
 import BlogToolStrip from '../../components/BlogToolStrip.astro';
 import StaticIcon from '../../components/StaticIcon.astro';
 import EditorialDisclosure from '../../components/EditorialDisclosure.astro';
+import { hubsForPost } from '../../lib/guide-hubs';
 import { blogPath, formatBlogDate, getReadingTime, resolveRelatedPosts, sortBlogPosts, validateBlogRelationships } from '../../lib/blog';
 import '../../styles/blog.css';
 
@@ -18,6 +19,7 @@ const { Content, headings } = await render(post);
 const allPosts = sortBlogPosts(await getCollection('blog'));
 validateBlogRelationships(allPosts);
 const relatedPosts = resolveRelatedPosts(post, allPosts);
+const topicHubs = hubsForPost(post.id);
 const minutes = getReadingTime(post.body ?? '');
 const path = blogPath(post);
 const canonical = new URL(path, Astro.site).toString();
@@ -115,6 +117,13 @@ const schemas = [
 
         <div class="blog-prose"><Content /></div>
 
+        {topicHubs.length > 0 && (
+          <nav class="article-topics" aria-label="Related topic guides">
+            <strong>Explore this topic</strong>
+            {topicHubs.map((hub) => <a href={`/guides/${hub.slug}/`}>{hub.title} →</a>)}
+          </nav>
+        )}
+
         <BlogToolStrip category={post.data.category} />
 
         <section class="blog-faq" id="frequently-asked-questions" aria-labelledby="blog-faq-title">
@@ -137,5 +146,7 @@ const schemas = [
 </BaseLayout>
 
 <style>
+  .article-topics { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1.25rem; margin-block: var(--section-space); padding-block: .5rem; border-block: 1px solid var(--line); }
+  .article-topics a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: .2em; }
   .blog-publication { margin: .65rem 0 0; color: var(--muted); font-size: .85rem; line-height: 1.5; }
 </style>

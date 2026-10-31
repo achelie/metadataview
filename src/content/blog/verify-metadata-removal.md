@@ -12,9 +12,9 @@ publishedAt: 2026-10-05
 updatedAt: 2026-10-05
 featured: false
 author: "ViewExif"
-# Cover: an actual ViewExif browser result from a synthetic test file, created 2026-10-05.
-cover: "../../assets/blog/verify-metadata-removal.png"
-coverAlt: "ViewExif cleanup result for a synthetic test file, showing verification and field groups"
+# Cover: Pexels #7014918, George Milton, downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
+cover: "../../assets/blog/verify-metadata-removal.webp"
+coverAlt: "A photographer working on a photo at a laptop beside a camera"
 practicalTake:
   - "Inspect the downloaded output rather than reopening the original. Check its format, dimensions or duration as well as its remaining descriptive fields."
   - "Read removed, preserved and residual groups separately. A retained color profile and a retained private author name need different decisions."

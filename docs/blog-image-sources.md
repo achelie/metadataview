@@ -55,3 +55,20 @@
 - 图片替换或重编码时更新哈希、来源与日期；保留历史记录，使旧审核使用的字节仍可追溯。此表不覆盖演示文件，演示样例另见 [public/samples/SOURCES.md](../public/samples/SOURCES.md)。
 
 [pexels-license]: https://www.pexels.com/license/
+
+## 2026-10-31 专题聚合页封面
+
+两张照片分别用于分享指南和文件类型指南，下载自 Pexels，均按中心裁剪至 1600 × 900 并编码为 WebP，展示时沿用文章封面的比例。许可见 [Pexels License][pexels-license]。
+
+- `sharing-metadata`：[Pexels #7641426](https://www.pexels.com/photo/person-in-gray-shirt-holding-black-smartphone-7641426/)，MART PRODUCTION；下载日期 2026-10-31；`src/assets/blog/guide-sharing-metadata.webp`；SHA-256 `9d2d9f1641b4efeb08424908c3938a372d3c07df260a7c946453823105a68779`。
+- `metadata-by-file-type`：[Pexels #10418017](https://www.pexels.com/photo/modern-black-photography-equipment-and-computer-on-table-10418017/)，Oscar Machuca；下载日期 2026-10-31；`src/assets/blog/guide-metadata-by-file-type.webp`；SHA-256 `8c43a80fc8f3c261b399eb00839dc5d1a4db2f8b33228fb8889c70ab1a728d1f`。
+
+## 2026-10-31 五篇文章封面更换
+
+以下五张为 Pexels 实拍照片，2026-10-31 下载并中心裁剪为 1600 × 900 WebP，用于文章页、博客列表和社交预览；图片仅作主题配图，不代表真实验证结果。原有插图和样例截图保留，文章正文示例不变。许可见 [Pexels License][pexels-license]。
+
+- `exif-orientation-values`：[Pexels #12468236](https://www.pexels.com/photo/a-person-holding-a-camera-with-picture-on-screen-12468236/)，Oleg Nagovski；`src/assets/blog/exif-orientation-values.webp`；SHA-256 `e56471be05e5c9e9c468a5c4ee4efa063728f1d110505f0b593596946e159218`。
+- `exif-timezone-offsettimeoriginal`：[Pexels #5357068](https://www.pexels.com/photo/photograph-of-a-white-vintage-clock-beside-a-stack-of-books-5357068/)，Maria Mileta；`src/assets/blog/exif-timezone-offsettimeoriginal.webp`；SHA-256 `6ceb0ebdae7353bd65fd15f61cf98c07586d4a3b15840213d9ab70eb60f123df`。
+- `how-to-read-c2pa-results`：[Pexels #29113394](https://www.pexels.com/photo/photographer-holding-camera-with-screen-display-29113394/)，Ömer Derinyar；`src/assets/blog/how-to-read-c2pa-results.webp`；SHA-256 `c0f6bb0af56fd1ac511f547c79c822fda12d848e4e0e2027be8f17dc5c1b9f20`。
+- `verify-metadata-removal`：[Pexels #7014918](https://www.pexels.com/photo/anonymous-woman-editing-photo-on-laptop-7014918/)，George Milton；`src/assets/blog/verify-metadata-removal.webp`；SHA-256 `a2dda05f3cdc64d92d5b77a1521043dcc76926c128d87f24651530709116c316`。
+- `why-metadata-is-missing`：[Pexels #17793440](https://www.pexels.com/photo/searching-for-photos-on-the-website-17793440/)，K.；`src/assets/blog/why-metadata-is-missing.webp`；SHA-256 `4d59e0a48d423af313fde4ee5afe19f4cb733d08d1eae052b2f217a4d42fb8a2`。

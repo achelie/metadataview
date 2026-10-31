@@ -12,9 +12,9 @@ publishedAt: 2026-10-05
 updatedAt: 2026-10-05
 featured: false
 author: "ViewExif"
-# Cover: an actual ViewExif browser result from a synthetic document test, created 2026-10-05.
-cover: "../../assets/blog/why-metadata-is-missing.png"
-coverAlt: "ViewExif document report from a synthetic sample, with stored properties and native field groups"
+# Cover: Pexels #17793440, K., downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
+cover: "../../assets/blog/why-metadata-is-missing.webp"
+coverAlt: "A hand browsing photos on a phone beside a laptop"
 practicalTake:
   - "Check whether the scan completed before treating an empty field as absent. Unsupported input, damaged data and a completed empty result need different next steps."
   - "Compare the original, exported and received copies separately. A filename or matching preview cannot establish that they contain the same embedded records."

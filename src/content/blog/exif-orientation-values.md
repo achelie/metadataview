@@ -12,8 +12,9 @@ publishedAt: 2026-10-23
 updatedAt: 2026-10-23
 featured: false
 author: "ViewExif"
-cover: "../../assets/blog/exif-orientation-values.svg"
-coverAlt: "Diagram comparing stored landscape image pixels with an upright portrait display after EXIF Orientation 6 is applied"
+# Cover: Pexels #12468236, Oleg Nagovski, downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
+cover: "../../assets/blog/exif-orientation-values.webp"
+coverAlt: "Hands holding a camera with a person reflected in its screen"
 practicalTake:
   - "Orientation is a display instruction. Removing it without transforming the pixels can leave a photo sideways or mirrored."
   - "Values 5–8 exchange the displayed width and height. Values 2, 4, 5, and 7 include a reflection rather than rotation alone."

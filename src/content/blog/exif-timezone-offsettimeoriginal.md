@@ -12,8 +12,9 @@ publishedAt: 2026-10-23
 updatedAt: 2026-10-23
 featured: false
 author: "ViewExif"
-cover: "../../assets/blog/exif-timezone-offsettimeoriginal.svg"
-coverAlt: "Illustrated example pairing 00:15 local capture time with a +09:00 offset to obtain 15:15 UTC on the previous day"
+# Cover: Pexels #5357068, Maria Mileta, downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
+cover: "../../assets/blog/exif-timezone-offsettimeoriginal.webp"
+coverAlt: "A white clock beside a stack of books"
 practicalTake:
   - "Pair DateTimeOriginal with OffsetTimeOriginal. OffsetTime and OffsetTimeDigitized belong to different date fields."
   - "A missing offset leaves the UTC instant unknown. Your current computer time zone cannot fill that gap reliably."

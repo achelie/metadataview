@@ -12,9 +12,9 @@ publishedAt: 2026-10-05
 updatedAt: 2026-10-05
 featured: false
 author: "ViewExif"
-# Cover: an actual ViewExif result for a synthetic unsigned file, created 2026-10-05.
-cover: "../../assets/blog/how-to-read-c2pa-results.png"
-coverAlt: "ViewExif C2PA result for a synthetic unsigned file, explaining that no embedded credential was found"
+# Cover: Pexels #29113394, Ömer Derinyar, downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
+cover: "../../assets/blog/how-to-read-c2pa-results.webp"
+coverAlt: "Hands holding a camera with an image visible on its screen"
 practicalTake:
   - "Start with the main result, then read file binding, signature, publisher trust and revocation as separate checks. A successful signature is not a verdict on a visible scene."
   - "No embedded credential means this local verifier found no manifest to validate. It does not mean fake, AI-generated, unedited or a failed signature."
