@@ -3,6 +3,7 @@ import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 const baseline = JSON.parse(await readFile('docs/content-url-baseline.json', 'utf8'));
 const origin = 'https://www.viewexif.com';
+const adScripts = html => html.match(/<script\b[^>]*\bsrc="[^"]*\/adsbygoogle\.js\?[^"]+"[^>]*>/g) ?? [];
 const get = async url => {
   let error;
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -34,7 +35,9 @@ await Promise.all(Array.from({ length: 6 }, async () => {
       if (sitemap.html.includes(`<loc>${entry.canonical}</loc>`) === expectedNoindex) failures.push('sitemap');
       if (/<link\b[^>]*rel="alternate"[^>]*hreflang=/i.test(live.html)) failures.push('stale search alternates');
       if ((live.html.match(/name="google-adsense-account" content="ca-pub-7443237558968985"/g) ?? []).length !== 1) failures.push('account meta');
-      if (/adsbygoogle|fundingchoicesmessages|pagead2\.googlesyndication/i.test(live.html)) failures.push('advertising runtime');
+      const expectedAds = adScripts(local);
+      const liveAds = adScripts(live.html.split('</head>', 1)[0]);
+      if (expectedAds.length !== 1 || liveAds.length !== 1 || liveAds[0] !== expectedAds[0]) failures.push('Auto ads script mismatch');
       if (local.includes('result-reading-guide') && !live.html.includes('result-reading-guide')) failures.push('missing result guide');
       if (/\/blog\/[^/]+\/$/.test(route) && !route.includes('/page/')) {
         const article = html => [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)]

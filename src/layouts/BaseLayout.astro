@@ -56,6 +56,14 @@ const toolRouterEnabled = basePath === '/'
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#171815" />
     <meta name="google-adsense-account" content={siteIdentity.adsenseAccountId} />
+    {import.meta.env.PROD && path !== '/404/' && (
+      <script
+        is:inline
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteIdentity.adsenseAccountId}`}
+        crossorigin="anonymous"
+      ></script>
+    )}
     {toolRouterEnabled && <ClientRouter fallback="swap" />}
     <script>
       import { installLimitedToolRouting } from '../lib/tool-handoff/router-lifecycle';

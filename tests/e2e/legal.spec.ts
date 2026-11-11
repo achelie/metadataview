@@ -4,8 +4,8 @@ const ADSENSE_ACCOUNT_ID = 'ca-pub-7443237558968985';
 const ADS_TXT_LINE = 'google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0';
 const PUBLIC_EMAIL = 'contact@viewexif.com';
 const POLICY_EFFECTIVE_DATE = '2026-08-23';
-const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-10-23';
-const GOOGLE_AD_REQUEST = /(?:googlesyndication\.com|doubleclick\.net|fundingchoicesmessages\.google\.com)/i;
+const PRIVACY_POLICY_EFFECTIVE_DATE = '2026-11-11';
+const ADSENSE_SCRIPT_URL = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ACCOUNT_ID}`;
 
 const legalKinds = ['about', 'privacy', 'contact', 'terms'] as const;
 
@@ -52,17 +52,24 @@ function route(prefix: string, kind: (typeof legalKinds)[number]): string {
   return `${prefix}/${kind}/`;
 }
 
-async function expectNoAdRuntime(page: Page) {
-  await expect(page.locator('script[src*="pagead2.googlesyndication.com"], script[src*="fundingchoicesmessages.google.com"], ins.adsbygoogle, [data-ad-client], [data-ad-slot]')).toHaveCount(0);
-  const html = await page.locator('html').evaluate((element) => element.outerHTML);
-  expect(html).not.toMatch(/adsbygoogle|googlefc|fundingchoicesmessages\.google\.com/i);
+async function expectAutoAdsScript(page: Page) {
+  const loader = page.locator('head script[src*="adsbygoogle.js"]');
+  await expect(loader).toHaveCount(1);
+  await expect(loader).toHaveAttribute('src', ADSENSE_SCRIPT_URL);
+  await expect(loader).toHaveAttribute('crossorigin', 'anonymous');
+  await expect(loader).toHaveJSProperty('async', true);
 }
 
+test.beforeEach(async ({ page }) => {
+  // Exercise the loader request without running live ads in the test suite.
+  await page.route(ADSENSE_SCRIPT_URL, (route) => route.fulfill({
+    contentType: 'application/javascript',
+    headers: { 'access-control-allow-origin': '*' },
+    body: '',
+  }));
+});
+
 test('all localized trust pages are reachable and expose one verification meta', async ({ page }) => {
-  const adRequests: string[] = [];
-  page.on('request', (outbound) => {
-    if (GOOGLE_AD_REQUEST.test(outbound.url())) adRequests.push(outbound.url());
-  });
   for (const locale of locales) {
     for (const kind of legalKinds) {
       const path = route(locale.prefix, kind);
@@ -74,10 +81,9 @@ test('all localized trust pages are reachable and expose one verification meta',
       await expect(page.locator('meta[name="google-adsense-account"]')).toHaveAttribute('content', ADSENSE_ACCOUNT_ID);
       await expect(page.locator('main form')).toHaveCount(0);
       await expect(page.locator('main')).toContainText('ViewExif');
-      await expectNoAdRuntime(page);
+      await expectAutoAdsScript(page);
     }
   }
-  expect(adRequests).toEqual([]);
 });
 
 test('about, contact, terms and footer expose a consistent public identity', async ({ page }) => {
@@ -149,7 +155,7 @@ test('localized terms cover the complete service and responsibility outline', as
   }
 });
 
-test('ads.txt is exact and the application build makes no Google ad requests', async ({ page, request }) => {
+test('ads.txt is exact and the homepage requests one Auto ads script', async ({ page, request }) => {
   const adsTextResponse = await request.get('/ads.txt');
   expect(adsTextResponse.ok()).toBe(true);
   const nonEmptyLines = (await adsTextResponse.text()).split(/\r?\n/).filter((line) => line.length > 0);
@@ -157,12 +163,12 @@ test('ads.txt is exact and the application build makes no Google ad requests', a
 
   const adRequests: string[] = [];
   page.on('request', (outbound) => {
-    if (GOOGLE_AD_REQUEST.test(outbound.url())) adRequests.push(outbound.url());
+    if (outbound.url().includes('adsbygoogle.js')) adRequests.push(outbound.url());
   });
   await page.goto('/');
   await expect(page.locator('meta[name="google-adsense-account"]')).toHaveCount(1);
-  await expectNoAdRuntime(page);
-  expect(adRequests).toEqual([]);
+  await expectAutoAdsScript(page);
+  expect(adRequests).toEqual([ADSENSE_SCRIPT_URL]);
 });
 
 for (const width of [390, 239]) {
