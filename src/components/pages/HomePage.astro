@@ -2,8 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MetadataReportWorkbench from '../MetadataReportWorkbench';
 import { IconGlyph } from '../IconGlyph';
-import { canonicalUrl } from '../../lib/seo';
-import { localizePath, type Locale } from '../../i18n/core';
+import { canonicalUrl, viewExifPublisher } from '../../lib/seo';
+import { localizePath, locales, type Locale } from '../../i18n/core';
 import { homeCopy } from '../../i18n/home';
 import ReadingRoutes from '../ReadingRoutes.astro';
 import ResultReadingGuide from '../ResultReadingGuide.astro';
@@ -15,11 +15,12 @@ const copy = homeCopy[locale];
 const hrefFor = (href: string) => localizePath(href, locale);
 const homePath = hrefFor('/');
 const homeUrl = canonicalUrl(homePath, Astro.site);
+const siteUrl = canonicalUrl('/', Astro.site);
 const imageLocale = locale.toLowerCase();
 const exampleImage = `/seo/exif-report-${imageLocale}-v1.png`;
 const socialImage = { src: `/seo/exif-viewer-${imageLocale}-v1.png`, alt: copy.socialAlt, width: 1200, height: 630 };
 const schemas = [
-  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${homeUrl}#website`, name: 'ViewExif', url: 'https://www.viewexif.com/', description: copy.description, inLanguage: locale },
+  { '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteUrl}#website`, name: 'ViewExif', url: siteUrl, description: homeCopy.en.description, inLanguage: locales, publisher: viewExifPublisher(Astro.site) },
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', '@id': `${homeUrl}#metadata-viewer`, name: copy.appName, applicationCategory: 'UtilitiesApplication', operatingSystem: locale === 'zh-CN' ? '现代浏览器' : locale === 'de' ? 'Jeder moderne Browser' : locale === 'fr' ? 'Tout navigateur moderne' : 'Any modern browser', url: homeUrl, description: copy.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: copy.appFeatures },
   { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: copy.faqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
 ];
@@ -57,7 +58,7 @@ const exifCheckHrefs = ['/image-metadata-viewer/', '/image-metadata-viewer/', '/
       <header class="home-section-heading"><h2 id="home-example-title">{copy.exampleTitle}</h2><p>{copy.exampleIntro}</p></header>
       <figure>
         <img src={exampleImage} alt={copy.exampleAlt} width="1200" height="720" loading="lazy" decoding="async" />
-        <figcaption>{copy.exampleCaption}</figcaption>
+        <figcaption>{copy.exampleCaption}{locale === 'en' && <> <a href="/how-we-test/#public-jpeg-check">Repeat the public JPEG check.</a></>}</figcaption>
       </figure>
     </section>
 
@@ -118,6 +119,7 @@ const exifCheckHrefs = ['/image-metadata-viewer/', '/image-metadata-viewer/', '/
   .home-example figure { margin: 0; max-width: 1000px; }
   .home-example img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
   .home-example figcaption { max-width: var(--prose-width); margin-top: .75rem; font-size: 16px; line-height: 1.5; color: var(--muted); }
+  .home-example figcaption a { text-decoration: underline; text-underline-offset: .2em; }
   .home-support .home-format-links { padding: 0; border-bottom: 0; }
   .home-format-links a { min-width: 0; }
   .home-format-links a small { font-size: 16px; line-height: 1.5; }

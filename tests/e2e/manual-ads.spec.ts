@@ -168,7 +168,7 @@ for (const mode of ['blocked', 'unfilled'] as const) {
   });
 }
 
-test('file selection, drop, cleanup and downloads emit only fixed event names', async ({ page }) => {
+test('file operations emit fixed events and a tool label without file data', async ({ page }) => {
   test.setTimeout(120_000);
   await mockAds(page, 'blocked');
   await page.addInitScript(() => {
@@ -186,12 +186,14 @@ test('file selection, drop, cleanup and downloads emit only fixed event names', 
     const audit = window as typeof window & { events: unknown[][]; downloadAttributes: (string | undefined)[] };
     return { events: audit.events, downloadAttributes: audit.downloadAttributes };
   });
+  const viewerEvent = (name: string) => [name, { props: { tool: 'metadata-viewer' } }];
+  const removerEvent = (name: string) => [name, { props: { tool: 'image-metadata-remover' } }];
   await page.goto('/');
   const input = page.locator('input[type=file]');
   await expect(input.locator('xpath=ancestor::astro-island[1]')).not.toHaveAttribute('ssr', '');
   await input.setInputFiles({ name: 'private-marker.txt', buffer: Buffer.from('private-content'), mimeType: 'text/plain' });
   await expect(page.locator('.report-error')).toBeVisible();
-  expect((await state()).events).toEqual([['file_processing_started'], ['metadata_parse_failed']]);
+  expect((await state()).events).toEqual([viewerEvent('file_processing_started'), viewerEvent('metadata_parse_failed')]);
   await page.reload();
   await expect(input.locator('xpath=ancestor::astro-island[1]')).not.toHaveAttribute('ssr', '');
   const bytes = await readFile('public/samples/metadata-demo-v1.jpg');
@@ -208,7 +210,7 @@ test('file selection, drop, cleanup and downloads emit only fixed event names', 
   await actions.getByRole('button', { name: 'Complete JSON', exact: true }).click();
   expect((await json).suggestedFilename()).toMatch(/\.json$/);
   expect(await state()).toEqual({
-    events: [['file_processing_started'], ['metadata_parse_succeeded'], ['file_download_triggered']],
+    events: ['file_processing_started', 'metadata_parse_succeeded', 'file_download_triggered'].map(viewerEvent),
     downloadAttributes: ['false'],
   });
   await page.locator('a[data-tool-file-link][href="/image-metadata-remover/"]').click();
@@ -219,8 +221,8 @@ test('file selection, drop, cleanup and downloads emit only fixed event names', 
   expect((await clean).suggestedFilename()).toBe('private-photo-clean.jpg');
   expect(await state()).toEqual({
     events: [
-      ['file_processing_started'], ['metadata_parse_succeeded'], ['file_download_triggered'],
-      ['file_processing_started'], ['metadata_parse_succeeded'], ['metadata_cleanup_succeeded'], ['file_download_triggered'],
+      ...['file_processing_started', 'metadata_parse_succeeded', 'file_download_triggered'].map(viewerEvent),
+      ...['file_processing_started', 'metadata_parse_succeeded', 'metadata_cleanup_succeeded', 'file_download_triggered'].map(removerEvent),
     ],
     downloadAttributes: ['false', 'false'],
   });

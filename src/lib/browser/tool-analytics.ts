@@ -1,3 +1,5 @@
+import { stripLocale } from '../../i18n/core';
+
 type ToolEvent =
   | 'file_processing_started'
   | 'metadata_parse_succeeded'
@@ -8,14 +10,17 @@ type ToolEvent =
 
 declare global {
   interface Window {
-    AhrefsAnalytics?: { sendEvent: (name: ToolEvent) => void };
+    AhrefsAnalytics?: { sendEvent: (name: ToolEvent, options: { props: { tool: string } }) => void };
   }
 }
 
 export function trackToolEvent(name: ToolEvent): void {
   try {
-    // Only fixed event names leave the tool. The provider adds page context.
-    window.AhrefsAnalytics?.sendEvent(name);
+    const path = stripLocale(window.location.pathname);
+    // Match known routes only. The property never contains query strings or file data.
+    const tool = path === '/' ? 'metadata-viewer'
+      : path.match(/^\/((?:(?:image|video|audio|document)-)?metadata-(?:viewer|remover)|image-privacy-checker|c2pa-viewer)\/?$/)?.[1];
+    if (tool) window.AhrefsAnalytics?.sendEvent(name, { props: { tool } });
   } catch {
     // Analytics must not interrupt local file operations.
   }

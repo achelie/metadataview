@@ -1,4 +1,5 @@
 import { expect, test, type BrowserContext, type Page, type Request } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 import { analyticsPrivacyFixture } from '../fixtures/analytics-privacy';
 
 type SensitiveFixture = Awaited<ReturnType<typeof analyticsPrivacyFixture>>;
@@ -88,8 +89,12 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
     }
   });
   const ahrefsEvents = () => requests.filter(request => new URL(request.url).hostname === ahrefsHost && new URL(request.url).pathname === '/api/event');
-  const eventNames = () => ahrefsEvents().flatMap(request => {
-    try { return [JSON.parse(request.body).n]; } catch { return []; }
+  const toolEvents = () => ahrefsEvents().flatMap(request => {
+    try {
+      const { n, p } = JSON.parse(request.body);
+      const props = typeof p === 'string' ? JSON.parse(p) : p;
+      return props?.tool ? [{ name: n, props }] : [];
+    } catch { return []; }
   });
   const pageviews = () => ahrefsEvents().filter(request => {
     try { return JSON.parse(request.body).n === 'pageview'; } catch { return false; }
@@ -97,7 +102,7 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
   const maps = () => requests.filter(request => new URL(request.url).hostname === 'www.openstreetmap.org');
   const rum = () => requests.filter(request => isRum(new URL(request.url), origin) && request.method === 'POST');
   return {
-    origin, local, requests, pageviews, eventNames, maps, rum, actions, blockedLeaks,
+    origin, local, requests, pageviews, toolEvents, maps, rum, actions, blockedLeaks,
     registerFixture: (value: SensitiveFixture) => { fixture = value; actions.push('synthetic-fixture-registered-before-file-selection'); },
     fixtureHash: () => fixture?.sha256,
     downloads: () => downloadCount,
@@ -132,6 +137,9 @@ function sensitiveReasons(request: CapturedRequest, fixture: SensitiveFixture, a
   const reasons: string[] = [];
   for (const [kind, value] of [['file-marker', 'c7d493ab'], ['filename', fixture.filename], ['author', fixture.author], ['sha256', fixture.sha256]] as const) {
     if (contains(all, value)) reasons.push(kind);
+  }
+  if (all.includes(fixture.bytes.toString('base64').toLowerCase()) || all.includes(fixture.bytes.toString('base64url').toLowerCase())) {
+    reasons.push('encoded-fixture');
   }
   const coordinateTraffic = authorizedMap ? details : all;
   for (const value of [fixture.latitude, fixture.longitude]) {
@@ -209,7 +217,7 @@ async function requireRealPageview(page: Page, audit: NetworkAudit, minimum = 1)
   expect(audit.requests.some(request => request.url.startsWith('https://analytics.ahrefs.com/analytics.js'))).toBe(true);
 }
 
-async function finishOnPrivacyPage(page: Page, audit: NetworkAudit, fixture: SensitiveFixture) {
+async function finishOnPrivacyPage(page: Page, audit: NetworkAudit, fixture: SensitiveFixture, expectedDownloads = 0) {
   const previousViews = audit.pageviews().length;
   audit.recordAction('native-navigation-pagehide-to-privacy');
   // A real navigation exercises pagehide/unload and delayed performance beacons.
@@ -219,7 +227,7 @@ async function finishOnPrivacyPage(page: Page, audit: NetworkAudit, fixture: Sen
     await expect.poll(() => audit.rum().length, { message: 'Production must exercise actual Cloudflare RUM, including its request payload, rather than silently skipping it.', timeout: 20_000 }).toBeGreaterThan(0);
   }
   await assertPrivateTraffic(audit, fixture);
-  expect(audit.downloads(), 'Map activation and file handoffs must never download automatically').toBe(0);
+  expect(audit.downloads(), 'Only explicitly triggered downloads should be observed').toBe(expectedDownloads);
 }
 
 test.describe('Analytics keeps file-derived data local', { tag: '@release' }, () => {
@@ -326,6 +334,14 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
     audit.registerFixture(fixture);
     audit.recordAction('select-gps-jpeg');
     await upload(page, fixture.filename, fixture.bytes);
+    audit.recordAction('explicit-export-json');
+    const exports = page.locator('.report-export-actions');
+    await exports.locator('summary').click();
+    const jsonDownload = page.waitForEvent('download');
+    await exports.getByRole('button', { name: 'Complete JSON', exact: true }).click();
+    const json = await readFile((await (await jsonDownload).path())!, 'utf8');
+    expect(JSON.parse(json).file.name).toBe(fixture.filename);
+    expect(json).toContain(fixture.author);
     const documentId = await page.evaluate(() => (window as Window & { __privacyDocumentId?: string }).__privacyDocumentId);
     const continueTo = async (scope: string, path: string) => {
       audit.recordAction(`soft-handoff:${path}`);
@@ -345,14 +361,27 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
     await page.getByRole('button', { name: 'Create and verify clean copy', exact: true }).click();
     await expect(page.locator('.removal-result')).toBeVisible({ timeout: 90_000 });
     await expect(page.locator('.removal-result')).not.toHaveClass(/is-blocked/);
+    audit.recordAction('explicit-download-processed-jpeg');
+    const cleanDownload = page.waitForEvent('download');
+    await page.locator('.removal-result .result-action-bar').getByRole('button', { name: /Download (clean|processed) copy/ }).click();
+    const cleaned = await readFile((await (await cleanDownload).path())!);
+    expect(cleaned.subarray(0, 3)).toEqual(Buffer.from([0xff, 0xd8, 0xff]));
+    expect(cleaned.equals(fixture.bytes)).toBe(false);
     await continueTo('.removal-result .tool-next-steps', '/image-privacy-checker/');
     await expect(page.locator('.privacy-result-actions h2')).toContainText('viewexif-private-c7d493ab-clean.jpg', { timeout: 90_000 });
     await expect(page.locator('.privacy-engine-rail h2')).toHaveText('Full scan complete', { timeout: 90_000 });
     await expect(page.locator('#risk-precise-location')).toHaveCount(0);
     await expect(page.locator('#risk-creator-identity')).toHaveCount(0);
     await expect.poll(() => audit.pageviews().map(request => new URL(JSON.parse(request.body).u).pathname)).toEqual(expect.arrayContaining(['/', '/image-privacy-checker/', '/image-metadata-remover/']));
-    await expect.poll(audit.eventNames).toEqual(expect.arrayContaining(['file_processing_started', 'metadata_parse_succeeded', 'metadata_cleanup_succeeded']));
+    await expect.poll(audit.toolEvents).toEqual(expect.arrayContaining([
+      { name: 'file_processing_started', props: { tool: 'metadata-viewer' } },
+      { name: 'metadata_parse_succeeded', props: { tool: 'metadata-viewer' } },
+      { name: 'file_download_triggered', props: { tool: 'metadata-viewer' } },
+      { name: 'metadata_parse_succeeded', props: { tool: 'image-privacy-checker' } },
+      { name: 'metadata_cleanup_succeeded', props: { tool: 'image-metadata-remover' } },
+      { name: 'file_download_triggered', props: { tool: 'image-metadata-remover' } },
+    ]));
     expect(audit.maps()).toHaveLength(0);
-    await finishOnPrivacyPage(page, audit, fixture);
+    await finishOnPrivacyPage(page, audit, fixture, 2);
   });
 });

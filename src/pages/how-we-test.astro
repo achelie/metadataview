@@ -5,6 +5,7 @@ import EditorialPage from '../components/pages/EditorialPage.astro';
   title="How We Test — Metadata, Cleanup, and C2PA Checks | ViewExif"
   description="The synthetic fixtures, browser checks, cleanup comparisons, and C2PA result checks used by ViewExif, with the limits of each kind of verification."
   path="/how-we-test/"
+  updated="2026-11-12"
   heading="What our checks can actually tell you"
   intro="A green check needs a clear scope. This page describes the automated checks in ViewExif's current implementation and the uncertainty that remains when you inspect your own file."
 >
@@ -18,6 +19,18 @@ import EditorialPage from '../components/pages/EditorialPage.astro';
     <p>Unit tests cover file-type detection, metadata-report normalization, GPS conversion, EXIF orientation, safe value display, and export behavior. For example, GPS tests include decimal and degrees/minutes/seconds coordinates, invalid ranges, and altitude reference handling. Orientation tests check accepted values and the displayed dimension swap for a sideways image.</p>
     <p>These checks help catch a correct raw number being given the wrong meaning. They do not establish that the camera recorded a truthful coordinate or date. A readable field remains a statement in the file. Preserve its original path when comparing it with another tool, because similar display labels can refer to different metadata families.</p>
   </section>
+  <section aria-labelledby="public-jpeg-check">
+    <h2 id="public-jpeg-check">Repeat the public JPEG check</h2>
+    <p>The <a href="/samples/metadata-demo-v1.jpg">public demo JPEG</a> contains an AI-generated image and deliberately written EXIF. The coordinates point to the Eiffel Tower. They represent a test value, and the image has no camera capture location.</p>
+    <ol>
+      <li>In the <a href="/image-metadata-viewer/">Image Metadata Viewer</a>, choose <strong>Try sample</strong>. Look for <code>48.858400, 2.294500</code>, <code>ViewExif Demo</code> and <code>2026:01:15 10:30:00</code>. Export the JSON report if you need to compare source fields.</li>
+      <li>In the <a href="/image-metadata-remover/">Image Metadata Remover</a>, choose the same sample and select <strong>Create and verify clean copy</strong>. Read the residual count and download the processed JPEG and receipt.</li>
+      <li>Reopen the downloaded JPEG in the <a href="/image-privacy-checker/">Image Privacy Checker</a>. Wait for the scan and check whether it still flags precise location or creator identity.</li>
+    </ol>
+    <p>In the <time datetime="2026-11-12T06:43:45.832Z">November 12, 2026</time> local production-build run, Chromium 151.0.7922.34 on Windows used a 390 × 844 viewport. The viewer showed the expected demo coordinates and author. ExifReader 4.41.3 also read the original capture date and checked the downloaded JPEG. It found no readable Artist, DateTimeOriginal or EXIF latitude and longitude in the output. The output still measured 1200 × 800 and retained orientation 1, the normal display direction.</p>
+    <p>The receipt reported <strong>verified with residual metadata</strong> and counted 63 residual entries. The JPEG content check reported a structure-only warning. The second read checks the fields listed here and uses a different library from the cleanup writer. ViewExif also uses ExifReader during image inspection. This run leaves the encoded image payload and any unrecognized fields unverified. See the <a href="/samples/SOURCES.md">sample field and checksum notes</a>.</p>
+    <p>To repeat the browser test after building the site, run <code>pnpm exec playwright test samples.spec.ts --project=chromium --grep "removal sample stops at ready"</code>. The test attaches the observed values, browser version and source checksum to the result.</p>
+  </section>
   <section aria-labelledby="cleanup">
     <h2 id="cleanup">Compare a cleanup copy with its source</h2>
     <p>The cleanup code builds a baseline, creates a separate output, and compares the available metadata reports. Its policy distinguishes eligible descriptive or private fields, structural fields retained for the file to work, and runtime information supplied by the browser or filesystem.</p>
@@ -27,7 +40,7 @@ import EditorialPage from '../components/pages/EditorialPage.astro';
   <section aria-labelledby="c2pa">
     <h2 id="c2pa">Keep credential checks separate</h2>
     <p>C2PA report tests use controlled SDK-shaped results to check how ViewExif presents signature validation, file binding, publisher trust, and revocation information. They include valid, trusted, invalid, and no-credential cases, plus unfamiliar diagnostic codes. These fixtures test the report adapter; they are not independent cryptographic validations of those invented records.</p>
-    <p>Browser tests also open an unsigned sample and exercise the signed-sample path, retries, cancellation, and report download. An unsigned result must stay “no credentials found.” A result called valid must not quietly become trusted. The underlying verifier and its available trust information still limit the conclusion. Read <a href="/blog/how-to-read-c2pa-results/">how to interpret C2PA results</a> for the practical differences.</p>
+    <p>Browser tests also exercise the viewer with the <a href="/samples/metadata-demo-v1.jpg">unsigned demo JPEG</a> and the <a href="https://github.com/c2pa-org/public-testfiles/blob/22beccc075707475b038d8789d0136c009e43143/legacy/1.4/image/jpeg/adobe-20220124-C.jpg">pinned Adobe test image</a>. The latter exercises binding, signature and report export. The test expects unchecked publisher trust and unknown revocation. Read <a href="/blog/how-to-read-c2pa-results/">how to interpret C2PA results</a> for the scope of each check.</p>
   </section>
   <section aria-labelledby="browser">
     <h2 id="browser">Exercise the actual browser workflow</h2>
@@ -36,7 +49,7 @@ import EditorialPage from '../components/pages/EditorialPage.astro';
   </section>
   <section aria-labelledby="network">
     <h2 id="network">Look for file-derived data in requests</h2>
-    <p>Analytics-privacy tests choose synthetic files containing recognizable marker values and inspect outgoing URLs, request bodies, and headers during supported workflows. The audit checks for filenames, private field values, hashes, and location data. It distinguishes an explicit map-opening action from background requests, because opening a location link deliberately sends coordinates to the map service.</p>
+    <p>The network test selects a synthetic JPEG, reads its metadata, exports JSON, cleans and downloads a copy, then scans the processed file. It checks captured URLs, request bodies and headers for known filename, author, hash, coordinates and the encoded fixture. The Ahrefs events carry a fixed tool label. A separate test exercises the OpenStreetMap button, which deliberately sends coordinates to the map service when you open it.</p>
     <p>This is a test of the captured workflow and services present during that run. It cannot promise that a future third-party script, a browser extension, or a changed deployment has identical behavior. The <a href="/privacy/">privacy policy</a> explains the current distinction between local file processing and ordinary page requests.</p>
   </section>
   <section aria-labelledby="release">

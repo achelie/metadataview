@@ -155,7 +155,7 @@ const privacyCopy = {
         p('ViewExif reads GPS coordinates from your file locally. It does not request your browser location or automatically load a map. Activating the “View on OpenStreetMap” button opens that service in a new tab to display the stored location.'),
         p('OpenStreetMap receives the coordinates in the link URL and normal network request information, including your IP address and browser details. ViewExif does not send the original file, its name, hash, or other metadata through this link. If you do not click, no map request is made.', [link('OpenStreetMap Foundation privacy policy', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Aggregate traffic statistics',
-        p('ViewExif uses Ahrefs Web Analytics to understand page traffic and basic interaction patterns. Ahrefs may process the page URL, referrer, browser and device details, language, city-level location derived from the request, and page interaction signals.'),
+        p('ViewExif uses Ahrefs Web Analytics to understand page traffic and basic interaction patterns. Ahrefs may process the page URL, referrer, browser and device details, language, city-level location derived from the request, and page interaction signals. Tool events record the tool type, processing start, parsing or cleanup outcomes, and download initiation.'),
         p('Ahrefs describes this service as Cookie-free by default. It says raw IP addresses are not stored and that an IP address plus User-Agent is used to create a daily rotating hash. Analytics requests from ViewExif do not include selected file contents, filenames, local paths, file hashes, or extracted metadata values.', [link('Ahrefs privacy policy', AHREFS_PRIVACY)])),
       s('cloudflare', 'Cloudflare', 'Hosting and performance signals',
         p('Cloudflare Pages delivers this site and may process normal request information such as IP address, User-Agent, requested URL, security events, and delivery logs. Cloudflare Web Analytics or browser RUM may also process page-level performance timing and technical events.'),
@@ -194,7 +194,7 @@ const privacyCopy = {
         p('ViewExif liest GPS-Koordinaten lokal aus deiner Datei. Es fragt nicht nach deinem Browserstandort und lädt keine Karte automatisch. Die Schaltfläche „Auf OpenStreetMap ansehen“ öffnet den Dienst in einem neuen Tab, um den gespeicherten Ort anzuzeigen.'),
         p('OpenStreetMap erhält die Koordinaten in der Link-URL und normale Angaben zur Netzwerkanfrage, darunter deine IP-Adresse und Browserdetails. ViewExif sendet über diesen Link weder die Originaldatei noch ihren Namen, Hash oder andere Metadaten. Ohne Klick gibt es keine Kartenanfrage.', [link('Datenschutzerklärung der OpenStreetMap Foundation', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Zusammengefasste Verkehrsstatistik',
-        p('ViewExif verwendet Ahrefs Web Analytics, um Seitenaufrufe und grundlegende Interaktionen zu verstehen. Ahrefs kann Seiten-URL, Referrer, Browser- und Gerätedaten, Sprache, einen aus der Anfrage abgeleiteten Standort auf Stadtebene und Interaktionssignale verarbeiten.'),
+        p('ViewExif verwendet Ahrefs Web Analytics, um Seitenaufrufe und grundlegende Interaktionen zu verstehen. Ahrefs kann Seiten-URL, Referrer, Browser- und Gerätedaten, Sprache, einen aus der Anfrage abgeleiteten Standort auf Stadtebene und Interaktionssignale verarbeiten. Werkzeugereignisse erfassen den Werkzeugtyp, den Beginn der Verarbeitung, das Ergebnis des Lesens oder Bereinigens und den Start eines Downloads.'),
         p('Ahrefs beschreibt den Dienst standardmäßig als Cookie-frei. Rohe IP-Adressen werden laut Ahrefs nicht gespeichert; aus IP-Adresse und User-Agent entsteht ein täglich wechselnder Hash. Analyseanfragen von ViewExif enthalten keine Dateiinhalte, Dateinamen, lokalen Pfade, Datei-Hashes oder extrahierten Metadatenwerte.', [link('Datenschutzerklärung von Ahrefs', AHREFS_PRIVACY)])),
       s('cloudflare', 'Cloudflare', 'Hosting und Leistungssignale',
         p('Cloudflare Pages liefert diese Website aus und kann normale Anfragedaten wie IP-Adresse, User-Agent, angeforderte URL, Sicherheitsereignisse und Auslieferungsprotokolle verarbeiten. Cloudflare Web Analytics oder Browser-RUM kann außerdem technische Ereignisse und Zeitmessungen auf Seitenebene verarbeiten.'),
@@ -233,7 +233,7 @@ const privacyCopy = {
         p('ViewExif lit localement les coordonnées GPS de votre fichier. Il ne demande pas votre position au navigateur et ne charge aucune carte automatiquement. Le bouton « Voir sur OpenStreetMap » ouvre ce service dans un nouvel onglet pour afficher le lieu enregistré.'),
         p('OpenStreetMap reçoit les coordonnées dans l’URL du lien et les informations habituelles de requête réseau, dont votre adresse IP et les détails du navigateur. ViewExif ne transmet par ce lien ni le fichier original, ni son nom, son empreinte ou ses autres métadonnées. Sans clic, aucune requête de carte ne part.', [link('Politique de confidentialité de la fondation OpenStreetMap', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', 'Statistiques de trafic agrégées',
-        p('ViewExif utilise Ahrefs Web Analytics pour comprendre les pages consultées et les interactions de base. Ahrefs peut traiter l’URL, le référent, le navigateur, l’appareil, la langue, une localisation au niveau de la ville déduite de la requête et des signaux d’interaction.'),
+        p('ViewExif utilise Ahrefs Web Analytics pour comprendre les pages consultées et les interactions de base. Ahrefs peut traiter l’URL, le référent, le navigateur, l’appareil, la langue, une localisation au niveau de la ville déduite de la requête et des signaux d’interaction. Les événements indiquent le type d’outil, le début du traitement, le résultat de la lecture ou du nettoyage et le lancement d’un téléchargement.'),
         p('Ahrefs décrit ce service comme sans Cookie par défaut. Il indique ne pas stocker les adresses IP brutes et combiner l’IP et le User-Agent dans une empreinte renouvelée chaque jour. Les requêtes de statistiques de ViewExif ne contiennent ni contenu de fichier, noms de fichier, chemins locaux, empreintes de fichier ou valeurs de métadonnées extraites.', [link('Politique de confidentialité Ahrefs', AHREFS_PRIVACY)])),
       s('cloudflare', 'Cloudflare', 'Hébergement et signaux de performance',
         p('Cloudflare Pages distribue ce site et peut traiter les informations normales d’une requête : adresse IP, User-Agent, URL demandée, événements de sécurité et journaux de distribution. Cloudflare Web Analytics ou le RUM du navigateur peut aussi traiter des mesures de performance et événements techniques au niveau de la page.'),
@@ -271,7 +271,7 @@ const privacyCopy = {
         p('ViewExif 在本地读取文件里的 GPS 坐标，不会向浏览器申请你的当前位置，也不会自动加载地图。只有操作“在 OpenStreetMap 查看”按钮，才会在新标签页打开该服务，显示文件中记录的位置。'),
         p('OpenStreetMap 会收到链接 URL 中的坐标，以及 IP 地址、浏览器信息等正常网络请求信息。ViewExif 不会通过这个链接发送原文件、文件名、哈希或其他元数据。不点击就不会发起地图请求。', [link('OpenStreetMap 基金会隐私政策', OPENSTREETMAP_PRIVACY)])),
       s('ahrefs', 'Ahrefs', '汇总后的流量统计',
-        p('ViewExif 使用 Ahrefs Web Analytics 了解页面流量和基础交互。Ahrefs 可能处理页面 URL、来源页、浏览器和设备信息、语言、从请求推断的城市级位置以及页面交互信号。'),
+        p('ViewExif 使用 Ahrefs Web Analytics 了解页面流量和基础交互。Ahrefs 可能处理页面 URL、来源页、浏览器和设备信息、语言、从请求推断的城市级位置以及页面交互信号。工具事件记录工具类型、开始处理、读取或清理结果，以及发起下载。'),
         p('Ahrefs 称这项服务默认不使用 Cookie，不保存原始 IP；IP 地址和 User-Agent 仅用于生成每天轮换的哈希。ViewExif 的统计请求不包含文件内容、文件名、本地路径、文件哈希或提取出的元数据值。', [link('Ahrefs 隐私政策', AHREFS_PRIVACY)])),
       s('cloudflare', 'Cloudflare', '托管与性能信号',
         p('Cloudflare Pages 负责分发网站，可能处理正常请求中的 IP 地址、User-Agent、请求 URL、安全事件和分发日志。Cloudflare Web Analytics 或浏览器 RUM 还可能处理页面级性能时序和技术事件。'),
@@ -451,7 +451,7 @@ const legal = kind === 'privacy' ? privacy : terms;
       <p>{about.intro}</p>
     </header>
     <div class="manifesto">{about.principles.map((item, index) => <div><span>{String(index + 1).padStart(2, '0')}</span><h2>{item[0]}</h2><p>{item[1]}</p></div>)}</div>
-    <section class="operator-statement">
+    <section class="operator-statement" id="viewexif">
       <span class="section-index">{about.operatorLabel}</span>
       <h2>{about.operatorTitle}</h2>
       <p>{about.operatorText}</p>

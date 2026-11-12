@@ -244,10 +244,11 @@ test('article metadata and visible FAQ share the same source data', async ({ pag
   expect(posting.headline).toBe(ARTICLE_TITLE);
   expect(posting.author).toEqual({
     '@type': 'Organization',
+    '@id': 'https://www.viewexif.com/about/#viewexif',
     name: 'ViewExif',
     url: 'https://www.viewexif.com/about/',
   });
-  expect(posting.publisher.name).toBe('ViewExif');
+  expect(posting.publisher).toEqual(posting.author);
   expect(posting).not.toHaveProperty('reviewedBy');
   expect(faq.mainEntity).toHaveLength(5);
   expect(breadcrumb.itemListElement).toHaveLength(3);
@@ -683,7 +684,7 @@ test('photo location guide gives direct EXIF GPS steps without pretending to geo
   await page.goto(PHOTO_LOCATION_PATH);
   await expect(page).toHaveTitle(PHOTO_LOCATION_SEO_TITLE);
   await expect(page.getByRole('heading', { level: 1, name: PHOTO_LOCATION_TITLE })).toBeVisible();
-  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-09-05/);
+  await expect(page.locator('.blog-byline time')).toHaveAttribute('datetime', /^2026-11-12/);
   await expect(page.locator('.blog-byline__date small')).toHaveText(/[1-9]\d* min read/);
   await expect(page.locator('.blog-cover img')).toHaveAttribute('alt', /camera.*world map.*GPS metadata/i);
   const coverRatio = await page.locator('.blog-cover img').evaluate((image) => image.getBoundingClientRect().width / image.getBoundingClientRect().height);
@@ -700,7 +701,8 @@ test('photo location guide gives direct EXIF GPS steps without pretending to geo
   await expect(page.getByRole('heading', { level: 2, name: 'What can EXIF tell you when GPS is missing?' })).toBeVisible();
   await expect(page.locator('.blog-prose table tbody tr')).toHaveCount(4);
   await expect(page.locator('.blog-faq article')).toHaveCount(4);
-  await expect(page.locator('.blog-prose a[href*="reddit.com/"]')).toHaveCount(2);
+  await expect(page.locator('.blog-prose a[href*="support.apple.com/"]')).toHaveCount(1);
+  await expect(page.locator('.blog-prose a[href="/how-we-test/#public-jpeg-check"]')).toHaveCount(1);
   await expect(page.locator('.blog-sources')).toHaveCount(0);
   await expect(page.locator('.blog-cover figcaption')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Image Metadata Viewer', exact: true })).toHaveAttribute('href', '/image-metadata-viewer/');
@@ -708,7 +710,7 @@ test('photo location guide gives direct EXIF GPS steps without pretending to geo
   await expect(page.getByRole('link', { name: 'Image Metadata Remover', exact: true })).toHaveAttribute('href', '/image-metadata-remover/');
   await expect(page.getByRole('link', { name: /WhatsApp and EXIF data/ })).toHaveAttribute('href', WHATSAPP_PATH);
   await expect(page.getByRole('link', { name: /how to remove GPS data from photos before sharing/ })).toHaveAttribute('href', GPS_REMOVAL_PATH);
-  await expect(page.locator('.blog-prose')).toContainText('this guide does not treat an AI location guess as an EXIF result');
+  await expect(page.locator('.blog-prose')).toContainText('Keep any conclusion based on the image or an AI guess separate from the coordinates read from the file');
   const sectionAnswers = await page.locator('.blog-prose h2 + p').allTextContents();
   expect(sectionAnswers.length).toBeGreaterThan(0);
   expect(sectionAnswers.every((answer) => answer.trim().length > 10)).toBe(true);

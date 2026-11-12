@@ -9,7 +9,7 @@ tags:
   - Content Credentials
   - file provenance
 publishedAt: 2026-10-05
-updatedAt: 2026-10-05
+updatedAt: 2026-11-12
 featured: false
 author: "ViewExif"
 # Cover: Pexels #29113394, Ömer Derinyar, downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
@@ -35,7 +35,7 @@ related:
   - what-is-xmp-metadata
 ---
 
-Start with the C2PA result, then check what the verifier actually examined. A valid signature tells you something about the signed record; publisher trust and the truth of the scene need separate consideration.
+A missing C2PA credential gives you no signed history to evaluate for that copy. With a credential present, check file binding, signature and publisher trust separately. The visible scene still needs evidence of its own.
 
 The [C2PA Viewer](/c2pa-viewer/) reads supported embedded Content Credentials locally. It can inspect signatures, file bindings, declared actions and source relationships. It does not decide whether a photograph depicts a real event or whether a recording's message is accurate.
 
@@ -81,6 +81,8 @@ ViewExif shows each check separately. It runs the official Content Authenticity 
 | Revocation | Available information about certificate revocation | No online OCSP request is made here |
 
 The [C2PA technical specification](https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html) distinguishes signature, trust and revocation processing. A credential can include revocation information; that differs from fetching a current response online. Read the actual result rather than assuming every local scan performed the same checks as another service.
+
+To reproduce the distinction, open the [C2PA Viewer](/c2pa-viewer/) and select **Try sample**. The pinned Adobe test file returns valid binding and signature in the browser test. Publisher trust is unchecked and revocation is unknown. Then open ViewExif’s public demo JPEG from the [sample instructions](/how-we-test/#public-jpeg-check). The unsigned example has no readable credential. The [test method](/how-we-test/#c2pa) links to the upstream signed asset and explains the scope of both cases.
 
 ## Use actions and ingredients as declared history
 

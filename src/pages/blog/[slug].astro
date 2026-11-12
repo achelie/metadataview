@@ -6,6 +6,7 @@ import BlogToolStrip from '../../components/BlogToolStrip.astro';
 import StaticIcon from '../../components/StaticIcon.astro';
 import EditorialDisclosure from '../../components/EditorialDisclosure.astro';
 import ManualAd from '../../components/ManualAd.astro';
+import { viewExifPublisher } from '../../lib/seo';
 import { hubsForPost } from '../../lib/guide-hubs';
 import { blogPath, formatBlogDate, getReadingTime, resolveRelatedPosts, sortBlogPosts, validateBlogRelationships } from '../../lib/blog';
 import '../../styles/blog.css';
@@ -27,6 +28,7 @@ const canonical = new URL(path, Astro.site).toString();
 const imageUrl = new URL(post.data.cover.src, Astro.site).toString();
 const publishedIso = post.data.publishedAt.toISOString();
 const updatedIso = post.data.updatedAt.toISOString();
+const publisher = viewExifPublisher(Astro.site);
 const tocHeadings = headings.filter((heading) => heading.depth === 2);
 const tocItems = [
   ...tocHeadings.map((heading) => ({ slug: heading.slug, text: heading.text })),
@@ -42,8 +44,8 @@ const schemas = [
     datePublished: publishedIso,
     dateModified: updatedIso,
     mainEntityOfPage: canonical,
-    author: { '@type': 'Organization', name: post.data.author, url: new URL('/about/', Astro.site).toString() },
-    publisher: { '@type': 'Organization', name: 'ViewExif', url: 'https://www.viewexif.com/' },
+    author: post.data.author === publisher.name ? publisher : { name: post.data.author },
+    publisher,
     articleSection: post.data.category,
     keywords: post.data.tags.join(', '),
   },

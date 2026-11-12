@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { viewExifPublisher } from '../../lib/seo';
+import { formatBlogDate } from '../../lib/blog';
 
 interface Props {
   title: string;
@@ -7,13 +9,13 @@ interface Props {
   path: '/editorial-policy/' | '/how-we-test/';
   heading: string;
   intro: string;
+  updated: string;
 }
-const { title, description, path, heading, intro } = Astro.props;
-const updated = '2026-10-23';
+const { title, description, path, heading, intro, updated } = Astro.props;
 const schema = {
   '@context': 'https://schema.org', '@type': 'WebPage', name: heading, description,
   url: new URL(path, Astro.site).toString(), dateModified: updated,
-  publisher: { '@type': 'Organization', name: 'ViewExif', url: new URL('/about/', Astro.site).toString() },
+  publisher: viewExifPublisher(Astro.site),
 };
 ---
 <BaseLayout title={title} description={description} path={path} schemas={[schema]}>
@@ -22,7 +24,7 @@ const schema = {
       <span class="eyebrow">The work behind the guides</span>
       <h1>{heading}</h1>
       <p>{intro}</p>
-      <div class="policy-date"><strong>Updated</strong><time datetime={updated}>October 23, 2026</time></div>
+      <div class="policy-date"><strong>Updated</strong><time datetime={updated}>{formatBlogDate(new Date(updated))}</time></div>
     </header>
     <nav class="editorial-page__links" aria-label="Editorial information">
       <a href="/editorial-policy/" aria-current={path === '/editorial-policy/' ? 'page' : undefined}>Editorial policy</a>

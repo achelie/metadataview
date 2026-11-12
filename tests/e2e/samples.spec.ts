@@ -1,6 +1,7 @@
 import { expect, test, type Page, type Route } from '../fixtures/browser-test';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
+import ExifReader from 'exifreader';
 
 const metadataAsset = '/samples/metadata-demo-v1.jpg';
 const signedAsset = '/samples/c2pa-signed-v1.jpg';
@@ -179,7 +180,7 @@ test('sample click produces real GPS and identity privacy risks', async ({ page 
   expect(pickerCount()).toBe(0);
 });
 
-test('removal sample stops at ready and supports manual cleanup and both downloads', async ({ page }) => {
+test('removal sample stops at ready and supports manual cleanup and both downloads', async ({ page, browser }, testInfo) => {
   test.setTimeout(180_000);
   const pickerCount = trackPickers(page);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -216,6 +217,23 @@ test('removal sample stops at ready and supports manual cleanup and both downloa
   expect(copy.suggestedFilename()).toBe('viewexif-metadata-demo-clean.jpg');
   const cleanedBytes = await readFile((await copy.path())!);
   expect(cleanedBytes.subarray(0, 3)).toEqual(Buffer.from([0xff, 0xd8, 0xff]));
+  const sourceBytes = await readFile(`public${metadataAsset}`);
+  const sourceSha256 = createHash('sha256').update(sourceBytes).digest('hex');
+  expect(sourceSha256).toBe('4932b44f686a7f8a245377de4766c81e039e6e27f9aeba49993dab5898c12889');
+  // This read of the saved copy uses ExifReader rather than the cleanup writer.
+  const before = ExifReader.load(sourceBytes, { expanded: true });
+  const after = ExifReader.load(cleanedBytes, { expanded: true });
+  expect(before.exif?.Artist?.description).toBe('ViewExif Demo');
+  expect(before.exif?.DateTimeOriginal?.description).toBe('2026:01:15 10:30:00');
+  expect(before.gps?.Latitude).toBeCloseTo(48.8584, 6);
+  expect(before.gps?.Longitude).toBeCloseTo(2.2945, 6);
+  expect(after.exif?.Artist).toBeUndefined();
+  expect(after.exif?.DateTimeOriginal).toBeUndefined();
+  expect(after.gps?.Latitude).toBeUndefined();
+  expect(after.gps?.Longitude).toBeUndefined();
+  expect(after.exif?.Orientation?.value).toBe(1);
+  expect(after.file?.['Image Width']?.value).toBe(1200);
+  expect(after.file?.['Image Height']?.value).toBe(800);
   await result.locator('details.result-export-menu > summary').click();
   const receiptEvent = page.waitForEvent('download');
   await result.getByRole('button', { name: 'Download receipt', exact: true }).click();
@@ -228,6 +246,8 @@ test('removal sample stops at ready and supports manual cleanup and both downloa
   expect(receipt.counts.residual).toBeGreaterThan(0);
   expect(counts.map(Number)).toEqual([receipt.counts.removed, receipt.counts.preserved, receipt.counts.residual]);
   expect(receipt.checks.every((check: { status: string }) => check.status !== 'failed')).toBe(true);
+  const payloadCheck = receipt.checks.find((check: { id: string }) => check.id === 'content-payload');
+  expect(payloadCheck?.status).toBe('warning');
   await groups.first().locator(':scope > summary').click();
   await result.locator('details.result-export-menu > summary').click();
   await result.getByRole('button', { name: 'Start over', exact: true }).click();
@@ -241,6 +261,17 @@ test('removal sample stops at ready and supports manual cleanup and both downloa
   await expect(page.locator('#risk-precise-location')).toHaveCount(0);
   await expect(page.locator('#risk-creator-identity')).toHaveCount(0);
   expect(pickerCount()).toBe(0);
+  await testInfo.attach('public-jpeg-evidence.json', {
+    contentType: 'application/json',
+    body: JSON.stringify({
+      recordedAt: new Date().toISOString(), platform: process.platform,
+      browser: browser.browserType().name(), browserVersion: browser.version(), node: process.version,
+      viewport: { width: 390, height: 844 }, sample: metadataAsset, sourceSha256,
+      before: { artist: before.exif?.Artist?.description, dateTimeOriginal: before.exif?.DateTimeOriginal?.description, gps: before.gps },
+      after: { artist: null, dateTimeOriginal: null, gps: null, orientation: after.exif?.Orientation?.value, width: after.file?.['Image Width']?.value, height: after.file?.['Image Height']?.value },
+      cleanupStatus: receipt.status, residualCount: receipt.counts.residual, payloadCheck,
+    }, null, 2),
+  });
 });
 
 test('C2PA sample runs the official verifier and exports its real signed manifest', async ({ page }) => {
@@ -250,7 +281,8 @@ test('C2PA sample runs the official verifier and exports its real signed manifes
   await openTool(page, tools[3].path);
   await page.getByRole('button', { name: 'Try sample', exact: true }).click();
   await resultReady(page, tools[3]);
-  await expect(page.getByRole('heading', { name: 'No Content Credentials', exact: true })).toHaveCount(0);
+  const noCredentials = page.getByRole('heading', { name: 'No Content Credentials found', exact: true });
+  await expect(noCredentials).toHaveCount(0);
   await expect(page.locator('.c2pa-hash code')).toHaveText(createHash('sha256').update(bytes).digest('hex'));
   await expect(page.locator('.sample-image-badge')).toContainText('signed Adobe test image');
   const downloadEvent = page.waitForEvent('download');
@@ -260,6 +292,9 @@ test('C2PA sample runs the official verifier and exports its real signed manifes
   expect(report).toMatchObject({ status: 'valid', checks: { binding: 'passed', signature: 'passed', publisherTrust: 'not-checked', revocation: 'unknown' } });
   expect(report.activeManifestLabel).toBeTruthy();
   expect(report.manifests.length).toBeGreaterThan(0);
+  const unsigned = await openTool(page, tools[3].path);
+  await unsigned.setInputFiles({ name: metadataName, mimeType: 'image/jpeg', buffer: await readFile(`public${metadataAsset}`) });
+  await expect(noCredentials).toBeVisible();
   expect(pickerCount()).toBe(0);
 });
 

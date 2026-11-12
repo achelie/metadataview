@@ -25,13 +25,13 @@ const headings = {
 };
 const copy = {
   viewer: [
-    t('Field not found: search native fields as well as the summary. If parsing finished and it is still absent, it was not found in this copy. That cannot distinguish a field never recorded from one removed later.', 'Feld nicht gefunden: Suche auch in den nativen Feldern. Fehlt es nach abgeschlossener Analyse, wurde es in dieser Kopie nicht gefunden. Ob es nie gespeichert oder später entfernt wurde, bleibt offen.', 'Champ non trouvé : cherchez aussi dans les champs natifs. S’il reste absent après l’analyse, il n’a pas été trouvé dans cette copie. Cela ne dit pas s’il a été supprimé ou jamais enregistré.', '未找到字段：先搜索原生字段，不只看摘要。解析完成后仍未找到，只能说明这份副本中未发现，不能确定它从未写入还是后来被删除。'),
+    t('Search the native fields as well as the summary. A completed scan only reports fields its readers recognize in this copy. Compare an earlier file to see whether a field was lost later.', 'Suche auch in den nativen Feldern. Eine abgeschlossene Analyse meldet nur die erkannten Felder dieser Kopie. Vergleiche sie mit einer älteren Datei, um mögliche Verluste zu erkennen.', 'Cherchez aussi dans les champs natifs. Une analyse terminée signale uniquement les champs reconnus dans cette copie. Comparez une version antérieure pour repérer une éventuelle perte.', '除了摘要，也搜索原生字段。即使扫描完成，报告也只包含解析器能识别的字段。与更早的文件对比，才能判断字段是否在后续环节丢失。'),
     t('Reading incomplete: a damaged block, unsupported format or interrupted parser is a reading limit, not an empty record. Read the warning and keep the original before trying another supported copy.', 'Analyse unvollständig: Ein beschädigter Block, ein unbekanntes Format oder ein Abbruch bedeutet nicht, dass keine Metadaten vorhanden sind. Lies die Warnung und bewahre das Original auf.', 'Lecture incomplète : un bloc endommagé, un format inconnu ou une interruption ne signifie pas que les métadonnées sont absentes. Lisez l’avertissement et conservez l’original.', '读取不完整：数据块损坏、格式不支持或解析中断，不等于没有元数据。先看警告并保留原件，再用支持的副本重试。'),
     t('Value present: dates, names and coordinates record what the file says. They are editable. Compare source groups and the history of this copy before treating a value as evidence.', 'Wert vorhanden: Datum, Name und Koordinaten zeigen, was die Datei angibt. Sie sind veränderbar. Vergleiche Quellgruppen und Dateihistorie.', 'Valeur présente : dates, noms et coordonnées décrivent ce que le fichier déclare. Ils sont modifiables. Comparez les groupes et l’historique de cette copie.', '字段存在：日期、姓名和坐标描述文件所记录的内容，它们可以被改写。结合来源分组和副本历史判断，不把单个值当作真实性证明。'),
   ],
   remover: [
     t('Removed means the output scan did not find the same eligible value. Preserved includes technical structure and content retained by the cleaner. Residual means a field remains or appeared in the output: read its value before sharing.', 'Entfernt heißt, dass die Kontrolle denselben bereinigbaren Wert nicht mehr fand. Erhalten umfasst Struktur und Inhalt. Verblieben bedeutet, dass ein Feld noch vorhanden oder hinzugekommen ist. Prüfe es vor dem Teilen.', 'Supprimé signifie que le contrôle n’a plus retrouvé la même valeur ciblée. Conservé comprend structure et contenu. Résiduel signale un champ restant ou apparu : lisez sa valeur avant de partager.', '已移除表示输出扫描未再找到同一可清理字段值。已保留包括必要结构和保留内容。残留表示字段仍存在或新出现在输出中，分享前要查看具体值。'),
-    t('An incomplete or blocked cleanup is not a successful result. Keep the source and read the failed check. Verification only covers what the parser can inspect; it does not prove every hidden record is gone.', 'Eine unvollständige oder blockierte Bereinigung ist kein Erfolg. Bewahre die Quelle auf und lies die fehlgeschlagene Prüfung. Die Kontrolle deckt nur lesbare Bereiche ab.', 'Un nettoyage incomplet ou bloqué n’est pas un succès. Gardez la source et lisez le contrôle en échec. La vérification couvre seulement ce que le lecteur peut inspecter.', '清理中断或被阻止不代表成功。保留源文件，查看失败检查。核验范围受解析能力限制，不能证明所有隐藏记录都已消失。'),
+    t('Read the receipt to see whether ViewExif compared the encoded content or checked only the file structure. An incomplete scan leaves some fields unchecked. If a check blocks the download, keep the source.', 'Der Prüfbeleg zeigt, ob ViewExif die kodierten Inhalte verglichen oder nur die Dateistruktur geprüft hat. Bei einer unvollständigen Analyse bleiben Felder ungeprüft. Bewahre die Quelle auf, wenn der Download gesperrt ist.', 'Le reçu indique si ViewExif a comparé le contenu encodé ou vérifié uniquement la structure. Une analyse incomplète laisse des champs sans contrôle. Si le téléchargement est bloqué, gardez la source.', '看收据，确认 ViewExif 比较了编码内容，还是只检查了文件结构。扫描未完成时，部分字段仍待核验。如果下载被阻止，请保留源文件。'),
     t('Check the output format and warnings, then open or play the downloaded file. A new hash is expected after metadata changes. Visible text, speech, attachments and the filename need a separate privacy check.', 'Prüfe Ausgabeformat und Warnungen, dann öffne oder spiele die Kopie ab. Ein neuer Hash ist nach Änderungen normal. Text, Sprache, Anhänge und Dateiname brauchen eine eigene Prüfung.', 'Vérifiez le format et les avertissements, puis ouvrez ou lisez la copie. Un nouveau hash est normal après modification. Texte, voix, pièces jointes et nom demandent un contrôle distinct.', '检查输出格式和警告，再打开或播放实际下载的文件。元数据变化后哈希改变是正常现象。画面文字、语音、附件和文件名要另外检查。'),
   ],
   privacy: [
@@ -54,6 +54,7 @@ const notes = path.includes('video-') ? t('Video: duration and codec describe pl
     {copy[kind].map((text, index) => <li><h3>{headings[kind][index]}</h3><p>{text}</p></li>)}
   </ul>
   {notes && <p class="reading-format-note">{notes}</p>}
+  {locale === 'en' && path !== '/' && <p class="reading-evidence"><a href={kind === 'c2pa' ? '/how-we-test/#c2pa' : '/how-we-test/'}>See how ViewExif tests these checks</a>.</p>}
 </section>
 <style>
   .result-reading-guide {
@@ -75,6 +76,8 @@ const notes = path.includes('video-') ? t('Video: duration and codec describe pl
   li + li { border-left: 1px solid var(--line); padding-left: var(--layout-gap); }
   h3 { margin: 0 0 .75rem; color: var(--rust); font-size: 20px; line-height: 1.3; }
   p { margin: 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+  .reading-evidence { margin-top: var(--layout-gap); }
+  .reading-evidence a { text-decoration: underline; text-underline-offset: .2em; }
   .reading-format-note {
     margin-top: var(--layout-gap);
     padding: .85rem 1rem;

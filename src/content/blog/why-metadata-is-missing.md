@@ -9,7 +9,7 @@ tags:
   - no EXIF data
   - unreadable metadata
 publishedAt: 2026-10-05
-updatedAt: 2026-10-05
+updatedAt: 2026-11-12
 featured: false
 author: "ViewExif"
 # Cover: Pexels #17793440, K., downloaded 2026-10-31; center-cropped to 1600 × 900 WebP.
@@ -51,7 +51,7 @@ Open the saved file in the [Metadata Viewer](/metadata-viewer/) and wait for the
 | Error, cancellation or timeout | Reading did not establish a complete result | Keep the warning; retry or change the reading method |
 | Different values across groups | Multiple stored claims disagree | Preserve the group names and compare the file's history |
 
-A quick summary can appear before a deeper scan finishes. If the later scan fails, the fields already read are still useful, but the unfinished stage may have found more. Report the unresolved fields as “not read,” not “not present.”
+A quick summary can appear before a deeper scan finishes. If the later scan fails, the fields already read are still useful, but the unfinished stage may have found more. Describe fields from that unfinished stage as unread.
 
 ## Find out who would write the missing field
 
@@ -93,6 +93,8 @@ If available, gather the original, the editor's export and the recipient's downl
 If the original has a field and the export lacks it, check the editor's settings. If both have it but the received copy does not, investigate the delivery route. The difference tells you where to look; it does not prove every internal step the service performed.
 
 Use a harmless synthetic sample for a platform test. Record the date, app version, sending option and download route. A preview and a file attachment can produce different copies. No screenshot in this guide claims to test WhatsApp, email or another platform's present behavior.
+
+You can repeat this comparison with ViewExif’s public JPEG. Open the sample in the viewer and look for the invented author `ViewExif Demo`, the capture-date field and the demo GPS coordinates. In the image remover, run the same sample, download the processed copy and inspect that copy again. The [public JPEG check](/how-we-test/#public-jpeg-check) lists the fields checked on both copies and the limits of the cleanup receipt.
 
 ## Check catalogs and sidecars separately
 
