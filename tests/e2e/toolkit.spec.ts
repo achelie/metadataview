@@ -1,7 +1,8 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 import { readFile } from 'node:fs/promises';
 import { BlobReader, TextWriter, ZipReader } from '@zip.js/zip.js';
 import { deflate } from 'pako';
+import { adsenseScriptUrl } from '../../src/config/adsense';
 import { aacFixture, flacFixture, m4aFixture, oggFixture, opusFixture, wavFixture, wmaFixture } from '../fixtures/audio';
 import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
 import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
@@ -475,7 +476,7 @@ test('C2PA viewer produces a fingerprinted local receipt for an unsigned PNG', a
   const pageOrigin = new URL(page.url()).origin;
   expect(requests.every((request) => {
     const url = new URL(request.url);
-    return url.origin === pageOrigin || url.href === 'https://analytics.ahrefs.com/analytics.js';
+    return url.origin === pageOrigin || url.href === adsenseScriptUrl || url.href === 'https://analytics.ahrefs.com/analytics.js';
   })).toBe(true);
   await page.setViewportSize({ width: 239, height: 844 });
   const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
@@ -1004,6 +1005,7 @@ test('home editorial sections fit an extremely narrow viewport', async ({ page }
 
 test('navigation uses direct task labels and pages contain no mojibake', async ({ page }) => {
   await page.goto('/');
+  await page.locator('.desktop-nav').getByRole('button', { name: 'Tools', exact: true }).click();
   for (const label of ['View metadata', 'Remove metadata']) await expect(page.locator('.desktop-nav').getByText(label, { exact: true })).toBeVisible();
   for (const label of ['Check privacy', 'Verify C2PA']) await expect(page.locator('.desktop-nav').getByRole('link', { name: label, exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /Read AI prompts|ComfyUI/i })).toHaveCount(0);

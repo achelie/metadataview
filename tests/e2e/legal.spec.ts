@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 
 const ADSENSE_ACCOUNT_ID = 'ca-pub-7443237558968985';
 const ADS_TXT_LINE = 'google.com, pub-7443237558968985, DIRECT, f08c47fec0942fa0';
@@ -59,15 +59,6 @@ async function expectAutoAdsScript(page: Page) {
   await expect(loader).toHaveAttribute('crossorigin', 'anonymous');
   await expect(loader).toHaveJSProperty('async', true);
 }
-
-test.beforeEach(async ({ page }) => {
-  // Exercise the loader request without running live ads in the test suite.
-  await page.route(ADSENSE_SCRIPT_URL, (route) => route.fulfill({
-    contentType: 'application/javascript',
-    headers: { 'access-control-allow-origin': '*' },
-    body: '',
-  }));
-});
 
 test('all localized trust pages are reachable and expose one verification meta', async ({ page }) => {
   for (const locale of locales) {

@@ -1,5 +1,6 @@
 import type { PDFFont } from 'pdf-lib';
 import type { MetadataReport } from './types';
+import { downloadBlob } from '../browser/download';
 
 export interface PdfReportContent {
   lines: Array<{ text: string; bold?: boolean; size?: number }>;
@@ -128,11 +129,5 @@ export async function createMetadataReportPdfBytes(report: MetadataReport, fontB
 
 export async function downloadMetadataReportPdf(report: MetadataReport, filename: string): Promise<void> {
   const bytes = await createMetadataReportPdfBytes(report);
-  const blob = new Blob([bytes as BlobPart], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.click();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
+  downloadBlob(new Blob([bytes as BlobPart], { type: 'application/pdf' }), filename);
 }

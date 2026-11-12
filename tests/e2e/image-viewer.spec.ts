@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 import { createHash } from 'node:crypto';
 import { deflate } from 'pako';
 import { gifFixture, heicFixture, tiffFixture } from '../fixtures/images';
@@ -132,7 +132,7 @@ test('selected file values stay out of outgoing requests',async({page,context})=
     if(canaries.some(value=>payload.includes(value))){
       unsafe.push(`${request.method()} ${request.url()}`);
       await route.fulfill({status:204,body:''});
-    }else await route.continue();
+    }else await route.fallback();
   });
   await open(page); await upload(page,name,buffer,'image/png'); await ready(page,/secret-local-name\.png metadata report/);
   await expect(page.locator('.report-engine-copy strong')).toHaveText('Full scan complete',{timeout:30_000});

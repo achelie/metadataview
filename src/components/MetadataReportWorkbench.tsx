@@ -1,5 +1,6 @@
 import { engineMessage } from '../i18n/workbench-engine';
 import { downloadBlob } from '../lib/browser/download';
+import { trackToolEvent } from '../lib/browser/tool-analytics';
 import { reportTranslator, reportErrors } from '../i18n/workbench-report';
 import { reportDisplay } from '../i18n/report-display';
 import { Icon } from '@iconify/react';
@@ -372,6 +373,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
   };
 
   const inspect = async (selected: File, extraFiles = 0) => {
+    trackToolEvent('file_processing_started');
     discardToolFile();
     sample.cancel();
     const currentId = runId.current + 1;
@@ -385,6 +387,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
     if (selected.type.startsWith('image/')) showPreview(selected);
     const limit = fileLimit(scope);
     if (selected.size > limit) {
+      trackToolEvent('metadata_parse_failed');
       setBusy(false); setError(t("size-error", { size: (selected.size / 1024 / 1024).toFixed(1), limit: formatLimit(limit) })); setNotice(t("stopped-before-parsing")); return;
     }
     setNotice(extraFiles ? (t("extra-files", { count: extraFiles })) : (t("reading-structure-and-computing-two-checksums-locally")));
@@ -394,6 +397,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       const result = await current.promise;
       if (runId.current !== currentId) return;
       setReport(result);
+      trackToolEvent('metadata_parse_succeeded');
       if (result.category === 'image' && !previewUrl.current) showPreview(selected);
       const imageReport = result.category === 'image';
       const nativeCount = number(result.nativeSections.flatMap((section) => section.fields).length);
@@ -404,6 +408,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
       const fallback = t("the-local-parser-could-not-read-this-file");
       const raw = caught instanceof Error ? caught.message : fallback;
       const code = caught instanceof MetadataError ? caught.code : undefined;
+      if (code !== 'PARSE_CANCELLED') trackToolEvent('metadata_parse_failed');
       const localizedErrors: Partial<Record<string, string>> = reportErrors[locale];
       setError(code && localizedErrors[code] ? localizedErrors[code]! : raw);
       setNotice(t("stopped-safely"));
@@ -534,7 +539,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
         <header><span className="eyebrow">{t("photo-quick-read")}</span><div><h3 id="home-exif-summary-title">{reportDisplay(locale, 'EXIF Summary')}</h3><p>{t("the-photo-details-people-check-first-missing-means-this-file-did-not-expose-a-usable-value")}</p></div></header>
         <PhotoSummaryRows items={exifSummary.filter((item) => ['camera', 'date', 'gps'].includes(item.id))} locale={locale} />
         <details className="report-photo-details" open><summary className="disclosure-summary"><span>{t('more-photo-details')}</span><DisclosureChevron /></summary><PhotoSummaryRows items={exifSummary.filter((item) => !['camera', 'date', 'gps'].includes(item.id))} locale={locale} /></details>
-        <footer><a href="#metadata-results-heading">{t('view-all-metadata')} ↓</a></footer>
+        <footer><a href="#metadata-results-heading" data-google-vignette="false">{t('view-all-metadata')} ↓</a></footer>
       </section> : null}
 
       <details className="report-summary report-file-details" open={report.category !== 'image'}>
@@ -579,7 +584,7 @@ function MetadataReportWorkbenchContent({ scope, formats, accept, allowedTypes, 
           <strong>{t("found-count", { count: number(matchingFields.length) })}</strong>
         </div>
         <div className="report-ledger-body">
-          <nav className="report-chapters" aria-label={t("report-chapters")}><span>{t("loaded-chapters")}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`} onClick={() => { const target = document.getElementById(section.id); if (target instanceof HTMLDetailsElement) target.open = true; }}><i>{String(index + 1).padStart(2, '0')}</i>{reportDisplay(locale, section.title)}<b>{section.fields.length}</b></a>)}</nav>
+          <nav className="report-chapters" aria-label={t("report-chapters")}><span>{t("loaded-chapters")}</span>{renderedSections.map((section, index) => <a key={section.id} href={`#${section.id}`} data-google-vignette="false" onClick={() => { const target = document.getElementById(section.id); if (target instanceof HTMLDetailsElement) target.open = true; }}><i>{String(index + 1).padStart(2, '0')}</i>{reportDisplay(locale, section.title)}<b>{section.fields.length}</b></a>)}</nav>
           <div className="report-sections">{renderedSections.map((section, index) => <details id={section.id} key={section.id} className="report-section" open={index === 0 || Boolean(deferredQuery.trim()) || source !== 'all'}><summary className="disclosure-summary"><span className="disclosure-label"><strong>{reportDisplay(locale, section.title)}</strong><small>{reportDisplay(locale, section.note)}</small></span><span className="report-section-controls"><b>{section.fields.length}</b><DisclosureChevron /></span></summary><FieldRows locale={locale} readable={view === 'readable'} section={section} expanded={expanded} onExpand={(id) => setExpanded((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; })} onCopy={(field) => void copied(field.displayValue, t("copy-field", { name: field.label }))} /></details>)}{!filtered.length ? <div className="report-empty"><strong>{t("no-matching-fields")}</strong><p>{t("clear-the-search-or-switch-the-source-filter")}</p><button className="report-text-button" type="button" onClick={() => { setQuery(''); setSource('all'); }}>{t("clear-filters")}</button></div> : null}{renderedCount < matchingFields.length ? <button className="report-load-more" type="button" onClick={() => setRenderLimit((current) => current + FIELD_BATCH)}><b>{t("load-250-more-rows")}</b><span>{t("render-count", { count: number(renderedCount), total: number(matchingFields.length) })}</span></button> : null}</div>
         </div>
       </section>

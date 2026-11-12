@@ -1,0 +1,49 @@
+---
+import { manualAdsEnabled, manualAdPlacements } from '../config/adsense';
+import { ADSENSE_ACCOUNT_ID } from '../config/site';
+
+interface Props {
+  position: keyof typeof manualAdPlacements;
+}
+
+const { position } = Astro.props;
+const { enabled, slot, format } = manualAdPlacements[position];
+const show = manualAdsEnabled && enabled;
+---
+{show && import.meta.env.DEV && (
+  <div class="ad-preview" data-ad-preview={position}>Advertisements (development preview)</div>
+)}
+{show && import.meta.env.PROD && /^\d{10}$/.test(slot) && (
+  <div class="manual-ad" data-manual-ad={position} data-client={ADSENSE_ACCOUNT_ID} data-slot={slot} data-format={format}></div>
+)}
+
+<script>
+  import '../lib/browser/manual-ads';
+</script>
+
+<style>
+  .manual-ad { min-width: 0; min-height: 1px; width: 100%; }
+  .manual-ad:has(> ins:not([data-ad-status="unfilled"])) { padding-block: var(--layout-gap); }
+  .manual-ad > :global(ins) {
+    display: block;
+    width: 100%;
+    min-height: 90px;
+  }
+  .manual-ad[data-format="in-article"] > :global(ins) { min-height: 140px; text-align: center; }
+  .manual-ad > :global(ins[data-ad-status="unfilled"]) { display: none !important; }
+  .ad-preview {
+    display: grid;
+    align-items: center;
+    min-height: 100px;
+    margin-block: var(--layout-gap);
+    padding: var(--layout-gap);
+    border: 1px dashed var(--muted);
+    background: repeating-linear-gradient(135deg, transparent 0 16px, rgba(23, 24, 21, .045) 16px 17px);
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  @media (max-width: 680px) {
+    .manual-ad > :global(ins) { min-height: 100px; }
+  }
+</style>

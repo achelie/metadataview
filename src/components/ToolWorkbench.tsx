@@ -3,6 +3,8 @@ import checkIcon from '@iconify-icons/lucide/shield-check';
 import rotateIcon from '@iconify-icons/lucide/rotate-ccw';
 import sparklesIcon from '@iconify-icons/lucide/sparkles';
 import { useEffect, useRef, useState } from 'react';
+import { triggerDownload } from '../lib/browser/download';
+import { trackToolEvent } from '../lib/browser/tool-analytics';
 import { removeImageMetadata, type RemovalResult } from '../lib/image/remove-metadata';
 import { cleanImageFilename } from '../lib/image/privacy-cleanup';
 import type { DetectedFileType, ParsedMetadata } from '../lib/metadata/types';
@@ -56,6 +58,7 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
   useEffect(() => () => { task.current?.cancel(); clearCleanUrl(); }, []);
 
   const inspect = async (file: File) => {
+    trackToolEvent('file_processing_started');
     reset(false); setSource(file); setBusy(true); setStatus('Inspecting file bytes locally…');
     try {
       const type = mode === 'privacy' ? 'check-privacy' : 'parse-metadata';
@@ -64,8 +67,10 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
       const result = await current.promise;
       if (mode === 'privacy') { const value = result as unknown as PrivacyWorkerResult; setMetadata(value.metadata); setPrivacy(value.report); }
       else setMetadata(result as ParsedMetadata);
+      trackToolEvent('metadata_parse_succeeded');
       setStatus(mode === 'remover' ? 'Scan complete — ready to remove metadata' : 'Local inspection complete');
     } catch (caught) {
+      if (task.current) trackToolEvent('metadata_parse_failed');
       setError(caught instanceof Error ? caught.message : 'The file could not be processed.'); setStatus('Stopped safely');
     } finally { setBusy(false); task.current = null; }
   };
@@ -81,7 +86,8 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
       const { parseFile } = await import('../lib/metadata/parse-file');
       const verified = await parseFile(cleanFile, ['jpeg', 'png', 'webp']);
       setCleanMetadata(verified); setStatus('Metadata removed and checked');
-    } catch (caught) { setError(caught instanceof Error ? caught.message : 'The image could not be re-encoded.'); setStatus('Stopped safely'); }
+      trackToolEvent('metadata_cleanup_succeeded');
+    } catch (caught) { trackToolEvent('metadata_cleanup_failed'); setError(caught instanceof Error ? caught.message : 'The image could not be re-encoded.'); setStatus('Stopped safely'); }
     finally { setBusy(false); }
   };
 
@@ -89,8 +95,7 @@ export default function ToolWorkbench({ mode, formats, accept, allowedTypes }: P
     if (!removal || !source) return;
     clearCleanUrl();
     const url = URL.createObjectURL(removal.blob); cleanUrl.current = url;
-    const anchor = document.createElement('a'); anchor.href = url;
-    anchor.download = cleanImageFilename(source.name, removal.mime); anchor.click();
+    triggerDownload(url, cleanImageFilename(source.name, removal.mime));
     window.setTimeout(clearCleanUrl, 1_000);
   };
 

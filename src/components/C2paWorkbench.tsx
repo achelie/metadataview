@@ -36,6 +36,7 @@ import { DisclosureChevron } from './DisclosureChevron';
 import { useSampleImage } from '../lib/samples/use-sample-image';
 import { SampleImageBar, SampleImageBadge } from './SampleImage';
 import { ResultActionBar } from './ResultActionBar';
+import { trackToolEvent } from '../lib/browser/tool-analytics';
 import { ToolFileLink } from './ToolFileLink';
 import { useIncomingToolFile } from '../lib/tool-handoff/use-incoming-tool-file';
 import { discardToolFile } from '../lib/tool-handoff/store';
@@ -288,6 +289,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
   }, [report?.generatedAt]);
 
   const inspect = async (selected: File) => {
+    trackToolEvent('file_processing_started');
     discardToolFile();
     sample.cancel();
     setExportNotice('');
@@ -309,6 +311,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
       });
       if (runId.current !== currentId) return;
       setReport(result);
+      trackToolEvent(result.status === 'unsupported' ? 'metadata_parse_failed' : 'metadata_parse_succeeded');
       setNotice(result.status === 'not-found' ? t('Credential check complete · none found', '凭证检查完成 · 没有找到', 'Credential-Prüfung abgeschlossen · nichts gefunden') : t('Credential check complete', '凭证检查完成', 'Credential-Prüfung abgeschlossen'));
     } catch (caught) {
       if (runId.current !== currentId) return;
@@ -316,6 +319,7 @@ function C2paWorkbenchContent({ formats, accept }: Omit<Props, 'locale'>) {
         setNotice(t('Verification canceled', '验证已取消', 'Prüfung abgebrochen'));
         setError(t('Verification was canceled. Retry this file or choose another one.', '验证已取消。可以重试这个文件，或者换一个。', 'Die Prüfung wurde abgebrochen. Versuche die Datei erneut oder wähle eine andere.'));
       } else {
+        trackToolEvent('metadata_parse_failed');
         setNotice(t('Verification stopped safely', '验证已安全停止', 'Prüfung sicher gestoppt'));
         setError(localizeC2paError(caught, locale));
       }

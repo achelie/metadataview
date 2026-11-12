@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../fixtures/browser-test';
 import { readFileSync } from 'node:fs';
 
 const baseline = JSON.parse(readFileSync('docs/content-url-baseline.json', 'utf8')) as { canonical: string }[];

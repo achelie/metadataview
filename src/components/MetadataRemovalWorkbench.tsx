@@ -27,6 +27,7 @@ import { DisclosureChevron } from './DisclosureChevron';
 import { useSampleImage } from '../lib/samples/use-sample-image';
 import { SampleImageBar, SampleImageBadge } from './SampleImage';
 import { ResultActionBar } from './ResultActionBar';
+import { trackToolEvent } from '../lib/browser/tool-analytics';
 import { ToolFileLink } from './ToolFileLink';
 import { ToolNextSteps } from './ToolNextSteps';
 import { toolHandoffText } from '../i18n/tool-handoff';
@@ -123,6 +124,7 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
   }, [result]);
 
   const inspect = async (selected: File) => {
+    trackToolEvent('file_processing_started');
     discardToolFile();
     stop();
     setExportNotice('');
@@ -131,7 +133,10 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     const typeHint = selected.name.split('.').pop()?.toLowerCase();
     const imageHint = selected.type.startsWith('image/') || ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'tif', 'tiff', 'gif'].includes(typeHint ?? '');
     const limit = imageHint ? IMAGE_LIMIT : UNIVERSAL_LIMIT;
-    if (selected.size > limit) { setStatus('failed'); setError(t("size-limit", { limit: Math.round(limit / 1024 / 1024) })); return; }
+    if (selected.size > limit) {
+      trackToolEvent('metadata_parse_failed');
+      setStatus('failed'); setError(t("size-limit", { limit: Math.round(limit / 1024 / 1024) })); return;
+    }
     try {
       const scanned = await scanReport(selected, allowedTypes, locale,
         (message) => { if (runId.current === id) setDetail(message); },
@@ -148,11 +153,13 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
         });
       if (runId.current !== id) return;
       setBefore(scanned.report); setBaselineComplete(scanned.complete); setStatus('ready');
+      trackToolEvent('metadata_parse_succeeded');
       const eligible = createRemovalBaseline(scanned.report, likelyCleanupEngine(scanned.report.file.detectedType)).eligible;
       setDetail(scanned.complete ? (t("eligible-count", { count: eligible })) : t("the-fast-report-is-ready-but-the-full-metadata-scan-did-not-finish-cleanup-can-continue-only-as-an-incomplete-verification"));
     } catch (caught) {
       if (runId.current !== id) return;
       if (caught instanceof ExifToolCancellationError) { setStatus('canceled'); setDetail(t("the-scan-was-canceled")); return; }
+      trackToolEvent('metadata_parse_failed');
       setStatus('failed'); setError(removalErrorText(caught, locale, 'the-file-could-not-be-inspected-safely'));
     }
   };
@@ -198,6 +205,7 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
         ...(cleaned.contentChecks ?? [{ id: 'content-payload', label: 'Content consistency', status: 'warning' as const, message: 'Only structure was checked. Content consistency has not been verified for this format.' }]),
       ];
       const blocked = checks.some((check) => check.status === 'failed');
+      trackToolEvent(blocked ? 'metadata_cleanup_failed' : 'metadata_cleanup_succeeded');
       const cleanupStatus: MetadataCleanupStatus = blocked ? 'blocked' : (!baselineComplete || !verified.complete) ? 'incomplete' : diff.residual.length ? 'verified-residual' : 'verified';
       const warnings = [...cleaned.warnings];
       if (!baselineComplete) warnings.push('The original metadata scan was incomplete. Removal counts cannot account for unread fields.');
@@ -208,6 +216,7 @@ function MetadataRemovalWorkbenchContent({ scope, formats, accept, allowedTypes 
     } catch (caught) {
       if (runId.current !== id) return;
       if (caught instanceof MetadataRemovalCanceledError || caught instanceof ExifToolCancellationError) { setStatus('canceled'); setDetail(t("cleanup-was-canceled-the-source-file-is-unchanged")); return; }
+      trackToolEvent('metadata_cleanup_failed');
       setStatus('failed'); setError(removalErrorText(caught, locale, 'metadata-cleanup-failed-safely')); setDetail(t("no-downloadable-copy-was-accepted"));
     }
   };

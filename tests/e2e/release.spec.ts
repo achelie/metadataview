@@ -1,18 +1,9 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 import { readFile } from 'node:fs/promises';
 import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
 
 test.describe('Release regression', { tag: '@release' }, () => {
 test.setTimeout(120_000);
-
-test.beforeEach(async ({ page }) => {
-  // Keep the tool controls deterministic while testing file processing.
-  await page.route('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?*', (route) => route.fulfill({
-    contentType: 'application/javascript',
-    headers: { 'access-control-allow-origin': '*' },
-    body: '',
-  }));
-});
 
 async function select(page: Page, name: string, buffer: Buffer, mimeType: string) {
   const input = page.locator('input[type=file]');

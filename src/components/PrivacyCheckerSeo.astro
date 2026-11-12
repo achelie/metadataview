@@ -105,7 +105,7 @@ const privacyProcess = zh ? [
     <ol class="home-process-list">
       {privacyProcess.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.note}</p></div></li>)}
     </ol>
-    <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?', 'Une image sous la main ?')}</span><a href="#privacy-checker-workbench">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen', 'Inspectez-la ci-dessus')} <IconGlyph name="arrow" size={15} /></a></p>
+    <p class="home-process-cta"><span>{t('Have an image ready?', '图片准备好了？', 'Bild zur Hand?', 'Une image sous la main ?')}</span><a href="#privacy-checker-workbench" data-google-vignette="false">{t('Check an image above', '在上面检查图片', 'Oben ein Bild prüfen', 'Inspectez-la ci-dessus')} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
       <summary class="disclosure-summary"><span class="disclosure-label">{t('What this score cannot see', '这个分数看不到什么', 'Was dieser Wert nicht sehen kann', 'Ce que ce score ne peut pas voir')}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary>
       <ul>

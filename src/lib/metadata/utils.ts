@@ -1,4 +1,5 @@
 import type { FileSummary, MetadataSection } from './types';
+import { downloadBlob } from '../browser/download';
 
 const MAX_DEPTH = 12;
 const MAX_KEYS = 10_000;
@@ -51,12 +52,7 @@ export function recordToItems(record: Record<string, unknown>): MetadataSection[
 
 export function downloadJson(data: unknown, filename: string): void {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = sanitizeFilename(filename, '.json');
-  anchor.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1_000);
+  downloadBlob(blob, sanitizeFilename(filename, '.json'));
 }
 
 export function countMetadataValues(value: unknown): number {

@@ -14,7 +14,7 @@ export function ToolFileLink({ file, href, children, className = 'button button-
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const [state, setState] = useState<'idle' | 'loading' | 'error'>('idle');
   return <span className="tool-file-link">
-    <a href={href} className={className} data-tool-file-link aria-disabled={state === 'loading' || undefined} onClick={async (event) => {
+    <a href={href} className={className} data-tool-file-link data-google-vignette="false" aria-disabled={state === 'loading' || undefined} onClick={async (event) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       if (running.current) return;

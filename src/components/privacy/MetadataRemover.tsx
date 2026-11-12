@@ -12,6 +12,7 @@ import { MetadataError } from '../../lib/metadata/errors';
 import { IMAGE_LIMITS } from '../../lib/metadata/limits';
 import type { NormalizedImageMetadata } from '../../lib/metadata/types';
 import { downloadJson } from '../../lib/metadata/utils';
+import { triggerDownload } from '../../lib/browser/download';
 import { IMAGE_FULL_SCAN_MODE, IMAGE_FULL_SCAN_TIMEOUT_MS } from '../../lib/metadata-report/scan-policy';
 import { createAndVerifyPrivacyCleanup } from '../../lib/privacy/cleanup-workflow';
 import { recordPrivacyScanFailure } from '../../lib/privacy/create-privacy-report';
@@ -171,7 +172,7 @@ export default function MetadataRemover() {
   const downloadClean = () => {
     if (!cleanupResult || cleanupResult.verificationStatus === 'failed') return;
     revokeDownload(); downloadUrl.current = URL.createObjectURL(cleanupResult.blob);
-    const anchor = document.createElement('a'); anchor.href = downloadUrl.current; anchor.download = cleanupResult.fileName; anchor.click();
+    triggerDownload(downloadUrl.current, cleanupResult.fileName);
     window.setTimeout(revokeDownload, 1_500);
   };
 

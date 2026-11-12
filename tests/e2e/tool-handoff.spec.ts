@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 import { readFile } from 'node:fs/promises';
 import { ooxmlFixture, ooxmlMime } from '../fixtures/ooxml';
 

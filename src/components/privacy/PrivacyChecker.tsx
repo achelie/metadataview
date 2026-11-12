@@ -12,6 +12,8 @@ import { MetadataError } from '../../lib/metadata/errors';
 import { IMAGE_LIMITS } from '../../lib/metadata/limits';
 import type { NormalizedImageMetadata } from '../../lib/metadata/types';
 import { downloadJson } from '../../lib/metadata/utils';
+import { triggerDownload } from '../../lib/browser/download';
+import { trackToolEvent } from '../../lib/browser/tool-analytics';
 import { IMAGE_FULL_SCAN_MODE, IMAGE_FULL_SCAN_TIMEOUT_MS } from '../../lib/metadata-report/scan-policy';
 import { recordPrivacyScanFailure } from '../../lib/privacy/create-privacy-report';
 import { createAndVerifyPrivacyCleanup } from '../../lib/privacy/cleanup-workflow';
@@ -203,6 +205,7 @@ function PrivacyCheckerContent() {
     sample.cancel();
     const selected = Array.from(files);
     if (!selected.length) return;
+    trackToolEvent('file_processing_started');
     const file = selected[0]!;
     request.current += 1;
     const current = request.current;
@@ -228,6 +231,7 @@ function PrivacyCheckerContent() {
     setNotice(selected.length > 1 ? (fr ? `Vous avez choisi ${selected.length.toLocaleString(locale)} fichiers. Le vérificateur n’en lit qu’un à la fois : seul ${file.name} a été analysé.` : t(`You chose ${selected.length} files. This checker reads one at a time, so only ${file.name} was checked.`, `你选择了 ${selected.length} 个文件。检查器一次只读一个，因此只检查了 ${file.name}。`, `Du hast ${selected.length.toLocaleString(locale)} Dateien gewählt. Der Check liest jeweils nur eine, daher wurde nur ${file.name} geprüft.`)) : null);
 
     if (file.size > IMAGE_LIMITS.fileBytes) {
+      trackToolEvent('metadata_parse_failed');
       setQuickBusy(false);
       setStatus(t('Stopped safely', '已安全停止', 'Sicher gestoppt'));
       setError({ code: 'FILE_TOO_LARGE', message: t('That image is over the 50 MB local inspection limit.', '这张图片超过了 50 MB 本地检查上限。', 'Dieses Bild überschreitet das lokale Prüflimit von 50 MB.') });
@@ -241,12 +245,14 @@ function PrivacyCheckerContent() {
       if (request.current !== current) return;
       setMetadata(quick.metadata);
       setReport(quick.report);
+      trackToolEvent('metadata_parse_succeeded');
       if (quick.metadata.file.animated || quick.metadata.file.width > IMAGE_LIMITS.canvasSide || quick.metadata.file.height > IMAGE_LIMITS.canvasSide || quick.metadata.file.width * quick.metadata.file.height > IMAGE_LIMITS.canvasPixels) setCleanupMode('preserve-encoding');
       setQuickBusy(false);
       setStatus(t('Initial result ready · starting the full image scan', '初步结果已就绪 · 正在启动完整图片扫描', 'Erstes Ergebnis fertig · Vollscan wird gestartet'));
       void runFullScan(file, quick.metadata, quick.report, current);
     } catch (caught) {
       if (request.current !== current || (caught instanceof MetadataError && caught.code === 'PARSE_CANCELLED')) return;
+      trackToolEvent('metadata_parse_failed');
       setError({ code: caught instanceof MetadataError ? caught.code : 'UNKNOWN_PARSE_ERROR', message: errorMessage(caught) });
       setStatus(t('Stopped safely', '已安全停止', 'Sicher gestoppt'));
       setQuickBusy(false);
@@ -268,9 +274,11 @@ function PrivacyCheckerContent() {
       } });
       if (request.current !== current) return;
       setCleanupResult(result);
+      trackToolEvent(result.verificationStatus === 'failed' ? 'metadata_cleanup_failed' : 'metadata_cleanup_succeeded');
       setCleanupStage(null);
     } catch (caught) {
       if (request.current !== current) return;
+      trackToolEvent('metadata_cleanup_failed');
       setCleanupError(errorMessage(caught));
       setCleanupStage(null);
     } finally {
@@ -282,10 +290,7 @@ function PrivacyCheckerContent() {
     if (!cleanupResult || cleanupResult.verificationStatus === 'failed') return;
     revokeDownload();
     downloadUrl.current = URL.createObjectURL(cleanupResult.blob);
-    const anchor = document.createElement('a');
-    anchor.href = downloadUrl.current;
-    anchor.download = cleanupResult.fileName;
-    anchor.click();
+    triggerDownload(downloadUrl.current, cleanupResult.fileName);
     window.setTimeout(revokeDownload, 1_500);
   };
 

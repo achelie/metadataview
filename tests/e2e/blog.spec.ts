@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '../fixtures/browser-test';
 import { readdirSync, readFileSync } from 'node:fs';
 import { BLOG_PAGE_SIZE, blogPagePath, blogPath, paginateBlogPosts, sortBlogPosts, type BlogPost } from '../../src/lib/blog';
 

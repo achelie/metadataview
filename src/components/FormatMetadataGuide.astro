@@ -47,7 +47,7 @@ const t = (en: string, zhText: string, deText: string, frText: string) => zh ? z
     <ol class="home-process-list">
       {guide.steps.map((step, index) => <li><b>{String(index + 1).padStart(2, '0')}</b><div><h3>{step.title}</h3><p>{step.description}</p></div></li>)}
     </ol>
-    <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
+    <p class="home-process-cta"><span>{guide.ctaLead}</span><a href="#metadata-workbench-tool" data-google-vignette="false">{guide.ctaLabel} <IconGlyph name="arrow" size={15} /></a></p>
     <details class="format-guide-limitations">
       <summary class="disclosure-summary"><span class="disclosure-label">{t('What this report cannot prove', '这份报告不能证明什么', 'Was dieser Bericht nicht beweist', 'Ce que ce rapport ne peut pas prouver')}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary>
       <ul>{limitations.map((item) => <li>{item}</li>)}</ul>

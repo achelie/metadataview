@@ -69,6 +69,11 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
     } else if (!['GET', 'HEAD'].includes(request.method())) {
       // Unexpected uploads should fail the assertions without uploading a fixture.
       await route.fulfill({ status: 204 });
+    } else if (url.hostname.endsWith('.doubleclick.net')
+      || (url.hostname.endsWith('.googlesyndication.com')
+        && !/^\/pagead\/(?:js\/adsbygoogle\.js$|managed\/js\/)/.test(url.pathname))) {
+      // Audit the real tag without serving creatives in automated runs.
+      await route.abort('blockedbyclient');
     } else if (local && ['http:', 'https:'].includes(url.protocol) && url.origin === origin) {
       // Firefox includes Host in routed request headers; retaining the synthetic
       // browser host would make the local preview reject the request with 403.
@@ -83,13 +88,16 @@ async function installNetworkAudit(context: BrowserContext, baseURL: string) {
     }
   });
   const ahrefsEvents = () => requests.filter(request => new URL(request.url).hostname === ahrefsHost && new URL(request.url).pathname === '/api/event');
+  const eventNames = () => ahrefsEvents().flatMap(request => {
+    try { return [JSON.parse(request.body).n]; } catch { return []; }
+  });
   const pageviews = () => ahrefsEvents().filter(request => {
     try { return JSON.parse(request.body).n === 'pageview'; } catch { return false; }
   });
   const maps = () => requests.filter(request => new URL(request.url).hostname === 'www.openstreetmap.org');
   const rum = () => requests.filter(request => isRum(new URL(request.url), origin) && request.method === 'POST');
   return {
-    origin, local, requests, pageviews, maps, rum, actions, blockedLeaks,
+    origin, local, requests, pageviews, eventNames, maps, rum, actions, blockedLeaks,
     registerFixture: (value: SensitiveFixture) => { fixture = value; actions.push('synthetic-fixture-registered-before-file-selection'); },
     fixtureHash: () => fixture?.sha256,
     downloads: () => downloadCount,
@@ -158,7 +166,9 @@ async function assertPrivateTraffic(audit: NetworkAudit, fixture: SensitiveFixtu
       expect(traffic).not.toMatch(/(?:mlat|mlon|gpslatitude|gpslongitude)["'\s:=]+[-\d]/i);
     }
     if (!['GET', 'HEAD'].includes(request.method)) {
-      expect(url.hostname === ahrefsHost && url.pathname.startsWith('/api/') || isRum(url, audit.origin), `Unexpected upload to ${request.url}`).toBe(true);
+      // The AdSense tag's diagnostic ping still passes the same canary checks.
+      const adSensePing = request.method === 'POST' && url.href === 'https://pagead2.googlesyndication.com/pagead/ping?e=1';
+      expect(url.hostname === ahrefsHost && url.pathname.startsWith('/api/') || isRum(url, audit.origin) || adSensePing, `Unexpected upload to ${request.url}`).toBe(true);
     }
   }
 }
@@ -307,7 +317,7 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
     expect(audit.maps()).toHaveLength(3);
   });
 
-  test('real analytics receives only page data across viewer → privacy → remover → cleaned-file privacy', async ({ context, page, baseURL }, testInfo) => {
+  test('real analytics keeps file data local across viewer → privacy → remover → cleaned-file privacy', async ({ context, page, baseURL }, testInfo) => {
     const audit = await installNetworkAudit(context, baseURL!);
     audits.set(testInfo.testId, audit);
     await page.goto(`${audit.origin}/`, { waitUntil: 'load' });
@@ -341,6 +351,7 @@ test.describe('Analytics keeps file-derived data local', { tag: '@release' }, ()
     await expect(page.locator('#risk-precise-location')).toHaveCount(0);
     await expect(page.locator('#risk-creator-identity')).toHaveCount(0);
     await expect.poll(() => audit.pageviews().map(request => new URL(JSON.parse(request.body).u).pathname)).toEqual(expect.arrayContaining(['/', '/image-privacy-checker/', '/image-metadata-remover/']));
+    await expect.poll(audit.eventNames).toEqual(expect.arrayContaining(['file_processing_started', 'metadata_parse_succeeded', 'metadata_cleanup_succeeded']));
     expect(audit.maps()).toHaveLength(0);
     await finishOnPrivacyPage(page, audit, fixture);
   });

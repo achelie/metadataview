@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../fixtures/browser-test';
 
 const sharing = '/guides/sharing-metadata/';
 const formats = '/guides/metadata-by-file-type/';

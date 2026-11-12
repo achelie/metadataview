@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../fixtures/browser-test';
 
 const articles = [
   'exif-orientation-values', 'exif-timezone-offsettimeoriginal', 'how-to-read-c2pa-results',
