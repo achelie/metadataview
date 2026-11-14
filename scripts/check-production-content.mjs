@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
-import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 const baseline = JSON.parse(await readFile('docs/content-url-baseline.json', 'utf8'));
 const origin = 'https://www.viewexif.com';
 const adScripts = html => html.match(/<script\b[^>]*\bsrc="[^"]*\/adsbygoogle\.js\?[^"]+"[^>]*>/g) ?? [];
+const hreflang = html => (html.match(/<link\b[^>]*rel="alternate"[^>]*hreflang=[^>]+>/gi) ?? []).sort();
 const get = async url => {
   let error;
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -26,14 +26,13 @@ await Promise.all(Array.from({ length: 6 }, async () => {
       const local = await readFile(`dist${route}index.html`, 'utf8');
       const failures = [];
       if (live.status !== 200 || live.url !== entry.canonical) failures.push('status/redirect');
-      const expectedNoindex = isLocaleNoindex(route);
-      const actualNoindex = /\bnoindex\b/i.test(live.robots) || /<meta name="robots" content="[^"]*\bnoindex\b/i.test(live.html);
-      if (actualNoindex !== expectedNoindex) failures.push('indexing policy');
+      const actualNoindex = /\b(?:noindex|none)\b/i.test(live.robots) || /<meta name="(?:robots|googlebot)" content="[^"]*\b(?:noindex|none)\b/i.test(live.html);
+      if (actualNoindex) failures.push('public page is not indexable');
       for (const pattern of [/<title>(.*?)<\/title>/s, /<h1[^>]*>(.*?)<\/h1>/s, /<link rel="canonical" href="([^"]+)"/]) {
         if (live.html.match(pattern)?.[1] !== local.match(pattern)?.[1]) failures.push('SEO mismatch');
       }
-      if (sitemap.html.includes(`<loc>${entry.canonical}</loc>`) === expectedNoindex) failures.push('sitemap');
-      if (/<link\b[^>]*rel="alternate"[^>]*hreflang=/i.test(live.html)) failures.push('stale search alternates');
+      if (!sitemap.html.includes(`<loc>${entry.canonical}</loc>`)) failures.push('missing from sitemap');
+      if (JSON.stringify(hreflang(live.html)) !== JSON.stringify(hreflang(local))) failures.push('hreflang mismatch');
       if ((live.html.match(/name="google-adsense-account" content="ca-pub-7443237558968985"/g) ?? []).length !== 1) failures.push('account meta');
       const expectedAds = adScripts(local);
       const liveAds = adScripts(live.html.split('</head>', 1)[0]);

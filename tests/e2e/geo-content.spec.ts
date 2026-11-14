@@ -61,8 +61,8 @@ test('public answers, evidence and authorship are available in the initial HTML'
 
   await page.goto('/fr/image-metadata-viewer/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', SITE_ORIGIN + '/fr/image-metadata-viewer/');
-  expect(indexed.has(SITE_ORIGIN + '/fr/image-metadata-viewer/')).toBe(false);
-  await expect(page.locator('head link[hreflang]')).toHaveCount(0);
+  expect(indexed.has(SITE_ORIGIN + '/fr/image-metadata-viewer/')).toBe(true);
+  await expect(page.locator('head link[hreflang="en"]')).toHaveAttribute('href', SITE_ORIGIN + '/image-metadata-viewer/');
 });

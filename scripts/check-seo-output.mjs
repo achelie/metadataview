@@ -1,6 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 const distDir = path.resolve('dist');
 const productionOrigin = 'https://www.viewexif.com';
@@ -200,18 +199,13 @@ for (const file of htmlFiles) {
   }
 
   const route = relativeFile === 'index.html' ? '/' : `/${relativeFile.replace(/index\.html$/, '')}`;
-  const expectedNoindex = isLocaleNoindex(route);
-  const actualNoindex = /\bnoindex\b/i.test(robots);
-  if (actualNoindex !== expectedNoindex) failures.push(`${relativeFile}: expected ${expectedNoindex ? 'noindex' : 'indexable'} under the English-only indexing policy`);
-  if (expectedNoindex && /\bnofollow\b/i.test(robots)) failures.push(`${relativeFile}: localized links must remain followable`);
+  if (/\b(?:noindex|none)\b/i.test(robots)) failures.push(`${relativeFile}: public page is not indexable`);
   if (!canonical.startsWith(`${productionOrigin}/`)) failures.push(`${relativeFile}: canonical uses the wrong origin`);
   if (canonical !== `${productionOrigin}/` && !canonical.endsWith('/')) failures.push(`${relativeFile}: canonical is missing its trailing slash`);
   if (ogUrl !== canonical) failures.push(`${relativeFile}: og:url does not match canonical`);
   if (canonical !== `${productionOrigin}${route}`) failures.push(`${relativeFile}: canonical must remain self-referential`);
-  if (!actualNoindex) {
-    indexableCanonicals.push(canonical);
-    titles.push(title);
-  }
+  indexableCanonicals.push(canonical);
+  titles.push(title);
   pageRecords.push({ relativeFile, html, canonical });
   if (homepageFiles.has(relativeFile)) await checkHomepage(relativeFile, html, schemas, expectedLang);
 }
@@ -224,18 +218,38 @@ for (const homepage of homepageFiles) {
 if (new Set(homeImageRecords.map((entry) => entry.socialAlt)).size !== homeImageRecords.length) failures.push('Homepage social image alt text must be localized in all four languages');
 if (new Set(homeImageRecords.map((entry) => JSON.stringify(entry.screenshotAlts))).size !== homeImageRecords.length) failures.push('Homepage example screenshot alt text must be localized in all four languages');
 
+const canonicalSet = new Set(indexableCanonicals);
+const languages = [
+  { code: 'en', prefix: '', ogLocale: 'en_US' },
+  { code: 'de', prefix: '/de', ogLocale: 'de_DE' },
+  { code: 'fr', prefix: '/fr', ogLocale: 'fr_FR' },
+  { code: 'zh-CN', prefix: '/zh-cn', ogLocale: 'zh_CN' },
+];
 for (const { relativeFile, html, canonical } of pageRecords) {
   const pathname = new URL(canonical).pathname;
+  const currentLanguage = languages.find(({ prefix }) => prefix && pathname.startsWith(`${prefix}/`)) ?? languages[0];
+  const basePath = pathname.slice(currentLanguage.prefix.length);
+  const expectedAlternates = languages.map(({ code, prefix }) => [code, `${productionOrigin}${prefix}${basePath}`]);
+  expectedAlternates.push(['x-default', `${productionOrigin}${basePath}`]);
+  const hasTranslations = expectedAlternates.every(([, url]) => canonicalSet.has(url));
   const alternateEntries = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map((entry) => [entry[1], entry[2]]);
   const alternates = new Map(alternateEntries);
   if (alternateEntries.length !== alternates.size) failures.push(`${relativeFile}: duplicate hreflang code`);
   const ogLocale = match(html, /<meta property="og:locale" content="([^"]+)"/);
-  const ogAlternates = new Set([...html.matchAll(/<meta property="og:locale:alternate" content="([^"]+)"/g)].map((entry) => entry[1]));
+  const ogAlternates = [...html.matchAll(/<meta property="og:locale:alternate" content="([^"]+)"/g)].map((entry) => entry[1]);
+  if (ogLocale !== currentLanguage.ogLocale) failures.push(`${relativeFile}: invalid og:locale`);
 
-  if (alternates.size) failures.push(`${relativeFile}: English-only indexing must not advertise localized search alternates`);
-  const expectedOgLocale = pathname.startsWith('/zh-cn/') ? 'zh_CN' : pathname.startsWith('/de/') ? 'de_DE' : pathname.startsWith('/fr/') ? 'fr_FR' : 'en_US';
-  if (ogLocale !== expectedOgLocale) failures.push(`${relativeFile}: invalid og:locale`);
-  if (ogAlternates.size) failures.push(`${relativeFile}: English-only indexing must not advertise alternate locales`);
+  if (hasTranslations) {
+    if (alternates.size !== expectedAlternates.length || expectedAlternates.some(([code, url]) => alternates.get(code) !== url)) {
+      failures.push(`${relativeFile}: incorrect reciprocal hreflang set`);
+    }
+    const expectedOgLocales = languages.filter(({ code }) => code !== currentLanguage.code).map((language) => language.ogLocale);
+    if (ogAlternates.length !== expectedOgLocales.length || expectedOgLocales.some((value) => !ogAlternates.includes(value))) {
+      failures.push(`${relativeFile}: incorrect og:locale:alternate set`);
+    }
+  } else if (alternates.size || ogAlternates.length) {
+    failures.push(`${relativeFile}: declares alternates without translated counterparts`);
+  }
 }
 
 const robots = await readFile(path.join(distDir, 'robots.txt'), 'utf8');

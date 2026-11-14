@@ -1,6 +1,5 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { isLocaleNoindex } from '../src/config/search-indexing.mjs';
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -33,9 +32,8 @@ if (process.argv.includes('--capture')) {
     const current = pages.find(p => p.canonical === old.canonical);
     if (!current) { failures.push(`Missing public URL: ${old.canonical}`); continue; }
     for (const key of ['title', 'h1']) if (current[key] !== old[key]) failures.push(`${old.canonical}: changed ${key}`);
-    const expectedNoindex = isLocaleNoindex(new URL(old.canonical).pathname);
-    if (/\bnoindex\b/i.test(current.robots) !== expectedNoindex) failures.push(`${old.canonical}: incorrect indexability`);
-    if (sitemap.includes(`<loc>${old.canonical}</loc>`) === expectedNoindex) failures.push(`${old.canonical}: incorrect sitemap membership`);
+    if (/\b(?:noindex|none)\b/i.test(current.robots)) failures.push(`${old.canonical}: public page is not indexable`);
+    if (!sitemap.includes(`<loc>${old.canonical}</loc>`)) failures.push(`${old.canonical}: missing from sitemap`);
     // Bundled stylesheet hashes change on rebuild; protect page entries, not asset filenames.
     for (const link of old.links.filter(link => !link.startsWith('/_astro/'))) {
       if (current.links.includes(link)) continue;
@@ -48,6 +46,6 @@ if (process.argv.includes('--capture')) {
     }
   }
   if (failures.length) throw new Error(failures.join('\n'));
-  console.log(`Preserved ${baseline.length} public URLs, titles, H1s and existing internal links; indexability and sitemap follow the English-only policy.`);
+  console.log(`Preserved ${baseline.length} public URLs, titles, H1s and existing internal links; all are indexable and included in the sitemap.`);
   if (movedArchiveEntries) console.log(`${movedArchiveEntries} article links moved within blog pagination and remain reachable and indexable.`);
 }

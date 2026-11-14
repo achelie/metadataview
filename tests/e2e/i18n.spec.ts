@@ -1,4 +1,6 @@
 import { expect, test } from '../fixtures/browser-test';
+import { getAlternatePaths } from '../../src/i18n/core';
+import { SITE_ORIGIN } from '../../src/lib/seo';
 
 const toolPaths = [
   '/metadata-viewer/', '/image-metadata-viewer/', '/document-metadata-viewer/', '/video-metadata-viewer/', '/audio-metadata-viewer/',
@@ -12,17 +14,27 @@ const locales = [
   { prefix: '/fr', lang: 'fr' },
 ] as const;
 
-test('German, French and Chinese routes stay reachable but are excluded from Search', async ({ page }) => {
+test('German, French and Chinese routes are indexable with reciprocal hreflang', async ({ page, request }) => {
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.ok()).toBe(true);
+  const sitemapUrls = new Set([...(await sitemap.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]));
+
   for (const locale of locales) {
     for (const path of ['/', ...toolPaths, '/about/', '/privacy/', '/contact/', '/terms/']) {
       const localizedPath = path === '/' ? `${locale.prefix}/` : `${locale.prefix}${path}`;
       const response = await page.goto(localizedPath);
       expect(response?.ok(), localizedPath).toBe(true);
+      expect(response?.headers()['x-robots-tag'] ?? '', localizedPath).not.toMatch(/\b(?:noindex|none)\b/i);
       await expect(page.locator('html')).toHaveAttribute('lang', locale.lang);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
-      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://www.viewexif.com${localizedPath}`);
-      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
-      await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', SITE_ORIGIN + localizedPath);
+      await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+      expect(sitemapUrls.has(SITE_ORIGIN + localizedPath), localizedPath).toBe(true);
+      const alternates = page.locator('link[rel="alternate"][hreflang]');
+      await expect(alternates).toHaveCount(5);
+      for (const [language, alternatePath] of Object.entries(getAlternatePaths(path))) {
+        await expect(page.locator(`link[rel="alternate"][hreflang="${language}"]`)).toHaveAttribute('href', SITE_ORIGIN + alternatePath);
+      }
     }
   }
 });
@@ -36,12 +48,12 @@ test('desktop language dropdown switches the same page and sends localized blog 
   await expect(dropdown.getByRole('link', { name: /中文/ })).toHaveAttribute('href', '/zh-cn/image-metadata-viewer/');
   await dropdown.getByRole('link', { name: /Deutsch/ }).click();
   await expect(page).toHaveURL(/\/de\/image-metadata-viewer\/$/);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   await page.locator('.header-inner > .language-dropdown').getByRole('button').click();
   await page.locator('.header-inner > .language-dropdown').getByRole('link', { name: /English/ }).click();
   await expect(page).toHaveURL(/\/image-metadata-viewer\/$/);
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
-  await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0);
+  await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveAttribute('href', SITE_ORIGIN + '/de/image-metadata-viewer/');
 
   await page.goto('/blog/');
   await expect(page.locator('link[rel="alternate"]')).toHaveCount(0);
