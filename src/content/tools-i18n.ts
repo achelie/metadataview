@@ -13,6 +13,7 @@ const routes: Record<ToolKey, string> = {
 export const toolSlugs = Object.fromEntries(Object.entries(routes).map(([key, path]) => [path.split('/').filter(Boolean)[0], key])) as Record<string, ToolKey>;
 
 interface ZhToolCopy {
+  heroProof?: string;
   title: string; metaTitle: string; eyebrow: string; description: string; shortDescription: string;
   highlights: string[]; limitations: string[]; faqs: Array<{ question: string; answer: string }>;
 }
@@ -178,7 +179,7 @@ const zhCopy: Record<ToolKey, ZhToolCopy> = {
 
 const deCopy: Record<ToolKey, ZhToolCopy> = {
   metadata: {
-    title: 'Metadaten-Viewer', metaTitle: 'Metadaten-Viewer – Versteckte Dateidaten online ansehen', eyebrow: 'Universeller Datei-Prüfplatz',
+    title: 'Metadaten auslesen', metaTitle: 'Metadaten auslesen – Fotos, Videos, Audiodateien und Dokumente', eyebrow: 'Universeller Datei-Prüfplatz',
     description: 'Metadaten aus 28 Bild-, Dokument-, Video- und Audioformaten ansehen. Felder durchsuchen, Werte kopieren und Ergebnisse exportieren – ohne Upload.',
     shortDescription: 'Lege eine unterstützte Datei ab und durchsuche, kopiere oder exportiere alle lesbaren Metadatenfelder.',
     highlights: ['Prüft die echte Dateisignatur statt nur der Endung zu glauben.', 'Erstellt eine lesbare Zusammenfassung und ein vollständiges natives Feldprotokoll.', 'Liest die Datei einmal und berechnet SHA-256 sowie MD5.', 'Exportiert sicheres JSON und einen kompakten PDF-Bericht.'],
@@ -186,7 +187,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: viewerFaqsDe('Der Metadaten-Viewer', '28 gängige Bild-, Video-, Audio- und Dokumentformate', 'EXIF-, XMP-, IPTC-, GPS-, Container-, Dokument- und technische Felder'),
   },
   image: {
-    title: 'Bild-Metadaten-Viewer', metaTitle: 'Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen', eyebrow: 'Bilddaten ohne Formatblindflug',
+    title: 'Bildmetadaten auslesen', metaTitle: 'Bildmetadaten auslesen – EXIF, GPS und Aufnahmedatum', eyebrow: 'Bilddaten ohne Formatblindflug',
     description: 'EXIF, GPS, XMP, IPTC, ICC, Kommentare, Animationsmerkmale und native Felder aus PNG, JPEG, WebP, HEIC, TIFF und GIF lokal ansehen.',
     shortDescription: 'Lies Kamera-, GPS-, Farb-, Autoren-, Software-, Animations- und Containerdaten aus einem Bild.',
     highlights: ['Verifiziert die echte PNG-, JPEG-, WebP-, HEIC-, TIFF- oder GIF-Signatur.', 'Zeigt Abmessungen, Animation, Kamera, GPS, Farbe, Autor und Daten.', 'Bewahrt native ExifTool-Pfade und unbekannte lesbare Tags.', 'Liest Metadaten auch dann, wenn der Browser HEIC- oder TIFF-Pixel nicht anzeigen kann.'],
@@ -194,7 +195,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: viewerFaqsDe('Der Bild-Metadaten-Viewer', 'PNG, JPG/JPEG, WebP, HEIC, TIFF und GIF bis 50 MB', 'EXIF-, GPS-, XMP-, IPTC-, ICC-, Kommentar-, Animations-, Container- und Vorschaudaten'),
   },
   document: {
-    title: 'Dokument-Metadaten-Viewer', metaTitle: 'Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften', eyebrow: 'Lesegerät für Dokumenteigenschaften',
+    title: 'Dokumenteigenschaften anzeigen', metaTitle: 'Dokumenteigenschaften anzeigen – PDF, Word, Excel und PowerPoint', eyebrow: 'Lesegerät für Dokumenteigenschaften',
     description: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken, eigene Eigenschaften und native Metadaten aus PDF, DOCX, PPTX und XLSX lokal prüfen.',
     shortDescription: 'Öffne ein PDF- oder Office-Dokument und lies die Eigenschaften rund um seinen Inhalt.',
     highlights: ['Liest PDF-Wörterbücher sowie OOXML-Kern-, Anwendungs- und eigene Eigenschaften.', 'Zeigt vorhandene Seiten-, Wort-, Folien- und Tabellenstatistiken.', 'Prüft den echten Dokumentpaket-Typ statt nur der Endung.', 'Nimmt keinen Text, keine Zellen, Folien, Anhänge oder Medienbytes in den Bericht auf.'],
@@ -202,7 +203,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: viewerFaqsDe('Der Dokument-Metadaten-Viewer', 'PDF, DOCX, PPTX und XLSX bis 100 MB', 'Titel, Autoren, Themen, Daten, Anwendungen, Revisionen, eigene Eigenschaften und Dokumentstatistiken'),
   },
   video: {
-    title: 'Video-Metadaten-Viewer', metaTitle: 'Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen', eyebrow: 'Lesegerät für Videocontainer',
+    title: 'Video-Metadaten auslesen', metaTitle: 'Video-Metadaten auslesen – Codec, Auflösung und Dauer', eyebrow: 'Lesegerät für Videocontainer',
     description: 'Metadaten aus MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 lokal im Browser prüfen.',
     shortDescription: 'Lies Dauer, Abmessungen, Codecs, Spuren, Marken, Daten und Produktionsangaben eines Videos.',
     highlights: ['Prüft ISO-BMFF-, EBML-, RIFF- und FLV-Containersignaturen.', 'Fasst Dauer, Abmessungen, Codecs, Bildrate und Spuren zusammen.', 'Bewahrt native ExifTool-Pfade und formatspezifische Felder.', 'Spielt, transkribiert und analysiert keine Videobilder.'],
@@ -210,7 +211,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: viewerFaqsDe('Der Video-Metadaten-Viewer', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 bis 100 MB', 'Dauer, Abmessungen, Codecs, Bildrate, Bitrate, Spuren, Daten, Software und Containerfelder'),
   },
   audio: {
-    title: 'Audio-Metadaten-Viewer', metaTitle: 'Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags', eyebrow: 'Lesegerät für Audiotags',
+    title: 'Audio-Metadaten auslesen', metaTitle: 'Audio-Metadaten auslesen – Titel, Interpret und Bitrate', eyebrow: 'Lesegerät für Audiotags',
     description: 'Tags und technische Metadaten aus MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA lokal im Browser lesen.',
     shortDescription: 'Prüfe Track-Tags, Credits, Codec, Dauer, Bitrate, Samplerate, Kanäle, Bittiefe und eingebettete Cover.',
     highlights: ['Liest ID3-, Vorbis-, Opus-, iTunes-, RIFF- und ASF-Metadaten.', 'Prüft zuerst den echten Container und erst danach die Endung.', 'Fasst eingebettete Cover zusammen, ohne deren Bytes zu exportieren.', 'Spielt, transkribiert und fingerprintet keine Audiodatei.'],
@@ -218,7 +219,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: viewerFaqsDe('Der Audio-Metadaten-Viewer', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA bis 100 MB', 'ID3-, Vorbis-, Opus-, iTunes-, RIFF-, ASF- und technische Codec-Felder'),
   },
   privacy: {
-    title: 'Bild-Datenschutz-Check', metaTitle: 'Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden', eyebrow: 'Risikoscan mit Begründung',
+    title: 'Fotos auf private Daten prüfen', metaTitle: 'Fotos auf private Daten prüfen – GPS, Gerätenummern und Namen', eyebrow: 'Risikoscan mit Begründung',
     description: 'Prüfe Bilder ohne Upload auf GPS, Gerätekennungen, Zeitangaben, Autoreninformationen und versteckte Metadaten.', shortDescription: 'Finde Standort-, Identitäts-, Geräte-, Bearbeitungs- und Vorschauspuren in einem Bild.',
     highlights: ['Zeigt zuerst ein schnelles Ergebnis und beendet danach automatisch den Vollscan.', 'Jeder Punkt führt zu den passenden Metadatenfeldern.', 'Prüft Standard-Tags, eingebettete Vorschauen und verschachtelte Bilddatensätze.', 'Erstellt eine bereinigte Kopie, scannt sie vollständig und vergleicht sie mit dem Original.'],
     limitations: ['Ein niedriger Wert garantiert nicht, dass sich das Bild sicher teilen lässt.', 'Sichtbare Gesichter, Texte, Spiegelungen und Wahrzeichen werden nicht geprüft.', 'Die Regeln erklären häufige Risiken, kennen aber dein persönliches Bedrohungsmodell nicht.'],
@@ -231,15 +232,16 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     ],
   },
   remover: {
-    title: 'Metadaten-Entferner', metaTitle: 'Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen', eyebrow: 'Bereinigungsplatz für alle Formate',
-    description: 'Beschreibbare Metadaten aus 28 Bild-, Video-, Audio- und Dokumentformaten lokal entfernen und die erzeugte Kopie vor dem Download verifizieren.',
+    title: 'Metadaten entfernen', metaTitle: 'Metadaten entfernen – online, kostenlos und ohne Upload', eyebrow: 'Bereinigungsplatz für alle Formate',
+    description: 'Entferne beschreibbare Metadaten aus 28 Dateiformaten online, kostenlos und ohne Upload. Dein Browser prüft die bereinigte Kopie vor dem Download.',
+    heroProof: 'Online und kostenlos · Ohne Upload · Kopie vor dem Download prüfen',
     shortDescription: 'Lege eine unterstützte Datei ab, entferne beschreibende Tags ohne absichtliche Neucodierung und prüfe die Kopie erneut.',
     highlights: ['Wählt die passende Engine anhand des echten Formats.', 'Erhält Medien- und Dokumentinhalt.', 'Scannt die erzeugte Kopie vor dem Download erneut.', 'Trennt entfernte, erhaltene und verbliebene Felder.'],
     limitations: ['Notwendige technische Felder bleiben erhalten, weil ihre Entfernung die Datei beschädigen würde.', 'Cover, Kapitel, Untertitel, Anhänge, Kommentare, Revisionen und sichtbare Inhalte bleiben bestehen.', 'Auch eine verifizierte Kopie verbirgt keine sichtbaren Personen, Texte oder Orte.'],
     faqs: removerFaqsDe('Datei', 'sechs Bild-, neun Video-, neun Audioformate sowie PDF, DOCX, PPTX und XLSX', 'Medientracks, Dokumentinhalt, Kapitel, Untertitel, Cover und Anhänge'),
   },
   imageRemover: {
-    title: 'Bild-Metadaten-Entferner', metaTitle: 'Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen', eyebrow: 'Bereinigungsplatz für Bild-Tags',
+    title: 'Metadaten aus Fotos entfernen', metaTitle: 'Metadaten aus Fotos entfernen – EXIF und GPS löschen', eyebrow: 'Bereinigungsplatz für Bild-Tags',
     description: 'Beschreibbare EXIF-, GPS-, XMP-, IPTC-, MakerNote-, Kommentar- und Vorschaudaten aus PNG, JPEG, WebP, HEIC, TIFF und GIF entfernen, ohne Pixel neu zu codieren.',
     shortDescription: 'Bereinige sechs Bildformate und erhalte ICC-Farbe, Ausrichtung, Abmessungen und Animation.',
     highlights: ['Entfernt beschreibbare Identitäts- und Standortfelder.', 'Erhält komprimierte Pixel und Animationen.', 'Bewahrt Farbe und Ausrichtung für eine korrekte Darstellung.', 'Führt vor und nach der Bereinigung gleich tiefe Scans aus.'],
@@ -247,7 +249,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: removerFaqsDe('Bild', 'PNG, JPEG, WebP, HEIC, TIFF und GIF', 'komprimierte Pixel, Abmessungen, Ausrichtung, Farbe und Animation'),
   },
   videoRemover: {
-    title: 'Video-Metadaten-Entferner', metaTitle: 'Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen', eyebrow: 'Bereinigungsplatz für Videocontainer',
+    title: 'Metadaten aus Videos entfernen', metaTitle: 'Metadaten aus Videos entfernen – MP4, MOV, MKV und WebM', eyebrow: 'Bereinigungsplatz für Videocontainer',
     description: 'Beschreibbare Metadaten aus MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2 entfernen, ohne das Video zu transcodieren.',
     shortDescription: 'Erhalte Spuren, Codecs, Kapitel, Untertitel und Bildinhalt; entferne nur beschreibbare Container-Tags.',
     highlights: ['Transcodiert weder Video- noch Audiospuren.', 'Wählt die Engine anhand des echten Containers.', 'Erhält Kapitel, Untertitel, Cover und Anhänge.', 'Blockiert die Ausgabe, wenn Struktur oder technische Werte abweichen.'],
@@ -255,7 +257,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: removerFaqsDe('Video', 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP und 3G2', 'codierte Spuren, Bildinhalt, Kapitel, Untertitel, Cover und Anhänge'),
   },
   audioRemover: {
-    title: 'Audio-Metadaten-Entferner', metaTitle: 'Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen', eyebrow: 'Bereinigungsplatz für Audiotags',
+    title: 'Audio-Tags entfernen', metaTitle: 'Audio-Tags entfernen – MP3, FLAC, OGG und M4A bereinigen', eyebrow: 'Bereinigungsplatz für Audiotags',
     description: 'ID3-, Vorbis-, Opus-, iTunes-, RIFF-, BEXT-, iXML- und ASF-Beschreibungen aus neun Audioformaten entfernen, ohne den Ton neu zu codieren.',
     shortDescription: 'Entferne beschreibbare Audiotags und erhalte Ton, Cover, Kapitel, Codec und Sample-Eigenschaften.',
     highlights: ['Führt TagLib WASM lokal in einem eigenen Worker aus.', 'Erhält Cover und Kapitel nach klarer Richtlinie.', 'Entfernt Broadcast-Notizen und eigene Beschreibungstags.', 'Verifiziert Format, Dauer, Samplerate, Kanäle und Codec.'],
@@ -263,7 +265,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: removerFaqsDe('Audio', 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV und WMA', 'codierte Audioströme, Cover, Kapitel, Codecs und Sample-Eigenschaften'),
   },
   documentRemover: {
-    title: 'Dokument-Metadaten-Entferner', metaTitle: 'Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen', eyebrow: 'Bereinigungsplatz für Dokumenteigenschaften',
+    title: 'Metadaten aus Dokumenten entfernen', metaTitle: 'Metadaten aus Dokumenten entfernen – PDF und Office-Dateien', eyebrow: 'Bereinigungsplatz für Dokumenteigenschaften',
     description: 'Beschreibbare Eigenschaften aus PDF- und Office-Dokumenten lokal entfernen und Seiten, Text, Zellen, Folien, Kommentare, Revisionen, Medien und Anhänge erhalten.',
     shortDescription: 'Bereinige PDF-, DOCX-, PPTX- und XLSX-Eigenschaften und öffne die erzeugte Datei zur Verifikation erneut.',
     highlights: ['Liest keinen Fließtext und schreibt nur Office-Eigenschafts-XML neu.', 'Schreibt PDFs vollständig mit qpdf neu und lässt Info sowie XMP auf oberster Ebene weg.', 'Erhält Dokumentinhalt und eingebettete Objekte.', 'Warnt deutlich, bevor digitale Signaturen ungültig werden.'],
@@ -271,7 +273,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
     faqs: removerFaqsDe('Dokument', 'PDF, DOCX, PPTX und XLSX', 'Seiten, Text, Zellen, Folien, Kommentare, Revisionen, Medien und Anhänge'),
   },
   c2pa: {
-    title: 'C2PA-Viewer', metaTitle: 'C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren', eyebrow: 'Kryptografischer Herkunfts-Check',
+    title: 'C2PA-Signaturen prüfen', metaTitle: 'C2PA-Signaturen prüfen – Content Credentials einer Datei ansehen', eyebrow: 'Kryptografischer Herkunfts-Check',
     description: 'C2PA Content Credentials in 20 gängigen Bild-, Video-, Audio- und Dokumentformaten prüfen. Signaturen, Dateibindung, Aktionen, Zutaten und Assertions – ohne Upload.',
     shortDescription: 'Lege ein Bild, Video, eine Audiodatei oder ein PDF ab und erhalte ein klares Ergebnis samt Nachweisen.',
     highlights: ['Nutzt den offiziellen @contentauth-Browser-Verifier in einem isolierten Web Worker.', 'Prüft 20 gängige C2PA-Formate anhand ihrer echten Signatur.', 'Trennt gültige Signaturen von vertrauenswürdigen Herausgebern.', 'Berechnet SHA-256 und exportiert einen sicheren Beleg ohne Quelldatei-Bytes.'],
@@ -555,7 +557,7 @@ export function getTool(key: ToolKey, locale: Locale = 'en'): ToolConfig {
     ...base, ...copy,
     editorialSections: getToolEditorial(key, locale),
     path: localizePath(base.path, locale),
-    heroProof: locale === 'fr' && key === 'remover' ? 'Traitement 100 % local · Aucun envoi · Inspecter → Supprimer → Vérifier' : locale === 'fr' && key === 'videoRemover' ? 'Aucun réencodage · Qualité vidéo préservée · Inspecter → Supprimer → Vérifier' : base.heroProof,
+    heroProof: locale === 'fr' && key === 'remover' ? 'Traitement 100 % local · Aucun envoi · Inspecter → Supprimer → Vérifier' : locale === 'fr' && key === 'videoRemover' ? 'Aucun réencodage · Qualité vidéo préservée · Inspecter → Supprimer → Vérifier' : copy.heroProof ?? base.heroProof,
     formatGuide: locale === 'zh-CN' ? localizedGuide(key, base.formatGuide) : locale === 'de' ? localizedGuideDe(key, base.formatGuide) : localizedGuideFr(key, base.formatGuide),
     related: locale === 'zh-CN' ? localizedRelated(base) : locale === 'de' ? localizedRelatedDe(base) : localizedRelatedFr(base),
     formats: key === 'remover' ? (locale === 'zh-CN' ? '图片 · 视频 · 音频 · 文档' : locale === 'de' ? 'Bilder · Video · Audio · Dokumente' : 'Images · Vidéo · Audio · Documents') : locale === 'fr' && key === 'metadata' ? 'Images · Vidéos · Audio · Documents' : locale === 'fr' && key === 'c2pa' ? 'Images · Vidéo · Audio · PDF' : base.formats,

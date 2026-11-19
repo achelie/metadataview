@@ -1362,8 +1362,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/",
-    "title": "EXIF-Viewer online – Fotometadaten kostenlos | ViewExif",
-    "h1": "Kostenloser EXIF-Viewer online",
+    "title": "EXIF Daten auslesen – Kamera, Aufnahmedatum und GPS im Foto",
+    "h1": "EXIF Daten auslesen",
     "robots": "",
     "links": [
       "/",
@@ -1427,8 +1427,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/audio-metadata-remover/",
-    "title": "Audio-Metadaten-Entferner – MP3, FLAC, OGG, M4A, WAV und WMA bereinigen",
-    "h1": "Audio-Metadaten-Entferner",
+    "title": "Audio-Tags entfernen – MP3, FLAC, OGG und M4A bereinigen",
+    "h1": "Audio-Tags entfernen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1458,8 +1458,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/audio-metadata-viewer/",
-    "title": "Audio-Metadaten-Viewer – MP3-, FLAC-, OGG-, M4A-, WAV- und WMA-Tags",
-    "h1": "Audio-Metadaten-Viewer",
+    "title": "Audio-Metadaten auslesen – Titel, Interpret und Bitrate",
+    "h1": "Audio-Metadaten auslesen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1488,8 +1488,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/c2pa-viewer/",
-    "title": "C2PA-Viewer – Content Credentials und Dateiherkunft verifizieren",
-    "h1": "C2PA-Viewer",
+    "title": "C2PA-Signaturen prüfen – Content Credentials einer Datei ansehen",
+    "h1": "C2PA-Signaturen prüfen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1548,8 +1548,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/document-metadata-remover/",
-    "title": "Dokument-Metadaten-Entferner – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften löschen",
-    "h1": "Dokument-Metadaten-Entferner",
+    "title": "Metadaten aus Dokumenten entfernen – PDF und Office-Dateien",
+    "h1": "Metadaten aus Dokumenten entfernen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1579,8 +1579,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/document-metadata-viewer/",
-    "title": "Dokument-Metadaten-Viewer – PDF-, DOCX-, PPTX- und XLSX-Eigenschaften",
-    "h1": "Dokument-Metadaten-Viewer",
+    "title": "Dokumenteigenschaften anzeigen – PDF, Word, Excel und PowerPoint",
+    "h1": "Dokumenteigenschaften anzeigen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1609,8 +1609,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/image-metadata-remover/",
-    "title": "Bild-Metadaten-Entferner – PNG, JPEG, WebP, HEIC, TIFF und GIF bereinigen",
-    "h1": "Bild-Metadaten-Entferner",
+    "title": "Metadaten aus Fotos entfernen – EXIF und GPS löschen",
+    "h1": "Metadaten aus Fotos entfernen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1639,8 +1639,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/image-metadata-viewer/",
-    "title": "Bild-Metadaten-Viewer – PNG, JPEG, WebP, HEIC, TIFF und GIF prüfen",
-    "h1": "Bild-Metadaten-Viewer",
+    "title": "Bildmetadaten auslesen – EXIF, GPS und Aufnahmedatum",
+    "h1": "Bildmetadaten auslesen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1669,8 +1669,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/image-privacy-checker/",
-    "title": "Bild-Datenschutz-Check – EXIF, GPS und versteckte Metadaten finden",
-    "h1": "Bild-Datenschutz-Check",
+    "title": "Fotos auf private Daten prüfen – GPS, Gerätenummern und Namen",
+    "h1": "Fotos auf private Daten prüfen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1699,8 +1699,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/metadata-remover/",
-    "title": "Metadaten-Entferner – Tags aus Bildern, Video, Audio und Dokumenten löschen",
-    "h1": "Metadaten-Entferner",
+    "title": "Metadaten entfernen – online, kostenlos und ohne Upload",
+    "h1": "Metadaten entfernen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1729,8 +1729,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/metadata-viewer/",
-    "title": "Metadaten-Viewer – Versteckte Dateidaten online ansehen",
-    "h1": "Metadaten-Viewer",
+    "title": "Metadaten auslesen – Fotos, Videos, Audiodateien und Dokumente",
+    "h1": "Metadaten auslesen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1820,8 +1820,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/video-metadata-remover/",
-    "title": "Video-Metadaten-Entferner – MP4, MOV, MKV, WebM, AVI und FLV bereinigen",
-    "h1": "Video-Metadaten-Entferner",
+    "title": "Metadaten aus Videos entfernen – MP4, MOV, MKV und WebM",
+    "h1": "Metadaten aus Videos entfernen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",
@@ -1850,8 +1850,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/de/video-metadata-viewer/",
-    "title": "Video-Metadaten-Viewer – MP4, MOV, MKV, WebM, AVI und FLV prüfen",
-    "h1": "Video-Metadaten-Viewer",
+    "title": "Video-Metadaten auslesen – Codec, Auflösung und Dauer",
+    "h1": "Video-Metadaten auslesen",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",

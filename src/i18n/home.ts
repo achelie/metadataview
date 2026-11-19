@@ -154,21 +154,21 @@ const zh: HomeCopy = {
 };
 
 const de: HomeCopy = {
-  title: 'EXIF-Viewer online – Fotometadaten kostenlos | ViewExif',
+  title: 'EXIF Daten auslesen – Kamera, Aufnahmedatum und GPS im Foto',
   description: 'EXIF, GPS, Kameraeinstellungen und Fotodaten kostenlos mit ViewExif ansehen. Dateien bleiben in deinem Browser. Kein Upload nötig.',
-  rail: 'LOKAL / KEIN UPLOAD', eyebrow: 'ViewExif · EXIF & Dateimetadaten', heading: 'Kostenloser EXIF-Viewer online',
+  rail: 'LOKAL / KEIN UPLOAD', eyebrow: 'ViewExif · EXIF & Dateimetadaten', heading: 'EXIF Daten auslesen',
   intro: 'ViewExif liest die Metadaten von Fotos, Videos, Audiodateien und Dokumenten direkt im Browser. Kameraeinstellungen, Aufnahmedatum und GPS erscheinen, wenn die gewählte Kopie lesbare Felder enthält. Exportiere einen PDF- oder JSON-Bericht oder entferne unterstützte Felder aus einer separaten Kopie.', limit: 'pro Datei',
   fileLimits: 'Bilder: bis zu 50 MB. Andere unterstützte Dateien: bis zu 100 MB.',
-  quickIntro: 'EXIF und Datei-Metadaten lokal lesen. Ohne Upload.',
+  quickIntro: 'Lies die Daten deiner Datei kostenlos im Browser. Ohne Upload.',
   formatsLabel: 'NACH FORMAT',
   formats: [
-    { label: 'Bilder', detail: 'EXIF, GPS, Kameraeinstellungen, Zeitangaben, XMP und IPTC sowie Farb- und Bearbeitungsspuren', extensions: 'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF' },
-    { label: 'Videos', detail: 'Dauer, Abmessungen, Codecs, Bildrate, Spuren, Marken und Zeitangaben', extensions: 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2' },
-    { label: 'Dokumente', detail: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken und eigene Eigenschaften', extensions: 'PDF, DOCX, PPTX, XLSX' },
-    { label: 'Audio', detail: 'Tags, Codec, Dauer, Bitrate, Kanäle, Bittiefe und Cover-Zusammenfassungen', extensions: 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA' },
+    { label: 'Bildmetadaten auslesen', detail: 'EXIF, GPS, Kameraeinstellungen, Zeitangaben, XMP und IPTC sowie Farb- und Bearbeitungsspuren', extensions: 'PNG, JPG, JPEG, WebP, HEIC, HEIF, TIF, TIFF, GIF' },
+    { label: 'Video-Metadaten auslesen', detail: 'Dauer, Abmessungen, Codecs, Bildrate, Spuren, Marken und Zeitangaben', extensions: 'MP4, M4V, MOV, MKV, WebM, AVI, FLV, 3GP, 3G2' },
+    { label: 'Dokumenteigenschaften anzeigen', detail: 'Autoren, Daten, Anwendungen, Revisionen, Statistiken und eigene Eigenschaften', extensions: 'PDF, DOCX, PPTX, XLSX' },
+    { label: 'Audio-Metadaten auslesen', detail: 'Tags, Codec, Dauer, Bitrate, Kanäle, Bittiefe und Cover-Zusammenfassungen', extensions: 'MP3, FLAC, OGG, OPUS, OGA, M4A, AAC, WAV, WMA' },
   ],
   exifLabel: 'EXIF-DETAILS',
-  exifTitle: 'Was kann dieser EXIF-Viewer anzeigen?',
+  exifTitle: 'Welche Angaben speichert die Kamera im Foto?',
   exifIntro: 'EXIF sind Informationen, die eine Kamera oder ein Handy in einem Bild speichern kann. Dazu gehören Kameramodell, Objektiv, Verschlusszeit, Blende, ISO, Ausrichtung und das bei der Aufnahme gespeicherte Datum. Bei aktivierter Standortaufzeichnung können auch GPS-Koordinaten vorhanden sein. Dieser EXIF-Viewer liest die Felder deiner ausgewählten Kopie. Er zeigt außerdem separate Metadaten wie XMP und IPTC. Darin können Bildbeschreibungen, Urheberangaben, Stichwörter oder Namen von Bearbeitungsprogrammen stehen. Die Einträge zeigen, was die Datei speichert; sie beweisen nicht, dass die Angaben stimmen.',
   exifExtra: [
     { label: 'Standort', note: 'Ein Foto kann Breiten- und Längengrad enthalten, doch viele Bilder haben keine GPS-Tags. Screenshots, heruntergeladene Kopien und exportierte Bilder können andere Metadaten als das Kameraoriginal enthalten. Prüfe angezeigte Koordinaten, bevor du eine Karte öffnest. Der Viewer errät keinen Standort anhand von Gebäuden, Gesichtern oder anderen Bildinhalten.' },
@@ -181,7 +181,7 @@ const de: HomeCopy = {
     { label: 'Kamera und Objektiv prüfen', note: 'Sieh das gespeicherte Kameramodell, Objektiv und die Aufnahmeeinstellungen.' },
     { label: 'Aufnahmedatum finden', note: 'Suche nach DateTimeOriginal und weiteren Zeitangaben des Fotos.' },
     { label: 'Privates im Foto prüfen', note: 'Prüfe GPS, Identitäts- und Geräteangaben sowie versteckte Vorschaubilder.' },
-    { label: 'EXIF-Metadaten entfernen', note: 'Erstelle eine sauberere Kopie und prüfe, was darin bleibt.' },
+    { label: 'Metadaten löschen, bevor du ein Foto teilst', note: 'Erstelle eine sauberere Kopie und prüfe, was darin bleibt.' },
   ],
   exifReferenceLabel: 'Den EXIF-Standard bei CIPA lesen',
   exampleLabel: 'DEMOBERICHT',
@@ -199,9 +199,9 @@ const de: HomeCopy = {
   benefits: [
     { eyebrow: 'Datenschutz-Check', label: 'Private Details entdecken', note: 'Finde GPS-Koordinaten, Namen, Geräte-IDs, eingebettete Vorschaubilder und Bearbeitungsspuren vor dem Teilen.' },
     { eyebrow: 'Herkunfts-Check', label: 'Dateiherkunft prüfen', note: 'Sieh Zeitangaben, Software-Verlauf, Hashes und signierte C2PA-Nachweise – ohne editierbare Metadaten mit Beweisen zu verwechseln.' },
-    { eyebrow: 'Sauberer teilen', label: 'Eine sauberere Kopie erstellen', note: 'Entferne unterstützte beschreibbare Tags aus Bildern, Videos, Audio oder Dokumenten, prüfe die Kopie erneut und speichere einen Prüfbeleg.' },
+    { eyebrow: 'Sauberer teilen', label: 'Metadaten entfernen', note: 'Entferne unterstützte beschreibbare Tags aus Bildern, Videos, Audio oder Dokumenten, prüfe die Kopie erneut und speichere einen Prüfbeleg.' },
   ],
-  processLabel: 'LOKAL, SCHRITT FÜR SCHRITT', processTitle: 'So nutzt du diesen EXIF-Viewer online', processIntro: 'Der Browser liest die Datei nur in diesem Tab. Kein Konto, kein Upload, keine Serverkopie.', ready: 'Datei zur Hand?', chooseAbove: 'Oben eine Datei wählen',
+  processLabel: 'LOKAL, SCHRITT FÜR SCHRITT', processTitle: 'So prüfst du eine Datei im Browser', processIntro: 'Der Browser liest die Datei nur in diesem Tab. Kein Konto, kein Upload, keine Serverkopie.', ready: 'Datei zur Hand?', chooseAbove: 'Oben eine Datei wählen',
   process: [
     { title: 'Eine Datei auswählen', note: 'Ziehe ein unterstütztes Foto, Video, Dokument oder eine Audiodatei hierher. Mit Beispiel testen kannst du die Demo ansehen. Die Bytes bleiben in diesem Browser-Tab.' },
     { title: 'Format verifizieren', note: 'Vor dem Parser prüft der Browser Dateisignatur und Größe – nicht bloß die Endung.' },
