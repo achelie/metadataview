@@ -2,7 +2,7 @@
 import type { Locale } from '../i18n/core';
 const { locale = 'en', kind = 'viewer', path = '/' } = Astro.props as { locale?: Locale; kind?: 'viewer' | 'remover' | 'privacy' | 'c2pa'; path?: string };
 const t = (en: string, de: string, fr: string, zh: string) => ({ en, de, fr, 'zh-CN': zh })[locale];
-const title = t('How to act on this result', path === '/' ? 'Metadaten auslesen und die Angaben im Bericht prüfen' : 'Was du mit dem Ergebnis tun kannst', 'Comment utiliser ce résultat', '看到结果后，下一步怎么做');
+const title = t('How to act on this result', path === '/' ? 'Metadaten auslesen und die Angaben im Bericht prüfen' : 'Was du mit dem Ergebnis tun kannst', path === '/' ? 'Métadonnées photo : comment interpréter le rapport ?' : 'Comment utiliser ce résultat', '看到结果后，下一步怎么做');
 const headings = {
   viewer: [
     t('Search all fields', 'Alle Felder durchsuchen', 'Chercher dans tous les champs', '搜索全部字段'),

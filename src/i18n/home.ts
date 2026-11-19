@@ -220,9 +220,9 @@ const de: HomeCopy = {
 };
 
 const fr: HomeCopy = {
-  title: 'Visionneuse EXIF gratuite en ligne | ViewExif',
+  title: 'EXIF photo : retrouver la date, le lieu et les réglages',
   description: 'Consultez gratuitement EXIF, GPS, réglages photo et dates avec ViewExif. Vos fichiers restent dans votre navigateur. Aucun envoi requis.',
-  rail: 'LOCAL / AUCUN ENVOI', eyebrow: 'ViewExif · EXIF et métadonnées', heading: 'Visionneuse EXIF gratuite en ligne',
+  rail: 'LOCAL / AUCUN ENVOI', eyebrow: 'ViewExif · EXIF et métadonnées', heading: 'EXIF photo : lire les informations de prise de vue',
   intro: 'ViewExif lit dans votre navigateur les métadonnées des photos, vidéos, fichiers audio et documents. Les réglages de l’appareil, la date de prise de vue et le GPS s’affichent si la copie contient des champs lisibles. Exportez un rapport PDF ou JSON, ou retirez les champs pris en charge d’une copie séparée.', limit: 'par fichier',
   fileLimits: 'Images : jusqu’à 50 Mo. Autres fichiers pris en charge : jusqu’à 100 Mo.',
   quickIntro: 'Lisez les métadonnées en local, sans envoyer le fichier.',

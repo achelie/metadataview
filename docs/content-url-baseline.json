@@ -1942,8 +1942,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/fr/",
-    "title": "Visionneuse EXIF gratuite en ligne | ViewExif",
-    "h1": "Visionneuse EXIF gratuite en ligne",
+    "title": "EXIF photo : retrouver la date, le lieu et les réglages",
+    "h1": "EXIF photo : lire les informations de prise de vue",
     "robots": "",
     "links": [
       "/",
@@ -2279,7 +2279,7 @@
   },
   {
     "canonical": "https://www.viewexif.com/fr/metadata-remover/",
-    "title": "Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents",
+    "title": "Supprimer les métadonnées d’un fichier en ligne, sans envoi",
     "h1": "Suppresseur de métadonnées",
     "robots": "",
     "links": [
@@ -2309,8 +2309,8 @@
   },
   {
     "canonical": "https://www.viewexif.com/fr/metadata-viewer/",
-    "title": "Lecteur de métadonnées — voir les informations cachées d’un fichier",
-    "h1": "Lecteur de métadonnées",
+    "title": "Données EXIF : lire les champs et comparer les dates",
+    "h1": "Données EXIF et autres métadonnées du fichier",
     "robots": "",
     "links": [
       "/_astro/BaseLayout.Ha6Y1oCb.css",

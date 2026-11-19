@@ -15,6 +15,8 @@ import MetadataRemovalWorkbench from '../components/MetadataRemovalWorkbench';
 import C2paWorkbench from '../components/C2paWorkbench';
 import C2paEducation from '../components/C2paEducation.astro';
 import PrivacyCheckerSeo from '../components/PrivacyCheckerSeo.astro';
+import LinkedFaqArticles from '../components/LinkedFaqArticles.astro';
+import { frenchToolFaqs, plainFaq } from '../content/french-tool-faqs';
 import ResultReadingGuide from '../components/ResultReadingGuide.astro';
 import ManualAd from '../components/ManualAd.astro';
 import ToolEditorialSections from '../components/ToolEditorialSections.astro';
@@ -59,9 +61,10 @@ const isVideoMetadataRemoverSeoPage = locale === 'en' && props.path === '/video-
 const isMetadataRemoverSeoPage = locale === 'en' && props.path === '/metadata-remover/';
 const isImageMetadataRemoverSeoPage = locale === 'en' && props.path === '/image-metadata-remover/';
 const visibleFaqs = props.faqs.slice(0, props.productionC2paViewer ? 6 : isImageSeoPage ? 7 : isVideoSeoPage || isVideoMetadataRemoverSeoPage ? 11 : isMetadataRemoverSeoPage ? 9 : isImageMetadataRemoverSeoPage ? 10 : faqDisplay === 'expanded' ? 5 : 4);
+const extraFaqs = fr && (editorialKey === 'metadata' || editorialKey === 'remover') ? frenchToolFaqs[editorialKey] : [];
 const schemas = [
   { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: props.title, applicationCategory: 'UtilitiesApplication', operatingSystem: t('Any modern browser', '现代浏览器', 'Jeder moderne Browser', 'Tout navigateur moderne'), url: canonical, description: props.description, inLanguage: locale, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, featureList: props.highlights },
-  { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: visibleFaqs.map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: locale, mainEntity: [...visibleFaqs, ...extraFaqs.map(plainFaq)].map((faq) => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })) },
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: t('Home', '首页', 'Startseite', 'Accueil'), item: new URL(localizePath('/', locale), canonical).toString() }, { '@type': 'ListItem', position: 2, name: props.title, item: canonical }] },
 ];
 ---
@@ -87,5 +90,11 @@ const schemas = [
       {faqDisplay === 'expanded' ? <section class="faq-section expanded-faq" aria-labelledby="tool-faq-title"><div class="expanded-faq-inner"><h2 id="tool-faq-title">{t('Frequently asked questions', '常见问题', 'Häufige Fragen', 'Questions fréquentes')}</h2><div class="expanded-faq-list">{visibleFaqs.map((faq) => <article><h3>{faq.question}</h3><p>{faq.answer}</p></article>)}</div></div></section> : <section class="faq-section"><span class="section-index">FAQ</span><h2>{t('Quick answers', '快速回答', 'Kurze Antworten', 'Réponses rapides')}</h2><div class="faq-list">{visibleFaqs.map((faq) => <details><summary class="disclosure-summary"><span class="disclosure-label">{faq.question}</span><span class="disclosure-chevron t-acc-chevron" aria-hidden="true"><StaticIcon name="chevronDown" size={20} /></span></summary><p>{faq.answer}</p></details>)}</div></section>}
       {!props.productionPrivacyChecker && <section class="related-tools"><div><span class="section-index">{t('KEEP GOING', '继续看看', 'WEITERGEHEN', 'POURSUIVRE')}</span><h2>{isImageSeoPage || isImageMetadataRemoverSeoPage ? 'Related image tools' : isVideoSeoPage || isVideoMetadataRemoverSeoPage ? 'Related video tools' : isMetadataRemoverSeoPage ? 'Metadata removal by file type' : t('Related tools', '相关工具', 'Verwandte Tools', 'Outils associés')}</h2></div><div class="related-list">{props.related.map((item) => <a href={item.href}><strong>{item.title}</strong><span>{item.note}</span><i aria-hidden="true"><IconGlyph name="arrow" size={16} /></i></a>)}</div></section>}
     </>}
+    {extraFaqs.length > 0 && <section class="faq-section expanded-faq" aria-labelledby="practical-faq-title">
+      <div class="expanded-faq-inner">
+        <h2 id="practical-faq-title">{editorialKey === 'remover' ? 'Questions avant de partager une copie' : 'Questions sur les champs du rapport'}</h2>
+        <div class="expanded-faq-list"><LinkedFaqArticles entries={extraFaqs} /></div>
+      </div>
+    </section>}
   </div>
 </BaseLayout>

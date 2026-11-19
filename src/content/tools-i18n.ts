@@ -291,7 +291,7 @@ const deCopy: Record<ToolKey, ZhToolCopy> = {
 
 const frCopy: Record<ToolKey, ZhToolCopy> = {
   metadata: {
-    title: 'Lecteur de métadonnées', metaTitle: 'Lecteur de métadonnées — voir les informations cachées d’un fichier', eyebrow: 'Le comptoir de contrôle universel',
+    title: 'Données EXIF et autres métadonnées du fichier', metaTitle: 'Données EXIF : lire les champs et comparer les dates', eyebrow: 'Le comptoir de contrôle universel',
     description: 'Consultez les métadonnées de 28 formats d’image, de document, de vidéo et d’audio. Recherchez un champ, copiez une valeur ou exportez le résultat, sans téléverser le fichier.',
     shortDescription: 'Déposez un fichier pris en charge pour rechercher, copier ou exporter tous ses champs lisibles.',
     highlights: ['Vérifie la vraie signature du fichier au lieu de croire son extension.', 'Produit un résumé lisible et un registre complet des champs natifs.', 'Lit le fichier une seule fois et calcule SHA-256 ainsi que MD5.', 'Exporte un JSON sûr et un rapport PDF compact.'],
@@ -345,7 +345,7 @@ const frCopy: Record<ToolKey, ZhToolCopy> = {
     ],
   },
   remover: {
-    title: 'Suppresseur de métadonnées', metaTitle: 'Suppresseur de métadonnées — nettoyer images, vidéos, sons et documents', eyebrow: 'Le comptoir de nettoyage tous formats',
+    title: 'Suppresseur de métadonnées', metaTitle: 'Supprimer les métadonnées d’un fichier en ligne, sans envoi', eyebrow: 'Le comptoir de nettoyage tous formats',
     description: 'Supprimez localement les métadonnées modifiables de 28 formats d’image, vidéo, audio et document, puis vérifiez la copie avant de la télécharger.',
     shortDescription: 'Déposez un fichier, retirez ses balises descriptives sans réencoder volontairement son contenu, puis rescanez la copie.',
     highlights: ['Choisit le bon moteur d’après le format réel.', 'Conserve le contenu média ou documentaire.', 'Rescanne la copie produite avant le téléchargement.', 'Sépare les champs supprimés, conservés et encore présents.'],

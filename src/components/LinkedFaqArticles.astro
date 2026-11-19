@@ -1,0 +1,9 @@
+---
+import type { LinkedFaq } from '../content/french-tool-faqs';
+interface Props { entries: LinkedFaq[] }
+const { entries } = Astro.props;
+---
+{entries.map((faq) => <article>
+  <h3>{faq.question}</h3>
+  <p>{faq.before}<a href={faq.href}>{faq.linkText}</a>{faq.after}</p>
+</article>)}

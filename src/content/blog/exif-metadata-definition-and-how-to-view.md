@@ -10,7 +10,7 @@ tags:
   - view EXIF data
   - photo metadata
 publishedAt: 2026-09-03
-updatedAt: 2026-09-05
+updatedAt: 2026-11-19
 featured: false
 author: "ViewExif"
 cover: "../../assets/blog/exif-metadata-definition-and-how-to-view.webp"
@@ -82,9 +82,9 @@ For a focused explanation of aperture, ISO, focal length, and shutter tags, see 
 
 ## How do you view EXIF metadata in a browser?
 
-Choose the original image in the [Image Metadata Viewer](/image-metadata-viewer/) and read the camera, capture, date, and GPS sections.
-
-The viewer handles JPEG, PNG, WebP, HEIC, TIFF, and GIF in the current browser tab. Start with the readable summary. Search for exact tag names such as `DateTimeOriginal`, `Model`, `LensModel`, `ISO`, `FNumber`, `ExposureTime`, `GPSLatitude`, or `Software` when you need one answer.
+1. Open the original photo in [ViewExif’s Image Metadata Viewer](/image-metadata-viewer/). Choose a JPEG, PNG, WebP, HEIC, TIFF, or GIF file from your device.
+2. Read the camera and capture details in the summary. Look for the camera model, aperture, and exposure time.
+3. Search the detailed fields for the value you need. For example, enter `DateTimeOriginal` for the recorded capture time or `GPSLatitude` and `GPSLongitude` for coordinates.
 
 Use the exact file you plan to investigate or share. Two thumbnails that look identical can have different metadata. A hash and file size help confirm whether you are comparing the same bytes rather than an original and a compressed copy.
 
